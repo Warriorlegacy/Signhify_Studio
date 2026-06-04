@@ -21,6 +21,20 @@ export type Project = {
  */
 export const projects: Project[] = [
   {
+    slug: "veepee-engineers",
+    name: "Veepee Engineers",
+    category: "Engineering Brand",
+    url: "https://veepee-engineers.lovable.app",
+    blurb:
+      "Cinematic brand site for an engineering firm — services, capabilities and case work presented as a confident industrial portfolio.",
+    tags: ["Brand", "Industrial", "Portfolio"],
+    stack: ["TanStack Start", "Tailwind", "Lovable"],
+    metric: "Shipped 2026",
+    size: "lg",
+    featured: true,
+    year: 2026,
+  },
+  {
     slug: "gymflow-saas",
     name: "GymFlow",
     category: "SaaS Product",
