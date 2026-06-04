@@ -11,7 +11,14 @@ export const Route = createFileRoute("/pricing")({
           "Engagement models for Signhify Studio: fixed-scope sprints, embedded engineering, and platform retainers.",
       },
       { property: "og:title", content: "Pricing — Signhify" },
+      {
+        property: "og:description",
+        content:
+          "Sprint, Studio and Platform engagement models. Transparent pricing for AI-first product execution.",
+      },
+      { property: "og:url", content: "https://signhify.online/pricing" },
     ],
+    links: [{ rel: "canonical", href: "https://signhify.online/pricing" }],
   }),
   component: PricingPage,
 });
