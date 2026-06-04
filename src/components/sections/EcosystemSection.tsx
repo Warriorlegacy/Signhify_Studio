@@ -2,12 +2,12 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Circle } from "lucide-react";
 
 const layers = [
-  { name: "Signhify Studio", year: "2026", status: "live", desc: "AI engineering studio. Revenue-generating today." },
-  { name: "Signhify AI", year: "2027", status: "soon", desc: "Vibe-coding platform. Prompt-to-product builder." },
-  { name: "Signhify Deploy", year: "2028", status: "planned", desc: "One-click deployment infrastructure for AI apps." },
-  { name: "Signhify Marketplace", year: "2028", status: "planned", desc: "Templates, agents and blueprints, community-built." },
-  { name: "Signhify Cloud", year: "2029", status: "planned", desc: "Managed infrastructure for AI-native businesses." },
-  { name: "Signhify OS", year: "2030", status: "planned", desc: "An operating system for running an AI business end-to-end." },
+  { name: "Signhify Studio", year: "Week 1 · June", status: "live", desc: "AI engineering studio. Revenue-generating today." },
+  { name: "Signhify AI", year: "Week 2 · June", status: "soon", desc: "Vibe-coding platform. Prompt-to-product builder." },
+  { name: "Signhify Deploy", year: "Week 3 · June", status: "planned", desc: "One-click deployment infrastructure for AI apps." },
+  { name: "Signhify Marketplace", year: "Week 3 · June", status: "planned", desc: "Templates, agents and blueprints, community-built." },
+  { name: "Signhify Cloud", year: "Week 4 · June", status: "planned", desc: "Managed infrastructure for AI-native businesses." },
+  { name: "Signhify OS", year: "June 30, 2026", status: "planned", desc: "An operating system for running an AI business end-to-end." },
 ];
 
 export function EcosystemSection() {
