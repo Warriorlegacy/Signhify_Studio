@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BadgeCheck, Github, Linkedin, Mail } from "lucide-react";
+import { BadgeCheck, Code2, Link2, Mail } from "lucide-react";
 import logoAsset from "@/assets/signhify-logo.png.asset.json";
 
 export function SiteFooter() {
@@ -44,13 +44,13 @@ export function SiteFooter() {
             <li>
               <a href="https://linkedin.com/in/piyushraj-singh" target="_blank" rel="noreferrer"
                  className="inline-flex items-center gap-2 hover:text-foreground">
-                <Linkedin size={14} /> LinkedIn
+                <Link2 size={14} /> LinkedIn
               </a>
             </li>
             <li>
               <a href="https://github.com/Warriorlegacy" target="_blank" rel="noreferrer"
                  className="inline-flex items-center gap-2 hover:text-foreground">
-                <Github size={14} /> GitHub
+                <Code2 size={14} /> GitHub
               </a>
             </li>
             <li>
