@@ -1,7 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ArrowLeft, CheckCircle2, Mail, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowLeft,
+  CheckCircle2,
+  Mail,
+  Sparkles,
+  AlertCircle,
+} from "lucide-react";
+import { leadSchema, emptyLead, type Lead } from "@/lib/leads-schema";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -21,18 +29,6 @@ export const Route = createFileRoute("/contact")({
   }),
   component: ContactPage,
 });
-
-type WizardData = {
-  type: string;
-  scope: string;
-  budget: string;
-  timeline: string;
-  goals: string[];
-  name: string;
-  email: string;
-  company: string;
-  message: string;
-};
 
 const TYPES = [
   "SaaS / Product",
@@ -72,31 +68,28 @@ const STEPS = [
   { key: "contact", label: "Contact", helper: "How do we reach you?" },
 ] as const;
 
+type FieldErrors = Partial<Record<keyof Lead, string>>;
+
 function ContactPage() {
   const [step, setStep] = useState(0);
-  const [data, setData] = useState<WizardData>({
-    type: "",
-    scope: "",
-    budget: "",
-    timeline: "",
-    goals: [],
-    name: "",
-    email: "",
-    company: "",
-    message: "",
-  });
+  const [data, setData] = useState<Lead>(emptyLead);
+  const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const set = <K extends keyof WizardData>(k: K, v: WizardData[K]) =>
+  const set = <K extends keyof Lead>(k: K, v: Lead[K]) => {
     setData((d) => ({ ...d, [k]: v }));
+    if (errors[k]) setErrors((e) => ({ ...e, [k]: undefined }));
+  };
 
-  const toggleGoal = (g: string) =>
+  const toggleGoal = (g: string) => {
     setData((d) => ({
       ...d,
       goals: d.goals.includes(g) ? d.goals.filter((x) => x !== g) : [...d.goals, g],
     }));
+    if (errors.goals) setErrors((e) => ({ ...e, goals: undefined }));
+  };
 
   const single = (key: "type" | "scope" | "budget" | "timeline", options: readonly string[]) => (
     <div className="grid sm:grid-cols-2 gap-3">
@@ -105,11 +98,12 @@ function ContactPage() {
         return (
           <button
             key={opt}
+            type="button"
             onClick={() => {
               set(key, opt);
               setTimeout(() => setStep((s) => Math.min(s + 1, STEPS.length - 1)), 180);
             }}
-            className={`text-left rounded-xl border px-4 py-3.5 text-sm font-medium transition ${
+            className={`text-left rounded-xl border px-4 py-3.5 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
               on
                 ? "border-primary bg-primary/10 text-foreground shadow-[0_0_24px_-8px_var(--primary-glow)]"
                 : "border-border bg-surface hover:border-primary/50"
@@ -122,19 +116,28 @@ function ContactPage() {
     </div>
   );
 
-  const canSubmit = data.name.trim() && /.+@.+\..+/.test(data.email);
-
   const submit = async () => {
-    if (!canSubmit) return;
-    setSubmitting(true);
     setError(null);
+    const result = leadSchema.safeParse(data);
+    if (!result.success) {
+      const fe: FieldErrors = {};
+      for (const issue of result.error.issues) {
+        const field = issue.path[0] as keyof Lead | undefined;
+        if (field && !fe[field]) fe[field] = issue.message;
+      }
+      setErrors(fe);
+      // Jump to first invalid step if any are missing from prior steps
+      const order: (keyof Lead)[] = ["type", "scope", "budget", "timeline", "goals", "name"];
+      const firstBad = order.findIndex((k) => fe[k]);
+      if (firstBad >= 0 && firstBad < STEPS.length) setStep(firstBad);
+      return;
+    }
+    setSubmitting(true);
     try {
-      // Frontend-only for now. Persist locally so nothing is lost while
-      // Supabase 'leads' table comes online later this sprint.
       if (typeof window !== "undefined") {
         const key = "signhify_pending_leads";
         const prev = JSON.parse(localStorage.getItem(key) || "[]");
-        prev.push({ ...data, at: new Date().toISOString() });
+        prev.push({ ...result.data, at: new Date().toISOString() });
         localStorage.setItem(key, JSON.stringify(prev));
       }
       await new Promise((r) => setTimeout(r, 600));
@@ -149,10 +152,15 @@ function ContactPage() {
   const progress = ((step + 1) / STEPS.length) * 100;
   const current = STEPS[step];
 
+  const hasContactBasics = useMemo(
+    () => data.name.trim().length >= 2 && /^[^\s]+@[^\s]+\.[^\s]+$/.test(data.email),
+    [data.name, data.email],
+  );
+
   return (
     <section className="relative pt-36 pb-28 min-h-[100svh]">
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "var(--gradient-ember)" }} />
-      <div className="absolute inset-0 bg-grid mask-fade-edges opacity-30 pointer-events-none" />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "var(--gradient-ember)" }} aria-hidden />
+      <div className="absolute inset-0 bg-grid mask-fade-edges opacity-30 pointer-events-none" aria-hidden />
 
       <div className="relative mx-auto max-w-3xl px-6">
         <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
@@ -162,8 +170,8 @@ function ContactPage() {
           Tell us about your <span className="text-gradient">idea</span>.
         </h1>
         <p className="mt-5 text-muted-foreground text-lg max-w-xl">
-          Six quick questions. We come back within 24 hours with scope, stack and next steps —
-          personally, from Piyush.
+          Six quick questions. We come back within 24 hours with scope, stack and next
+          steps — personally, from Piyush.
         </p>
 
         {submitted ? (
@@ -171,6 +179,8 @@ function ContactPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             className="mt-12 rounded-2xl border border-primary/40 bg-card p-10 text-center shadow-[var(--shadow-glow)]"
+            role="status"
+            aria-live="polite"
           >
             <CheckCircle2 size={40} className="text-primary mx-auto" />
             <div className="mt-4 font-display text-2xl font-bold">Brief received.</div>
@@ -178,6 +188,16 @@ function ContactPage() {
               Piyush will personally reply within 24 hours at{" "}
               <span className="text-foreground font-medium">{data.email}</span>.
             </p>
+
+            <div className="mt-6 rounded-xl border border-border bg-surface/60 p-5 text-left text-sm space-y-1">
+              <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">Your brief</div>
+              <Row k="Project" v={data.type} />
+              <Row k="Scope" v={data.scope} />
+              <Row k="Budget" v={data.budget} />
+              <Row k="Timeline" v={data.timeline} />
+              <Row k="Goals" v={data.goals.join(", ")} />
+            </div>
+
             <a
               href="mailto:hello@signhify.online"
               className="mt-6 inline-flex items-center gap-2 text-primary hover:underline"
@@ -190,11 +210,12 @@ function ContactPage() {
             {/* Progress */}
             <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
               <span>
-                Step {step + 1} of {STEPS.length} · <span className="text-foreground">{current.label}</span>
+                Step {step + 1} of {STEPS.length} ·{" "}
+                <span className="text-foreground">{current.label}</span>
               </span>
               <span>{Math.round(progress)}%</span>
             </div>
-            <div className="h-1 w-full rounded-full bg-border overflow-hidden mb-8">
+            <div className="h-1 w-full rounded-full bg-border overflow-hidden mb-8" role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100}>
               <motion.div
                 className="h-full bg-primary shadow-[0_0_12px_var(--primary-glow)]"
                 animate={{ width: `${progress}%` }}
@@ -226,8 +247,10 @@ function ContactPage() {
                         return (
                           <button
                             key={g}
+                            type="button"
                             onClick={() => toggleGoal(g)}
-                            className={`text-left rounded-xl border px-4 py-3.5 text-sm font-medium transition ${
+                            aria-pressed={on}
+                            className={`text-left rounded-xl border px-4 py-3.5 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
                               on
                                 ? "border-primary bg-primary/10 text-foreground"
                                 : "border-border bg-surface hover:border-primary/50"
@@ -238,10 +261,17 @@ function ContactPage() {
                         );
                       })}
                     </div>
+                    {errors.goals && <FieldError msg={errors.goals} />}
                     <button
-                      onClick={() => setStep((s) => s + 1)}
-                      disabled={data.goals.length === 0}
-                      className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground disabled:opacity-50 hover:brightness-110 transition"
+                      type="button"
+                      onClick={() => {
+                        if (data.goals.length === 0) {
+                          setErrors((e) => ({ ...e, goals: "Pick at least one goal" }));
+                          return;
+                        }
+                        setStep((s) => s + 1);
+                      }}
+                      className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                     >
                       Continue <ArrowRight size={16} />
                     </button>
@@ -255,61 +285,79 @@ function ContactPage() {
                       submit();
                     }}
                     className="space-y-4"
+                    noValidate
                   >
                     <div className="grid sm:grid-cols-2 gap-4">
-                      <input
-                        required
-                        maxLength={120}
+                      <Field
+                        id="name"
+                        label="Your name"
                         value={data.name}
-                        onChange={(e) => set("name", e.target.value)}
-                        placeholder="Your name"
-                        className="w-full rounded-md border border-border bg-surface px-4 py-3 text-sm focus:border-primary focus:outline-none"
+                        onChange={(v) => set("name", v)}
+                        error={errors.name}
+                        maxLength={120}
+                        autoComplete="name"
                       />
-                      <input
-                        required
+                      <Field
+                        id="email"
+                        label="Email"
                         type="email"
-                        maxLength={200}
                         value={data.email}
-                        onChange={(e) => set("email", e.target.value)}
-                        placeholder="you@company.com"
-                        className="w-full rounded-md border border-border bg-surface px-4 py-3 text-sm focus:border-primary focus:outline-none"
+                        onChange={(v) => set("email", v)}
+                        error={errors.email}
+                        maxLength={200}
+                        autoComplete="email"
                       />
                     </div>
-                    <input
+                    <Field
+                      id="company"
+                      label="Company (optional)"
+                      value={data.company ?? ""}
+                      onChange={(v) => set("company", v)}
+                      error={errors.company}
                       maxLength={120}
-                      value={data.company}
-                      onChange={(e) => set("company", e.target.value)}
-                      placeholder="Company (optional)"
-                      className="w-full rounded-md border border-border bg-surface px-4 py-3 text-sm focus:border-primary focus:outline-none"
+                      autoComplete="organization"
                     />
-                    <textarea
-                      value={data.message}
-                      maxLength={2000}
-                      onChange={(e) => set("message", e.target.value)}
-                      placeholder="Anything else we should know? (optional)"
-                      rows={4}
-                      className="w-full rounded-md border border-border bg-surface px-4 py-3 text-sm focus:border-primary focus:outline-none"
-                    />
+                    <div>
+                      <label htmlFor="message" className="block text-xs uppercase tracking-[0.18em] text-muted-foreground mb-1.5">
+                        Anything else?
+                      </label>
+                      <textarea
+                        id="message"
+                        value={data.message ?? ""}
+                        maxLength={2000}
+                        onChange={(e) => set("message", e.target.value)}
+                        placeholder="Constraints, references, secret sauce — whatever helps."
+                        rows={4}
+                        className="w-full rounded-md border border-border bg-surface px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
+                      />
+                    </div>
 
                     {/* Summary */}
                     <div className="rounded-lg border border-border bg-surface/60 px-4 py-3 text-xs text-muted-foreground grid grid-cols-2 gap-y-1">
-                      <div><span className="text-foreground">Type:</span> {data.type || "—"}</div>
-                      <div><span className="text-foreground">Scope:</span> {data.scope || "—"}</div>
-                      <div><span className="text-foreground">Budget:</span> {data.budget || "—"}</div>
-                      <div><span className="text-foreground">Timeline:</span> {data.timeline || "—"}</div>
+                      <Row k="Type" v={data.type} muted />
+                      <Row k="Scope" v={data.scope} muted />
+                      <Row k="Budget" v={data.budget} muted />
+                      <Row k="Timeline" v={data.timeline} muted />
                       <div className="col-span-2">
                         <span className="text-foreground">Goals:</span>{" "}
                         {data.goals.length ? data.goals.join(", ") : "—"}
                       </div>
                     </div>
 
-                    {error && <div className="text-sm text-destructive">{error}</div>}
+                    {error && (
+                      <div className="flex items-center gap-2 text-sm text-destructive" role="alert">
+                        <AlertCircle size={14} /> {error}
+                      </div>
+                    )}
 
-                    <div className="flex items-center justify-end pt-2">
+                    <div className="flex items-center justify-between pt-2">
+                      <p className="text-xs text-muted-foreground">
+                        By sending you agree to be contacted by Signhify.
+                      </p>
                       <button
                         type="submit"
-                        disabled={!canSubmit || submitting}
-                        className="group inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110 disabled:opacity-50 transition"
+                        disabled={!hasContactBasics || submitting}
+                        className="group inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                       >
                         {submitting ? "Sending…" : "Send brief"}
                         <ArrowRight size={16} className="group-hover:translate-x-0.5 transition" />
@@ -322,8 +370,9 @@ function ContactPage() {
 
             {step > 0 && !submitted && (
               <button
+                type="button"
                 onClick={() => setStep((s) => s - 1)}
-                className="mt-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+                className="mt-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded"
               >
                 <ArrowLeft size={14} /> Back
               </button>
@@ -339,5 +388,70 @@ function ContactPage() {
         </div>
       </div>
     </section>
+  );
+}
+
+function Field({
+  id,
+  label,
+  value,
+  onChange,
+  error,
+  type = "text",
+  maxLength,
+  autoComplete,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  error?: string;
+  type?: string;
+  maxLength?: number;
+  autoComplete?: string;
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-xs uppercase tracking-[0.18em] text-muted-foreground mb-1.5">
+        {label}
+      </label>
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        maxLength={maxLength}
+        autoComplete={autoComplete}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${id}-err` : undefined}
+        className={`w-full rounded-md border bg-surface px-4 py-3 text-sm focus:outline-none focus:ring-2 transition ${
+          error
+            ? "border-destructive/70 focus:border-destructive focus:ring-destructive/30"
+            : "border-border focus:border-primary focus:ring-primary/30"
+        }`}
+      />
+      {error && (
+        <p id={`${id}-err`} className="mt-1.5 flex items-center gap-1 text-xs text-destructive">
+          <AlertCircle size={12} /> {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function FieldError({ msg }: { msg: string }) {
+  return (
+    <p className="mt-3 flex items-center gap-1 text-xs text-destructive" role="alert">
+      <AlertCircle size={12} /> {msg}
+    </p>
+  );
+}
+
+function Row({ k, v, muted }: { k: string; v: string; muted?: boolean }) {
+  return (
+    <div>
+      <span className={muted ? "text-foreground" : "text-muted-foreground"}>{k}:</span>{" "}
+      <span className={muted ? "text-muted-foreground" : "text-foreground"}>{v || "—"}</span>
+    </div>
   );
 }
