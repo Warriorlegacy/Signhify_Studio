@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
+import { EmberParticles } from "./EmberParticles";
 
 /**
  * Cinematic hero backdrop: layered ember gradient, perspective grid,
- * pulsing orbs, and a fading horizon line. Pure CSS/SVG — no canvas.
+ * pulsing orbs, ember particles, and a fading horizon line.
  */
 export function HeroBackground() {
   return (
@@ -14,6 +15,10 @@ export function HeroBackground() {
       />
       {/* Grid */}
       <div className="absolute inset-0 bg-grid mask-fade-edges opacity-70" />
+
+      {/* Ember particles */}
+      <EmberParticles count={32} />
+
 
       {/* Perspective floor grid */}
       <svg

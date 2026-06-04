@@ -4,13 +4,14 @@ import { Menu, X } from "lucide-react";
 import logoAsset from "@/assets/signhify-logo.png.asset.json";
 
 const NAV = [
-  { to: "/", label: "Home" },
+  { to: "/", label: "Studio" },
   { to: "/projects", label: "Projects" },
-  { to: "/services", label: "Services" },
-  { to: "/vision", label: "Vision" },
+  { to: "/ai", label: "AI Builder", badge: "New" },
+  { to: "/templates", label: "Templates" },
+  { to: "/marketplace", label: "Marketplace" },
+  { to: "/pricing", label: "Pricing" },
   { to: "/sprint", label: "Sprint" },
-  { to: "/about", label: "About" },
-];
+] as const;
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -43,32 +44,37 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-0.5">
           {NAV.map((n) => (
             <Link
               key={n.to}
               to={n.to}
-              className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition rounded-md"
-              activeProps={{ className: "px-3 py-2 text-sm text-foreground rounded-md" }}
+              className="relative px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition rounded-md"
+              activeProps={{ className: "relative px-3 py-2 text-sm text-foreground rounded-md" }}
               activeOptions={{ exact: n.to === "/" }}
             >
               {n.label}
+              {"badge" in n && n.badge && (
+                <span className="ml-1.5 align-middle text-[9px] font-bold uppercase tracking-wider rounded-full bg-primary/15 text-primary border border-primary/30 px-1.5 py-0.5">
+                  {n.badge}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           <Link
             to="/contact"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[0_0_24px_-4px_var(--primary-glow)] hover:shadow-[0_0_36px_-2px_var(--primary-glow)] hover:brightness-110 transition"
           >
-            Book a Call
+            Start a Project
           </Link>
         </div>
 
         <button
           onClick={() => setOpen((v) => !v)}
-          className="md:hidden p-2 rounded-md text-foreground"
+          className="lg:hidden p-2 rounded-md text-foreground"
           aria-label="Toggle menu"
         >
           {open ? <X size={22} /> : <Menu size={22} />}
@@ -76,16 +82,21 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl">
+        <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-xl">
           <div className="px-6 py-4 flex flex-col gap-1">
             {NAV.map((n) => (
               <Link
                 key={n.to}
                 to={n.to}
                 onClick={() => setOpen(false)}
-                className="px-2 py-3 text-base text-muted-foreground hover:text-foreground"
+                className="px-2 py-3 text-base text-muted-foreground hover:text-foreground flex items-center gap-2"
               >
                 {n.label}
+                {"badge" in n && n.badge && (
+                  <span className="text-[9px] font-bold uppercase tracking-wider rounded-full bg-primary/15 text-primary border border-primary/30 px-1.5 py-0.5">
+                    {n.badge}
+                  </span>
+                )}
               </Link>
             ))}
             <Link
@@ -93,7 +104,7 @@ export function SiteHeader() {
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex items-center justify-center rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground"
             >
-              Book a Call
+              Start a Project
             </Link>
           </div>
         </div>
