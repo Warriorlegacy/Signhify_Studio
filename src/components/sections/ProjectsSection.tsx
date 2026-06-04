@@ -21,6 +21,7 @@ const CATEGORY_STYLE: Record<string, { from: string; to: string; tag: string }> 
   Fintech: { from: "oklch(0.68 0.16 230)", to: "oklch(0.2 0.08 260)", tag: "Fintech" },
   Analytics: { from: "oklch(0.7 0.16 180)", to: "oklch(0.22 0.06 240)", tag: "Analytics" },
   "AI Education": { from: "oklch(0.74 0.18 90)", to: "oklch(0.3 0.1 300)", tag: "AI EDU" },
+  "Engineering Brand": { from: "oklch(0.62 0.2 350)", to: "oklch(0.22 0.06 280)", tag: "Engineering" },
 };
 
 function styleFor(category: string) {
