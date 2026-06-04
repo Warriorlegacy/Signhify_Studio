@@ -52,7 +52,7 @@ export function HeroSection() {
 
       {/* GIANT WORDMARK — behind content, draftly-style scale */}
       <div className="absolute inset-x-0 bottom-[14%] sm:bottom-[10%] flex justify-center pointer-events-none select-none">
-        <motion.h1
+        <motion.div
           initial={{ opacity: 0, y: 30, filter: "blur(20px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
@@ -69,7 +69,7 @@ export function HeroSection() {
           aria-hidden
         >
           signhify
-        </motion.h1>
+        </motion.div>
       </div>
 
       {/* Corner tagline — bottom-left mono, draftly's "STOP LOOKING START BUILDING" energy */}
