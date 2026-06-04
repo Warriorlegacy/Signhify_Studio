@@ -1,29 +1,43 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { MarqueeStack } from "@/components/sections/MarqueeStack";
+import { ProjectsSection } from "@/components/sections/ProjectsSection";
+import { ServicesSection } from "@/components/sections/ServicesSection";
+import { ProcessSection } from "@/components/sections/ProcessSection";
+import { EcosystemSection } from "@/components/sections/EcosystemSection";
+import { FounderSection } from "@/components/sections/FounderSection";
+import { CtaSection } from "@/components/sections/CtaSection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "Signhify — AI Engineering Studio" },
+      {
+        name: "description",
+        content:
+          "Describe your idea. Signhify builds it. We design, engineer and ship AI-first SaaS, automation and growth systems end-to-end.",
+      },
+      { property: "og:title", content: "Signhify — AI Engineering Studio" },
+      {
+        property: "og:description",
+        content: "Describe your idea. Signhify builds it.",
+      },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <HeroSection />
+      <MarqueeStack />
+      <ProjectsSection limit={6} />
+      <ServicesSection />
+      <ProcessSection />
+      <EcosystemSection />
+      <FounderSection />
+      <CtaSection />
+    </>
   );
 }
