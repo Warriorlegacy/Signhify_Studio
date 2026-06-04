@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ArrowRight, Loader2, Cpu, Database, LayoutDashboard, Rocket } from "lucide-react";
 import { Link } from "@tanstack/react-router";
@@ -62,6 +62,20 @@ function AiPage() {
       setActiveAgent(i);
     }, 700);
   };
+
+  // Pick up prompt handed off from the homepage hero input
+  useEffect(() => {
+    try {
+      const handoff = sessionStorage.getItem("signhify:prompt");
+      if (handoff && handoff.trim()) {
+        sessionStorage.removeItem("signhify:prompt");
+        run(handoff);
+      }
+    } catch {
+      /* noop */
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section className="relative isolate min-h-[100svh] pt-32 pb-24 overflow-hidden">
