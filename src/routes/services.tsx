@@ -17,6 +17,30 @@ export const Route = createFileRoute("/services")({
         property: "og:description",
         content: "Six capabilities, one team. End-to-end AI-first product execution.",
       },
+      { property: "og:url", content: "https://signhify.online/services" },
+    ],
+    links: [{ rel: "canonical", href: "https://signhify.online/services" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "Signhify — AI Engineering Studio Services",
+          provider: { "@type": "Organization", name: "Signhify", url: "https://signhify.online" },
+          url: "https://signhify.online/services",
+          serviceType: [
+            "AI automation",
+            "SaaS development",
+            "Web and product design",
+            "CRM systems",
+            "Performance marketing",
+            "Brand",
+          ],
+          description:
+            "End-to-end AI-first product execution: design, engineering, automation and launch.",
+        }),
+      },
     ],
   }),
   component: ServicesPage,
