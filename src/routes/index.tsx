@@ -11,18 +11,20 @@ import { CtaSection } from "@/components/sections/CtaSection";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Signhify — AI Engineering Studio" },
+      { title: "Signhify — Describe your idea. We build it." },
       {
         name: "description",
         content:
           "Describe your idea. Signhify builds it. We design, engineer and ship AI-first SaaS, automation and growth systems end-to-end.",
       },
-      { property: "og:title", content: "Signhify — AI Engineering Studio" },
+      { property: "og:title", content: "Signhify — Describe your idea. We build it." },
       {
         property: "og:description",
         content: "Describe your idea. Signhify builds it.",
       },
+      { property: "og:url", content: "https://signhify.online/" },
     ],
+    links: [{ rel: "canonical", href: "https://signhify.online/" }],
   }),
   component: Index,
 });

@@ -11,7 +11,14 @@ export const Route = createFileRoute("/templates")({
           "Production-ready templates for SaaS, AI products, landing pages and CRMs. Ships June 21, 2026 at marketplace.signhify.online.",
       },
       { property: "og:title", content: "Templates — Signhify" },
+      {
+        property: "og:description",
+        content:
+          "Production-ready templates for SaaS, AI, landing and CRM — opinionated and deployable.",
+      },
+      { property: "og:url", content: "https://signhify.online/templates" },
     ],
+    links: [{ rel: "canonical", href: "https://signhify.online/templates" }],
   }),
   component: () => (
     <ComingSoonScene

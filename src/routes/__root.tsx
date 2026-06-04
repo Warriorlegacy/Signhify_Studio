@@ -76,28 +76,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Signhify — AI Engineering Studio" },
+      { title: "Signhify" },
       {
         name: "description",
         content:
-          "Signhify is an AI-powered product studio. Describe your idea — we build, automate, launch and scale it. End-to-end SaaS, AI automation and growth systems.",
+          "Signhify is an AI-powered product studio. Describe your idea — we build, automate, launch and scale it.",
       },
       { name: "author", content: "Signhify · Piyush Raj Singh" },
       { name: "theme-color", content: "#FF6B00" },
-      { property: "og:title", content: "Signhify — AI Engineering Studio" },
-      {
-        property: "og:description",
-        content:
-          "Describe your idea. Signhify builds it. AI-first SaaS, automation and growth systems shipped end-to-end.",
-      },
+      { property: "og:site_name", content: "Signhify" },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://signhify.online" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Signhify — AI Engineering Studio" },
-      {
-        name: "twitter:description",
-        content: "Describe your idea. Signhify builds it.",
-      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -106,6 +95,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Signhify",
+          url: "https://signhify.online",
+          description:
+            "AI engineering studio building AI-first SaaS, automation and growth systems end-to-end.",
+          founder: { "@type": "Person", name: "Piyush Raj Singh" },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Signhify",
+          url: "https://signhify.online",
+        }),
       },
     ],
   }),

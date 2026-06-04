@@ -34,7 +34,7 @@ export function SiteHeader() {
         >
           <img
             src={logoAsset.url}
-            alt="Signhify"
+            alt="Signhify AI Engineering Studio"
             className="h-7 w-7 rounded-full ring-1 ring-primary/40 group-hover:ring-primary transition"
           />
           <span className="font-display font-bold tracking-tight text-sm">

@@ -16,7 +16,9 @@ export const Route = createFileRoute("/sprint")({
         property: "og:description",
         content: "Built in public. 25 days. 6 products. Tracked item by item.",
       },
+      { property: "og:url", content: "https://signhify.online/sprint" },
     ],
+    links: [{ rel: "canonical", href: "https://signhify.online/sprint" }],
   }),
   component: SprintPage,
 });
