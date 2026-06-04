@@ -27,7 +27,7 @@ async function runChecks(): Promise<{ ok: boolean; checks: Check[] }> {
   let fallbackDetail = "";
   try {
     const res = await Promise.race([
-      supabase.from("_healthcheck_nonexistent").select("*").limit(1).maybeSingle(),
+      (supabase.from as (t: string) => any)("_healthcheck_nonexistent").select("*").limit(1).maybeSingle(),
       new Promise((resolve) => setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 1500)),
     ]);
     fallbackOk = res != null && typeof res === "object";
