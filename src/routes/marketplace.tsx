@@ -11,7 +11,14 @@ export const Route = createFileRoute("/marketplace")({
           "Browse, buy and ship templates, AI agents, components and workflows from Signhify and partner studios.",
       },
       { property: "og:title", content: "Marketplace — Signhify" },
+      {
+        property: "og:description",
+        content:
+          "Templates, AI agents, components and workflows — one marketplace from Signhify.",
+      },
+      { property: "og:url", content: "https://signhify.online/marketplace" },
     ],
+    links: [{ rel: "canonical", href: "https://signhify.online/marketplace" }],
   }),
   component: () => (
     <ComingSoonScene
