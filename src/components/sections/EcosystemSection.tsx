@@ -16,14 +16,15 @@ export function EcosystemSection() {
       <div className="absolute inset-0 bg-grid mask-fade-edges opacity-30" />
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">
-          The roadmap
+          June 2026 sprint · 25 days · 6 products
         </div>
         <h2 className="font-display text-4xl sm:text-5xl font-bold max-w-3xl">
-          We&rsquo;re not building an agency. We&rsquo;re building an ecosystem.
+          One month. Six products. The entire Signhify ecosystem, live by June 30.
         </h2>
         <p className="mt-5 max-w-2xl text-muted-foreground">
-          Today: a world-class AI engineering studio. Tomorrow: the platform that
-          turns any idea into a deployed AI product.
+          Studio ships this week. AI, Deploy, Marketplace, Cloud and OS follow on
+          a strict weekly cadence — each one live at its own subdomain by
+          June 30, 2026.
         </p>
 
         <div className="mt-14 relative">
