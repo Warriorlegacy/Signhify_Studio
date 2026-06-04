@@ -16,6 +16,21 @@ export const Route = createFileRoute("/projects")({
         property: "og:description",
         content: "Selected work from Signhify: SaaS, AI automation, CRMs, marketing systems.",
       },
+      { property: "og:url", content: "https://signhify.online/projects" },
+    ],
+    links: [{ rel: "canonical", href: "https://signhify.online/projects" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Projects — Signhify",
+          url: "https://signhify.online/projects",
+          description:
+            "Selected work from Signhify across SaaS, AI automation, CRMs and marketing systems.",
+        }),
+      },
     ],
   }),
   component: ProjectsPage,
