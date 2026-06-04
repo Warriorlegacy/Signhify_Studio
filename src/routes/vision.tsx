@@ -16,7 +16,9 @@ export const Route = createFileRoute("/vision")({
         property: "og:description",
         content: "Studio · AI · Deploy · Marketplace · Cloud · OS. Built in public.",
       },
+      { property: "og:url", content: "https://signhify.online/vision" },
     ],
+    links: [{ rel: "canonical", href: "https://signhify.online/vision" }],
   }),
   component: VisionPage,
 });
