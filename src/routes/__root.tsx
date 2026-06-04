@@ -87,6 +87,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "Signhify" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "Signhify" },
+      { name: "twitter:title", content: "Signhify" },
+      { name: "description", content: "Pixel Perfect Pixel is a website that precisely replicates provided screenshots, ensuring visual accuracy." },
+      { property: "og:description", content: "Pixel Perfect Pixel is a website that precisely replicates provided screenshots, ensuring visual accuracy." },
+      { name: "twitter:description", content: "Pixel Perfect Pixel is a website that precisely replicates provided screenshots, ensuring visual accuracy." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
