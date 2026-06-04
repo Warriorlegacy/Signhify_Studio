@@ -1,0 +1,22 @@
+# Signhify
+
+> AI engineering studio. Describe your idea — we design, engineer, automate and launch it end-to-end.
+
+Signhify is an AI-first product studio founded by Piyush Raj Singh. Registered MSME (Govt. of India). We ship SaaS, AI agents, CRMs, landing pages and growth systems for ambitious founders, and are building a broader AI product ecosystem (Studio → AI → Deploy → Marketplace → Cloud → OS) by 2030.
+
+## Pages
+
+- [Home](/): Describe your idea, Signhify builds it.
+- [Projects](/projects): 14+ shipped products across SaaS, AI, EdTech and growth.
+- [Services](/services): AI automation, SaaS, web, CRM, performance marketing, brand.
+- [AI](/ai): Prompt-to-product preview. Six AI agents turn one sentence into a plan.
+- [Templates](/templates): Production-ready SaaS, AI and landing templates.
+- [Marketplace](/marketplace): Templates, AI agents, components and workflows.
+- [Pricing](/pricing): Sprint, Studio and Platform engagement models.
+- [Vision](/vision): Roadmap from studio (2026) to AI product ecosystem (2030).
+- [About](/about): Founder, mission and how Signhify operates.
+- [Contact](/contact): Start a project — six quick steps, 24-hour response.
+
+## Optional
+
+- [Sprint](/sprint): Live June 2026 delivery checklist, built in public.
