@@ -110,7 +110,7 @@ export function HeroSection() {
           AI Engineering Studio · Build with us
         </motion.div>
 
-        <motion.h2
+        <motion.h1
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15 }}
@@ -119,7 +119,7 @@ export function HeroSection() {
           Describe your idea.
           <br />
           <span className="text-gradient">Signhify builds it.</span>
-        </motion.h2>
+        </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 10 }}
