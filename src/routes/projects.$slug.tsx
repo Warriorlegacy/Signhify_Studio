@@ -113,7 +113,7 @@ function ProjectDetailPage() {
             <div>
               <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">Stack</div>
               <div className="flex flex-wrap gap-1.5">
-                {p.stack.map((t) => (
+                {p.stack.map((t: string) => (
                   <span
                     key={t}
                     className="text-[11px] rounded-full border border-border bg-surface px-2 py-0.5 text-foreground"
@@ -127,7 +127,7 @@ function ProjectDetailPage() {
           <div>
             <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">Surface</div>
             <div className="flex flex-wrap gap-1.5">
-              {p.tags.map((t) => (
+              {p.tags.map((t: string) => (
                 <span
                   key={t}
                   className="text-[11px] rounded-full border border-border bg-surface px-2 py-0.5 text-muted-foreground"
