@@ -136,16 +136,27 @@ function ContactPage() {
     }
     setSubmitting(true);
     try {
-      if (typeof window !== "undefined") {
-        const key = "signhify_pending_leads";
-        const prev = JSON.parse(localStorage.getItem(key) || "[]");
-        prev.push({ ...result.data, at: new Date().toISOString() });
-        localStorage.setItem(key, JSON.stringify(prev));
-      }
-      await new Promise((r) => setTimeout(r, 600));
+      const { submitLead } = await import("@/lib/leads.functions");
+      await submitLead({ data: result.data });
       setSubmitted(true);
-    } catch {
-      setError("Something went wrong. Email hello@signhify.online instead.");
+    } catch (e) {
+      console.error(e);
+      // Local fallback so the lead is never lost if the server is unreachable
+      try {
+        if (typeof window !== "undefined") {
+          const key = "signhify_pending_leads";
+          const prev = JSON.parse(localStorage.getItem(key) || "[]");
+          prev.push({ ...result.data, at: new Date().toISOString() });
+          localStorage.setItem(key, JSON.stringify(prev));
+        }
+      } catch {
+        /* noop */
+      }
+      setError(
+        e instanceof Error
+          ? e.message
+          : "Something went wrong. Email hello@signhify.online instead.",
+      );
     } finally {
       setSubmitting(false);
     }
