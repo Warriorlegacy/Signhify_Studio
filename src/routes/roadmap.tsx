@@ -131,19 +131,18 @@ function RoadmapPage() {
 
         <div className="mt-8 flex flex-wrap gap-3">
           <a
-            href="/signhify-roadmap.md"
+            href="/signhify-roadmap.pdf"
             download
             className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110 transition"
           >
-            <Download size={14} /> Download roadmap (.md)
+            <Download size={14} /> Download roadmap (PDF)
           </a>
           <a
             href="/signhify-roadmap.md"
-            target="_blank"
-            rel="noreferrer"
+            download
             className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-5 py-3 text-sm font-semibold hover:border-primary/60 transition"
           >
-            <FileText size={14} /> View raw markdown
+            <FileText size={14} /> Markdown source
           </a>
         </div>
 
