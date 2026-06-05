@@ -34,7 +34,8 @@ export function SiteFooter() {
             <li><Link to="/services" className="hover:text-foreground">Services</Link></li>
             <li><Link to="/about" className="hover:text-foreground">About</Link></li>
             <li><Link to="/vision" className="hover:text-foreground">Vision 2030</Link></li>
-            <li><Link to="/contact" className="hover:text-foreground">Book a call</Link></li>
+            <li><Link to="/roadmap" className="hover:text-foreground">Roadmap</Link></li>
+            <li><Link to="/book" className="hover:text-foreground">Book a call</Link></li>
           </ul>
         </div>
 
@@ -58,6 +59,16 @@ export function SiteFooter() {
                  className="inline-flex items-center gap-2 hover:text-foreground">
                 <Mail size={14} /> hello@signhify.online
               </a>
+            </li>
+            <li>
+              <a href="https://wa.me/916202442690" target="_blank" rel="noreferrer"
+                 className="inline-flex items-center gap-2 hover:text-foreground">
+                <Link2 size={14} /> WhatsApp · +91 62024 42690
+              </a>
+            </li>
+            <li className="pt-3 border-t border-border/60 flex gap-4">
+              <Link to="/privacy" className="hover:text-foreground">Privacy</Link>
+              <Link to="/terms" className="hover:text-foreground">Terms</Link>
             </li>
           </ul>
         </div>
