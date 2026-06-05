@@ -361,11 +361,20 @@ function ProjectPanel({ project, onClose }: { project: Project; onClose: () => v
           </div>
 
           <div className="mt-10 flex flex-wrap items-center gap-3">
+            <Link
+              to="/projects/$slug"
+              params={{ slug: project.slug }}
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110 transition"
+              onClick={onClose}
+            >
+              Open full brief
+              <ArrowUpRight size={14} />
+            </Link>
             <a
               href={project.url}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110 transition"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-5 py-3 text-sm font-semibold hover:border-primary/60 transition"
             >
               Visit live site
               <ExternalLink size={14} />

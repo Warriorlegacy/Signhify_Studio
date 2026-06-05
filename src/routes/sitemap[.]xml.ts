@@ -7,6 +7,7 @@ export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
+        const { projects } = await import("@/lib/projects");
         const entries = [
           { path: "/", priority: "1.0", changefreq: "weekly" },
           { path: "/projects", priority: "0.9", changefreq: "weekly" },
@@ -19,6 +20,15 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/sprint", priority: "0.6", changefreq: "weekly" },
           { path: "/about", priority: "0.7", changefreq: "monthly" },
           { path: "/contact", priority: "0.8", changefreq: "monthly" },
+          { path: "/book", priority: "0.8", changefreq: "monthly" },
+          { path: "/roadmap", priority: "0.7", changefreq: "monthly" },
+          { path: "/privacy", priority: "0.3", changefreq: "yearly" },
+          { path: "/terms", priority: "0.3", changefreq: "yearly" },
+          ...projects.map((p) => ({
+            path: `/projects/${p.slug}`,
+            priority: "0.6",
+            changefreq: "monthly" as const,
+          })),
         ];
         const urls = entries
           .map(
