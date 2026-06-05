@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowUp, Mic, Sparkles, Play } from "lucide-react";
 import { HeroBackground } from "../HeroBackground";
+import { CinematicHero3D } from "../three/CinematicHero3D";
 
 const MODES = ["Build", "Design", "Automate", "Launch"] as const;
 const STACKS = ["Web App", "Landing Page", "AI Agent", "Mobile"] as const;
@@ -49,6 +50,7 @@ export function HeroSection() {
   return (
     <section className="relative isolate min-h-[100svh] flex flex-col justify-center pt-24 pb-16 overflow-hidden">
       <HeroBackground />
+      <CinematicHero3D />
 
       {/* GIANT WORDMARK — behind content, draftly-style scale */}
       <div className="absolute inset-x-0 bottom-[14%] sm:bottom-[10%] flex justify-center pointer-events-none select-none">
