@@ -31,15 +31,11 @@ async function main() {
     clearTimeout(timer);
   }
 
-  const body = await res.json().catch(() => ({ ok: false, checks: [], parseError: true }));
+  const body = await res.json().catch(() => ({ ok: false, parseError: true }));
   console.log(`[deploy-gate] status=${res.status} ok=${body.ok}`);
-  for (const c of body.checks ?? []) {
-    const mark = c.ok ? "✓" : "✗";
-    console.log(`  ${mark} ${c.name}${c.detail ? ` — ${c.detail}` : ""}`);
-  }
 
   if (!res.ok || !body.ok) {
-    console.error("[deploy-gate] BLOCKED — health checks failed.");
+    console.error("[deploy-gate] BLOCKED — health check failed.");
     process.exit(1);
   }
   console.log("[deploy-gate] PASS — safe to ship.");
