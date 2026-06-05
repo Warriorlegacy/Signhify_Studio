@@ -15,6 +15,7 @@ import { Route as TemplatesRouteImport } from './routes/templates'
 import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
@@ -55,6 +56,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoadmapRoute = RoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsRoute = ProjectsRouteImport.update({
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/roadmap': typeof RoadmapRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sprint': typeof SprintRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/roadmap': typeof RoadmapRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sprint': typeof SprintRoute
@@ -162,6 +170,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/roadmap': typeof RoadmapRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sprint': typeof SprintRoute
@@ -183,6 +192,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/projects'
+    | '/roadmap'
     | '/services'
     | '/sitemap.xml'
     | '/sprint'
@@ -202,6 +212,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/projects'
+    | '/roadmap'
     | '/services'
     | '/sitemap.xml'
     | '/sprint'
@@ -221,6 +232,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/projects'
+    | '/roadmap'
     | '/services'
     | '/sitemap.xml'
     | '/sprint'
@@ -241,6 +253,7 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
+  RoadmapRoute: typeof RoadmapRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SprintRoute: typeof SprintRoute
@@ -292,6 +305,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roadmap': {
+      id: '/roadmap'
+      path: '/roadmap'
+      fullPath: '/roadmap'
+      preLoaderRoute: typeof RoadmapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -396,6 +416,7 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
+  RoadmapRoute: RoadmapRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SprintRoute: SprintRoute,
