@@ -2,16 +2,17 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import logoAsset from "@/assets/signhify-logo.png.asset.json";
+import { EcosystemSwitcher } from "./EcosystemSwitcher";
 
 const NAV = [
   { to: "/", label: "Studio" },
   { to: "/projects", label: "Projects" },
   { to: "/ai", label: "AI", badge: "New" },
-  { to: "/templates", label: "Templates" },
   { to: "/marketplace", label: "Market" },
   { to: "/pricing", label: "Pricing" },
-  { to: "/sprint", label: "Sprint" },
+  { to: "/roadmap", label: "Roadmap" },
 ] as const;
+
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -67,7 +68,10 @@ export function SiteHeader() {
               )}
             </Link>
           ))}
+          <span aria-hidden className="mx-1 h-4 w-px bg-white/10" />
+          <EcosystemSwitcher />
         </nav>
+
 
         {/* CTA pill */}
         <div className="pointer-events-auto hidden lg:flex items-center">
