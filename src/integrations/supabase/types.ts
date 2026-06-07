@@ -62,6 +62,42 @@ export type Database = {
         }
         Relationships: []
       }
+      publish_audit: {
+        Row: {
+          approver_email: string | null
+          commit_sha: string | null
+          created_at: string
+          diff_result: Json
+          gates: Json
+          id: string
+          notes: string | null
+          preview_url: string | null
+          smoke_result: Json
+        }
+        Insert: {
+          approver_email?: string | null
+          commit_sha?: string | null
+          created_at?: string
+          diff_result?: Json
+          gates?: Json
+          id?: string
+          notes?: string | null
+          preview_url?: string | null
+          smoke_result?: Json
+        }
+        Update: {
+          approver_email?: string | null
+          commit_sha?: string | null
+          created_at?: string
+          diff_result?: Json
+          gates?: Json
+          id?: string
+          notes?: string | null
+          preview_url?: string | null
+          smoke_result?: Json
+        }
+        Relationships: []
+      }
       waitlist: {
         Row: {
           created_at: string
