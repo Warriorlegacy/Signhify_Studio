@@ -5,26 +5,16 @@ import { ArrowUpRight, Download, Search, Sparkles } from "lucide-react";
 import { MARKET, MARKET_CATEGORIES, type MarketItem } from "@/lib/marketplace";
 import { downloadAsset } from "@/lib/marketplace-download.functions";
 import { createCheckoutSession } from "@/lib/stripe-checkout.functions";
+import { fetchMarketplaceListings } from "@/lib/marketplace-listings.functions";
 
 export const Route = createFileRoute("/marketplace")({
   loader: async () => {
-    const { fetchListings } = await import("@/lib/marketplace.server");
-    const rows = await fetchListings();
-    const items: MarketItem[] = rows.map((row) => ({
-      id: row.id,
-      slug: row.slug,
-      name: row.title,
-      blurb: row.description ?? "Marketplace listing",
-      category: (row.category as MarketItem["category"]) ?? "Template",
-      price: Math.round((row.price_cents ?? 0) / 100),
-      price_cents: row.price_cents ?? 0,
-      preview_url: row.preview_url,
-      asset_path: row.asset_path,
-      tags: row.category ? [row.category] : [],
-      accent: "linear-gradient(135deg, oklch(0.72 0.21 45), oklch(0.22 0.06 260))",
-      badge: (row.price_cents ?? 0) === 0 ? "Free" : undefined,
-    }));
-    return { items: items.length ? items : MARKET };
+    try {
+      const { items } = await fetchMarketplaceListings();
+      return { items: items.length ? items : MARKET };
+    } catch {
+      return { items: MARKET };
+    }
   },
   head: () => ({
     meta: [
