@@ -45,19 +45,19 @@ function sizeClass(size: Project["size"]) {
   }
 }
 
-export function ProjectsSection({ limit }: { limit?: number }) {
+export function ProjectsSection({ limit, items = projects }: { limit?: number; items?: Project[] }) {
   const [active, setActive] = useState<Project | null>(null);
   const [filter, setFilter] = useState<string>("All");
 
   const categories = useMemo(
-    () => ["All", ...Array.from(new Set(projects.map((p) => p.category)))],
-    [],
+    () => ["All", ...Array.from(new Set(items.map((p) => p.category)))],
+    [items],
   );
 
   const filtered = useMemo(() => {
-    const base = filter === "All" ? projects : projects.filter((p) => p.category === filter);
+    const base = filter === "All" ? items : items.filter((p) => p.category === filter);
     return limit ? base.slice(0, limit) : base;
-  }, [filter, limit]);
+  }, [filter, limit, items]);
 
   return (
     <section

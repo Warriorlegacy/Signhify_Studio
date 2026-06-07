@@ -1,9 +1,31 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { ArrowUpRight, Download, Search, Sparkles } from "lucide-react";
 import { MARKET, MARKET_CATEGORIES, type MarketItem } from "@/lib/marketplace";
+import { downloadAsset } from "@/lib/marketplace-download.functions";
+import { createCheckoutSession } from "@/lib/stripe-checkout.functions";
 
 export const Route = createFileRoute("/marketplace")({
+  loader: async () => {
+    const { fetchListings } = await import("@/lib/marketplace.server");
+    const rows = await fetchListings();
+    const items: MarketItem[] = rows.map((row) => ({
+      id: row.id,
+      slug: row.slug,
+      name: row.title,
+      blurb: row.description ?? "Marketplace listing",
+      category: (row.category as MarketItem["category"]) ?? "Template",
+      price: Math.round((row.price_cents ?? 0) / 100),
+      price_cents: row.price_cents ?? 0,
+      preview_url: row.preview_url,
+      asset_path: row.asset_path,
+      tags: row.category ? [row.category] : [],
+      accent: "linear-gradient(135deg, oklch(0.72 0.21 45), oklch(0.22 0.06 260))",
+      badge: (row.price_cents ?? 0) === 0 ? "Free" : undefined,
+    }));
+    return { items: items.length ? items : MARKET };
+  },
   head: () => ({
     meta: [
       { title: "Marketplace — Signhify" },
@@ -26,12 +48,13 @@ export const Route = createFileRoute("/marketplace")({
 });
 
 function MarketplacePage() {
+  const { items: initialItems } = Route.useLoaderData();
   const [cat, setCat] = useState<(typeof MARKET_CATEGORIES)[number]>("All");
   const [q, setQ] = useState("");
 
   const items = useMemo(() => {
     const query = q.trim().toLowerCase();
-    return MARKET.filter(
+    return initialItems.filter(
       (i) =>
         (cat === "All" || i.category === cat) &&
         (!query ||
@@ -39,7 +62,7 @@ function MarketplacePage() {
           i.blurb.toLowerCase().includes(query) ||
           i.tags.some((t) => t.toLowerCase().includes(query))),
     );
-  }, [cat, q]);
+  }, [cat, q, initialItems]);
 
   return (
     <section className="relative pt-32 pb-24 min-h-screen">
@@ -137,7 +160,22 @@ function MarketplacePage() {
 }
 
 function MarketCard({ item }: { item: MarketItem }) {
-  const isFree = item.price === 0;
+  const isFree = (item.price_cents ?? item.price * 100) === 0;
+  const download = useServerFn(downloadAsset);
+  const checkout = useServerFn(createCheckoutSession);
+  const handleCta = async () => {
+    if (!item.id) {
+      if (item.preview_url) window.location.href = item.preview_url;
+      return;
+    }
+    if (isFree) {
+      const { signedUrl } = await download({ data: { listingId: item.id } });
+      window.location.href = signedUrl;
+    } else {
+      const { url } = await checkout({ data: { listingId: item.id } });
+      window.location.href = url;
+    }
+  };
   return (
     <article className="group relative overflow-hidden rounded-2xl border border-border bg-card hover:border-primary/50 transition shadow-[var(--shadow-card)]">
       <div
@@ -190,6 +228,7 @@ function MarketCard({ item }: { item: MarketItem }) {
         </div>
         <button
           type="button"
+          onClick={handleCta}
           className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-md border border-border bg-surface/80 px-4 py-2.5 text-sm font-semibold hover:border-primary/60 hover:bg-primary/10 transition"
         >
           {isFree ? (
@@ -198,7 +237,7 @@ function MarketCard({ item }: { item: MarketItem }) {
             </>
           ) : (
             <>
-              Preview <ArrowUpRight size={14} />
+              Buy <ArrowUpRight size={14} />
             </>
           )}
         </button>

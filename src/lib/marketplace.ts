@@ -1,9 +1,13 @@
 export type MarketItem = {
+  id?: string;
   slug: string;
   name: string;
   blurb: string;
   category: "Template" | "Agent" | "Component" | "Workflow";
   price: number; // 0 = free
+  price_cents?: number;
+  asset_path?: string | null;
+  preview_url?: string | null;
   tags: string[];
   accent: string; // gradient
   badge?: string;

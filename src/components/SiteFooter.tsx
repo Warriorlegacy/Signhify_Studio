@@ -9,7 +9,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-6 py-16 grid gap-12 md:grid-cols-4">
         <div className="md:col-span-2 space-y-5">
           <div className="flex items-center gap-3">
-            <img src={logoAsset.url} alt="" className="h-10 w-10 rounded-full ring-1 ring-primary/40" />
+            <img src={logoAsset.url} alt="" loading="lazy" decoding="async" width="40" height="40" className="h-10 w-10 rounded-full ring-1 ring-primary/40" />
             <div>
               <div className="font-display font-bold text-lg">Signhify</div>
               <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">

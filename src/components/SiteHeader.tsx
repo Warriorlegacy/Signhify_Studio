@@ -35,6 +35,10 @@ export function SiteHeader() {
         >
           <img
             src={logoAsset.url}
+            loading="lazy"
+            decoding="async"
+            width="28"
+            height="28"
             alt="Signhify AI Engineering Studio"
             className="h-7 w-7 rounded-full ring-1 ring-primary/40 group-hover:ring-primary transition"
           />
