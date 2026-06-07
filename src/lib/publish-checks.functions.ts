@@ -17,7 +17,8 @@ function pickOrigin(input: { origin?: string } | undefined, fallback: string) {
 }
 
 function defaultOrigin(): string {
-  // In the worker runtime we don't have window; fall back to known preview.
+  // Prefer the id-preview build (always serves the latest preview commit) over
+  // the published .lovable.app host, which may be stale until the next Publish.
   return (
     process.env.VITE_SITE_URL ||
     process.env.SITE_URL ||
