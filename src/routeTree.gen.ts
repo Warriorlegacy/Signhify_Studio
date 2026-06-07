@@ -20,13 +20,23 @@ import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as HelpRouteImport } from './routes/help'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
+import { Route as MarketplaceSuccessRouteImport } from './routes/marketplace.success'
+import { Route as MarketplaceSellRouteImport } from './routes/marketplace.sell'
+import { Route as AppSettingsRouteImport } from './routes/app/settings'
+import { Route as AppProjectsNewRouteImport } from './routes/app/projects/new'
+import { Route as AppProjectsIdRouteImport } from './routes/app/projects/$id'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as AppProjectsIdAnalyticsRouteImport } from './routes/app/projects/$id.analytics'
+import { Route as AppProjectsIdRunsRunIdRouteImport } from './routes/app/projects/$id/runs/$runId'
 
 const VisionRoute = VisionRouteImport.update({
   id: '/vision',
@@ -83,6 +93,16 @@ const MarketplaceRoute = MarketplaceRouteImport.update({
   path: '/marketplace',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -108,15 +128,55 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/app/',
+  path: '/app/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => ProjectsRoute,
 } as any)
+const MarketplaceSuccessRoute = MarketplaceSuccessRouteImport.update({
+  id: '/success',
+  path: '/success',
+  getParentRoute: () => MarketplaceRoute,
+} as any)
+const MarketplaceSellRoute = MarketplaceSellRouteImport.update({
+  id: '/sell',
+  path: '/sell',
+  getParentRoute: () => MarketplaceRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/app/settings',
+  path: '/app/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppProjectsNewRoute = AppProjectsNewRouteImport.update({
+  id: '/app/projects/new',
+  path: '/app/projects/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppProjectsIdRoute = AppProjectsIdRouteImport.update({
+  id: '/app/projects/$id',
+  path: '/app/projects/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   id: '/api/public/health',
   path: '/api/public/health',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppProjectsIdAnalyticsRoute = AppProjectsIdAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AppProjectsIdRoute,
+} as any)
+const AppProjectsIdRunsRunIdRoute = AppProjectsIdRunsRunIdRouteImport.update({
+  id: '/runs/$runId',
+  path: '/runs/$runId',
+  getParentRoute: () => AppProjectsIdRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -125,7 +185,9 @@ export interface FileRoutesByFullPath {
   '/ai': typeof AiRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
-  '/marketplace': typeof MarketplaceRoute
+  '/help': typeof HelpRoute
+  '/login': typeof LoginRoute
+  '/marketplace': typeof MarketplaceRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -136,8 +198,16 @@ export interface FileRoutesByFullPath {
   '/templates': typeof TemplatesRoute
   '/terms': typeof TermsRoute
   '/vision': typeof VisionRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/marketplace/sell': typeof MarketplaceSellRoute
+  '/marketplace/success': typeof MarketplaceSuccessRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/app/': typeof AppIndexRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
+  '/app/projects/new': typeof AppProjectsNewRoute
+  '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
+  '/app/projects/$id/runs/$runId': typeof AppProjectsIdRunsRunIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -145,7 +215,9 @@ export interface FileRoutesByTo {
   '/ai': typeof AiRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
-  '/marketplace': typeof MarketplaceRoute
+  '/help': typeof HelpRoute
+  '/login': typeof LoginRoute
+  '/marketplace': typeof MarketplaceRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -156,8 +228,16 @@ export interface FileRoutesByTo {
   '/templates': typeof TemplatesRoute
   '/terms': typeof TermsRoute
   '/vision': typeof VisionRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/marketplace/sell': typeof MarketplaceSellRoute
+  '/marketplace/success': typeof MarketplaceSuccessRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/app': typeof AppIndexRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
+  '/app/projects/new': typeof AppProjectsNewRoute
+  '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
+  '/app/projects/$id/runs/$runId': typeof AppProjectsIdRunsRunIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -166,7 +246,9 @@ export interface FileRoutesById {
   '/ai': typeof AiRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
-  '/marketplace': typeof MarketplaceRoute
+  '/help': typeof HelpRoute
+  '/login': typeof LoginRoute
+  '/marketplace': typeof MarketplaceRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -177,8 +259,16 @@ export interface FileRoutesById {
   '/templates': typeof TemplatesRoute
   '/terms': typeof TermsRoute
   '/vision': typeof VisionRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/marketplace/sell': typeof MarketplaceSellRoute
+  '/marketplace/success': typeof MarketplaceSuccessRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/app/': typeof AppIndexRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
+  '/app/projects/new': typeof AppProjectsNewRoute
+  '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
+  '/app/projects/$id/runs/$runId': typeof AppProjectsIdRunsRunIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -188,6 +278,8 @@ export interface FileRouteTypes {
     | '/ai'
     | '/book'
     | '/contact'
+    | '/help'
+    | '/login'
     | '/marketplace'
     | '/pricing'
     | '/privacy'
@@ -199,8 +291,16 @@ export interface FileRouteTypes {
     | '/templates'
     | '/terms'
     | '/vision'
+    | '/app/settings'
+    | '/marketplace/sell'
+    | '/marketplace/success'
     | '/projects/$slug'
+    | '/app/'
     | '/api/public/health'
+    | '/app/projects/$id'
+    | '/app/projects/new'
+    | '/app/projects/$id/analytics'
+    | '/app/projects/$id/runs/$runId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -208,6 +308,8 @@ export interface FileRouteTypes {
     | '/ai'
     | '/book'
     | '/contact'
+    | '/help'
+    | '/login'
     | '/marketplace'
     | '/pricing'
     | '/privacy'
@@ -219,8 +321,16 @@ export interface FileRouteTypes {
     | '/templates'
     | '/terms'
     | '/vision'
+    | '/app/settings'
+    | '/marketplace/sell'
+    | '/marketplace/success'
     | '/projects/$slug'
+    | '/app'
     | '/api/public/health'
+    | '/app/projects/$id'
+    | '/app/projects/new'
+    | '/app/projects/$id/analytics'
+    | '/app/projects/$id/runs/$runId'
   id:
     | '__root__'
     | '/'
@@ -228,6 +338,8 @@ export interface FileRouteTypes {
     | '/ai'
     | '/book'
     | '/contact'
+    | '/help'
+    | '/login'
     | '/marketplace'
     | '/pricing'
     | '/privacy'
@@ -239,8 +351,16 @@ export interface FileRouteTypes {
     | '/templates'
     | '/terms'
     | '/vision'
+    | '/app/settings'
+    | '/marketplace/sell'
+    | '/marketplace/success'
     | '/projects/$slug'
+    | '/app/'
     | '/api/public/health'
+    | '/app/projects/$id'
+    | '/app/projects/new'
+    | '/app/projects/$id/analytics'
+    | '/app/projects/$id/runs/$runId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -249,7 +369,9 @@ export interface RootRouteChildren {
   AiRoute: typeof AiRoute
   BookRoute: typeof BookRoute
   ContactRoute: typeof ContactRoute
-  MarketplaceRoute: typeof MarketplaceRoute
+  HelpRoute: typeof HelpRoute
+  LoginRoute: typeof LoginRoute
+  MarketplaceRoute: typeof MarketplaceRouteWithChildren
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
@@ -260,7 +382,11 @@ export interface RootRouteChildren {
   TemplatesRoute: typeof TemplatesRoute
   TermsRoute: typeof TermsRoute
   VisionRoute: typeof VisionRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppIndexRoute: typeof AppIndexRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
+  AppProjectsIdRoute: typeof AppProjectsIdRouteWithChildren
+  AppProjectsNewRoute: typeof AppProjectsNewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -342,6 +468,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarketplaceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -377,12 +517,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/app'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/$slug': {
       id: '/projects/$slug'
       path: '/$slug'
       fullPath: '/projects/$slug'
       preLoaderRoute: typeof ProjectsSlugRouteImport
       parentRoute: typeof ProjectsRoute
+    }
+    '/marketplace/success': {
+      id: '/marketplace/success'
+      path: '/success'
+      fullPath: '/marketplace/success'
+      preLoaderRoute: typeof MarketplaceSuccessRouteImport
+      parentRoute: typeof MarketplaceRoute
+    }
+    '/marketplace/sell': {
+      id: '/marketplace/sell'
+      path: '/sell'
+      fullPath: '/marketplace/sell'
+      preLoaderRoute: typeof MarketplaceSellRouteImport
+      parentRoute: typeof MarketplaceRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/app/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/projects/new': {
+      id: '/app/projects/new'
+      path: '/app/projects/new'
+      fullPath: '/app/projects/new'
+      preLoaderRoute: typeof AppProjectsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/projects/$id': {
+      id: '/app/projects/$id'
+      path: '/app/projects/$id'
+      fullPath: '/app/projects/$id'
+      preLoaderRoute: typeof AppProjectsIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/health': {
       id: '/api/public/health'
@@ -391,8 +573,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/projects/$id/analytics': {
+      id: '/app/projects/$id/analytics'
+      path: '/analytics'
+      fullPath: '/app/projects/$id/analytics'
+      preLoaderRoute: typeof AppProjectsIdAnalyticsRouteImport
+      parentRoute: typeof AppProjectsIdRoute
+    }
+    '/app/projects/$id/runs/$runId': {
+      id: '/app/projects/$id/runs/$runId'
+      path: '/runs/$runId'
+      fullPath: '/app/projects/$id/runs/$runId'
+      preLoaderRoute: typeof AppProjectsIdRunsRunIdRouteImport
+      parentRoute: typeof AppProjectsIdRoute
+    }
   }
 }
+
+interface MarketplaceRouteChildren {
+  MarketplaceSellRoute: typeof MarketplaceSellRoute
+  MarketplaceSuccessRoute: typeof MarketplaceSuccessRoute
+}
+
+const MarketplaceRouteChildren: MarketplaceRouteChildren = {
+  MarketplaceSellRoute: MarketplaceSellRoute,
+  MarketplaceSuccessRoute: MarketplaceSuccessRoute,
+}
+
+const MarketplaceRouteWithChildren = MarketplaceRoute._addFileChildren(
+  MarketplaceRouteChildren,
+)
 
 interface ProjectsRouteChildren {
   ProjectsSlugRoute: typeof ProjectsSlugRoute
@@ -406,13 +616,29 @@ const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
   ProjectsRouteChildren,
 )
 
+interface AppProjectsIdRouteChildren {
+  AppProjectsIdAnalyticsRoute: typeof AppProjectsIdAnalyticsRoute
+  AppProjectsIdRunsRunIdRoute: typeof AppProjectsIdRunsRunIdRoute
+}
+
+const AppProjectsIdRouteChildren: AppProjectsIdRouteChildren = {
+  AppProjectsIdAnalyticsRoute: AppProjectsIdAnalyticsRoute,
+  AppProjectsIdRunsRunIdRoute: AppProjectsIdRunsRunIdRoute,
+}
+
+const AppProjectsIdRouteWithChildren = AppProjectsIdRoute._addFileChildren(
+  AppProjectsIdRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AiRoute: AiRoute,
   BookRoute: BookRoute,
   ContactRoute: ContactRoute,
-  MarketplaceRoute: MarketplaceRoute,
+  HelpRoute: HelpRoute,
+  LoginRoute: LoginRoute,
+  MarketplaceRoute: MarketplaceRouteWithChildren,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
@@ -423,18 +649,12 @@ const rootRouteChildren: RootRouteChildren = {
   TemplatesRoute: TemplatesRoute,
   TermsRoute: TermsRoute,
   VisionRoute: VisionRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppIndexRoute: AppIndexRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
+  AppProjectsIdRoute: AppProjectsIdRouteWithChildren,
+  AppProjectsNewRoute: AppProjectsNewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

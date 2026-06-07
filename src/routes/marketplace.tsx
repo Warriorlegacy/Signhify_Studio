@@ -54,13 +54,13 @@ function MarketplacePage() {
 
   const items = useMemo(() => {
     const query = q.trim().toLowerCase();
-    return initialItems.filter(
-      (i) =>
+    return (initialItems as MarketItem[]).filter(
+      (i: MarketItem) =>
         (cat === "All" || i.category === cat) &&
         (!query ||
           i.name.toLowerCase().includes(query) ||
           i.blurb.toLowerCase().includes(query) ||
-          i.tags.some((t) => t.toLowerCase().includes(query))),
+          i.tags.some((t: string) => t.toLowerCase().includes(query))),
     );
   }, [cat, q, initialItems]);
 
@@ -123,7 +123,7 @@ function MarketplacePage() {
 
         {/* Grid */}
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {items.map((item) => (
+          {items.map((item: MarketItem) => (
             <MarketCard key={item.slug} item={item} />
           ))}
           {items.length === 0 && (
