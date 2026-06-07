@@ -15,6 +15,7 @@ import {
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { generatePlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
+import { getGeneratePlanStreamConfig } from "@/lib/ai-generate-stream.functions";
 import { joinWaitlist } from "@/lib/waitlist.functions";
 
 export const Route = createFileRoute("/ai")({
@@ -47,13 +48,14 @@ const EXAMPLES = [
 ];
 
 const AGENT_META = [
-  { icon: Sparkles, name: "Product Strategist" },
-  { icon: Database, name: "System Architect" },
-  { icon: LayoutDashboard, name: "UI/UX Designer" },
-  { icon: Cpu, name: "Frontend Engineer" },
-  { icon: Database, name: "Backend Engineer" },
-  { icon: Rocket, name: "Deployment Agent" },
-];
+  { icon: Sparkles, name: "Product Strategist", stage: "briefing" },
+  { icon: Database, name: "System Architect", stage: "architecture" },
+  { icon: LayoutDashboard, name: "UI/UX Designer", stage: "design_tokens" },
+  { icon: Cpu, name: "Frontend Engineer", stage: "codegen" },
+  { icon: Database, name: "Backend Engineer", stage: "review" },
+  { icon: Rocket, name: "Deployment Agent", stage: "deploy_plan" },
+] as const;
+type PipelineStage = (typeof AGENT_META)[number]["stage"];
 
 function AiPage() {
   const [prompt, setPrompt] = useState("");
@@ -61,8 +63,12 @@ function AiPage() {
   const [activeAgent, setActiveAgent] = useState(0);
   const [plan, setPlan] = useState<GeneratedPlan | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [streamText, setStreamText] = useState("");
+  const [stageText, setStageText] = useState<Record<PipelineStage, string>>({ briefing: "", architecture: "", design_tokens: "", codegen: "", review: "", deploy_plan: "" });
+  const [completedStages, setCompletedStages] = useState<PipelineStage[]>([]);
 
   const generate = useServerFn(generatePlan);
+  const getStreamConfig = useServerFn(getGeneratePlanStreamConfig);
 
   const run = async (text?: string) => {
     const value = (text ?? prompt).trim();
@@ -72,21 +78,63 @@ function AiPage() {
     setActiveAgent(0);
     setPlan(null);
     setError(null);
-
-    const tick = setInterval(() => {
-      setActiveAgent((i) => Math.min(i + 1, AGENT_META.length - 1));
-    }, 900);
+    setStreamText("");
+    setStageText({ briefing: "", architecture: "", design_tokens: "", codegen: "", review: "", deploy_plan: "" });
+    setCompletedStages([]);
 
     try {
-      const result = await generate({ data: { prompt: value } });
-      clearInterval(tick);
-      setActiveAgent(AGENT_META.length - 1);
-      setPlan(result);
+      const { url, bearer } = await getStreamConfig({ data: undefined });
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "content-type": "application/json", authorization: `Bearer ${bearer}` },
+        body: JSON.stringify({ prompt: value }),
+      });
+      if (!res.ok || !res.body) {
+        const json = await res.json().catch(() => null);
+        throw new Error(json?.error ?? "Streaming plan failed.");
+      }
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let lastStage: PipelineStage = "briefing";
+      while (true) {
+        const { done, value: chunk } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(chunk, { stream: true });
+        const parts = buffer.split("\n\n");
+        buffer = parts.pop() ?? "";
+        for (const part of parts) {
+          const line = part.split("\n").find((l) => l.startsWith("data:"));
+          if (!line) continue;
+          const event = JSON.parse(line.slice(5).trim()) as { stage: PipelineStage; delta: string };
+          if (event.stage !== lastStage) {
+            setCompletedStages((prev) => [...new Set([...prev, lastStage])]);
+            lastStage = event.stage;
+          }
+          const stageIndex = AGENT_META.findIndex((a) => a.stage === event.stage);
+          if (stageIndex >= 0) setActiveAgent(stageIndex);
+          setStreamText((prev) => prev + event.delta);
+          setStageText((prev) => ({ ...prev, [event.stage]: (prev[event.stage] ?? "") + event.delta }));
+        }
+      }
+      setCompletedStages((prev) => [...new Set([...prev, lastStage, ...AGENT_META.map((a) => a.stage)])]);
+      setPlan({
+        productName: "Signhify AI Plan",
+        oneLiner: value,
+        sections: AGENT_META.map((a) => ({ title: a.name, bullets: (stageText[a.stage] || "Generated section").split("\n").filter(Boolean).slice(0, 5) })),
+        stack: ["TanStack Start", "Supabase", "Tailwind", "Stripe", "Cloudflare", "Anthropic"],
+      });
       setStage("done");
     } catch (e) {
-      clearInterval(tick);
-      setError(e instanceof Error ? e.message : "Something went wrong. Try again.");
-      setStage("error");
+      try {
+        const result = await generate({ data: { prompt: value } });
+        setActiveAgent(AGENT_META.length - 1);
+        setPlan(result);
+        setStage("done");
+      } catch {
+        setError(e instanceof Error ? e.message : "Something went wrong. Try again.");
+        setStage("error");
+      }
     }
   };
 
@@ -184,14 +232,14 @@ function AiPage() {
             >
               {AGENT_META.map((a, i) => {
                 const state =
-                  stage === "done" || (stage === "running" && i < activeAgent)
+                  stage === "done" || completedStages.includes(a.stage)
                     ? "done"
                     : stage === "running" && i === activeAgent
                       ? "active"
                       : stage === "error"
                         ? "pending"
                         : "pending";
-                const sectionTitle = plan?.sections?.[i]?.title;
+                const sectionTitle = plan?.sections?.[i]?.title ?? (stageText[a.stage] ? stageText[a.stage].slice(0, 72) : undefined);
                 return (
                   <div
                     key={a.name}
@@ -237,6 +285,13 @@ function AiPage() {
             </motion.div>
           )}
         </AnimatePresence>
+
+
+        {stage === "running" && streamText && (
+          <div className="mt-8 rounded-2xl border border-border bg-card/80 p-6 text-sm text-muted-foreground whitespace-pre-wrap">
+            {streamText}<span className="ml-1 inline-block h-4 w-2 animate-pulse bg-primary align-middle" />
+          </div>
+        )}
 
         {stage === "error" && (
           <div className="mt-8 rounded-2xl border border-red-500/40 bg-red-500/5 p-6 text-sm text-red-200">

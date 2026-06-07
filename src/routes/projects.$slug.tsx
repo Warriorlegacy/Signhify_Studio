@@ -1,10 +1,25 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ExternalLink, Layers, Sparkles } from "lucide-react";
-import { projects } from "@/lib/projects";
+import { projects, type Project } from "@/lib/projects";
 
 export const Route = createFileRoute("/projects/$slug")({
-  loader: ({ params }) => {
-    const project = projects.find((p) => p.slug === params.slug);
+  loader: async ({ params }) => {
+    const { fetchProjectBySlug } = await import("@/lib/projects.server");
+    const row = await fetchProjectBySlug(params.slug);
+    const project: Project | undefined = row
+      ? {
+          slug: row.slug,
+          name: row.title,
+          category: row.tags?.[0] ?? "Studio",
+          url: row.live_url ?? `/projects/${row.slug}`,
+          blurb: row.description ?? "Signhify project",
+          tags: row.tags ?? [],
+          stack: [],
+          size: row.featured ? "md" : "sm",
+          featured: !!row.featured,
+          year: row.created_at ? new Date(row.created_at).getFullYear() : undefined,
+        }
+      : projects.find((p) => p.slug === params.slug);
     if (!project) throw notFound();
     return { project };
   },

@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { createSubscription } from "@/lib/stripe-subscribe.functions";
 import { Check, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/pricing")({
@@ -72,6 +74,13 @@ const TIERS = [
 ];
 
 function PricingPage() {
+  const subscribe = useServerFn(createSubscription);
+  const priceFor = (name: string) => name === "Studio" ? "price_test_signhify_studio_monthly" : name === "Platform" ? "price_test_signhify_scale_monthly" : "price_test_signhify_credit_pack";
+  const startCheckout = async (name: string) => {
+    if (name === "Sprint") return;
+    const { url } = await subscribe({ data: { priceId: priceFor(name) } });
+    window.location.href = url;
+  };
   return (
     <section className="relative pt-36 pb-28 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none" style={{ background: "var(--gradient-ember)" }} />
@@ -124,6 +133,12 @@ function PricingPage() {
               </ul>
               <Link
                 to="/contact"
+                onClick={(event) => {
+                  if (t.name !== "Sprint") {
+                    event.preventDefault();
+                    void startCheckout(t.name);
+                  }
+                }}
                 className={`mt-7 group inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold transition ${
                   t.featured
                     ? "bg-primary text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110"

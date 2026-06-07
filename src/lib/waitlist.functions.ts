@@ -28,5 +28,21 @@ export const joinWaitlist = createServerFn({ method: "POST" })
       console.error("[waitlist] insert failed", error);
       throw new Error("Could not join the list. Try again or email hello@signhify.online.");
     }
+
+    const edgeBase = process.env.SUPABASE_URL;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (edgeBase && serviceKey) {
+      await fetch(`${edgeBase.replace(/\/$/, "")}/functions/v1/send-waitlist-email`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${serviceKey}`,
+        },
+        body: JSON.stringify({
+          email: data.email,
+          prompt_preview: data.prompt?.slice(0, 180) ?? "",
+        }),
+      }).catch((mailError) => console.error("[waitlist] email failed", mailError));
+    }
     return { ok: true as const };
   });
