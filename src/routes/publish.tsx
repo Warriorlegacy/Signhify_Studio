@@ -331,7 +331,7 @@ function PublishPage() {
             <p className="mt-2 text-sm text-muted-foreground">No audit rows yet.</p>
           ) : (
             <ul className="mt-4 space-y-2">
-              {audits.map((a) => {
+              {audits.map((a: Record<string, any>) => {
                 const gateCount = Object.values(a.gates ?? {}).filter(Boolean).length;
                 const smokeOk = a.smoke_result?.passed === true;
                 const diffOk = a.diff_result?.passed === true;
