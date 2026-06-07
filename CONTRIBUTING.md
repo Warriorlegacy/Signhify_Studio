@@ -83,6 +83,15 @@ The execution plan lives at [`public/signhify-roadmap.md`](public/signhify-roadm
 
 **Never click Publish without walking through this list.** The Lovable agent must also surface this checklist (and wait for explicit "yes") before calling the publish tool — see `mem://workflow/pre-publish-checklist`.
 
+Two enforcement surfaces back this up:
+
+- **In-app gate:** [`/publish`](https://signhify.lovable.app/publish) — interactive checkboxes, runs the marketplace smoke test + SEO/route diff, writes a timestamped row to `public.publish_audit`, and only lights up the "I'm ready — open Publish" CTA when every gate is green.
+- **CLI gate:** `bun run prepublish:check` — runs the Playwright smoke (`tests/smoke/marketplace.spec.ts`) against the preview URL and a lightweight SEO/HTML diff derived from `src/lib/marketplace.ts`. Non-zero exit blocks the publish. Override target with `PLAYWRIGHT_BASE_URL=…`.
+
+If either surface flags a regression, fix it before publishing.
+
+
+
 ### A. Preview health
 - [ ] Lovable preview pane shows the latest commit hash and has **finished rebuilding** (no spinner, no "Preview has not been built yet" screen).
 - [ ] Hard-refresh the preview; the homepage renders without a white screen or error overlay.
