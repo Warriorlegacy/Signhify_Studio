@@ -16,6 +16,7 @@ import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
+import { Route as PublishRouteImport } from './routes/publish'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
@@ -71,6 +72,11 @@ const ServicesRoute = ServicesRouteImport.update({
 const RoadmapRoute = RoadmapRouteImport.update({
   id: '/roadmap',
   path: '/roadmap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublishRoute = PublishRouteImport.update({
+  id: '/publish',
+  path: '/publish',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsRoute = ProjectsRouteImport.update({
@@ -191,6 +197,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/publish': typeof PublishRoute
   '/roadmap': typeof RoadmapRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -221,6 +228,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/publish': typeof PublishRoute
   '/roadmap': typeof RoadmapRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -252,6 +260,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/publish': typeof PublishRoute
   '/roadmap': typeof RoadmapRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -284,6 +293,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/projects'
+    | '/publish'
     | '/roadmap'
     | '/services'
     | '/sitemap.xml'
@@ -314,6 +324,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/projects'
+    | '/publish'
     | '/roadmap'
     | '/services'
     | '/sitemap.xml'
@@ -344,6 +355,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/projects'
+    | '/publish'
     | '/roadmap'
     | '/services'
     | '/sitemap.xml'
@@ -375,6 +387,7 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
+  PublishRoute: typeof PublishRoute
   RoadmapRoute: typeof RoadmapRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -438,6 +451,13 @@ declare module '@tanstack/react-router' {
       path: '/roadmap'
       fullPath: '/roadmap'
       preLoaderRoute: typeof RoadmapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publish': {
+      id: '/publish'
+      path: '/publish'
+      fullPath: '/publish'
+      preLoaderRoute: typeof PublishRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -642,6 +662,7 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
+  PublishRoute: PublishRoute,
   RoadmapRoute: RoadmapRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
