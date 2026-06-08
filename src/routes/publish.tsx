@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useMemo, useState } from "react";
-import { CheckCircle2, Circle, Loader2, ShieldAlert, ShieldCheck, XCircle } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { CheckCircle2, Circle, Loader2, RefreshCw, ShieldAlert, ShieldCheck, XCircle } from "lucide-react";
 import {
+  checkSupabaseConnectivity,
   listPublishAudits,
   recordPublishAudit,
   runMarketplaceDiff,
   runMarketplaceSmoke,
+  type ConnectivityStatus,
 } from "@/lib/publish-checks.functions";
 
 export const Route = createFileRoute("/publish")({
@@ -57,6 +59,7 @@ function PublishPage() {
   const smokeFn = useServerFn(runMarketplaceSmoke);
   const diffFn = useServerFn(runMarketplaceDiff);
   const auditFn = useServerFn(recordPublishAudit);
+  const connFn = useServerFn(checkSupabaseConnectivity);
 
   const [origin, setOrigin] = useState<string>("");
   const [gates, setGates] = useState<Record<string, boolean>>({});
@@ -69,6 +72,10 @@ function PublishPage() {
   const [recording, setRecording] = useState(false);
   const [auditConfirmation, setAuditConfirmation] = useState<{ id: string; createdAt: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [conn, setConn] = useState<ConnectivityStatus | null>(null);
+  const [connLoading, setConnLoading] = useState(false);
+  const [autoRetry, setAutoRetry] = useState(false);
+  const autoRetryRef = useRef(false);
 
   useEffect(() => {
     if (typeof window !== "undefined" && !origin) setOrigin(window.location.origin);
@@ -106,7 +113,32 @@ function PublishPage() {
     }
   }
 
-  async function handleRecord() {
+  const refreshConn = useCallback(async () => {
+    setConnLoading(true);
+    try {
+      const r = await connFn();
+      setConn(r);
+      return r;
+    } catch (e: any) {
+      const fallback: ConnectivityStatus = {
+        ok: false,
+        hasUrl: false,
+        hasServiceRole: false,
+        adminProbe: { ok: false, error: e?.message ?? String(e) },
+        checkedAt: new Date().toISOString(),
+      };
+      setConn(fallback);
+      return fallback;
+    } finally {
+      setConnLoading(false);
+    }
+  }, [connFn]);
+
+  useEffect(() => {
+    void refreshConn();
+  }, [refreshConn]);
+
+  const handleRecord = useCallback(async () => {
     setError(null);
     setRecording(true);
     try {
@@ -121,12 +153,40 @@ function PublishPage() {
         },
       });
       setAuditConfirmation(r);
+      setAutoRetry(false);
+      autoRetryRef.current = false;
     } catch (e: any) {
-      setError(`Could not record audit: ${e?.message ?? String(e)}`);
+      const msg = e?.message ?? String(e);
+      setError(`Could not record audit: ${msg}`);
+      if (/SUPABASE_SERVICE_ROLE_KEY|Missing Supabase environment/i.test(msg)) {
+        setAutoRetry(true);
+        autoRetryRef.current = true;
+      }
     } finally {
       setRecording(false);
     }
-  }
+  }, [auditFn, gates, smoke, diff, origin, approverEmail, notes]);
+
+  // Auto-retry: when the service role secret was missing, poll connectivity
+  // every 8s. As soon as the Worker reports OK, re-attempt the audit once.
+  useEffect(() => {
+    if (!autoRetry || auditConfirmation) return;
+    let cancelled = false;
+    const interval = window.setInterval(async () => {
+      if (cancelled) return;
+      const status = await refreshConn();
+      if (cancelled) return;
+      if (status.ok && autoRetryRef.current) {
+        autoRetryRef.current = false;
+        setAutoRetry(false);
+        await handleRecord();
+      }
+    }, 8000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
+  }, [autoRetry, auditConfirmation, refreshConn, handleRecord]);
 
   const publishDisabledReason = useMemo(() => {
     if (!allGatesTicked) return "Tick every checklist gate.";
@@ -165,6 +225,55 @@ function PublishPage() {
             className="mt-1 w-full rounded-md bg-surface border border-border px-3 py-2 text-sm focus:outline-none focus:border-primary/50"
           />
         </label>
+
+        {/* Connectivity */}
+        <div className="mt-6 rounded-2xl border border-border bg-card p-6">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h2 className="font-display text-xl font-bold">Worker ↔ Supabase connectivity</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Confirms the deployed Worker has the secrets needed to write the audit row before
+                you start the checklist.
+              </p>
+            </div>
+            <button
+              onClick={() => refreshConn()}
+              disabled={connLoading}
+              className="shrink-0 inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-xs font-semibold disabled:opacity-60"
+            >
+              {connLoading ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+              Re-check
+            </button>
+          </div>
+          <ul className="mt-4 space-y-1 text-sm">
+            <ConnLine ok={conn?.hasUrl === true} label="SUPABASE_URL present in Worker" />
+            <ConnLine
+              ok={conn?.hasServiceRole === true}
+              label="SUPABASE_SERVICE_ROLE_KEY present in Worker"
+              detail={
+                conn && !conn.hasServiceRole
+                  ? "Re-publish the project so the managed secret is injected into the live Worker."
+                  : undefined
+              }
+            />
+            <ConnLine
+              ok={conn?.adminProbe.ok === true}
+              label="Admin probe against publish_audit"
+              detail={conn?.adminProbe.error}
+            />
+          </ul>
+          {conn?.checkedAt ? (
+            <div className="mt-2 text-xs text-muted-foreground">
+              Last checked {new Date(conn.checkedAt).toLocaleTimeString()}
+            </div>
+          ) : null}
+          {autoRetry && !auditConfirmation ? (
+            <div className="mt-3 text-xs text-amber-300 flex items-center gap-2">
+              <Loader2 size={12} className="animate-spin" />
+              Auto-retry armed — will record the audit automatically as soon as the Worker reports OK.
+            </div>
+          ) : null}
+        </div>
 
         {/* Gates */}
         <div className="mt-8 rounded-2xl border border-border bg-card p-6">
@@ -274,12 +383,24 @@ function PublishPage() {
           </div>
           <button
             onClick={handleRecord}
-            disabled={recording || !allGatesTicked || !smokePassed || !diffPassed || auditLogged}
+            disabled={
+              recording ||
+              !allGatesTicked ||
+              !smokePassed ||
+              !diffPassed ||
+              auditLogged ||
+              conn?.ok !== true
+            }
             className="mt-4 inline-flex items-center gap-2 rounded-md border border-primary/50 bg-primary/10 px-4 py-2 text-sm font-semibold disabled:opacity-50"
           >
             {recording ? <Loader2 size={14} className="animate-spin" /> : null}
             {auditLogged ? "Audit recorded ✓" : "Record audit"}
           </button>
+          {conn && !conn.ok ? (
+            <div className="mt-2 text-xs text-amber-300">
+              Worker connectivity check is failing — fix above before recording.
+            </div>
+          ) : null}
           {auditConfirmation ? (
             <div className="mt-3 text-xs text-emerald-400 font-mono">
               {auditConfirmation.id} · {auditConfirmation.createdAt}
@@ -394,5 +515,21 @@ function ResultList({ result, kind }: { result: CheckResult; kind: "smoke" | "di
         ))}
       </ul>
     </div>
+  );
+}
+
+function ConnLine({ ok, label, detail }: { ok: boolean; label: string; detail?: string }) {
+  return (
+    <li className="flex items-start gap-2">
+      {ok ? (
+        <CheckCircle2 size={14} className="mt-0.5 text-emerald-400 shrink-0" />
+      ) : (
+        <XCircle size={14} className="mt-0.5 text-destructive shrink-0" />
+      )}
+      <span>
+        <span className={ok ? "text-foreground" : "text-destructive"}>{label}</span>
+        {detail ? <span className="block text-xs text-muted-foreground">{detail}</span> : null}
+      </span>
+    </li>
   );
 }

@@ -192,3 +192,48 @@ export const listPublishAudits = createServerFn({ method: "GET" }).handler(async
   if (error) throw new Error(error.message);
   return { audits: (data ?? []) as Array<Record<string, any>> };
 });
+
+export type ConnectivityStatus = {
+  ok: boolean;
+  hasUrl: boolean;
+  hasServiceRole: boolean;
+  adminProbe: { ok: boolean; error?: string };
+  checkedAt: string;
+};
+
+export const checkSupabaseConnectivity = createServerFn({ method: "GET" }).handler(
+  async (): Promise<ConnectivityStatus> => {
+    const hasUrl = !!process.env.SUPABASE_URL;
+    const hasServiceRole = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const checkedAt = new Date().toISOString();
+
+    if (!hasUrl || !hasServiceRole) {
+      return {
+        ok: false,
+        hasUrl,
+        hasServiceRole,
+        adminProbe: { ok: false, error: "Missing Supabase env var(s)" },
+        checkedAt,
+      };
+    }
+
+    try {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { error } = await (supabaseAdmin.from as any)("publish_audit")
+        .select("id", { count: "exact", head: true })
+        .limit(1);
+      if (error) {
+        return { ok: false, hasUrl, hasServiceRole, adminProbe: { ok: false, error: error.message }, checkedAt };
+      }
+      return { ok: true, hasUrl, hasServiceRole, adminProbe: { ok: true }, checkedAt };
+    } catch (e: any) {
+      return {
+        ok: false,
+        hasUrl,
+        hasServiceRole,
+        adminProbe: { ok: false, error: e?.message ?? String(e) },
+        checkedAt,
+      };
+    }
+  },
+);
