@@ -59,6 +59,7 @@ function PublishPage() {
   const smokeFn = useServerFn(runMarketplaceSmoke);
   const diffFn = useServerFn(runMarketplaceDiff);
   const auditFn = useServerFn(recordPublishAudit);
+  const connFn = useServerFn(checkSupabaseConnectivity);
 
   const [origin, setOrigin] = useState<string>("");
   const [gates, setGates] = useState<Record<string, boolean>>({});
@@ -71,6 +72,10 @@ function PublishPage() {
   const [recording, setRecording] = useState(false);
   const [auditConfirmation, setAuditConfirmation] = useState<{ id: string; createdAt: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [conn, setConn] = useState<ConnectivityStatus | null>(null);
+  const [connLoading, setConnLoading] = useState(false);
+  const [autoRetry, setAutoRetry] = useState(false);
+  const autoRetryRef = useRef(false);
 
   useEffect(() => {
     if (typeof window !== "undefined" && !origin) setOrigin(window.location.origin);
