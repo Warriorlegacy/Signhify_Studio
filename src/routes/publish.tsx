@@ -383,12 +383,24 @@ function PublishPage() {
           </div>
           <button
             onClick={handleRecord}
-            disabled={recording || !allGatesTicked || !smokePassed || !diffPassed || auditLogged}
+            disabled={
+              recording ||
+              !allGatesTicked ||
+              !smokePassed ||
+              !diffPassed ||
+              auditLogged ||
+              conn?.ok !== true
+            }
             className="mt-4 inline-flex items-center gap-2 rounded-md border border-primary/50 bg-primary/10 px-4 py-2 text-sm font-semibold disabled:opacity-50"
           >
             {recording ? <Loader2 size={14} className="animate-spin" /> : null}
             {auditLogged ? "Audit recorded ✓" : "Record audit"}
           </button>
+          {conn && !conn.ok ? (
+            <div className="mt-2 text-xs text-amber-300">
+              Worker connectivity check is failing — fix above before recording.
+            </div>
+          ) : null}
           {auditConfirmation ? (
             <div className="mt-3 text-xs text-emerald-400 font-mono">
               {auditConfirmation.id} · {auditConfirmation.createdAt}
