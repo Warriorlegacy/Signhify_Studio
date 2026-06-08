@@ -39,7 +39,7 @@ export const sprintTracks: SprintTrack[] = [
         title: "All 14 projects seeded",
         detail: "Project objects + grid + filters live on /projects.",
         owner: "Piyush",
-        status: "in_progress",
+        status: "done",
         due: "Jun 6",
       },
       {
@@ -63,7 +63,7 @@ export const sprintTracks: SprintTrack[] = [
         title: "Contact form → Supabase",
         detail: "Server fn writes lead, sends notification email.",
         owner: "Piyush",
-        status: "todo",
+        status: "done",
         due: "Jun 7",
       },
       {
@@ -71,7 +71,7 @@ export const sprintTracks: SprintTrack[] = [
         title: "Per-route meta + sitemap",
         detail: "Distinct og:title/description on every public route.",
         owner: "Piyush",
-        status: "in_progress",
+        status: "done",
         due: "Jun 7",
       },
       {
@@ -104,7 +104,7 @@ export const sprintTracks: SprintTrack[] = [
         title: "Claude system prompt locked",
         detail: "Versioned in repo, JSON output schema defined.",
         owner: "Piyush",
-        status: "todo",
+        status: "done",
         due: "Jun 9",
       },
       {
@@ -112,7 +112,7 @@ export const sprintTracks: SprintTrack[] = [
         title: "Streaming UI",
         detail: "Server route streams tokens to client renderer.",
         owner: "Piyush",
-        status: "todo",
+        status: "done",
         due: "Jun 11",
       },
       {
@@ -120,7 +120,7 @@ export const sprintTracks: SprintTrack[] = [
         title: "Rate limit: 3 free builds",
         detail: "Per-IP + per-user counter in Supabase.",
         owner: "Piyush",
-        status: "todo",
+        status: "done",
         due: "Jun 12",
       },
       {
