@@ -135,3 +135,23 @@
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+
+/* Inline markdown preview for /roadmap → Local IDE Development Guide */
+.guide-prose { color: hsl(var(--foreground) / 0.92); }
+.guide-prose h1 { font-size: 1.5rem; font-weight: 800; margin: 1.25rem 0 0.5rem; color: var(--primary); }
+.guide-prose h2 { font-size: 1.15rem; font-weight: 700; margin: 1.25rem 0 0.5rem; border-bottom: 1px solid hsl(var(--border)); padding-bottom: 0.25rem; }
+.guide-prose h3 { font-size: 1rem; font-weight: 600; margin: 1rem 0 0.4rem; color: hsl(var(--foreground)); }
+.guide-prose p  { margin: 0.5rem 0; }
+.guide-prose ul, .guide-prose ol { padding-left: 1.25rem; margin: 0.5rem 0; }
+.guide-prose ul { list-style: disc; }
+.guide-prose ol { list-style: decimal; }
+.guide-prose li { margin: 0.2rem 0; }
+.guide-prose a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+.guide-prose code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85em; background: hsl(var(--muted) / 0.5); padding: 0.1em 0.35em; border-radius: 4px; }
+.guide-prose pre { background: hsl(var(--muted) / 0.4); border: 1px solid hsl(var(--border)); border-radius: 8px; padding: 0.85rem 1rem; overflow-x: auto; margin: 0.75rem 0; }
+.guide-prose pre code { background: transparent; padding: 0; font-size: 0.8rem; line-height: 1.5; }
+.guide-prose blockquote { border-left: 3px solid var(--primary); background: hsl(var(--primary) / 0.06); padding: 0.5rem 0.85rem; margin: 0.75rem 0; color: hsl(var(--muted-foreground)); border-radius: 0 6px 6px 0; }
+.guide-prose table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.85rem; }
+.guide-prose th, .guide-prose td { border: 1px solid hsl(var(--border)); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+.guide-prose th { background: hsl(var(--muted) / 0.4); font-weight: 600; }
+.guide-prose hr { border: 0; border-top: 1px solid hsl(var(--border)); margin: 1.25rem 0; }
