@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Download, FileText, ArrowRight } from "lucide-react";
+import { Download, FileText, ArrowRight, Code2 } from "lucide-react";
 
 export const Route = createFileRoute("/roadmap")({
   head: () => ({
@@ -145,6 +145,52 @@ function RoadmapPage() {
             <FileText size={14} /> Markdown source
           </a>
         </div>
+
+        <section className="mt-10 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/10 to-transparent p-6 sm:p-8">
+          <div className="flex items-start gap-3">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-primary/40 bg-background text-primary">
+              <Code2 size={18} />
+            </div>
+            <div className="flex-1">
+              <div className="text-[10px] uppercase tracking-[0.25em] text-primary">
+                Build locally · Deploy via Lovable
+              </div>
+              <h2 className="mt-1 font-display text-2xl font-bold">
+                Local IDE Development Guide
+              </h2>
+              <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
+                Continue building Signhify in Google Antigravity, Cursor, Windsurf,
+                Kiro, Gemini CLI, Kilo CLI, Claude Code, Aider, Zed or plain VS Code —
+                while every push still ships through Lovable&rsquo;s preview &amp; publish
+                pipeline via GitHub bidirectional sync.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <a
+                  href="/signhify-local-dev-guide.pdf"
+                  download
+                  className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110 transition"
+                >
+                  <Download size={14} /> Download guide (PDF)
+                </a>
+                <a
+                  href="/signhify-local-dev-guide.md"
+                  download
+                  className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-4 py-2.5 text-sm font-semibold hover:border-primary/60 transition"
+                >
+                  <FileText size={14} /> Markdown source
+                </a>
+                <a
+                  href="/signhify-local-dev-guide.md"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-4 py-2.5 text-sm font-semibold hover:border-primary/60 transition"
+                >
+                  View in browser <ArrowRight size={14} />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <ol className="mt-16 relative border-l border-border/60 pl-8 space-y-10">
           {WEEKS.map((w, i) => (
