@@ -8,9 +8,12 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
+    "start": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "prepublish:check": "node scripts/prepublish.mjs"
+    "guide:pdf": "node scripts/build-guide-pdf.mjs",
+    "guide:check": "node scripts/build-guide-pdf.mjs --check",
+    "prepublish:check": "node scripts/build-guide-pdf.mjs && node scripts/prepublish.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
