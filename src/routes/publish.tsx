@@ -113,7 +113,32 @@ function PublishPage() {
     }
   }
 
-  async function handleRecord() {
+  const refreshConn = useCallback(async () => {
+    setConnLoading(true);
+    try {
+      const r = await connFn();
+      setConn(r);
+      return r;
+    } catch (e: any) {
+      const fallback: ConnectivityStatus = {
+        ok: false,
+        hasUrl: false,
+        hasServiceRole: false,
+        adminProbe: { ok: false, error: e?.message ?? String(e) },
+        checkedAt: new Date().toISOString(),
+      };
+      setConn(fallback);
+      return fallback;
+    } finally {
+      setConnLoading(false);
+    }
+  }, [connFn]);
+
+  useEffect(() => {
+    void refreshConn();
+  }, [refreshConn]);
+
+  const handleRecord = useCallback(async () => {
     setError(null);
     setRecording(true);
     try {
@@ -128,12 +153,40 @@ function PublishPage() {
         },
       });
       setAuditConfirmation(r);
+      setAutoRetry(false);
+      autoRetryRef.current = false;
     } catch (e: any) {
-      setError(`Could not record audit: ${e?.message ?? String(e)}`);
+      const msg = e?.message ?? String(e);
+      setError(`Could not record audit: ${msg}`);
+      if (/SUPABASE_SERVICE_ROLE_KEY|Missing Supabase environment/i.test(msg)) {
+        setAutoRetry(true);
+        autoRetryRef.current = true;
+      }
     } finally {
       setRecording(false);
     }
-  }
+  }, [auditFn, gates, smoke, diff, origin, approverEmail, notes]);
+
+  // Auto-retry: when the service role secret was missing, poll connectivity
+  // every 8s. As soon as the Worker reports OK, re-attempt the audit once.
+  useEffect(() => {
+    if (!autoRetry || auditConfirmation) return;
+    let cancelled = false;
+    const interval = window.setInterval(async () => {
+      if (cancelled) return;
+      const status = await refreshConn();
+      if (cancelled) return;
+      if (status.ok && autoRetryRef.current) {
+        autoRetryRef.current = false;
+        setAutoRetry(false);
+        await handleRecord();
+      }
+    }, 8000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
+  }, [autoRetry, auditConfirmation, refreshConn, handleRecord]);
 
   const publishDisabledReason = useMemo(() => {
     if (!allGatesTicked) return "Tick every checklist gate.";
