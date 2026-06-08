@@ -196,6 +196,28 @@ function RoadmapPage() {
           </div>
         </section>
 
+        <section className="mt-8 rounded-2xl border border-border bg-card/60 overflow-hidden">
+          <header className="flex items-center justify-between gap-3 border-b border-border bg-surface/40 px-5 py-3">
+            <div className="flex items-center gap-2 text-sm font-semibold">
+              <BookOpen size={14} className="text-primary" />
+              Inline preview · Local IDE Development Guide
+            </div>
+            <a
+              href="/signhify-local-dev-guide.md"
+              target="_blank"
+              rel="noreferrer"
+              className="text-xs text-muted-foreground hover:text-primary transition"
+            >
+              Open raw .md ↗
+            </a>
+          </header>
+          <div
+            className="guide-prose max-h-[640px] overflow-y-auto px-6 py-5 text-sm leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: guideHtml }}
+          />
+        </section>
+
+
         <ol className="mt-16 relative border-l border-border/60 pl-8 space-y-10">
           {WEEKS.map((w, i) => (
             <li key={w.title} className="relative">
