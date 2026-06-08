@@ -86,7 +86,7 @@ function GlassOrb() {
           outerRef.current.rotation.x = nextX;
           outerRef.current.rotation.y = nextY;
         }}
-        className="cursor-grab active:cursor-grabbing"
+        
       >
         <icosahedronGeometry args={[1.7, 1]} />
         <meshPhysicalMaterial
