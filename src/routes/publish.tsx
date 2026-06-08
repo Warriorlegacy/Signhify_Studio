@@ -518,18 +518,3 @@ function ResultList({ result, kind }: { result: CheckResult; kind: "smoke" | "di
   );
 }
 
-function ConnLine({ ok, label, detail }: { ok: boolean; label: string; detail?: string }) {
-  return (
-    <li className="flex items-start gap-2">
-      {ok ? (
-        <CheckCircle2 size={14} className="mt-0.5 text-emerald-400 shrink-0" />
-      ) : (
-        <XCircle size={14} className="mt-0.5 text-destructive shrink-0" />
-      )}
-      <span>
-        <span className={ok ? "text-foreground" : "text-destructive"}>{label}</span>
-        {detail ? <span className="block text-xs text-muted-foreground">{detail}</span> : null}
-      </span>
-    </li>
-  );
-}
