@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useMemo, useState } from "react";
-import { CheckCircle2, Circle, Loader2, ShieldAlert, ShieldCheck, XCircle } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { CheckCircle2, Circle, Loader2, RefreshCw, ShieldAlert, ShieldCheck, XCircle } from "lucide-react";
 import {
+  checkSupabaseConnectivity,
   listPublishAudits,
   recordPublishAudit,
   runMarketplaceDiff,
   runMarketplaceSmoke,
+  type ConnectivityStatus,
 } from "@/lib/publish-checks.functions";
 
 export const Route = createFileRoute("/publish")({
