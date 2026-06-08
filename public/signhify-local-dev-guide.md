@@ -132,7 +132,52 @@ LOVABLE_API_KEY=...                  # optional, for AI gateway
 > a runtime secret used in production, do it from the **Lovable → Cloud →
 > Secrets** panel (not from GitHub).
 
+### 2.1 Where to find each value
+
+| Variable | Where to get it |
+|----------|-----------------|
+| `VITE_SUPABASE_URL` / `SUPABASE_URL` | Supabase Dashboard → **Project Settings → API → Project URL** |
+| `VITE_SUPABASE_PROJECT_ID` | The subdomain of that URL (e.g. `nqeuarvpkxupxeeuzuow`) |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` / `SUPABASE_PUBLISHABLE_KEY` | Same page → **anon / public** key. Safe in the browser. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Same page → **service_role** key. **Server-only.** Never ship to the client, never commit. |
+| `LOVABLE_API_KEY` | Lovable → **Project → Cloud → AI Gateway**. Only needed if you call the AI Gateway from your local dev server. |
+
+### 2.2 Make sure the deployed Worker has the same secrets
+
+`/publish` writes an audit row using the **service role** key. If the
+Worker on Lovable Cloud is missing `SUPABASE_SERVICE_ROLE_KEY` you'll see:
+
+> `Could not record audit: Missing Supabase environment variable(s):
+> SUPABASE_SERVICE_ROLE_KEY. Connect Supabase in Lovable Cloud.`
+
+Fix it once and the auto-retry on `/publish` will record the audit on the
+next attempt.
+
+1. Open Lovable → **Project → Cloud → Secrets**.
+2. Confirm all four are present and not empty:
+   - `SUPABASE_URL`
+   - `SUPABASE_PUBLISHABLE_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `LOVABLE_API_KEY` (only if you use the AI Gateway)
+3. If any are missing, click **Add secret**, paste the value from the
+   Supabase Dashboard (§2.1), and **Save**.
+4. **Re-deploy** so the new secret reaches the Worker. Either:
+   - push any commit to `main` (frontend changes auto-deploy on push;
+     secret-only changes still need a deploy to refresh the Worker), **or**
+   - in Lovable, click **Publish → Update** (frontend) to force a
+     rebuild that picks up the new secret bindings.
+5. Open `/publish` in preview. The **Supabase connectivity** card should
+   turn green (`hasUrl`, `hasServiceRole`, `adminProbe` all ✔). If it
+   doesn't, click **Re-check** and watch the auto-retry arm itself.
+6. Run `bun run prepublish:check` locally one more time, then publish.
+
+> The local `.env` and Lovable Cloud Secrets are **two separate stores**.
+> Updating `.env` only affects `bun run dev` on your machine. Production
+> reads from Lovable Cloud Secrets — always update both.
+
 ---
+
+
 
 ## 3. IDE-specific setup
 
