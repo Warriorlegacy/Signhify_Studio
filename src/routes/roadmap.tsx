@@ -1,5 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Download, FileText, ArrowRight, Code2 } from "lucide-react";
+import { Download, FileText, ArrowRight, Code2, BookOpen } from "lucide-react";
+import { marked } from "marked";
+import guideMarkdown from "../../public/signhify-local-dev-guide.md?raw";
+
+const guideHtml = marked.parse(guideMarkdown, { async: false }) as string;
 
 export const Route = createFileRoute("/roadmap")({
   head: () => ({
