@@ -13,7 +13,6 @@ const NAV = [
   { to: "/roadmap", label: "Roadmap" },
 ] as const;
 
-
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -42,9 +41,7 @@ export function SiteHeader() {
             alt="Signhify AI Engineering Studio"
             className="h-7 w-7 rounded-full ring-1 ring-primary/40 group-hover:ring-primary transition"
           />
-          <span className="font-display font-bold tracking-tight text-sm">
-            Signhify
-          </span>
+          <span className="font-display font-bold tracking-tight text-sm">Signhify</span>
         </Link>
 
         {/* Floating pill nav */}
@@ -75,7 +72,6 @@ export function SiteHeader() {
           <span aria-hidden className="mx-1 h-4 w-px bg-white/10" />
           <EcosystemSwitcher />
         </nav>
-
 
         {/* CTA pill */}
         <div className="pointer-events-auto hidden lg:flex items-center">

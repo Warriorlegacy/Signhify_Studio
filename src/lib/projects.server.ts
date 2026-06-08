@@ -13,13 +13,24 @@ export type DbProject = {
 };
 
 export async function fetchProjects(): Promise<DbProject[]> {
-  const { data, error } = await (supabaseAdmin.from as any)("projects").select("*").order("created_at", { ascending: false });
-  if (error) { console.error("[projects] fetch failed", error); return []; }
+  const { data, error } = await (supabaseAdmin.from as any)("projects")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) {
+    console.error("[projects] fetch failed", error);
+    return [];
+  }
   return data ?? [];
 }
 
 export async function fetchProjectBySlug(slug: string): Promise<DbProject | null> {
-  const { data, error } = await (supabaseAdmin.from as any)("projects").select("*").eq("slug", slug).maybeSingle();
-  if (error) { console.error("[projects] fetch one failed", error); return null; }
+  const { data, error } = await (supabaseAdmin.from as any)("projects")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
+  if (error) {
+    console.error("[projects] fetch one failed", error);
+    return null;
+  }
   return data ?? null;
 }

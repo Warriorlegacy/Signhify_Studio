@@ -35,10 +35,10 @@ function AboutPage() {
             A studio for the <span className="text-gradient">AI-native</span> era.
           </h1>
           <p className="mt-6 text-lg text-muted-foreground max-w-3xl leading-relaxed">
-            Signhify is the front door of a future AI product ecosystem. Today, we&rsquo;re
-            a premium AI engineering studio shipping software for ambitious founders.
-            Tomorrow, we&rsquo;re the platform that turns any idea into a deployed AI
-            product — designed, built and operated end-to-end.
+            Signhify is the front door of a future AI product ecosystem. Today, we&rsquo;re a
+            premium AI engineering studio shipping software for ambitious founders. Tomorrow,
+            we&rsquo;re the platform that turns any idea into a deployed AI product — designed,
+            built and operated end-to-end.
           </p>
 
           <div className="mt-12 grid sm:grid-cols-3 gap-4">

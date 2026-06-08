@@ -90,15 +90,15 @@ Two enforcement surfaces back this up:
 
 If either surface flags a regression, fix it before publishing.
 
-
-
 ### A. Preview health
+
 - [ ] Lovable preview pane shows the latest commit hash and has **finished rebuilding** (no spinner, no "Preview has not been built yet" screen).
 - [ ] Hard-refresh the preview; the homepage renders without a white screen or error overlay.
 - [ ] Browser console is clean (no red errors, no unresolved import warnings).
 - [ ] Network tab: no 4xx/5xx on first paint for `/`, `/marketplace`, `/ai`, `/roadmap`.
 
 ### B. Marketplace changes present
+
 - [ ] `/marketplace` lists every item from `src/lib/marketplace.ts` (`MARKET`) with the correct categories, prices, and badges.
 - [ ] Category filter chips (`All`, `Template`, `Agent`, `Component`, `Workflow`) render and filter correctly.
 - [ ] `EcosystemSwitcher` in the header opens and the **Marketplace** node is reachable.
@@ -106,16 +106,19 @@ If either surface flags a regression, fix it before publishing.
 - [ ] If paid items changed: Stripe price IDs in `src/lib/stripe-prices.server.ts` match `MARKET[].price`.
 
 ### C. Routes & SEO
+
 - [ ] Every new route file has a unique `head()` (title, description, og:title, og:description). No "Lovable App" defaults.
 - [ ] `src/routeTree.gen.ts` was **not** hand-edited in this batch (it regenerates).
 
 ### D. Backend & security
+
 - [ ] No unresolved critical findings in the latest security scan (run it if stale).
 - [ ] Any new `public.*` table has `GRANT`s + RLS in the same migration.
 - [ ] No new server function imports `*.server.ts` from a file that's also imported by the client.
 - [ ] Secrets are read inside `.handler()` only — no `process.env.*` at module scope.
 
 ### E. Sync hygiene
+
 - [ ] No in-flight Codex PR is touching the same files.
 - [ ] `main` on GitHub matches what Lovable's preview is showing (commit hash).
 

@@ -11,8 +11,8 @@ export function CtaSection() {
           Your success, <span className="text-gradient">Signhified.</span>
         </h2>
         <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-          One call. We&rsquo;ll scope your idea, map the stack, and tell you exactly
-          what it takes to ship it.
+          One call. We&rsquo;ll scope your idea, map the stack, and tell you exactly what it takes
+          to ship it.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
           <Link

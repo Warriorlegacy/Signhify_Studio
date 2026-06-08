@@ -75,7 +75,12 @@ const TIERS = [
 
 function PricingPage() {
   const subscribe = useServerFn(createSubscription);
-  const priceFor = (name: string) => name === "Studio" ? "price_test_signhify_studio_monthly" : name === "Platform" ? "price_test_signhify_scale_monthly" : "price_test_signhify_credit_pack";
+  const priceFor = (name: string) =>
+    name === "Studio"
+      ? "price_test_signhify_studio_monthly"
+      : name === "Platform"
+        ? "price_test_signhify_scale_monthly"
+        : "price_test_signhify_credit_pack";
   const startCheckout = async (name: string) => {
     if (name === "Sprint") return;
     const { url } = await subscribe({ data: { priceId: priceFor(name) } });
@@ -83,16 +88,21 @@ function PricingPage() {
   };
   return (
     <section className="relative pt-36 pb-28 overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "var(--gradient-ember)" }} />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "var(--gradient-ember)" }}
+      />
       <div className="absolute inset-0 bg-grid mask-fade-edges opacity-30 pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-6">
-        <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Engagement models</div>
+        <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">
+          Engagement models
+        </div>
         <h1 className="font-display text-5xl sm:text-6xl font-black max-w-3xl">
           Three ways to ship <span className="text-gradient">with Signhify</span>.
         </h1>
         <p className="mt-5 max-w-2xl text-muted-foreground text-lg">
-          Pricing is anchored, not opaque. Pick the cadence that fits your stage —
-          a focused sprint, an embedded studio, or a long-term platform partnership.
+          Pricing is anchored, not opaque. Pick the cadence that fits your stage — a focused sprint,
+          an embedded studio, or a long-term platform partnership.
         </p>
 
         <div className="mt-16 grid md:grid-cols-3 gap-5">
@@ -100,9 +110,7 @@ function PricingPage() {
             <div
               key={t.name}
               className={`relative rounded-2xl border bg-card/80 backdrop-blur p-7 flex flex-col ${
-                t.featured
-                  ? "border-primary shadow-[var(--shadow-glow)]"
-                  : "border-border"
+                t.featured ? "border-primary shadow-[var(--shadow-glow)]" : "border-border"
               }`}
             >
               {t.featured && (
@@ -117,9 +125,7 @@ function PricingPage() {
               )}
               <div className="mt-4 font-display text-2xl font-bold">{t.name}</div>
               <div className="mt-4 flex items-baseline gap-1">
-                <span className="font-display text-4xl font-black text-gradient">
-                  {t.price}
-                </span>
+                <span className="font-display text-4xl font-black text-gradient">{t.price}</span>
                 <span className="text-muted-foreground text-sm">{t.period}</span>
               </div>
               <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
@@ -153,8 +159,8 @@ function PricingPage() {
         </div>
 
         <p className="mt-12 text-sm text-muted-foreground">
-          All engagements include source code on your GitHub, deployment on your
-          infra (Vercel / Netlify / Cloudflare), and no platform lock-in.
+          All engagements include source code on your GitHub, deployment on your infra (Vercel /
+          Netlify / Cloudflare), and no platform lock-in.
         </p>
       </div>
     </section>

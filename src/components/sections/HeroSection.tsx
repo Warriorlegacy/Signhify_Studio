@@ -129,8 +129,8 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-4 text-center text-base sm:text-lg text-muted-foreground max-w-xl mx-auto"
         >
-          From a single sentence to a shipped product — design, engineering,
-          AI and launch, all in one studio.
+          From a single sentence to a shipped product — design, engineering, AI and launch, all in
+          one studio.
         </motion.p>
 
         {/* PROMPT INPUT — draftly-style centered glass card */}
@@ -146,8 +146,7 @@ export function HeroSection() {
             style={{
               background:
                 "linear-gradient(135deg, oklch(0.72 0.21 45 / 0.4), transparent 40%, oklch(0.78 0.16 70 / 0.25))",
-              maskImage:
-                "linear-gradient(black, black) content-box, linear-gradient(black, black)",
+              maskImage: "linear-gradient(black, black) content-box, linear-gradient(black, black)",
               WebkitMaskComposite: "xor",
               maskComposite: "exclude",
               padding: 1,

@@ -11,17 +11,15 @@ export function FounderSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="text-xs uppercase tracking-[0.25em] text-primary mb-4">
-            Founder
-          </div>
+          <div className="text-xs uppercase tracking-[0.25em] text-primary mb-4">Founder</div>
           <h2 className="font-display text-4xl sm:text-5xl font-bold leading-tight">
-            Built by <span className="text-gradient">Piyush Raj Singh</span> — engineer,
-            founder, AI native.
+            Built by <span className="text-gradient">Piyush Raj Singh</span> — engineer, founder, AI
+            native.
           </h2>
           <p className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            14+ shipped products across SaaS, AI automation, EdTech and NGO platforms.
-            Signhify is the studio I always wanted to hire — one that treats software like
-            a film: scripted, designed and shipped with conviction.
+            14+ shipped products across SaaS, AI automation, EdTech and NGO platforms. Signhify is
+            the studio I always wanted to hire — one that treats software like a film: scripted,
+            designed and shipped with conviction.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link

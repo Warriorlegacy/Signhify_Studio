@@ -2,12 +2,42 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Circle } from "lucide-react";
 
 const layers = [
-  { name: "Signhify Studio", year: "Week 1 · June", status: "live", desc: "AI engineering studio. Revenue-generating today." },
-  { name: "Signhify AI", year: "Week 2 · June", status: "soon", desc: "Vibe-coding platform. Prompt-to-product builder." },
-  { name: "Signhify Deploy", year: "Week 3 · June", status: "planned", desc: "One-click deployment infrastructure for AI apps." },
-  { name: "Signhify Marketplace", year: "Week 3 · June", status: "planned", desc: "Templates, agents and blueprints, community-built." },
-  { name: "Signhify Cloud", year: "Week 4 · June", status: "planned", desc: "Managed infrastructure for AI-native businesses." },
-  { name: "Signhify OS", year: "June 30, 2026", status: "planned", desc: "An operating system for running an AI business end-to-end." },
+  {
+    name: "Signhify Studio",
+    year: "Week 1 · June",
+    status: "live",
+    desc: "AI engineering studio. Revenue-generating today.",
+  },
+  {
+    name: "Signhify AI",
+    year: "Week 2 · June",
+    status: "soon",
+    desc: "Vibe-coding platform. Prompt-to-product builder.",
+  },
+  {
+    name: "Signhify Deploy",
+    year: "Week 3 · June",
+    status: "planned",
+    desc: "One-click deployment infrastructure for AI apps.",
+  },
+  {
+    name: "Signhify Marketplace",
+    year: "Week 3 · June",
+    status: "planned",
+    desc: "Templates, agents and blueprints, community-built.",
+  },
+  {
+    name: "Signhify Cloud",
+    year: "Week 4 · June",
+    status: "planned",
+    desc: "Managed infrastructure for AI-native businesses.",
+  },
+  {
+    name: "Signhify OS",
+    year: "June 30, 2026",
+    status: "planned",
+    desc: "An operating system for running an AI business end-to-end.",
+  },
 ];
 
 export function EcosystemSection() {
@@ -22,9 +52,8 @@ export function EcosystemSection() {
           One month. Six products. The entire Signhify ecosystem, live by June 30.
         </h2>
         <p className="mt-5 max-w-2xl text-muted-foreground">
-          Studio ships this week. AI, Deploy, Marketplace, Cloud and OS follow on
-          a strict weekly cadence — each one live at its own subdomain by
-          June 30, 2026.
+          Studio ships this week. AI, Deploy, Marketplace, Cloud and OS follow on a strict weekly
+          cadence — each one live at its own subdomain by June 30, 2026.
         </p>
 
         <div className="mt-14 relative">

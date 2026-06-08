@@ -33,8 +33,8 @@ function VisionPage() {
             From a studio to an <span className="text-gradient">ecosystem</span>.
           </h1>
           <p className="mt-5 max-w-2xl text-muted-foreground text-lg">
-            We&rsquo;re building Signhify in the open — six layers, one mission: turn any
-            idea into a deployed AI product.
+            We&rsquo;re building Signhify in the open — six layers, one mission: turn any idea into
+            a deployed AI product.
           </p>
         </div>
       </section>

@@ -13,12 +13,22 @@ export type DbListing = {
   created_at: string | null;
 };
 
-export async function fetchListings(query?: string, category?: string, free?: boolean): Promise<DbListing[]> {
-  let q: any = (supabaseAdmin.from as any)("marketplace_listings").select("id, slug, title, description, category, price_cents, preview_url, asset_path, creator_id, created_at");
-  if (query?.trim()) q = q.textSearch("search_vector", query.trim(), { type: "plain", config: "english" });
+export async function fetchListings(
+  query?: string,
+  category?: string,
+  free?: boolean,
+): Promise<DbListing[]> {
+  let q: any = (supabaseAdmin.from as any)("marketplace_listings").select(
+    "id, slug, title, description, category, price_cents, preview_url, asset_path, creator_id, created_at",
+  );
+  if (query?.trim())
+    q = q.textSearch("search_vector", query.trim(), { type: "plain", config: "english" });
   if (category && category !== "All") q = q.eq("category", category);
   if (typeof free === "boolean") q = free ? q.eq("price_cents", 0) : q.gt("price_cents", 0);
   const { data, error } = await q.order("created_at", { ascending: false });
-  if (error) { console.error("[marketplace] fetch failed", error); return []; }
+  if (error) {
+    console.error("[marketplace] fetch failed", error);
+    return [];
+  }
   return data ?? [];
 }

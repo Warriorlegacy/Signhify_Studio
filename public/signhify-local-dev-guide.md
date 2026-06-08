@@ -20,13 +20,13 @@ practical detail to make it boringly reliable.
 
 ### 1.1 Prerequisites
 
-| Tool | Min version | Why |
-|------|-------------|-----|
-| Node.js | 20.x LTS | Required by Vite 7 + TanStack Start |
-| Bun | 1.1+ | Package manager + script runner (`bun.lockb` is source of truth) |
-| Git | 2.40+ | GitHub sync |
-| GitHub account | — | Bidirectional sync with Lovable |
-| Lovable workspace access | — | To publish |
+| Tool                     | Min version | Why                                                              |
+| ------------------------ | ----------- | ---------------------------------------------------------------- |
+| Node.js                  | 20.x LTS    | Required by Vite 7 + TanStack Start                              |
+| Bun                      | 1.1+        | Package manager + script runner (`bun.lockb` is source of truth) |
+| Git                      | 2.40+       | GitHub sync                                                      |
+| GitHub account           | —           | Bidirectional sync with Lovable                                  |
+| Lovable workspace access | —           | To publish                                                       |
 
 > **Do not** swap Bun for npm/pnpm/yarn. The `bun.lockb` file is the source
 > of truth and Lovable's GitHub sync expects it. Mixing package managers
@@ -101,8 +101,6 @@ git add -A && git commit -m "feat: <what changed>" && git push
 > the bundled output before pushing. `bun run dev` is the only command you
 > need for day-to-day iteration.
 
-
-
 ---
 
 ## 2. Environment variables
@@ -110,6 +108,7 @@ git add -A && git commit -m "feat: <what changed>" && git push
 Two scopes. Never mix them.
 
 ### Browser / build-time (`VITE_*`)
+
 Safe to bundle. Put in local `.env`:
 
 ```
@@ -118,6 +117,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=eyJ...
 ```
 
 ### Server / runtime (`process.env.*`)
+
 Secrets. Read inside `.handler()` of server functions only.
 
 ```
@@ -134,13 +134,13 @@ LOVABLE_API_KEY=...                  # optional, for AI gateway
 
 ### 2.1 Where to find each value
 
-| Variable | Where to get it |
-|----------|-----------------|
-| `VITE_SUPABASE_URL` / `SUPABASE_URL` | Supabase Dashboard → **Project Settings → API → Project URL** |
-| `VITE_SUPABASE_PROJECT_ID` | The subdomain of that URL (e.g. `nqeuarvpkxupxeeuzuow`) |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` / `SUPABASE_PUBLISHABLE_KEY` | Same page → **anon / public** key. Safe in the browser. |
-| `SUPABASE_SERVICE_ROLE_KEY` | Same page → **service_role** key. **Server-only.** Never ship to the client, never commit. |
-| `LOVABLE_API_KEY` | Lovable → **Project → Cloud → AI Gateway**. Only needed if you call the AI Gateway from your local dev server. |
+| Variable                                                     | Where to get it                                                                                                |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `VITE_SUPABASE_URL` / `SUPABASE_URL`                         | Supabase Dashboard → **Project Settings → API → Project URL**                                                  |
+| `VITE_SUPABASE_PROJECT_ID`                                   | The subdomain of that URL (e.g. `nqeuarvpkxupxeeuzuow`)                                                        |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` / `SUPABASE_PUBLISHABLE_KEY` | Same page → **anon / public** key. Safe in the browser.                                                        |
+| `SUPABASE_SERVICE_ROLE_KEY`                                  | Same page → **service_role** key. **Server-only.** Never ship to the client, never commit.                     |
+| `LOVABLE_API_KEY`                                            | Lovable → **Project → Cloud → AI Gateway**. Only needed if you call the AI Gateway from your local dev server. |
 
 ### 2.2 Make sure the deployed Worker has the same secrets
 
@@ -148,7 +148,7 @@ LOVABLE_API_KEY=...                  # optional, for AI gateway
 Worker on Lovable Cloud is missing `SUPABASE_SERVICE_ROLE_KEY` you'll see:
 
 > `Could not record audit: Missing Supabase environment variable(s):
-> SUPABASE_SERVICE_ROLE_KEY. Connect Supabase in Lovable Cloud.`
+SUPABASE_SERVICE_ROLE_KEY. Connect Supabase in Lovable Cloud.`
 
 Fix it once and the auto-retry on `/publish` will record the audit on the
 next attempt.
@@ -177,14 +177,13 @@ next attempt.
 
 ---
 
-
-
 ## 3. IDE-specific setup
 
 Pick whichever you use. All of them work because they only need (a) the
 filesystem and (b) `git`.
 
 ### 3.1 Cursor / Windsurf / Zed / VS Code
+
 Open the cloned folder. Recommended extensions:
 
 - Biome / Prettier (formatting already configured via `.prettierrc`)
@@ -196,15 +195,17 @@ Cursor/Windsurf agents: point them at `CONTRIBUTING.md` and `DEPLOY.md` as
 "always-attached" context so they respect the project's conventions.
 
 ### 3.2 Google Antigravity
+
 1. **File → Open Workspace** on the cloned repo.
 2. In the Agent panel, add `CONTRIBUTING.md`, `DEPLOY.md`, and this guide
-   to *Knowledge*.
+   to _Knowledge_.
 3. Configure the **Run Task** integration to use `bun run dev` and
    `bun run prepublish:check`.
 4. Antigravity's Browser Use mode targets `http://localhost:3000` — keep
    the dev server running while you iterate.
 
 ### 3.3 Kiro
+
 1. `kiro init` inside the repo to register the spec workspace.
 2. Create a spec at `.kiro/specs/feature-name/` for each new feature; Kiro
    will scaffold and edit routes under `src/routes/` following the
@@ -213,6 +214,7 @@ Cursor/Windsurf agents: point them at `CONTRIBUTING.md` and `DEPLOY.md` as
    before any push to `main`.
 
 ### 3.4 Gemini CLI
+
 ```bash
 npm install -g @google/gemini-cli
 gemini auth login
@@ -221,19 +223,23 @@ gemini                       # interactive session
 # or one-shot
 gemini -p "add a pricing FAQ section to /pricing"
 ```
+
 Add a `GEMINI.md` at the repo root if you want to override the default
 context window. The CLI reads `CONTRIBUTING.md` automatically.
 
 ### 3.5 Kilo CLI
+
 ```bash
 brew install kilo-cli        # or curl install per docs
 kilo init
 kilo run "implement <task>"
 ```
+
 Kilo respects `.kilo/config.yaml`. Add `prepublish:check` as the pre-commit
 guard so failed Playwright runs block the commit.
 
 ### 3.6 Claude Code / Aider / OpenCode
+
 Drop in at the repo root and go. They all use `git` for change tracking and
 will respect `bun.lockb`. For Aider:
 
@@ -257,13 +263,15 @@ aider --model claude-3-5-sonnet --read CONTRIBUTING.md DEPLOY.md
 ```
 
 ### 4.1 Branching
+
 - Work on short-lived feature branches: `feat/<scope>` or `fix/<scope>`.
 - Open a PR into `main`. Lovable previews track `main` by default; enable
-  *GitHub Branch Switching* in **Account → Labs** if you need per-branch
+  _GitHub Branch Switching_ in **Account → Labs** if you need per-branch
   previews.
 - Squash-merge to keep the Lovable timeline readable.
 
 ### 4.2 Things you must **never** hand-edit
+
 These are regenerated and will cause merge conflicts or runtime breakage:
 
 - `src/routeTree.gen.ts`
@@ -273,6 +281,7 @@ These are regenerated and will cause merge conflicts or runtime breakage:
 - `bun.lockb` (let `bun install` manage it)
 
 ### 4.3 Database changes
+
 Always go through a migration file:
 
 ```bash
@@ -285,6 +294,7 @@ Lovable picks up new migrations automatically on deploy. Never run ad-hoc
 SQL against production from your local shell.
 
 ### 4.4 Server functions vs. server routes
+
 - `createServerFn` (TanStack Start) for internal RPC — files in
   `src/lib/*.functions.ts`.
 - `createFileRoute` with a `server` block for webhooks/public APIs —
@@ -332,12 +342,12 @@ You have two equivalent paths:
 
 Stable URLs:
 
-| Purpose | URL |
-|---------|-----|
-| Production (Lovable) | `https://signhify.lovable.app` |
-| Production (custom) | `https://signhify.online` |
-| Preview (stable) | `https://project--<project-id>-dev.lovable.app` |
-| Production (stable) | `https://project--<project-id>.lovable.app` |
+| Purpose              | URL                                             |
+| -------------------- | ----------------------------------------------- |
+| Production (Lovable) | `https://signhify.lovable.app`                  |
+| Production (custom)  | `https://signhify.online`                       |
+| Preview (stable)     | `https://project--<project-id>-dev.lovable.app` |
+| Production (stable)  | `https://project--<project-id>.lovable.app`     |
 
 Use the stable `project--…` URLs for webhooks and cron — they survive
 project renames.
@@ -359,15 +369,15 @@ bun scripts/check-deploy.mjs https://your-host.example
 
 ## 8. Troubleshooting
 
-| Symptom | Likely cause | Fix |
-|---------|--------------|-----|
-| `Failed to resolve import "@/…"` after `git pull` | New file referenced before `bun install` | Run `bun install` |
-| `Missing Supabase env var(s)` in console | `.env` not loaded | Restart `bun run dev`; verify variable names |
-| `Unauthorized` from a `createServerFn` in SSR | Protected fn called from a public-route loader | Call it from the component via `useServerFn` (see `CONTRIBUTING.md`) |
-| Lovable preview shows old code | Push didn't land on `main` | Check GitHub Actions; force a re-sync from Lovable's GitHub panel |
-| `bun.lockb` conflict | Two contributors edited deps in parallel | Delete `bun.lockb`, re-run `bun install`, commit |
-| Playwright smoke fails locally | Wrong base URL | `PLAYWRIGHT_BASE_URL=https://id-preview--<id>.lovable.app bun run prepublish:check` |
-| `__dirname is not defined` in production only | Used a Node-only package in a server fn | Replace with a Workers-compatible alternative (see server-runtime docs) |
+| Symptom                                           | Likely cause                                   | Fix                                                                                 |
+| ------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `Failed to resolve import "@/…"` after `git pull` | New file referenced before `bun install`       | Run `bun install`                                                                   |
+| `Missing Supabase env var(s)` in console          | `.env` not loaded                              | Restart `bun run dev`; verify variable names                                        |
+| `Unauthorized` from a `createServerFn` in SSR     | Protected fn called from a public-route loader | Call it from the component via `useServerFn` (see `CONTRIBUTING.md`)                |
+| Lovable preview shows old code                    | Push didn't land on `main`                     | Check GitHub Actions; force a re-sync from Lovable's GitHub panel                   |
+| `bun.lockb` conflict                              | Two contributors edited deps in parallel       | Delete `bun.lockb`, re-run `bun install`, commit                                    |
+| Playwright smoke fails locally                    | Wrong base URL                                 | `PLAYWRIGHT_BASE_URL=https://id-preview--<id>.lovable.app bun run prepublish:check` |
+| `__dirname is not defined` in production only     | Used a Node-only package in a server fn        | Replace with a Workers-compatible alternative (see server-runtime docs)             |
 
 ---
 

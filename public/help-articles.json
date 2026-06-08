@@ -1,7 +1,37 @@
 [
-  {"slug":"start-first-project","title":"Start your first Signhify project","category":"Getting Started","excerpt":"Create a project, write a brief, and launch your first AI-assisted run.","content":"Open the dashboard, create a project with a clear title, then use New Run to describe the product outcome you want."},
-  {"slug":"ai-pipeline-stages","title":"Understanding the AI Studio pipeline","category":"AI Studio","excerpt":"Learn what Briefing, Architecture, Design Tokens, Codegen, Review, and Deploy Plan mean.","content":"Each stage converts your prompt into a more concrete product artifact, ending with a deploy-ready plan."},
-  {"slug":"marketplace-downloads","title":"Download marketplace assets","category":"Marketplace","excerpt":"Free assets use signed URLs and paid assets unlock after Stripe checkout.","content":"Click Download on a free listing or Buy on a paid listing. Download links expire after one hour for security."},
-  {"slug":"billing-portal","title":"Manage billing and invoices","category":"Billing","excerpt":"Use the Stripe portal to manage subscriptions, invoices, and payment methods.","content":"Visit App Settings, open Billing, and click Manage subscription to enter the Stripe-hosted portal."},
-  {"slug":"deployment-domains","title":"Deployments and custom domains","category":"Deployment","excerpt":"Connect Cloudflare Pages deployments and add custom domains from a project workspace.","content":"After a run generates deployable artifacts, use the Domains tab to add DNS records for your registrar."}
+  {
+    "slug": "start-first-project",
+    "title": "Start your first Signhify project",
+    "category": "Getting Started",
+    "excerpt": "Create a project, write a brief, and launch your first AI-assisted run.",
+    "content": "Open the dashboard, create a project with a clear title, then use New Run to describe the product outcome you want."
+  },
+  {
+    "slug": "ai-pipeline-stages",
+    "title": "Understanding the AI Studio pipeline",
+    "category": "AI Studio",
+    "excerpt": "Learn what Briefing, Architecture, Design Tokens, Codegen, Review, and Deploy Plan mean.",
+    "content": "Each stage converts your prompt into a more concrete product artifact, ending with a deploy-ready plan."
+  },
+  {
+    "slug": "marketplace-downloads",
+    "title": "Download marketplace assets",
+    "category": "Marketplace",
+    "excerpt": "Free assets use signed URLs and paid assets unlock after Stripe checkout.",
+    "content": "Click Download on a free listing or Buy on a paid listing. Download links expire after one hour for security."
+  },
+  {
+    "slug": "billing-portal",
+    "title": "Manage billing and invoices",
+    "category": "Billing",
+    "excerpt": "Use the Stripe portal to manage subscriptions, invoices, and payment methods.",
+    "content": "Visit App Settings, open Billing, and click Manage subscription to enter the Stripe-hosted portal."
+  },
+  {
+    "slug": "deployment-domains",
+    "title": "Deployments and custom domains",
+    "category": "Deployment",
+    "excerpt": "Connect Cloudflare Pages deployments and add custom domains from a project workspace.",
+    "content": "After a run generates deployable artifacts, use the Domains tab to add DNS records for your registrar."
+  }
 ]

@@ -4,7 +4,14 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 async function stripe(path: string, body: URLSearchParams) {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) throw new Error("Missing STRIPE_SECRET_KEY.");
-  const res = await fetch(`https://api.stripe.com/v1${path}`, { method: "POST", headers: { authorization: `Bearer ${key}`, "content-type": "application/x-www-form-urlencoded" }, body });
+  const res = await fetch(`https://api.stripe.com/v1${path}`, {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${key}`,
+      "content-type": "application/x-www-form-urlencoded",
+    },
+    body,
+  });
   const json = await res.json();
   if (!res.ok) throw new Error(json?.error?.message ?? "Stripe request failed.");
   return json;

@@ -27,14 +27,24 @@ function PrivacyPage() {
       <h2>1. Who we are</h2>
       <p>
         Signhify is an AI engineering studio operated by Piyush Raj Singh, registered as an MSME
-        with the Government of India (UDYAM). Contact: <a href="mailto:hello@signhify.online">hello@signhify.online</a>.
+        with the Government of India (UDYAM). Contact:{" "}
+        <a href="mailto:hello@signhify.online">hello@signhify.online</a>.
       </p>
 
       <h2>2. What we collect</h2>
       <ul>
-        <li><strong>Studio leads</strong> — name, email, optional company, project scope, budget, timeline and goals submitted through the contact wizard.</li>
-        <li><strong>AI waitlist</strong> — email and (optionally) the prompt you typed on the <code>/ai</code> page.</li>
-        <li><strong>Analytics</strong> — aggregate page views, device class and referrer. No third-party advertising cookies.</li>
+        <li>
+          <strong>Studio leads</strong> — name, email, optional company, project scope, budget,
+          timeline and goals submitted through the contact wizard.
+        </li>
+        <li>
+          <strong>AI waitlist</strong> — email and (optionally) the prompt you typed on the{" "}
+          <code>/ai</code> page.
+        </li>
+        <li>
+          <strong>Analytics</strong> — aggregate page views, device class and referrer. No
+          third-party advertising cookies.
+        </li>
       </ul>
 
       <h2>3. How we use it</h2>
@@ -52,8 +62,8 @@ function PrivacyPage() {
 
       <h2>5. Your rights</h2>
       <p>
-        Email <a href="mailto:hello@signhify.online">hello@signhify.online</a> to access, correct
-        or delete your data. We will respond within 7 days.
+        Email <a href="mailto:hello@signhify.online">hello@signhify.online</a> to access, correct or
+        delete your data. We will respond within 7 days.
       </p>
 
       <h2>6. Cookies</h2>

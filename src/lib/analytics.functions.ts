@@ -7,9 +7,18 @@ export const getProjectAnalytics = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context as any;
     const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-    const { data: project } = await supabase.from("user_projects").select("id").eq("id", data.projectId).eq("user_id", userId).single();
+    const { data: project } = await supabase
+      .from("user_projects")
+      .select("id")
+      .eq("id", data.projectId)
+      .eq("user_id", userId)
+      .single();
     if (!project) throw new Error("Project not found.");
-    const { data: rows, error } = await supabase.from("analytics").select("path,referrer,country,created_at").eq("project_id", data.projectId).gte("created_at", since);
+    const { data: rows, error } = await supabase
+      .from("analytics")
+      .select("path,referrer,country,created_at")
+      .eq("project_id", data.projectId)
+      .gte("created_at", since);
     if (error) throw new Error(error.message);
     return { rows: rows ?? [] };
   });

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, X, ExternalLink, Sparkles, Layers } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { projects, type Project } from "@/lib/projects";
-import { useSpotlight } from "@/hooks/use-spotlight";
+import { ThreeDCard } from "@/components/ui/ThreeDCard";
 
 // Category → gradient + label energy (preset-gallery vibe)
 const CATEGORY_STYLE: Record<string, { from: string; to: string; tag: string }> = {
@@ -17,11 +17,19 @@ const CATEGORY_STYLE: Record<string, { from: string; to: string; tag: string }> 
   Bookings: { from: "oklch(0.7 0.16 50)", to: "oklch(0.25 0.08 30)", tag: "Booking" },
   "Brand Platform": { from: "oklch(0.65 0.18 350)", to: "oklch(0.22 0.08 320)", tag: "Brand" },
   "Business Web": { from: "oklch(0.6 0.14 60)", to: "oklch(0.22 0.06 40)", tag: "Web" },
-  "Performance Marketing": { from: "oklch(0.72 0.21 45)", to: "oklch(0.25 0.12 20)", tag: "Growth" },
+  "Performance Marketing": {
+    from: "oklch(0.72 0.21 45)",
+    to: "oklch(0.25 0.12 20)",
+    tag: "Growth",
+  },
   Fintech: { from: "oklch(0.68 0.16 230)", to: "oklch(0.2 0.08 260)", tag: "Fintech" },
   Analytics: { from: "oklch(0.7 0.16 180)", to: "oklch(0.22 0.06 240)", tag: "Analytics" },
   "AI Education": { from: "oklch(0.74 0.18 90)", to: "oklch(0.3 0.1 300)", tag: "AI EDU" },
-  "Engineering Brand": { from: "oklch(0.62 0.2 350)", to: "oklch(0.22 0.06 280)", tag: "Engineering" },
+  "Engineering Brand": {
+    from: "oklch(0.62 0.2 350)",
+    to: "oklch(0.22 0.06 280)",
+    tag: "Engineering",
+  },
 };
 
 function styleFor(category: string) {
@@ -45,7 +53,13 @@ function sizeClass(size: Project["size"]) {
   }
 }
 
-export function ProjectsSection({ limit, items = projects }: { limit?: number; items?: Project[] }) {
+export function ProjectsSection({
+  limit,
+  items = projects,
+}: {
+  limit?: number;
+  items?: Project[];
+}) {
   const [active, setActive] = useState<Project | null>(null);
   const [filter, setFilter] = useState<string>("All");
 
@@ -77,12 +91,15 @@ export function ProjectsSection({ limit, items = projects }: { limit?: number; i
               <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_var(--primary-glow)]" />
               Studio · Preset Gallery
             </div>
-            <h2 id="studio-heading" className="font-display text-4xl sm:text-5xl font-bold max-w-3xl">
+            <h2
+              id="studio-heading"
+              className="font-display text-4xl sm:text-5xl font-bold max-w-3xl"
+            >
               A luxury product universe — built, shipped, signed.
             </h2>
             <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
-              Every entry below is a real Signhify build. Filter by track, hover to
-              spotlight, open one to step inside the brief.
+              Every entry below is a real Signhify build. Filter by track, hover to spotlight, open
+              one to step inside the brief.
             </p>
           </div>
           {limit && (
@@ -96,7 +113,11 @@ export function ProjectsSection({ limit, items = projects }: { limit?: number; i
         </div>
 
         {!limit && (
-          <div className="mb-10 flex flex-wrap gap-2" role="tablist" aria-label="Project categories">
+          <div
+            className="mb-10 flex flex-wrap gap-2"
+            role="tablist"
+            aria-label="Project categories"
+          >
             {categories.map((c) => {
               const on = filter === c;
               return (
@@ -152,116 +173,89 @@ function ProjectCard({
   spanClass: string;
 }) {
   const s = styleFor(p.category);
-  const ref = useSpotlight<HTMLDivElement>();
 
   return (
     <motion.div
-      ref={ref}
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.5, delay: (i % 6) * 0.05 }}
-      className={`group relative overflow-hidden rounded-2xl border border-border bg-card hover:border-primary/60 transition shadow-[var(--shadow-card)] flex flex-col ${spanClass}`}
-      style={
-        {
-          // spotlight CSS vars are written by useSpotlight
-        } as React.CSSProperties
-      }
+      className={spanClass}
     >
-      {/* SPOTLIGHT layer — radial gradient tracks the pointer */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[1]"
-        style={{
-          background:
-            "radial-gradient(380px circle at var(--mx,50%) var(--my,-20%), oklch(0.72 0.21 45 / 0.18), transparent 60%)",
-        }}
-      />
-
-      {/* PRESET SURFACE */}
-      <button
-        onClick={onOpen}
-        className="relative block w-full aspect-[16/10] overflow-hidden text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-        aria-label={`Open ${p.name} preview`}
-      >
-        <div
-          className="absolute inset-0 transition-transform duration-700 group-hover:scale-[1.06]"
-          style={{ background: `linear-gradient(135deg, ${s.from} 0%, ${s.to} 100%)` }}
-        />
-        {/* dotted texture */}
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-25 mix-blend-overlay"
-          style={{
-            backgroundImage: "radial-gradient(oklch(1 0 0 / 0.25) 1px, transparent 1px)",
-            backgroundSize: "14px 14px",
-          }}
-        />
-        {/* spotlight inside the cover */}
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          style={{
-            background:
-              "radial-gradient(260px circle at var(--mx,50%) var(--my,50%), oklch(1 0 0 / 0.18), transparent 60%)",
-          }}
-        />
-        <div className="absolute inset-0 flex items-end p-5">
+      <ThreeDCard className="relative overflow-hidden rounded-2xl border border-border bg-card hover:border-primary/60 transition shadow-[var(--shadow-card)] flex flex-col h-full w-full">
+        {/* PRESET COVER */}
+        <button
+          onClick={onOpen}
+          className="relative block w-full aspect-[16/10] overflow-hidden text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          aria-label={`Open ${p.name} preview`}
+        >
           <div
-            className="font-display font-black tracking-tight leading-[0.9] text-background/95 drop-shadow-[0_4px_30px_rgba(0,0,0,0.45)]"
-            style={{ fontSize: "clamp(1.8rem, 3.8vw, 3.4rem)" }}
-          >
-            {p.name}
+            className="absolute inset-0 transition-transform duration-700 group-hover:scale-[1.06]"
+            style={{ background: `linear-gradient(135deg, ${s.from} 0%, ${s.to} 100%)` }}
+          />
+          {/* dotted texture */}
+          <div
+            aria-hidden
+            className="absolute inset-0 opacity-25 mix-blend-overlay"
+            style={{
+              backgroundImage: "radial-gradient(oklch(1 0 0 / 0.25) 1px, transparent 1px)",
+              backgroundSize: "14px 14px",
+            }}
+          />
+          <div className="absolute inset-0 flex items-end p-5">
+            <div
+              className="font-display font-black tracking-tight leading-[0.9] text-background/95 drop-shadow-[0_4px_30px_rgba(0,0,0,0.45)]"
+              style={{ fontSize: "clamp(1.8rem, 3.8vw, 3.4rem)" }}
+            >
+              {p.name}
+            </div>
+          </div>
+          <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-background/60 backdrop-blur-md border border-white/15 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-foreground">
+            <span className="h-1 w-1 rounded-full bg-primary" />
+            {s.tag}
+          </div>
+          <div className="absolute top-3 right-3 grid place-items-center h-8 w-8 rounded-full bg-background/60 backdrop-blur-md border border-white/15 text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition">
+            <ArrowUpRight size={14} />
+          </div>
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent" />
+        </button>
+
+        {/* BODY */}
+        <div className="relative p-5 flex flex-col gap-3 flex-1 z-[2]">
+          <div className="flex items-baseline justify-between gap-3">
+            <h3 className="font-display text-lg font-semibold leading-tight">
+              {p.name} <span className="text-muted-foreground font-medium">· {p.category}</span>
+            </h3>
+          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{p.blurb}</p>
+          <div className="flex flex-wrap gap-1.5">
+            {(p.stack ?? p.tags).slice(0, 4).map((t) => (
+              <span
+                key={t}
+                className="text-[10px] rounded-full border border-border bg-surface px-2 py-0.5 text-muted-foreground"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+          <div className="mt-auto pt-3 flex items-center gap-2">
+            <button
+              onClick={onOpen}
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 border border-primary/40 text-primary px-3 py-1.5 text-xs font-semibold hover:bg-primary/25 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+            >
+              <Sparkles size={12} /> Open brief
+            </button>
+            <a
+              href={p.url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface/60 px-3 py-1.5 text-xs font-semibold text-foreground hover:border-primary/50 transition"
+            >
+              <ExternalLink size={12} /> Visit
+            </a>
           </div>
         </div>
-        <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-background/60 backdrop-blur-md border border-white/15 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-foreground">
-          <span className="h-1 w-1 rounded-full bg-primary" />
-          {s.tag}
-        </div>
-        <div className="absolute top-3 right-3 grid place-items-center h-8 w-8 rounded-full bg-background/60 backdrop-blur-md border border-white/15 text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition">
-          <ArrowUpRight size={14} />
-        </div>
-        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent" />
-      </button>
-
-      {/* BODY */}
-      <div className="relative p-5 flex flex-col gap-3 flex-1 z-[2]">
-        <div className="flex items-baseline justify-between gap-3">
-          <h3 className="font-display text-lg font-semibold leading-tight">
-            {p.name}{" "}
-            <span className="text-muted-foreground font-medium">· {p.category}</span>
-          </h3>
-        </div>
-        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
-          {p.blurb}
-        </p>
-        <div className="flex flex-wrap gap-1.5">
-          {(p.stack ?? p.tags).slice(0, 4).map((t) => (
-            <span
-              key={t}
-              className="text-[10px] rounded-full border border-border bg-surface px-2 py-0.5 text-muted-foreground"
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-        <div className="mt-auto pt-3 flex items-center gap-2">
-          <button
-            onClick={onOpen}
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 border border-primary/40 text-primary px-3 py-1.5 text-xs font-semibold hover:bg-primary/25 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-          >
-            <Sparkles size={12} /> Open brief
-          </button>
-          <a
-            href={p.url}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface/60 px-3 py-1.5 text-xs font-semibold text-foreground hover:border-primary/50 transition"
-          >
-            <ExternalLink size={12} /> Visit
-          </a>
-        </div>
-      </div>
+      </ThreeDCard>
     </motion.div>
   );
 }
@@ -328,9 +322,7 @@ function ProjectPanel({ project, onClose }: { project: Project; onClose: () => v
 
           {project.stack && (
             <div className="mt-8">
-              <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">
-                Stack
-              </div>
+              <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">Stack</div>
               <div className="flex flex-wrap gap-1.5">
                 {project.stack.map((t) => (
                   <span
@@ -345,9 +337,7 @@ function ProjectPanel({ project, onClose }: { project: Project; onClose: () => v
           )}
 
           <div className="mt-6">
-            <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">
-              Surface
-            </div>
+            <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">Surface</div>
             <div className="flex flex-wrap gap-1.5">
               {project.tags.map((t) => (
                 <span

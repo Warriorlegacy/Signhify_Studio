@@ -7,6 +7,7 @@ This is the public, living plan we are executing against. Each week has a clear 
 ---
 
 ## Week 1 — Studio Foundation (NOW)
+
 **Exit**: A cinematic studio site that converts visitors into briefed leads.
 
 - Immersive 3D hero (Three.js ember field)
@@ -17,6 +18,7 @@ This is the public, living plan we are executing against. Each week has a clear 
 - `llms.txt`, sitemap.xml, OG/Twitter cards across every route
 
 ## Week 2 — Signhify AI Preview
+
 **Exit**: Anyone can prompt the live `/ai` page and get a real Claude-generated build plan, with their email captured for early access.
 
 - `/ai` wired to Claude via Lovable AI Gateway (server function, no key in browser)
@@ -26,6 +28,7 @@ This is the public, living plan we are executing against. Each week has a clear 
 - Streaming responses (SSE) for sub-second perceived latency
 
 ## Week 3 — Ecosystem Nav & Marketplace v0
+
 **Exit**: A logged-out visitor can browse the ecosystem (`studio`, `ai`, `marketplace`, `cloud`, `os`, `deploy`) and download one free template.
 
 - Universal ecosystem switcher in header
@@ -34,6 +37,7 @@ This is the public, living plan we are executing against. Each week has a clear 
 - Creator console stub at `/marketplace/sell`
 
 ## Week 4 — Signhify Cloud (Beta Auth + Project Spaces)
+
 **Exit**: Authenticated users get a personal `/app` workspace listing their AI-generated projects.
 
 - Supabase Auth (email + Google OAuth via Lovable broker)
@@ -42,6 +46,7 @@ This is the public, living plan we are executing against. Each week has a clear 
 - Realtime build log viewer (postgres_changes)
 
 ## Week 5 — Signhify OS (Agent Orchestration Layer)
+
 **Exit**: A single prompt triggers a multi-agent run that produces a working Lovable project, persisted under the user's account.
 
 - Agent runtime in TanStack server functions, calling Anthropic + tool-use
@@ -50,6 +55,7 @@ This is the public, living plan we are executing against. Each week has a clear 
 - Replay viewer at `/runs/:id`
 
 ## Week 6 — Signhify Deploy (One-Click Hosting)
+
 **Exit**: A finished agent run can be deployed to a `*.signhify.app` subdomain in under 60 seconds.
 
 - Cloudflare Workers + Pages integration
@@ -58,6 +64,7 @@ This is the public, living plan we are executing against. Each week has a clear 
 - Production secrets vault (per-project, AES-256 at rest)
 
 ## Week 7-8 — Polish, Pricing & Public Launch
+
 **Exit**: Signhify is generally available with a public pricing page, transparent SLA, and 100 paying design partners.
 
 - Stripe (annual + monthly), credit-pack add-ons
@@ -68,15 +75,17 @@ This is the public, living plan we are executing against. Each week has a clear 
 ---
 
 ## North-Star Metrics (2026)
-| Metric | Target |
-|---|---|
-| Prompts → live deploys | 10,000 |
-| Paying design partners | 1,000 |
-| Average prompt → preview | < 90s |
-| Free-to-paid conversion | 8% |
-| NPS | ≥ 60 |
+
+| Metric                   | Target |
+| ------------------------ | ------ |
+| Prompts → live deploys   | 10,000 |
+| Paying design partners   | 1,000  |
+| Average prompt → preview | < 90s  |
+| Free-to-paid conversion  | 8%     |
+| NPS                      | ≥ 60   |
 
 ## Operating Principles
+
 1. **Ship the surface first, then the fabric.** Visible wins build the brand that funds the engine.
 2. **Every route is a product.** SEO, OG image, schema.org JSON-LD, real metadata — never an afterthought.
 3. **Servers, not browsers, hold the keys.** All AI + DB work runs in TanStack server functions.

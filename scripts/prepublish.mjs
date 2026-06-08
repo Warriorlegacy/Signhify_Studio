@@ -55,8 +55,14 @@ if (!res.ok) {
 const html = await res.text();
 
 const expectations = [
-  { label: "<title> Marketplace — Signhify", ok: /<title[^>]*>Marketplace\s*—\s*Signhify/i.test(html) },
-  { label: 'og:title contains "Marketplace"', ok: /<meta[^>]+property=["']og:title["'][^>]+Marketplace/i.test(html) },
+  {
+    label: "<title> Marketplace — Signhify",
+    ok: /<title[^>]*>Marketplace\s*—\s*Signhify/i.test(html),
+  },
+  {
+    label: 'og:title contains "Marketplace"',
+    ok: /<meta[^>]+property=["']og:title["'][^>]+Marketplace/i.test(html),
+  },
   { label: "og:url points to /marketplace", ok: /og:url[^>]+\/marketplace/i.test(html) },
   { label: "canonical link present", ok: /<link[^>]+rel=["']canonical["']/i.test(html) },
   { label: "no error boundary overlay", ok: !html.includes("Something glitched") },

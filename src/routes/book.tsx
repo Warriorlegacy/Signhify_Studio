@@ -23,7 +23,8 @@ export const Route = createFileRoute("/book")({
 });
 
 const CAL_URL = "https://calendly.com/signhify/30min";
-const WHATSAPP = "https://wa.me/916202442690?text=Hi%20Signhify%2C%20I%27d%20like%20to%20discuss%20a%20build.";
+const WHATSAPP =
+  "https://wa.me/916202442690?text=Hi%20Signhify%2C%20I%27d%20like%20to%20discuss%20a%20build.";
 
 function BookPage() {
   return (
@@ -73,8 +74,8 @@ function BookPage() {
               </div>
               <div className="font-display font-semibold">Prefer WhatsApp?</div>
               <div className="mt-1 text-sm text-muted-foreground">
-                Ping <span className="font-mono text-foreground">+91 62024 42690</span> and we&rsquo;ll
-                pick it up.
+                Ping <span className="font-mono text-foreground">+91 62024 42690</span> and
+                we&rsquo;ll pick it up.
               </div>
             </a>
 

@@ -38,10 +38,7 @@ export function EcosystemSwitcher() {
       >
         <Layers size={13} />
         <span>Ecosystem</span>
-        <ChevronDown
-          size={12}
-          className={`transition ${open ? "rotate-180 text-primary" : ""}`}
-        />
+        <ChevronDown size={12} className={`transition ${open ? "rotate-180 text-primary" : ""}`} />
       </button>
 
       {open && (
@@ -71,9 +68,7 @@ export function EcosystemSwitcher() {
                   </div>
                   <div className="relative min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <span className="font-display font-semibold text-sm">
-                        {node.label}
-                      </span>
+                      <span className="font-display font-semibold text-sm">{node.label}</span>
                       <span
                         className={`text-[9px] font-bold uppercase tracking-wider rounded-full px-1.5 py-0.5 border ${
                           node.status === "live"
@@ -86,9 +81,7 @@ export function EcosystemSwitcher() {
                         {STATUS_LABEL[node.status]}
                       </span>
                     </div>
-                    <div className="text-[12px] text-muted-foreground mt-0.5">
-                      {node.tagline}
-                    </div>
+                    <div className="text-[12px] text-muted-foreground mt-0.5">{node.tagline}</div>
                   </div>
                 </Link>
               );

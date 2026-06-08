@@ -1,7 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { CheckCircle2, Circle, Loader2, RefreshCw, ShieldAlert, ShieldCheck, XCircle } from "lucide-react";
+import {
+  CheckCircle2,
+  Circle,
+  Loader2,
+  RefreshCw,
+  ShieldAlert,
+  ShieldCheck,
+  XCircle,
+} from "lucide-react";
 import {
   checkSupabaseConnectivity,
   listPublishAudits,
@@ -43,15 +51,40 @@ type CheckResult = {
 };
 
 const GATES = [
-  { id: "preview_green", label: "Preview rebuilt green — no error overlay on /, /marketplace, /ai, /roadmap." },
-  { id: "console_clean", label: "Browser console clean (no red errors, no unresolved import warnings)." },
-  { id: "marketplace_items", label: "/marketplace shows every MARKET item with the right category, price and badge." },
-  { id: "header_switcher", label: "EcosystemSwitcher opens and the Marketplace node is reachable." },
-  { id: "seo_unique", label: "New routes have a unique head() (title, description, og:*) — no \"Lovable App\" defaults." },
-  { id: "no_generated_edits", label: "src/routeTree.gen.ts / supabase/types.ts / bun.lockb were not hand-edited." },
+  {
+    id: "preview_green",
+    label: "Preview rebuilt green — no error overlay on /, /marketplace, /ai, /roadmap.",
+  },
+  {
+    id: "console_clean",
+    label: "Browser console clean (no red errors, no unresolved import warnings).",
+  },
+  {
+    id: "marketplace_items",
+    label: "/marketplace shows every MARKET item with the right category, price and badge.",
+  },
+  {
+    id: "header_switcher",
+    label: "EcosystemSwitcher opens and the Marketplace node is reachable.",
+  },
+  {
+    id: "seo_unique",
+    label:
+      'New routes have a unique head() (title, description, og:*) — no "Lovable App" defaults.',
+  },
+  {
+    id: "no_generated_edits",
+    label: "src/routeTree.gen.ts / supabase/types.ts / bun.lockb were not hand-edited.",
+  },
   { id: "rls_grants", label: "Any new public.* table has GRANTs + RLS in the same migration." },
-  { id: "secrets_safe", label: "Secrets read only inside .handler() — no process.env.* at module scope." },
-  { id: "no_parallel_codex", label: "No in-flight Codex PR touching the same files; main matches preview commit." },
+  {
+    id: "secrets_safe",
+    label: "Secrets read only inside .handler() — no process.env.* at module scope.",
+  },
+  {
+    id: "no_parallel_codex",
+    label: "No in-flight Codex PR touching the same files; main matches preview commit.",
+  },
 ] as const;
 
 function ConnLine({ ok, label, detail }: { ok: boolean; label: string; detail?: string }) {
@@ -86,7 +119,10 @@ function PublishPage() {
   const [approverEmail, setApproverEmail] = useState("");
   const [notes, setNotes] = useState("");
   const [recording, setRecording] = useState(false);
-  const [auditConfirmation, setAuditConfirmation] = useState<{ id: string; createdAt: string } | null>(null);
+  const [auditConfirmation, setAuditConfirmation] = useState<{
+    id: string;
+    createdAt: string;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [conn, setConn] = useState<ConnectivityStatus | null>(null);
   const [connLoading, setConnLoading] = useState(false);
@@ -224,8 +260,8 @@ function PublishPage() {
           Confirm before you <span className="text-gradient">Publish</span>
         </h1>
         <p className="mt-3 text-muted-foreground max-w-2xl">
-          Lovable's Publish button stays one click away — but this page is the gate. Walk through the
-          checklist, run the two automated checks, then record the audit row. Only then does the
+          Lovable's Publish button stays one click away — but this page is the gate. Walk through
+          the checklist, run the two automated checks, then record the audit row. Only then does the
           "Open Publish" CTA below light up.
         </p>
 
@@ -257,7 +293,11 @@ function PublishPage() {
               disabled={connLoading}
               className="shrink-0 inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-xs font-semibold disabled:opacity-60"
             >
-              {connLoading ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+              {connLoading ? (
+                <Loader2 size={14} className="animate-spin" />
+              ) : (
+                <RefreshCw size={14} />
+              )}
               Re-check
             </button>
           </div>
@@ -286,7 +326,8 @@ function PublishPage() {
           {autoRetry && !auditConfirmation ? (
             <div className="mt-3 text-xs text-amber-300 flex items-center gap-2">
               <Loader2 size={12} className="animate-spin" />
-              Auto-retry armed — will record the audit automatically as soon as the Worker reports OK.
+              Auto-retry armed — will record the audit automatically as soon as the Worker reports
+              OK.
             </div>
           ) : null}
         </div>
@@ -326,8 +367,9 @@ function PublishPage() {
             <div>
               <h2 className="font-display text-xl font-bold">B. Marketplace smoke test</h2>
               <p className="text-sm text-muted-foreground mt-1">
-                Server-side fetch of <code className="text-primary">/marketplace</code> on the target origin —
-                asserts H1, category chips, listing names, and absence of the error overlay.
+                Server-side fetch of <code className="text-primary">/marketplace</code> on the
+                target origin — asserts H1, category chips, listing names, and absence of the error
+                overlay.
               </p>
             </div>
             <button
@@ -350,7 +392,8 @@ function PublishPage() {
               <p className="text-sm text-muted-foreground mt-1">
                 Compares the rendered HTML against the expected shape derived from{" "}
                 <code className="text-primary">src/lib/marketplace.ts</code> and the route's{" "}
-                <code className="text-primary">head()</code> — flags missing slugs, og tags or canonical.
+                <code className="text-primary">head()</code> — flags missing slugs, og tags or
+                canonical.
               </p>
             </div>
             <button
@@ -478,7 +521,9 @@ function PublishPage() {
                     className="rounded-md border border-border bg-surface/50 p-3 text-xs font-mono flex flex-wrap gap-x-4 gap-y-1"
                   >
                     <span className="text-muted-foreground">{a.created_at}</span>
-                    <span>gates {gateCount}/{GATES.length}</span>
+                    <span>
+                      gates {gateCount}/{GATES.length}
+                    </span>
                     <span className={smokeOk ? "text-emerald-400" : "text-destructive"}>
                       smoke {smokeOk ? "✓" : "✗"}
                     </span>
@@ -486,7 +531,9 @@ function PublishPage() {
                       diff {diffOk ? "✓" : "✗"}
                     </span>
                     {a.approver_email ? <span>{a.approver_email}</span> : null}
-                    {a.commit_sha ? <span className="text-muted-foreground">{a.commit_sha.slice(0, 7)}</span> : null}
+                    {a.commit_sha ? (
+                      <span className="text-muted-foreground">{a.commit_sha.slice(0, 7)}</span>
+                    ) : null}
                   </li>
                 );
               })}
@@ -499,7 +546,7 @@ function PublishPage() {
 }
 
 function ResultList({ result, kind }: { result: CheckResult; kind: "smoke" | "diff" }) {
-  const items = kind === "smoke" ? result.checks ?? [] : result.findings ?? [];
+  const items = kind === "smoke" ? (result.checks ?? []) : (result.findings ?? []);
   return (
     <div className="mt-4">
       <div className="flex items-center gap-2 text-sm">
@@ -525,7 +572,9 @@ function ResultList({ result, kind }: { result: CheckResult; kind: "smoke" | "di
             )}
             <span>
               {c.label}
-              {c.detail ? <span className="block text-xs text-muted-foreground">{c.detail}</span> : null}
+              {c.detail ? (
+                <span className="block text-xs text-muted-foreground">{c.detail}</span>
+              ) : null}
             </span>
           </li>
         ))}
@@ -533,4 +582,3 @@ function ResultList({ result, kind }: { result: CheckResult; kind: "smoke" | "di
     </div>
   );
 }
-

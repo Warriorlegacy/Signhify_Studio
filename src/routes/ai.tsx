@@ -64,7 +64,14 @@ function AiPage() {
   const [plan, setPlan] = useState<GeneratedPlan | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [streamText, setStreamText] = useState("");
-  const [stageText, setStageText] = useState<Record<PipelineStage, string>>({ briefing: "", architecture: "", design_tokens: "", codegen: "", review: "", deploy_plan: "" });
+  const [stageText, setStageText] = useState<Record<PipelineStage, string>>({
+    briefing: "",
+    architecture: "",
+    design_tokens: "",
+    codegen: "",
+    review: "",
+    deploy_plan: "",
+  });
   const [completedStages, setCompletedStages] = useState<PipelineStage[]>([]);
 
   const generate = useServerFn(generatePlan);
@@ -79,7 +86,14 @@ function AiPage() {
     setPlan(null);
     setError(null);
     setStreamText("");
-    setStageText({ briefing: "", architecture: "", design_tokens: "", codegen: "", review: "", deploy_plan: "" });
+    setStageText({
+      briefing: "",
+      architecture: "",
+      design_tokens: "",
+      codegen: "",
+      review: "",
+      deploy_plan: "",
+    });
     setCompletedStages([]);
 
     try {
@@ -114,14 +128,25 @@ function AiPage() {
           const stageIndex = AGENT_META.findIndex((a) => a.stage === event.stage);
           if (stageIndex >= 0) setActiveAgent(stageIndex);
           setStreamText((prev) => prev + event.delta);
-          setStageText((prev) => ({ ...prev, [event.stage]: (prev[event.stage] ?? "") + event.delta }));
+          setStageText((prev) => ({
+            ...prev,
+            [event.stage]: (prev[event.stage] ?? "") + event.delta,
+          }));
         }
       }
-      setCompletedStages((prev) => [...new Set([...prev, lastStage, ...AGENT_META.map((a) => a.stage)])]);
+      setCompletedStages((prev) => [
+        ...new Set([...prev, lastStage, ...AGENT_META.map((a) => a.stage)]),
+      ]);
       setPlan({
         productName: "Signhify AI Plan",
         oneLiner: value,
-        sections: AGENT_META.map((a) => ({ title: a.name, bullets: (stageText[a.stage] || "Generated section").split("\n").filter(Boolean).slice(0, 5) })),
+        sections: AGENT_META.map((a) => ({
+          title: a.name,
+          bullets: (stageText[a.stage] || "Generated section")
+            .split("\n")
+            .filter(Boolean)
+            .slice(0, 5),
+        })),
         stack: ["TanStack Start", "Supabase", "Tailwind", "Stripe", "Cloudflare", "Anthropic"],
       });
       setStage("done");
@@ -239,7 +264,9 @@ function AiPage() {
                       : stage === "error"
                         ? "pending"
                         : "pending";
-                const sectionTitle = plan?.sections?.[i]?.title ?? (stageText[a.stage] ? stageText[a.stage].slice(0, 72) : undefined);
+                const sectionTitle =
+                  plan?.sections?.[i]?.title ??
+                  (stageText[a.stage] ? stageText[a.stage].slice(0, 72) : undefined);
                 return (
                   <div
                     key={a.name}
@@ -286,10 +313,10 @@ function AiPage() {
           )}
         </AnimatePresence>
 
-
         {stage === "running" && streamText && (
           <div className="mt-8 rounded-2xl border border-border bg-card/80 p-6 text-sm text-muted-foreground whitespace-pre-wrap">
-            {streamText}<span className="ml-1 inline-block h-4 w-2 animate-pulse bg-primary align-middle" />
+            {streamText}
+            <span className="ml-1 inline-block h-4 w-2 animate-pulse bg-primary align-middle" />
           </div>
         )}
 
@@ -404,13 +431,8 @@ function WaitlistForm({ prompt }: { prompt: string }) {
   };
 
   return (
-    <form
-      onSubmit={submit}
-      className="mt-8 rounded-xl border border-border bg-surface/40 p-5"
-    >
-      <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">
-        Early access
-      </div>
+    <form onSubmit={submit} className="mt-8 rounded-xl border border-border bg-surface/40 p-5">
+      <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">Early access</div>
       <div className="font-display font-semibold">Get the live Claude pipeline first.</div>
       <p className="text-sm text-muted-foreground mt-1">
         Join the waitlist and we&rsquo;ll plug your prompt into the real Signhify AI build queue.
@@ -445,9 +467,7 @@ function WaitlistForm({ prompt }: { prompt: string }) {
           </button>
         </div>
       )}
-      {state === "error" && msg && (
-        <div className="mt-3 text-xs text-red-300">{msg}</div>
-      )}
+      {state === "error" && msg && <div className="mt-3 text-xs text-red-300">{msg}</div>}
     </form>
   );
 }

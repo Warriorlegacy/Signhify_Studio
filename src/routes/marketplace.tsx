@@ -6,6 +6,7 @@ import { MARKET, MARKET_CATEGORIES, type MarketItem } from "@/lib/marketplace";
 import { downloadAsset } from "@/lib/marketplace-download.functions";
 import { createCheckoutSession } from "@/lib/stripe-checkout.functions";
 import { fetchMarketplaceListings } from "@/lib/marketplace-listings.functions";
+import { ThreeDCard } from "@/components/ui/ThreeDCard";
 
 export const Route = createFileRoute("/marketplace")({
   loader: async () => {
@@ -27,8 +28,7 @@ export const Route = createFileRoute("/marketplace")({
       { property: "og:title", content: "Marketplace — Signhify" },
       {
         property: "og:description",
-        content:
-          "Templates, AI agents, components and workflows — one marketplace from Signhify.",
+        content: "Templates, AI agents, components and workflows — one marketplace from Signhify.",
       },
       { property: "og:url", content: "https://signhify.online/marketplace" },
     ],
@@ -66,8 +66,8 @@ function MarketplacePage() {
               Ship faster. <span className="text-gradient">Borrow our spine.</span>
             </h1>
             <p className="mt-5 max-w-2xl text-muted-foreground text-lg">
-              Production templates, plug-in AI agents, components and full
-              workflows — every listing has been used in a real Signhify build.
+              Production templates, plug-in AI agents, components and full workflows — every listing
+              has been used in a real Signhify build.
             </p>
           </div>
           <Link
@@ -133,8 +133,8 @@ function MarketplacePage() {
               Have a template that ships product? List it.
             </h2>
             <p className="mt-2 text-muted-foreground max-w-2xl text-sm">
-              Stripe Connect payouts, signed download URLs, version history and
-              a public author page. Submit interest and we&rsquo;ll onboard you.
+              Stripe Connect payouts, signed download URLs, version history and a public author
+              page. Submit interest and we&rsquo;ll onboard you.
             </p>
           </div>
           <Link
@@ -167,17 +167,13 @@ function MarketCard({ item }: { item: MarketItem }) {
     }
   };
   return (
-    <article className="group relative overflow-hidden rounded-2xl border border-border bg-card hover:border-primary/50 transition shadow-[var(--shadow-card)]">
-      <div
-        className="relative aspect-[16/9] overflow-hidden"
-        style={{ background: item.accent }}
-      >
+    <ThreeDCard className="relative overflow-hidden rounded-2xl border border-border bg-card hover:border-primary/50 transition shadow-[var(--shadow-card)] flex flex-col h-full w-full">
+      <div className="relative aspect-[16/9] overflow-hidden" style={{ background: item.accent }}>
         <div
           aria-hidden
           className="absolute inset-0 opacity-25 mix-blend-overlay"
           style={{
-            backgroundImage:
-              "radial-gradient(oklch(1 0 0 / 0.3) 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(oklch(1 0 0 / 0.3) 1px, transparent 1px)",
             backgroundSize: "12px 12px",
           }}
         />
@@ -190,11 +186,9 @@ function MarketCard({ item }: { item: MarketItem }) {
           </div>
         )}
       </div>
-      <div className="p-5">
+      <div className="p-5 flex flex-col flex-1">
         <div className="flex items-baseline justify-between gap-3">
-          <h3 className="font-display text-lg font-semibold leading-tight">
-            {item.name}
-          </h3>
+          <h3 className="font-display text-lg font-semibold leading-tight">{item.name}</h3>
           <div className="text-sm font-mono">
             {isFree ? (
               <span className="text-emerald-400 font-bold">FREE</span>
@@ -203,9 +197,7 @@ function MarketCard({ item }: { item: MarketItem }) {
             )}
           </div>
         </div>
-        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-          {item.blurb}
-        </p>
+        <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{item.blurb}</p>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {item.tags.map((t) => (
             <span
@@ -232,6 +224,6 @@ function MarketCard({ item }: { item: MarketItem }) {
           )}
         </button>
       </div>
-    </article>
+    </ThreeDCard>
   );
 }

@@ -7,14 +7,14 @@ Signhify is a TanStack Start app — server-rendered React + Vite, runs on edge
 
 Required at build/runtime. Already wired through `src/integrations/supabase/`.
 
-| Variable                          | Where used                       | Example                          |
-| --------------------------------- | -------------------------------- | -------------------------------- |
-| `VITE_SUPABASE_URL`               | Browser + server clients         | `https://xxx.supabase.co`        |
-| `VITE_SUPABASE_PUBLISHABLE_KEY`   | Browser (anon, RLS-bounded)      | `eyJhbGc...`                     |
-| `SUPABASE_URL`                    | Server functions                 | same as above                    |
-| `SUPABASE_PUBLISHABLE_KEY`        | Server (auth-middleware)         | same as above                    |
-| `SUPABASE_SERVICE_ROLE_KEY`       | Admin-only server routes         | secret                           |
-| `LOVABLE_API_KEY`                 | AI gateway (optional)            | secret                           |
+| Variable                        | Where used                  | Example                   |
+| ------------------------------- | --------------------------- | ------------------------- |
+| `VITE_SUPABASE_URL`             | Browser + server clients    | `https://xxx.supabase.co` |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Browser (anon, RLS-bounded) | `eyJhbGc...`              |
+| `SUPABASE_URL`                  | Server functions            | same as above             |
+| `SUPABASE_PUBLISHABLE_KEY`      | Server (auth-middleware)    | same as above             |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Admin-only server routes    | secret                    |
+| `LOVABLE_API_KEY`               | AI gateway (optional)       | secret                    |
 
 When previewing on Lovable, the publishable + URL pair is auto-injected.
 

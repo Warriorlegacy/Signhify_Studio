@@ -19,8 +19,7 @@ export const fetchMarketplaceListings = createServerFn({ method: "GET" }).handle
         preview_url: row.preview_url,
         asset_path: row.asset_path,
         tags: row.category ? [row.category] : [],
-        accent:
-          "linear-gradient(135deg, oklch(0.72 0.21 45), oklch(0.22 0.06 260))",
+        accent: "linear-gradient(135deg, oklch(0.72 0.21 45), oklch(0.22 0.06 260))",
         badge: (row.price_cents ?? 0) === 0 ? "Free" : undefined,
       }));
       return { items };

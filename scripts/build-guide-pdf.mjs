@@ -34,9 +34,7 @@ if (checkOnly) {
     console.log("[guide:pdf] PDF is up to date.");
     process.exit(0);
   }
-  console.error(
-    "[guide:pdf] PDF is stale. Run `bun run guide:pdf` and commit the result."
-  );
+  console.error("[guide:pdf] PDF is stale. Run `bun run guide:pdf` and commit the result.");
   process.exit(1);
 }
 

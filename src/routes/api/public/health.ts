@@ -16,7 +16,9 @@ async function isHealthy(): Promise<boolean> {
         .select("*")
         .limit(1)
         .maybeSingle(),
-      new Promise((resolve) => setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 1500)),
+      new Promise((resolve) =>
+        setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 1500),
+      ),
     ]);
     if (res == null || typeof res !== "object") return false;
   } catch {
@@ -35,16 +37,13 @@ export const Route = createFileRoute("/api/public/health")({
     handlers: {
       GET: async () => {
         const ok = await isHealthy();
-        return new Response(
-          JSON.stringify({ ok, timestamp: new Date().toISOString() }),
-          {
-            status: ok ? 200 : 503,
-            headers: {
-              "content-type": "application/json",
-              "cache-control": "no-store",
-            },
+        return new Response(JSON.stringify({ ok, timestamp: new Date().toISOString() }), {
+          status: ok ? 200 : 503,
+          headers: {
+            "content-type": "application/json",
+            "cache-control": "no-store",
           },
-        );
+        });
       },
     },
   },

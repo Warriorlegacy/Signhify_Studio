@@ -1,12 +1,4 @@
-import {
-  Sparkles,
-  Boxes,
-  Cloud,
-  Cpu,
-  Rocket,
-  Store,
-  type LucideIcon,
-} from "lucide-react";
+import { Sparkles, Boxes, Cloud, Cpu, Rocket, Store, type LucideIcon } from "lucide-react";
 
 export type EcosystemNode = {
   key: string;

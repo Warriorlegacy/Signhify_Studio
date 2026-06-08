@@ -20,12 +20,28 @@ export function useUser() {
       setUser(nextSession?.user ?? null);
       setLoading(false);
     });
-    return () => { mounted = false; sub.subscription.unsubscribe(); };
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
   }, []);
 
-  const signIn = useCallback((email: string, password: string) => supabase.auth.signInWithPassword({ email, password }), []);
-  const signUp = useCallback((email: string, password: string) => supabase.auth.signUp({ email, password }), []);
-  const signInWithGoogle = useCallback(() => supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${window.location.origin}/app` } }), []);
+  const signIn = useCallback(
+    (email: string, password: string) => supabase.auth.signInWithPassword({ email, password }),
+    [],
+  );
+  const signUp = useCallback(
+    (email: string, password: string) => supabase.auth.signUp({ email, password }),
+    [],
+  );
+  const signInWithGoogle = useCallback(
+    () =>
+      supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: `${window.location.origin}/app` },
+      }),
+    [],
+  );
   const signOut = useCallback(() => supabase.auth.signOut(), []);
 
   return { user, session, loading, signIn, signUp, signOut, signInWithGoogle };

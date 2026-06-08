@@ -1,14 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  ArrowRight,
-  ArrowLeft,
-  CheckCircle2,
-  Mail,
-  Sparkles,
-  AlertCircle,
-} from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, Mail, Sparkles, AlertCircle } from "lucide-react";
 import { leadSchema, emptyLead, type Lead } from "@/lib/leads-schema";
 
 export const Route = createFileRoute("/contact")({
@@ -172,8 +165,15 @@ function ContactPage() {
 
   return (
     <section className="relative pt-36 pb-28 min-h-[100svh]">
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "var(--gradient-ember)" }} aria-hidden />
-      <div className="absolute inset-0 bg-grid mask-fade-edges opacity-30 pointer-events-none" aria-hidden />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "var(--gradient-ember)" }}
+        aria-hidden
+      />
+      <div
+        className="absolute inset-0 bg-grid mask-fade-edges opacity-30 pointer-events-none"
+        aria-hidden
+      />
 
       <div className="relative mx-auto max-w-3xl px-6">
         <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
@@ -183,8 +183,8 @@ function ContactPage() {
           Tell us about your <span className="text-gradient">idea</span>.
         </h1>
         <p className="mt-5 text-muted-foreground text-lg max-w-xl">
-          Six quick questions. We come back within 24 hours with scope, stack and next
-          steps — personally, from Piyush.
+          Six quick questions. We come back within 24 hours with scope, stack and next steps —
+          personally, from Piyush.
         </p>
 
         {submitted ? (
@@ -203,7 +203,9 @@ function ContactPage() {
             </p>
 
             <div className="mt-6 rounded-xl border border-border bg-surface/60 p-5 text-left text-sm space-y-1">
-              <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">Your brief</div>
+              <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">
+                Your brief
+              </div>
               <Row k="Project" v={data.type} />
               <Row k="Scope" v={data.scope} />
               <Row k="Budget" v={data.budget} />
@@ -228,7 +230,13 @@ function ContactPage() {
               </span>
               <span>{Math.round(progress)}%</span>
             </div>
-            <div className="h-1 w-full rounded-full bg-border overflow-hidden mb-8" role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100}>
+            <div
+              className="h-1 w-full rounded-full bg-border overflow-hidden mb-8"
+              role="progressbar"
+              aria-valuenow={Math.round(progress)}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            >
               <motion.div
                 className="h-full bg-primary shadow-[0_0_12px_var(--primary-glow)]"
                 animate={{ width: `${progress}%` }}
@@ -331,7 +339,10 @@ function ContactPage() {
                       autoComplete="organization"
                     />
                     <div>
-                      <label htmlFor="message" className="block text-xs uppercase tracking-[0.18em] text-muted-foreground mb-1.5">
+                      <label
+                        htmlFor="message"
+                        className="block text-xs uppercase tracking-[0.18em] text-muted-foreground mb-1.5"
+                      >
                         Anything else?
                       </label>
                       <textarea
@@ -358,7 +369,10 @@ function ContactPage() {
                     </div>
 
                     {error && (
-                      <div className="flex items-center gap-2 text-sm text-destructive" role="alert">
+                      <div
+                        className="flex items-center gap-2 text-sm text-destructive"
+                        role="alert"
+                      >
                         <AlertCircle size={14} /> {error}
                       </div>
                     )}
@@ -425,7 +439,10 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="block text-xs uppercase tracking-[0.18em] text-muted-foreground mb-1.5">
+      <label
+        htmlFor={id}
+        className="block text-xs uppercase tracking-[0.18em] text-muted-foreground mb-1.5"
+      >
         {label}
       </label>
       <input

@@ -56,8 +56,8 @@ function ServicesPage() {
             One studio. <span className="text-gradient">End-to-end</span> execution.
           </h1>
           <p className="mt-5 max-w-2xl text-muted-foreground text-lg">
-            We don&rsquo;t hand off deliverables — we ship outcomes. From idea, through
-            design, into production and beyond.
+            We don&rsquo;t hand off deliverables — we ship outcomes. From idea, through design, into
+            production and beyond.
           </p>
         </div>
       </section>

@@ -104,8 +104,7 @@ export const projects: Project[] = [
     name: "Vibe Coding",
     category: "Developer Tools",
     url: "https://vibe-coding-platform-neon-kappa.vercel.app",
-    blurb:
-      "Prototype of an AI-native coding environment — the seed that grew into Signhify AI.",
+    blurb: "Prototype of an AI-native coding environment — the seed that grew into Signhify AI.",
     tags: ["Dev Tools", "AI Pair", "Editor"],
     stack: ["React", "Monaco", "Claude"],
     size: "sm",
@@ -140,8 +139,7 @@ export const projects: Project[] = [
     name: "GPLE Sports",
     category: "Brand Platform",
     url: "https://gplesports.vercel.app",
-    blurb:
-      "Sports brand presentation surface — fixtures, fan engagement, partner showcases.",
+    blurb: "Sports brand presentation surface — fixtures, fan engagement, partner showcases.",
     tags: ["Brand", "Engagement", "Web"],
     stack: ["React", "Tailwind"],
     size: "sm",
@@ -152,8 +150,7 @@ export const projects: Project[] = [
     name: "Rahul Silk",
     category: "Business Web",
     url: "https://rahul-silk.vercel.app",
-    blurb:
-      "Storefront-led brand site for a heritage textile house — catalogue, story, enquiry.",
+    blurb: "Storefront-led brand site for a heritage textile house — catalogue, story, enquiry.",
     tags: ["Brand", "Catalog"],
     stack: ["Next.js"],
     size: "sm",

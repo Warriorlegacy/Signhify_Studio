@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ExternalLink, Layers, Sparkles } from "lucide-react";
 import { projects, type Project } from "@/lib/projects";
+import { ThreeDDevicePreview } from "@/components/three/ThreeDDevicePreview";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: async ({ params }) => {
@@ -81,7 +82,7 @@ function ProjectDetailPage() {
   const { project: p } = Route.useLoaderData();
   return (
     <article className="pt-32 pb-24">
-      <div className="mx-auto max-w-4xl px-6">
+      <div className="mx-auto max-w-5xl px-6">
         <Link
           to="/projects"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition"
@@ -89,49 +90,49 @@ function ProjectDetailPage() {
           <ArrowLeft size={14} /> All projects
         </Link>
 
-        <div
-          className="mt-6 relative overflow-hidden rounded-3xl border border-border aspect-[16/8]"
-          style={{
-            background:
-              "linear-gradient(135deg, oklch(0.72 0.21 45) 0%, oklch(0.22 0.06 260) 100%)",
-          }}
-        >
-          <div
-            aria-hidden
-            className="absolute inset-0 opacity-25 mix-blend-overlay"
-            style={{
-              backgroundImage: "radial-gradient(oklch(1 0 0 / 0.25) 1px, transparent 1px)",
-              backgroundSize: "14px 14px",
-            }}
-          />
-          <div className="absolute inset-x-0 bottom-0 p-8">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-background/70 backdrop-blur border border-white/15 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-foreground">
+        {/* 3D Immersive Hero Section Grid */}
+        <div className="mt-8 grid md:grid-cols-[1.2fr_1fr] gap-8 lg:gap-12 items-center">
+          <div>
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-surface border border-border px-3 py-1 text-xs uppercase tracking-[0.18em] text-primary">
               <Layers size={11} /> {p.category}
               {p.year && <span className="text-muted-foreground">· {p.year}</span>}
             </div>
-            <h1 className="mt-3 font-display text-4xl sm:text-6xl font-black text-background drop-shadow-[0_4px_30px_rgba(0,0,0,0.45)]">
+            <h1 className="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-black text-foreground tracking-tight leading-[1.05]">
               {p.name}
             </h1>
+            <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed">
+              {p.blurb}
+            </p>
+
+            {p.metric && (
+              <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-foreground">
+                <Sparkles size={12} className="text-primary" /> {p.metric}
+              </div>
+            )}
+          </div>
+
+          {/* 3D device frame mockup */}
+          <div className="relative border border-border bg-card/30 backdrop-blur rounded-3xl overflow-hidden aspect-[4/3] sm:aspect-square flex items-center justify-center shadow-[var(--shadow-card)]">
+            <div
+              className="absolute inset-0 pointer-events-none opacity-20"
+              style={{ background: "var(--gradient-ember)" }}
+            />
+            <ThreeDDevicePreview
+              accentColor={p.category.includes("AI") ? "#c084fc" : "#ff7a2a"}
+              className="w-full h-full"
+            />
           </div>
         </div>
 
-        <p className="mt-8 text-lg text-muted-foreground leading-relaxed max-w-2xl">{p.blurb}</p>
-
-        {p.metric && (
-          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-foreground">
-            <Sparkles size={12} className="text-primary" /> {p.metric}
-          </div>
-        )}
-
-        <div className="mt-10 grid sm:grid-cols-2 gap-6">
-          {p.stack && (
+        <div className="mt-12 grid sm:grid-cols-2 gap-6 pt-8 border-t border-border">
+          {p.stack && p.stack.length > 0 && (
             <div>
               <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">Stack</div>
               <div className="flex flex-wrap gap-1.5">
                 {p.stack.map((t: string) => (
                   <span
                     key={t}
-                    className="text-[11px] rounded-full border border-border bg-surface px-2 py-0.5 text-foreground"
+                    className="text-[11px] rounded-full border border-border bg-surface px-2.5 py-0.5 text-foreground"
                   >
                     {t}
                   </span>
@@ -145,7 +146,7 @@ function ProjectDetailPage() {
               {p.tags.map((t: string) => (
                 <span
                   key={t}
-                  className="text-[11px] rounded-full border border-border bg-surface px-2 py-0.5 text-muted-foreground"
+                  className="text-[11px] rounded-full border border-border bg-surface px-2.5 py-0.5 text-muted-foreground"
                 >
                   {t}
                 </span>

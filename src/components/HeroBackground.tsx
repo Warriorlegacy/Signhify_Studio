@@ -24,11 +24,7 @@ export function HeroBackground() {
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.2]);
 
   return (
-    <div
-      ref={ref}
-      className="absolute inset-0 overflow-hidden pointer-events-none"
-      aria-hidden
-    >
+    <div ref={ref} className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
       {/* Ember radial glow */}
       <motion.div
         className="absolute inset-0"
@@ -59,13 +55,29 @@ export function HeroBackground() {
         {Array.from({ length: 16 }).map((_, i) => {
           const y = (i / 15) * 600;
           return (
-            <line key={`h-${i}`} x1={0} x2={1200} y1={y} y2={y} stroke="url(#lineFade)" strokeWidth={0.6} />
+            <line
+              key={`h-${i}`}
+              x1={0}
+              x2={1200}
+              y1={y}
+              y2={y}
+              stroke="url(#lineFade)"
+              strokeWidth={0.6}
+            />
           );
         })}
         {Array.from({ length: 24 }).map((_, i) => {
           const x = (i / 23) * 1200;
           return (
-            <line key={`v-${i}`} x1={x} x2={600 + (x - 600) * 0.15} y1={0} y2={600} stroke="url(#lineFade)" strokeWidth={0.6} />
+            <line
+              key={`v-${i}`}
+              x1={x}
+              x2={600 + (x - 600) * 0.15}
+              y1={0}
+              y2={600}
+              stroke="url(#lineFade)"
+              strokeWidth={0.6}
+            />
           );
         })}
       </svg>
@@ -85,15 +97,10 @@ export function HeroBackground() {
               top: o.y,
               width: o.size,
               height: o.size,
-              background:
-                "radial-gradient(circle, oklch(0.72 0.21 45 / 0.35), transparent 70%)",
+              background: "radial-gradient(circle, oklch(0.72 0.21 45 / 0.35), transparent 70%)",
               filter: "blur(20px)",
             }}
-            animate={
-              reduced
-                ? undefined
-                : { opacity: [0.35, 0.7, 0.35], scale: [1, 1.08, 1] }
-            }
+            animate={reduced ? undefined : { opacity: [0.35, 0.7, 0.35], scale: [1, 1.08, 1] }}
             transition={{ duration: 7, repeat: Infinity, delay: o.delay, ease: "easeInOut" }}
           />
         ))}

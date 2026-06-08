@@ -11,14 +11,7 @@ type Props = {
   bullets: string[];
 };
 
-export function ComingSoonScene({
-  eyebrow,
-  title,
-  subdomain,
-  description,
-  week,
-  bullets,
-}: Props) {
+export function ComingSoonScene({ eyebrow, title, subdomain, description, week, bullets }: Props) {
   return (
     <section className="relative isolate min-h-[100svh] flex items-center pt-32 pb-24 overflow-hidden">
       <div
@@ -29,8 +22,7 @@ export function ComingSoonScene({
       <motion.div
         className="absolute -top-32 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full pointer-events-none"
         style={{
-          background:
-            "radial-gradient(circle, oklch(0.72 0.21 45 / 0.35), transparent 70%)",
+          background: "radial-gradient(circle, oklch(0.72 0.21 45 / 0.35), transparent 70%)",
           filter: "blur(40px)",
         }}
         animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.08, 1] }}
@@ -103,10 +95,7 @@ export function ComingSoonScene({
             className="group inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_0_40px_-6px_var(--primary-glow)] hover:brightness-110 transition"
           >
             Get early access
-            <ArrowRight
-              size={16}
-              className="group-hover:translate-x-0.5 transition"
-            />
+            <ArrowRight size={16} className="group-hover:translate-x-0.5 transition" />
           </Link>
           <Link
             to="/sprint"

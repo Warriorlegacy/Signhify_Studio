@@ -12,32 +12,28 @@ const SCENES = [
     n: "01",
     chip: "Describe",
     title: "It starts with one sentence.",
-    body:
-      "You drop your idea — a CRM for gyms, an AI agent that ships reels, a fintech for diaspora. We map outcomes, stack and scope in a single working session.",
+    body: "You drop your idea — a CRM for gyms, an AI agent that ships reels, a fintech for diaspora. We map outcomes, stack and scope in a single working session.",
     accent: "oklch(0.72 0.21 45)",
   },
   {
     n: "02",
     chip: "Design",
     title: "Cinematic, in days.",
-    body:
-      "Brand system, product architecture and AI surfaces — prototyped fast, refined to a luxury finish. You see and feel the product before a line of business logic is written.",
+    body: "Brand system, product architecture and AI surfaces — prototyped fast, refined to a luxury finish. You see and feel the product before a line of business logic is written.",
     accent: "oklch(0.78 0.16 70)",
   },
   {
     n: "03",
     chip: "Build",
     title: "Engineered to ship.",
-    body:
-      "Modern stacks. Multi-tenant. Typed end-to-end. Auth, billing, dashboards, AI ops — all production-ready, not demo-ware.",
+    body: "Modern stacks. Multi-tenant. Typed end-to-end. Auth, billing, dashboards, AI ops — all production-ready, not demo-ware.",
     accent: "oklch(0.88 0.14 90)",
   },
   {
     n: "04",
     chip: "Launch",
     title: "Live on your domain.",
-    body:
-      "We deploy to Vercel, Cloudflare or your stack. Analytics, payments, AI ops wired in. Then we stay on for v2, v3 — the part that compounds.",
+    body: "We deploy to Vercel, Cloudflare or your stack. Analytics, payments, AI ops wired in. Then we stay on for v2, v3 — the part that compounds.",
     accent: "oklch(0.72 0.21 45)",
   },
 ];
@@ -56,10 +52,7 @@ export function ScrollStorySection() {
   // Static fallback for reduced motion users
   if (reduced) {
     return (
-      <section
-        className="relative py-28"
-        aria-labelledby="how-we-work"
-      >
+      <section className="relative py-28" aria-labelledby="how-we-work">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">How we work</div>
           <h2 id="how-we-work" className="font-display text-4xl sm:text-5xl font-bold max-w-3xl">
@@ -104,10 +97,11 @@ export function ScrollStorySection() {
         <div className="relative z-10 mx-auto max-w-6xl w-full px-6 grid lg:grid-cols-[1fr_1.2fr] gap-12 items-center">
           {/* Left rail — progress + chip stack */}
           <div className="relative">
-            <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">
-              How we work
-            </div>
-            <h2 id="how-we-work" className="font-display text-4xl sm:text-5xl font-bold leading-[1.05]">
+            <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">How we work</div>
+            <h2
+              id="how-we-work"
+              className="font-display text-4xl sm:text-5xl font-bold leading-[1.05]"
+            >
               A film unfolding,
               <br />
               <span className="text-gradient">scene by scene.</span>
@@ -156,10 +150,7 @@ function SceneChip({
   const opacity = useTransform(progress, [index - 0.5, index, index + 0.8], [0.35, 1, 0.35]);
   const x = useTransform(progress, [index - 0.5, index, index + 0.8], [0, 8, 0]);
   return (
-    <motion.div
-      style={{ opacity, x }}
-      className="flex items-center gap-3 text-sm"
-    >
+    <motion.div style={{ opacity, x }} className="flex items-center gap-3 text-sm">
       <span
         className="h-1.5 w-8 rounded-full"
         style={{ background: scene.accent, boxShadow: `0 0 16px ${scene.accent}` }}
@@ -239,23 +230,17 @@ function BackdropParallax({ scrollYProgress }: { scrollYProgress: MotionValue<nu
         aria-hidden
         className="absolute inset-0 bg-grid mask-fade-edges opacity-40"
       />
-      <motion.div
-        style={{ y: y2, rotate }}
-        aria-hidden
-        className="absolute -inset-[20%]"
-      >
+      <motion.div style={{ y: y2, rotate }} aria-hidden className="absolute -inset-[20%]">
         <div
           className="absolute left-[10%] top-[20%] w-[40vw] h-[40vw] rounded-full blur-3xl"
           style={{
-            background:
-              "radial-gradient(circle, oklch(0.72 0.21 45 / 0.18), transparent 70%)",
+            background: "radial-gradient(circle, oklch(0.72 0.21 45 / 0.18), transparent 70%)",
           }}
         />
         <div
           className="absolute right-[5%] bottom-[10%] w-[35vw] h-[35vw] rounded-full blur-3xl"
           style={{
-            background:
-              "radial-gradient(circle, oklch(0.78 0.16 70 / 0.12), transparent 70%)",
+            background: "radial-gradient(circle, oklch(0.78 0.16 70 / 0.12), transparent 70%)",
           }}
         />
       </motion.div>

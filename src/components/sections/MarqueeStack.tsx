@@ -1,7 +1,20 @@
 const stack = [
-  "Next.js", "TanStack Start", "React 19", "TypeScript", "Tailwind v4",
-  "Supabase", "Postgres", "Vercel", "Cloudflare", "OpenAI", "Anthropic",
-  "LangChain", "Stripe", "Framer Motion", "shadcn/ui", "Lovable",
+  "Next.js",
+  "TanStack Start",
+  "React 19",
+  "TypeScript",
+  "Tailwind v4",
+  "Supabase",
+  "Postgres",
+  "Vercel",
+  "Cloudflare",
+  "OpenAI",
+  "Anthropic",
+  "LangChain",
+  "Stripe",
+  "Framer Motion",
+  "shadcn/ui",
+  "Lovable",
 ];
 
 export function MarqueeStack() {

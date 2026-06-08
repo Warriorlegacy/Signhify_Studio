@@ -8,10 +8,8 @@ function validate(input: unknown): WaitlistInput {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 320) {
     throw new Error("Enter a valid email.");
   }
-  const prompt =
-    typeof obj?.prompt === "string" ? obj.prompt.trim().slice(0, 2000) : undefined;
-  const source =
-    typeof obj?.source === "string" ? obj.source.trim().slice(0, 64) : "ai-page";
+  const prompt = typeof obj?.prompt === "string" ? obj.prompt.trim().slice(0, 2000) : undefined;
+  const source = typeof obj?.source === "string" ? obj.source.trim().slice(0, 64) : "ai-page";
   return { email, prompt, source };
 }
 

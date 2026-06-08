@@ -12,12 +12,22 @@ export const createRun = createServerFn({ method: "POST" })
   })
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context as any;
-    const { data: run, error } = await supabase.from("runs").insert({ project_id: data.projectId, user_id: userId, status: "pending", log: [] }).select("id").single();
+    const { data: run, error } = await supabase
+      .from("runs")
+      .insert({ project_id: data.projectId, user_id: userId, status: "pending", log: [] })
+      .select("id")
+      .single();
     if (error) throw new Error(error.message);
-    const edge = process.env.SUPABASE_URL ? `${process.env.SUPABASE_URL.replace(/\/$/, "")}/functions/v1/run-agent` : null;
+    const edge = process.env.SUPABASE_URL
+      ? `${process.env.SUPABASE_URL.replace(/\/$/, "")}/functions/v1/run-agent`
+      : null;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (edge && serviceKey) {
-      fetch(edge, { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${serviceKey}` }, body: JSON.stringify({ project_id: data.projectId, prompt: data.prompt, run_id: run.id }) }).catch((e) => console.error("[run-agent] invoke failed", e));
+      fetch(edge, {
+        method: "POST",
+        headers: { "content-type": "application/json", authorization: `Bearer ${serviceKey}` },
+        body: JSON.stringify({ project_id: data.projectId, prompt: data.prompt, run_id: run.id }),
+      }).catch((e) => console.error("[run-agent] invoke failed", e));
     }
     return { runId: run.id as string };
   });

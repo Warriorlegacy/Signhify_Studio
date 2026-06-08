@@ -3,9 +3,7 @@ import { useReducedMotionPref } from "@/hooks/use-reduced-motion-pref";
 
 // Lazy-load R3F so Three.js stays out of the initial bundle and never
 // touches SSR. Each immersive scene mounts only when visible.
-const Canvas = lazy(() =>
-  import("@react-three/fiber").then((m) => ({ default: m.Canvas })),
-);
+const Canvas = lazy(() => import("@react-three/fiber").then((m) => ({ default: m.Canvas })));
 
 type Quality = "low" | "medium" | "high";
 
@@ -29,7 +27,8 @@ interface Scene3DProps {
 function pickQuality(): Quality {
   if (typeof window === "undefined") return "medium";
   const dpr = window.devicePixelRatio || 1;
-  const cores = (navigator as Navigator & { hardwareConcurrency?: number }).hardwareConcurrency ?? 4;
+  const cores =
+    (navigator as Navigator & { hardwareConcurrency?: number }).hardwareConcurrency ?? 4;
   const mem = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 4;
   if (cores <= 4 || mem <= 4 || dpr > 2.5) return "low";
   if (cores >= 8 && mem >= 8) return "high";

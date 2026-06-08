@@ -186,7 +186,9 @@ export const recordPublishAudit = createServerFn({ method: "POST" })
 export const listPublishAudits = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await (supabaseAdmin.from as any)("publish_audit")
-    .select("id, created_at, gates, smoke_result, diff_result, preview_url, approver_email, commit_sha")
+    .select(
+      "id, created_at, gates, smoke_result, diff_result, preview_url, approver_email, commit_sha",
+    )
     .order("created_at", { ascending: false })
     .limit(20);
   if (error) throw new Error(error.message);
@@ -223,7 +225,13 @@ export const checkSupabaseConnectivity = createServerFn({ method: "GET" }).handl
         .select("id", { count: "exact", head: true })
         .limit(1);
       if (error) {
-        return { ok: false, hasUrl, hasServiceRole, adminProbe: { ok: false, error: error.message }, checkedAt };
+        return {
+          ok: false,
+          hasUrl,
+          hasServiceRole,
+          adminProbe: { ok: false, error: error.message },
+          checkedAt,
+        };
       }
       return { ok: true, hasUrl, hasServiceRole, adminProbe: { ok: true }, checkedAt };
     } catch (e: any) {

@@ -44,8 +44,8 @@ function SprintPage() {
             June 2026 sprint, <span className="text-gradient">tracked live</span>.
           </h1>
           <p className="mt-5 max-w-2xl text-muted-foreground text-lg">
-            Every remaining Phase 1 item — status, owner and due date. Updated as
-            we ship. Deadline: <span className="text-foreground font-medium">June 30, 2026</span>.
+            Every remaining Phase 1 item — status, owner and due date. Updated as we ship. Deadline:{" "}
+            <span className="text-foreground font-medium">June 30, 2026</span>.
           </p>
 
           <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
@@ -84,9 +84,7 @@ function SprintPage() {
                   <div>
                     <div className="font-mono text-xs text-muted-foreground">{track.window}</div>
                     <h2 className="mt-1 font-display text-2xl font-bold">{track.name}</h2>
-                    <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
-                      {track.summary}
-                    </p>
+                    <p className="text-sm text-muted-foreground mt-1 max-w-2xl">{track.summary}</p>
                   </div>
                   <div className="text-right">
                     <div className="font-mono text-xs text-primary">{track.subdomain}</div>

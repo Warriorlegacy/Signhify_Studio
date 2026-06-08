@@ -1,7 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  Bot, Code2, LayoutDashboard, Megaphone, Workflow, Sparkles,
-} from "lucide-react";
+import { Bot, Code2, LayoutDashboard, Megaphone, Workflow, Sparkles } from "lucide-react";
 
 const services = [
   {
@@ -42,16 +40,13 @@ export function ServicesSection() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex items-end justify-between flex-wrap gap-6 mb-14">
           <div>
-            <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">
-              What we do
-            </div>
+            <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">What we do</div>
             <h2 className="font-display text-4xl sm:text-5xl font-bold max-w-2xl">
               One studio. End-to-end product execution.
             </h2>
           </div>
           <p className="max-w-md text-muted-foreground">
-            Six capabilities, one team. We stitch them together to ship outcomes —
-            not deliverables.
+            Six capabilities, one team. We stitch them together to ship outcomes — not deliverables.
           </p>
         </div>
 
@@ -69,9 +64,7 @@ export function ServicesSection() {
                 <s.icon size={20} />
               </div>
               <div className="mt-5 font-display text-xl font-semibold">{s.name}</div>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                {s.desc}
-              </p>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
               <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition" />
             </motion.div>
           ))}

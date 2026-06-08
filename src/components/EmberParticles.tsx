@@ -71,10 +71,6 @@ export function EmberParticles({ count = 36 }: { count?: number }) {
   }, [count]);
 
   return (
-    <canvas
-      ref={ref}
-      aria-hidden
-      className="absolute inset-0 w-full h-full pointer-events-none"
-    />
+    <canvas ref={ref} aria-hidden className="absolute inset-0 w-full h-full pointer-events-none" />
   );
 }

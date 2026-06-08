@@ -1,10 +1,17 @@
 import { redirect } from "@tanstack/react-router";
 
-export async function requireAppAuth({ location }: { location: { pathname: string; searchStr?: string } }) {
+export async function requireAppAuth({
+  location,
+}: {
+  location: { pathname: string; searchStr?: string };
+}) {
   if (typeof window !== "undefined") {
     const raw = window.localStorage.getItem("sb-auth-token") ?? "";
     if (!raw && !document.cookie.includes("sb-")) {
-      throw redirect({ to: "/login", search: { redirect: `${location.pathname}${location.searchStr ?? ""}` } });
+      throw redirect({
+        to: "/login",
+        search: { redirect: `${location.pathname}${location.searchStr ?? ""}` },
+      });
     }
     return;
   }

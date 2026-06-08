@@ -129,8 +129,8 @@ function RoadmapPage() {
           The plan to ship <span className="text-gradient">the final Signhify</span>.
         </h1>
         <p className="mt-5 max-w-2xl text-muted-foreground text-lg">
-          From the studio site you&rsquo;re reading right now, to a full AI-native product
-          operating system — Studio, AI, Marketplace, Cloud, OS, Deploy. Week by week. In public.
+          From the studio site you&rsquo;re reading right now, to a full AI-native product operating
+          system — Studio, AI, Marketplace, Cloud, OS, Deploy. Week by week. In public.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -159,14 +159,12 @@ function RoadmapPage() {
               <div className="text-[10px] uppercase tracking-[0.25em] text-primary">
                 Build locally · Deploy via Lovable
               </div>
-              <h2 className="mt-1 font-display text-2xl font-bold">
-                Local IDE Development Guide
-              </h2>
+              <h2 className="mt-1 font-display text-2xl font-bold">Local IDE Development Guide</h2>
               <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
-                Continue building Signhify in Google Antigravity, Cursor, Windsurf,
-                Kiro, Gemini CLI, Kilo CLI, Claude Code, Aider, Zed or plain VS Code —
-                while every push still ships through Lovable&rsquo;s preview &amp; publish
-                pipeline via GitHub bidirectional sync.
+                Continue building Signhify in Google Antigravity, Cursor, Windsurf, Kiro, Gemini
+                CLI, Kilo CLI, Claude Code, Aider, Zed or plain VS Code — while every push still
+                ships through Lovable&rsquo;s preview &amp; publish pipeline via GitHub
+                bidirectional sync.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <a
@@ -217,16 +215,13 @@ function RoadmapPage() {
           />
         </section>
 
-
         <ol className="mt-16 relative border-l border-border/60 pl-8 space-y-10">
           {WEEKS.map((w, i) => (
             <li key={w.title} className="relative">
               <span className="absolute -left-[42px] top-1 grid h-8 w-8 place-items-center rounded-full border border-primary/40 bg-background text-xs font-mono text-primary">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <div className="text-[10px] uppercase tracking-[0.25em] text-primary">
-                {w.label}
-              </div>
+              <div className="text-[10px] uppercase tracking-[0.25em] text-primary">{w.label}</div>
               <h2 className="mt-1 font-display text-2xl font-bold">{w.title}</h2>
               <div className="mt-1 text-sm italic text-muted-foreground">Exit: {w.exit}</div>
               <ul className="mt-4 grid sm:grid-cols-2 gap-2">

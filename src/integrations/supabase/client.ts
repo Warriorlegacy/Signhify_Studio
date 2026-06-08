@@ -2,28 +2,28 @@
 // - Validates env vars at first use with a clear, actionable error.
 // - Returns a stub client when unavailable so React rendering never crashes
 //   (DB calls resolve to `{ data: null, error }` instead of throwing).
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from './types';
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "./types";
 
 type AnyClient = SupabaseClient<Database>;
 
 function readEnv() {
   const url =
     (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
-    (typeof process !== 'undefined' ? process.env?.SUPABASE_URL : undefined);
+    (typeof process !== "undefined" ? process.env?.SUPABASE_URL : undefined);
   const key =
     (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined) ||
-    (typeof process !== 'undefined' ? process.env?.SUPABASE_PUBLISHABLE_KEY : undefined);
+    (typeof process !== "undefined" ? process.env?.SUPABASE_PUBLISHABLE_KEY : undefined);
   return { url, key };
 }
 
 function validate(url?: string, key?: string): string | null {
   const missing = [
-    ...(!url ? ['VITE_SUPABASE_URL'] : []),
-    ...(!key ? ['VITE_SUPABASE_PUBLISHABLE_KEY'] : []),
+    ...(!url ? ["VITE_SUPABASE_URL"] : []),
+    ...(!key ? ["VITE_SUPABASE_PUBLISHABLE_KEY"] : []),
   ];
   if (missing.length) {
-    return `Missing Supabase env var(s): ${missing.join(', ')}. Connect Supabase in Lovable Cloud.`;
+    return `Missing Supabase env var(s): ${missing.join(", ")}. Connect Supabase in Lovable Cloud.`;
   }
   try {
     const u = new URL(url!);
@@ -31,12 +31,12 @@ function validate(url?: string, key?: string): string | null {
   } catch {
     return `Invalid SUPABASE_URL: ${url}`;
   }
-  if (key!.length < 20) return 'Invalid SUPABASE_PUBLISHABLE_KEY (too short).';
+  if (key!.length < 20) return "Invalid SUPABASE_PUBLISHABLE_KEY (too short).";
   return null;
 }
 
 function buildStub(reason: string): AnyClient {
-  const err = { message: `Supabase unavailable: ${reason}`, name: 'SupabaseUnavailable' };
+  const err = { message: `Supabase unavailable: ${reason}`, name: "SupabaseUnavailable" };
   const queryStub: any = {
     select: () => queryStub,
     insert: () => queryStub,
@@ -81,9 +81,9 @@ function getClient(): AnyClient {
   }
   _client = createClient<Database>(url!, key!, {
     auth: {
-      storage: typeof window !== 'undefined' ? window.localStorage : undefined,
-      persistSession: typeof window !== 'undefined',
-      autoRefreshToken: typeof window !== 'undefined',
+      storage: typeof window !== "undefined" ? window.localStorage : undefined,
+      persistSession: typeof window !== "undefined",
+      autoRefreshToken: typeof window !== "undefined",
     },
   });
   return _client;

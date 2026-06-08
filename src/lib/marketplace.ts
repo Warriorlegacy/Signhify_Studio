@@ -17,8 +17,7 @@ export const MARKET: MarketItem[] = [
   {
     slug: "saas-launch-kit",
     name: "SaaS Launch Kit",
-    blurb:
-      "Auth, billing, dashboards, marketing site and waitlist — wired and ready to ship.",
+    blurb: "Auth, billing, dashboards, marketing site and waitlist — wired and ready to ship.",
     category: "Template",
     price: 0,
     tags: ["TanStack", "Supabase", "Stripe"],
@@ -28,8 +27,7 @@ export const MARKET: MarketItem[] = [
   {
     slug: "studio-portfolio",
     name: "Studio Portfolio",
-    blurb:
-      "Cinematic 3D portfolio with bento gallery, lead wizard and Calendly embed.",
+    blurb: "Cinematic 3D portfolio with bento gallery, lead wizard and Calendly embed.",
     category: "Template",
     price: 49,
     tags: ["Three.js", "Framer Motion"],
@@ -38,8 +36,7 @@ export const MARKET: MarketItem[] = [
   {
     slug: "support-agent",
     name: "Support Triage Agent",
-    blurb:
-      "Drop-in AI agent that classifies tickets, drafts replies and escalates blockers.",
+    blurb: "Drop-in AI agent that classifies tickets, drafts replies and escalates blockers.",
     category: "Agent",
     price: 29,
     tags: ["Claude", "Tool-use", "RAG"],
@@ -48,8 +45,7 @@ export const MARKET: MarketItem[] = [
   {
     slug: "growth-agent",
     name: "Growth SEO Agent",
-    blurb:
-      "Generates SEO briefs, on-page meta and JSON-LD from a sitemap — weekly.",
+    blurb: "Generates SEO briefs, on-page meta and JSON-LD from a sitemap — weekly.",
     category: "Agent",
     price: 39,
     tags: ["SEO", "Schema.org"],
@@ -58,8 +54,7 @@ export const MARKET: MarketItem[] = [
   {
     slug: "ember-ui",
     name: "Ember UI Kit",
-    blurb:
-      "60+ shadcn-compatible primitives themed with the Signhify ember palette.",
+    blurb: "60+ shadcn-compatible primitives themed with the Signhify ember palette.",
     category: "Component",
     price: 19,
     tags: ["shadcn", "Tailwind v4"],
@@ -68,8 +63,7 @@ export const MARKET: MarketItem[] = [
   {
     slug: "lead-funnel",
     name: "Lead Funnel Workflow",
-    blurb:
-      "Wizard → Supabase → Resend → Slack. A whole top-of-funnel in 4 minutes.",
+    blurb: "Wizard → Supabase → Resend → Slack. A whole top-of-funnel in 4 minutes.",
     category: "Workflow",
     price: 0,
     tags: ["Supabase", "Resend"],
@@ -78,10 +72,4 @@ export const MARKET: MarketItem[] = [
   },
 ];
 
-export const MARKET_CATEGORIES = [
-  "All",
-  "Template",
-  "Agent",
-  "Component",
-  "Workflow",
-] as const;
+export const MARKET_CATEGORIES = ["All", "Template", "Agent", "Component", "Workflow"] as const;
