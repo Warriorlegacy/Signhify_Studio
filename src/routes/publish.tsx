@@ -226,6 +226,55 @@ function PublishPage() {
           />
         </label>
 
+        {/* Connectivity */}
+        <div className="mt-6 rounded-2xl border border-border bg-card p-6">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h2 className="font-display text-xl font-bold">Worker ↔ Supabase connectivity</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Confirms the deployed Worker has the secrets needed to write the audit row before
+                you start the checklist.
+              </p>
+            </div>
+            <button
+              onClick={() => refreshConn()}
+              disabled={connLoading}
+              className="shrink-0 inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-xs font-semibold disabled:opacity-60"
+            >
+              {connLoading ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+              Re-check
+            </button>
+          </div>
+          <ul className="mt-4 space-y-1 text-sm">
+            <ConnLine ok={conn?.hasUrl === true} label="SUPABASE_URL present in Worker" />
+            <ConnLine
+              ok={conn?.hasServiceRole === true}
+              label="SUPABASE_SERVICE_ROLE_KEY present in Worker"
+              detail={
+                conn && !conn.hasServiceRole
+                  ? "Re-publish the project so the managed secret is injected into the live Worker."
+                  : undefined
+              }
+            />
+            <ConnLine
+              ok={conn?.adminProbe.ok === true}
+              label="Admin probe against publish_audit"
+              detail={conn?.adminProbe.error}
+            />
+          </ul>
+          {conn?.checkedAt ? (
+            <div className="mt-2 text-xs text-muted-foreground">
+              Last checked {new Date(conn.checkedAt).toLocaleTimeString()}
+            </div>
+          ) : null}
+          {autoRetry && !auditConfirmation ? (
+            <div className="mt-3 text-xs text-amber-300 flex items-center gap-2">
+              <Loader2 size={12} className="animate-spin" />
+              Auto-retry armed — will record the audit automatically as soon as the Worker reports OK.
+            </div>
+          ) : null}
+        </div>
+
         {/* Gates */}
         <div className="mt-8 rounded-2xl border border-border bg-card p-6">
           <h2 className="font-display text-xl font-bold">A. Manual checklist</h2>
