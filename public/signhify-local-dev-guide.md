@@ -51,6 +51,58 @@ bun run dev
 The dev server runs on `http://localhost:3000`. Hot reload, SSR, and TanStack
 Router file-based routing all work the same as inside Lovable.
 
+### 1.4 Full copy/paste cheat-sheet
+
+Every command you need, in the order you need them. Copy the whole block
+into a fresh terminal — it is idempotent.
+
+```bash
+# 0. prerequisites (macOS / Linux). Windows: use WSL2.
+curl -fsSL https://bun.sh/install | bash      # install Bun
+node -v && bun -v && git --version            # sanity check
+
+# 1. clone + install
+git clone git@github.com:<your-org>/signhify.git
+cd signhify
+bun install                                   # uses bun.lockb — do NOT swap for npm/pnpm/yarn
+
+# 2. env — create .env from the template below (see §2 for full variable list)
+cat > .env <<'EOF'
+VITE_SUPABASE_URL=https://<project>.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=<anon-key>
+VITE_SUPABASE_PROJECT_ID=<project-ref>
+SUPABASE_URL=https://<project>.supabase.co
+SUPABASE_PUBLISHABLE_KEY=<anon-key>
+SUPABASE_SERVICE_ROLE_KEY=<service-role-key>   # server-only, never ship to client
+LOVABLE_API_KEY=                               # optional, only if you call the AI gateway locally
+EOF
+
+# 3. run the dev server (http://localhost:3000, SSR + HMR)
+bun run dev
+
+# 4. production build + local preview
+bun run build                                 # outputs to .output/
+bun run start        # or: bun run preview    # serves the built app
+
+# 5. quality gates (run before every push)
+bun run lint
+bun run format
+bun run prepublish:check                      # Playwright smoke + HTML diff
+
+# 6. regenerate the local-dev-guide PDF after editing the .md
+bun run guide:pdf
+
+# 7. ship it
+git add -A && git commit -m "feat: <what changed>" && git push
+# Lovable auto-pulls the commit and rebuilds the preview within seconds.
+```
+
+> `bun run start` is an alias for the production preview. Use it to sanity-check
+> the bundled output before pushing. `bun run dev` is the only command you
+> need for day-to-day iteration.
+
+
+
 ---
 
 ## 2. Environment variables
