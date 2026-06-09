@@ -129,6 +129,15 @@ function AiPage() {
     });
     setCompletedStages([]);
 
+    const accumulatedStageText: Record<PipelineStage, string> = {
+      briefing: "",
+      architecture: "",
+      design_tokens: "",
+      codegen: "",
+      review: "",
+      deploy_plan: "",
+    };
+
     try {
       const { url, bearer } = await getStreamConfig({ data: undefined });
       const res = await fetch(url, {
@@ -161,6 +170,7 @@ function AiPage() {
           const stageIndex = AGENT_META.findIndex((a) => a.stage === event.stage);
           if (stageIndex >= 0) setActiveAgent(stageIndex);
           setStreamText((prev) => prev + event.delta);
+          accumulatedStageText[event.stage] = (accumulatedStageText[event.stage] ?? "") + event.delta;
           setStageText((prev) => ({
             ...prev,
             [event.stage]: (prev[event.stage] ?? "") + event.delta,
@@ -175,7 +185,7 @@ function AiPage() {
         oneLiner: value,
         sections: AGENT_META.map((a) => ({
           title: a.name,
-          bullets: (stageText[a.stage] || "Generated section")
+          bullets: (accumulatedStageText[a.stage] || "Generated section")
             .split("\n")
             .filter(Boolean)
             .slice(0, 5),
