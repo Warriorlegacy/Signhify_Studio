@@ -141,7 +141,6 @@ export function ThreeDDevicePreview({
 
         <PresentationControls
           global
-          
           snap
           rotation={[0.1, -0.2, 0]}
           polar={[-Math.PI / 12, Math.PI / 6]}

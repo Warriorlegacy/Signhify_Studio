@@ -86,7 +86,6 @@ function GlassOrb() {
           outerRef.current.rotation.x = nextX;
           outerRef.current.rotation.y = nextY;
         }}
-        
       >
         <icosahedronGeometry args={[1.7, 1]} />
         <meshPhysicalMaterial
