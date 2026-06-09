@@ -29,12 +29,13 @@ export const getPublicProjects = createServerFn({ method: "GET" }).handler(
 );
 
 export const getPublicProjectBySlug = createServerFn({ method: "GET" })
-  .inputValidator((input: unknown) => {
-    const slug = typeof input === "string" ? input : (input as Record<string, unknown>)?.slug;
-    if (!slug) throw new Error("Slug is required");
-    return slug;
+  .inputValidator((input: { slug: string }) => {
+    const slug = typeof input === "string" ? input : input?.slug;
+    if (!slug || typeof slug !== "string") throw new Error("Slug is required");
+    return { slug };
   })
-  .handler(async ({ data: slug }): Promise<{ project: Project | null }> => {
+  .handler(async ({ data }): Promise<{ project: Project | null }> => {
+    const { slug } = data;
     try {
       const { fetchProjectBySlug } = await import("@/lib/projects.server");
       const row = await fetchProjectBySlug(slug);
