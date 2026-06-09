@@ -8,7 +8,7 @@ import {
   Rocket,
   Sparkles,
 } from "lucide-react";
-import { getSavedPlan } from "@/lib/ai-generate.functions";
+import { getSavedPlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
 
 export const Route = createFileRoute("/ai/share/$id")({
   loader: async ({ params }) => {
