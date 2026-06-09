@@ -65,7 +65,7 @@ const AGENT_ICONS = [
 ];
 
 function SharedPlanPage() {
-  const { session } = Route.useLoaderData();
+  const { session } = Route.useLoaderData() as { session: { prompt: string; plan: GeneratedPlan; userId: string | null } };
   const { plan, prompt } = session;
 
   return (
