@@ -64,7 +64,7 @@ export function EcosystemSection() {
                 key={l.name}
                 initial={{ opacity: 0, x: -16 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
+                viewport={{ once: true, margin: "100px 0px" }}
                 transition={{ duration: 0.5, delay: i * 0.06 }}
                 className="relative pl-12"
               >

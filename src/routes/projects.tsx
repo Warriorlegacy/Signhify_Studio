@@ -1,25 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
-import { projects as staticProjects, type Project } from "@/lib/projects";
+import { getPublicProjects } from "@/lib/projects-list.functions";
 import { CtaSection } from "@/components/sections/CtaSection";
 
 export const Route = createFileRoute("/projects")({
   loader: async () => {
-    const { fetchProjects } = await import("@/lib/projects.server");
-    const rows = await fetchProjects();
-    const mapped: Project[] = rows.map((p) => ({
-      slug: p.slug,
-      name: p.title,
-      category: p.tags?.[0] ?? "Studio",
-      url: p.live_url ?? `/projects/${p.slug}`,
-      blurb: p.description ?? "Signhify project",
-      tags: p.tags ?? [],
-      stack: [],
-      size: p.featured ? "md" : "sm",
-      featured: !!p.featured,
-      year: p.created_at ? new Date(p.created_at).getFullYear() : undefined,
-    }));
-    return { projects: mapped.length ? mapped : staticProjects };
+    try {
+      const { projects } = await getPublicProjects();
+      return { projects };
+    } catch (e) {
+      console.error("[projects] loader failed:", e);
+      const { projects: staticProjects } = await import("@/lib/projects");
+      return { projects: staticProjects };
+    }
   },
   head: () => ({
     meta: [

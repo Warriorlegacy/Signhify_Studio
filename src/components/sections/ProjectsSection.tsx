@@ -178,7 +178,7 @@ function ProjectCard({
     <motion.div
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: true, margin: "100px 0px" }}
       transition={{ duration: 0.5, delay: (i % 6) * 0.05 }}
       className={spanClass}
     >

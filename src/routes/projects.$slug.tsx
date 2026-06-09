@@ -1,28 +1,21 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ExternalLink, Layers, Sparkles } from "lucide-react";
-import { projects, type Project } from "@/lib/projects";
+import { getPublicProjectBySlug } from "@/lib/projects-list.functions";
 import { ThreeDDevicePreview } from "@/components/three/ThreeDDevicePreview";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: async ({ params }) => {
-    const { fetchProjectBySlug } = await import("@/lib/projects.server");
-    const row = await fetchProjectBySlug(params.slug);
-    const project: Project | undefined = row
-      ? {
-          slug: row.slug,
-          name: row.title,
-          category: row.tags?.[0] ?? "Studio",
-          url: row.live_url ?? `/projects/${row.slug}`,
-          blurb: row.description ?? "Signhify project",
-          tags: row.tags ?? [],
-          stack: [],
-          size: row.featured ? "md" : "sm",
-          featured: !!row.featured,
-          year: row.created_at ? new Date(row.created_at).getFullYear() : undefined,
-        }
-      : projects.find((p) => p.slug === params.slug);
-    if (!project) throw notFound();
-    return { project };
+    try {
+      const { project } = await getPublicProjectBySlug({ slug: params.slug });
+      if (!project) throw notFound();
+      return { project };
+    } catch (e) {
+      console.error("[projects.$slug] loader failed:", e);
+      const { projects } = await import("@/lib/projects");
+      const project = projects.find((p) => p.slug === params.slug);
+      if (!project) throw notFound();
+      return { project };
+    }
   },
   head: ({ loaderData }) => {
     const p = loaderData?.project;
