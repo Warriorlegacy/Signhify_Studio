@@ -46,12 +46,43 @@ serve(async (req) => {
     });
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const groqKey = Deno.env.get("GROQ_API_KEY");
+  const openrouterKey = Deno.env.get("OPENROUTER_API_KEY");
+  const mistralKey = Deno.env.get("MISTRAL_API_KEY");
   const anthropicKey = Deno.env.get("ANTHROPIC_API_KEY");
-  if (!anthropicKey)
-    return new Response(JSON.stringify({ error: "Missing ANTHROPIC_API_KEY" }), {
-      status: 500,
-      headers: { ...corsHeaders, "content-type": "application/json" },
-    });
+
+  let apiUrl = "";
+  let apiKey = "";
+  let modelName = "";
+  let isAnthropic = false;
+
+  if (groqKey) {
+    apiUrl = "https://api.groq.com/openai/v1/chat/completions";
+    apiKey = groqKey;
+    modelName = "llama-3.3-70b-versatile";
+  } else if (openrouterKey) {
+    apiUrl = "https://openrouter.ai/api/v1/chat/completions";
+    apiKey = openrouterKey;
+    modelName = "google/gemini-2.5-flash";
+  } else if (mistralKey) {
+    apiUrl = "https://api.mistral.ai/v1/chat/completions";
+    apiKey = mistralKey;
+    modelName = "mistral-tiny";
+  } else if (anthropicKey) {
+    apiUrl = "https://api.anthropic.com/v1/messages";
+    apiKey = anthropicKey;
+    modelName = "claude-3-5-sonnet-20241022";
+    isAnthropic = true;
+  } else {
+    return new Response(
+      JSON.stringify({ error: "Missing API Key. Set GROQ_API_KEY or OPENROUTER_API_KEY." }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "content-type": "application/json" },
+      },
+    );
+  }
+
   const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
   const { prompt } = await req.json().catch(() => ({ prompt: "" }));
   if (typeof prompt !== "string" || prompt.trim().length < 3)
@@ -77,25 +108,45 @@ serve(async (req) => {
     .from("rate_limits")
     .upsert({ ip, window_start: windowStart, count: (existing?.count ?? 0) + 1 });
 
-  const body = {
-    model: "claude-3-5-sonnet-20241022",
-    max_tokens: 2400,
-    stream: true,
-    system: `You are Signhify AI. Stream a product plan in six labeled sections exactly in this order: [briefing], [architecture], [design_tokens], [codegen], [review], [deploy_plan]. Keep each section practical and concise.`,
-    messages: [{ role: "user", content: prompt.trim() }],
+  let body: Record<string, unknown> | undefined;
+  const requestHeaders: Record<string, string> = {
+    "content-type": "application/json",
   };
-  const anth = await fetch("https://api.anthropic.com/v1/messages", {
+
+  const systemPrompt = `You are Signhify AI. Stream a product plan in six labeled sections exactly in this order: [briefing], [architecture], [design_tokens], [codegen], [review], [deploy_plan]. Keep each section practical and concise.`;
+
+  if (isAnthropic) {
+    requestHeaders["x-api-key"] = apiKey;
+    requestHeaders["anthropic-version"] = "2023-06-01";
+    body = {
+      model: modelName,
+      max_tokens: 2400,
+      stream: true,
+      system: systemPrompt,
+      messages: [{ role: "user", content: prompt.trim() }],
+    };
+  } else {
+    requestHeaders["Authorization"] = `Bearer ${apiKey}`;
+    body = {
+      model: modelName,
+      max_tokens: 2400,
+      stream: true,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: prompt.trim() },
+      ],
+    };
+  }
+
+  const aiRes = await fetch(apiUrl, {
     method: "POST",
-    headers: {
-      "content-type": "application/json",
-      "x-api-key": anthropicKey,
-      "anthropic-version": "2023-06-01",
-    },
+    headers: requestHeaders,
     body: JSON.stringify(body),
   });
-  if (!anth.ok || !anth.body)
-    return new Response(JSON.stringify({ error: "Anthropic request failed" }), {
-      status: anth.status || 502,
+
+  if (!aiRes.ok || !aiRes.body)
+    return new Response(JSON.stringify({ error: `${modelName} request failed` }), {
+      status: aiRes.status || 502,
       headers: { ...corsHeaders, "content-type": "application/json" },
     });
 
@@ -105,7 +156,7 @@ serve(async (req) => {
   let buffer = "";
   const stream = new ReadableStream({
     async start(controller) {
-      const reader = anth.body!.getReader();
+      const reader = aiRes.body!.getReader();
       try {
         while (true) {
           const { done, value } = await reader.read();
@@ -116,11 +167,15 @@ serve(async (req) => {
           for (const part of parts) {
             const dataLine = part.split("\n").find((l) => l.startsWith("data:"));
             if (!dataLine || dataLine.includes("[DONE]")) continue;
-            const json = JSON.parse(dataLine.slice(5).trim());
-            const delta = json?.delta?.text;
-            if (typeof delta === "string" && delta) {
-              stage = stageFromText(delta, stage);
-              controller.enqueue(encoder.encode(sse({ stage, delta })));
+            try {
+              const json = JSON.parse(dataLine.slice(5).trim());
+              const delta = isAnthropic ? json?.delta?.text : json?.choices?.[0]?.delta?.content;
+              if (typeof delta === "string" && delta) {
+                stage = stageFromText(delta, stage);
+                controller.enqueue(encoder.encode(sse({ stage, delta })));
+              }
+            } catch {
+              // Ignore parsing errors on heartbeats/empty chunks
             }
           }
         }

@@ -91,16 +91,48 @@ serve(async (req) => {
       runId = created.id;
     }
     await admin.from("runs").update({ status: "running" }).eq("id", runId);
-    if (!anthropicKey) throw new Error("Missing ANTHROPIC_API_KEY");
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-api-key": anthropicKey,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-3-5-sonnet-20241022",
+    const groqKey = Deno.env.get("GROQ_API_KEY");
+    const openrouterKey = Deno.env.get("OPENROUTER_API_KEY");
+    const mistralKey = Deno.env.get("MISTRAL_API_KEY");
+
+    let apiUrl = "";
+    let apiKey = "";
+    let modelName = "";
+    let isAnthropic = false;
+
+    if (groqKey) {
+      apiUrl = "https://api.groq.com/openai/v1/chat/completions";
+      apiKey = groqKey;
+      modelName = "llama-3.3-70b-versatile";
+    } else if (openrouterKey) {
+      apiUrl = "https://openrouter.ai/api/v1/chat/completions";
+      apiKey = openrouterKey;
+      modelName = "google/gemini-2.5-flash";
+    } else if (mistralKey) {
+      apiUrl = "https://api.mistral.ai/v1/chat/completions";
+      apiKey = mistralKey;
+      modelName = "mistral-tiny";
+    } else if (anthropicKey) {
+      apiUrl = "https://api.anthropic.com/v1/messages";
+      apiKey = anthropicKey;
+      modelName = "claude-3-5-sonnet-20241022";
+      isAnthropic = true;
+    } else {
+      throw new Error(
+        "No working API key configured on the server. Set GROQ_API_KEY or OPENROUTER_API_KEY.",
+      );
+    }
+
+    const requestHeaders: Record<string, string> = {
+      "content-type": "application/json",
+    };
+    let body: Record<string, unknown> | undefined;
+
+    if (isAnthropic) {
+      requestHeaders["x-api-key"] = apiKey;
+      requestHeaders["anthropic-version"] = "2023-06-01";
+      body = {
+        model: modelName,
         max_tokens: 4096,
         tools,
         messages: [
@@ -109,8 +141,42 @@ serve(async (req) => {
             content: `Build a Signhify project plan for: ${prompt}. Use each available tool once with realistic inputs.`,
           },
         ],
-      }),
+      };
+    } else {
+      requestHeaders["Authorization"] = `Bearer ${apiKey}`;
+      const openAiTools = tools.map((t) => ({
+        type: "function",
+        function: {
+          name: t.name,
+          description: t.description,
+          parameters: t.input_schema,
+        },
+      }));
+      body = {
+        model: modelName,
+        max_tokens: 4096,
+        tools: openAiTools,
+        tool_choice: "auto",
+        messages: [
+          {
+            role: "user",
+            content: `Build a Signhify project plan for: ${prompt}. Use each available tool once with realistic inputs.`,
+          },
+        ],
+      };
+    }
+
+    const res = await fetch(apiUrl, {
+      method: "POST",
+      headers: requestHeaders,
+      body: JSON.stringify(body),
     });
+
+    if (!res.ok) {
+      const errorText = await res.text().catch(() => "");
+      throw new Error(`${modelName} request failed with status ${res.status}: ${errorText}`);
+    }
+
     const json = await res.json();
     const totalTokens = (json?.usage?.input_tokens ?? 0) + (json?.usage?.output_tokens ?? 0);
     const elapsed = Date.now() - started;
@@ -129,7 +195,27 @@ serve(async (req) => {
         { status: 402, headers: { ...corsHeaders, "content-type": "application/json" } },
       );
     }
-    const toolCalls = (json?.content ?? []).filter((c: any) => c.type === "tool_use");
+    let toolCalls = [];
+    if (isAnthropic) {
+      toolCalls = (json?.content ?? []).filter((c: { type: string }) => c.type === "tool_use");
+    } else {
+      const rawCalls = json?.choices?.[0]?.message?.tool_calls ?? [];
+      toolCalls = rawCalls.map((c: { function: { name: string; arguments: string } }) => {
+        let args = {};
+        try {
+          args =
+            typeof c.function.arguments === "string"
+              ? JSON.parse(c.function.arguments)
+              : c.function.arguments;
+        } catch {
+          // Ignore parse issues
+        }
+        return {
+          name: c.function.name,
+          input: args,
+        };
+      });
+    }
     const fallback = toolCalls.length
       ? toolCalls
       : tools.map((t) => ({ name: t.name, input: { prompt } }));

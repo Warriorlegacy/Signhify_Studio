@@ -31,6 +31,71 @@ export const generatePlan = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => validate(input))
   .handler(async ({ data }): Promise<GeneratedPlan> => {
     const apiKey = process.env.LOVABLE_API_KEY;
+    const groqKey = process.env.GROQ_API_KEY;
+    const openrouterKey = process.env.OPENROUTER_API_KEY;
+    const mistralKey = process.env.MISTRAL_API_KEY;
+
+    if (!apiKey && (groqKey || openrouterKey || mistralKey)) {
+      let apiUrl = "";
+      let authKey = "";
+      let modelName = "";
+
+      if (groqKey) {
+        apiUrl = "https://api.groq.com/openai/v1/chat/completions";
+        authKey = groqKey;
+        modelName = "llama-3.3-70b-versatile";
+      } else if (openrouterKey) {
+        apiUrl = "https://openrouter.ai/api/v1/chat/completions";
+        authKey = openrouterKey;
+        modelName = "google/gemini-2.5-flash";
+      } else {
+        apiUrl = "https://api.mistral.ai/v1/chat/completions";
+        authKey = mistralKey!;
+        modelName = "mistral-tiny";
+      }
+
+      console.info(
+        `[ai] LOVABLE_API_KEY is missing. Querying real LLM fallback (${modelName}) locally.`,
+      );
+
+      try {
+        const res = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authKey}`,
+          },
+          body: JSON.stringify({
+            model: modelName,
+            temperature: 0.6,
+            response_format: { type: "json_object" },
+            messages: [
+              { role: "system", content: SYSTEM },
+              { role: "user", content: data.prompt },
+            ],
+          }),
+        });
+
+        if (res.ok) {
+          const json = (await res.json()) as any;
+          const content = json.choices?.[0]?.message?.content ?? "";
+          const parsed = JSON.parse(content) as GeneratedPlan;
+          if (
+            parsed?.productName &&
+            parsed?.oneLiner &&
+            Array.isArray(parsed?.sections) &&
+            Array.isArray(parsed?.stack)
+          ) {
+            return parsed;
+          }
+        } else {
+          console.warn("[ai] Fallback LLM query failed. Status:", res.status);
+        }
+      } catch (e) {
+        console.warn("[ai] Error querying fallback LLM, falling back to mock:", e);
+      }
+    }
+
     if (!apiKey) {
       console.warn("[ai] LOVABLE_API_KEY is missing. Falling back to local mock generator.");
       return generateLocalMockPlan(data.prompt);
