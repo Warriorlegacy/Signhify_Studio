@@ -6,7 +6,7 @@ import { ThreeDDevicePreview } from "@/components/three/ThreeDDevicePreview";
 export const Route = createFileRoute("/projects/$slug")({
   loader: async ({ params }) => {
     try {
-      const { project } = await getPublicProjectBySlug({ slug: params.slug });
+      const { project } = await getPublicProjectBySlug({ data: { slug: params.slug } });
       if (!project) throw notFound();
       return { project };
     } catch (e) {
