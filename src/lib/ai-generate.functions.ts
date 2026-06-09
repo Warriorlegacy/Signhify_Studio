@@ -305,7 +305,7 @@ export const getSavedPlan = createServerFn({ method: "GET" })
     }
     return { id: id.trim() };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ data }): Promise<{ prompt: string; plan: GeneratedPlan; userId: string | null } | null> => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await supabaseAdmin
       .from("ai_sessions")

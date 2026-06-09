@@ -8,7 +8,7 @@ import {
   Rocket,
   Sparkles,
 } from "lucide-react";
-import { getSavedPlan } from "@/lib/ai-generate.functions";
+import { getSavedPlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
 
 export const Route = createFileRoute("/ai/share/$id")({
   loader: async ({ params }) => {
@@ -65,7 +65,7 @@ const AGENT_ICONS = [
 ];
 
 function SharedPlanPage() {
-  const { session } = Route.useLoaderData();
+  const { session } = Route.useLoaderData() as { session: { prompt: string; plan: GeneratedPlan; userId: string | null } };
   const { plan, prompt } = session;
 
   return (
