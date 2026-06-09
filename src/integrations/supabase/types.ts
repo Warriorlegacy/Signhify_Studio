@@ -8,6 +8,30 @@ export type Database = {
   };
   public: {
     Tables: {
+      ai_sessions: {
+        Row: {
+          created_at: string;
+          id: string;
+          prompt: string;
+          response: Json;
+          user_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          prompt: string;
+          response?: Json;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          prompt?: string;
+          response?: Json;
+          user_id?: string | null;
+        };
+        Relationships: [];
+      };
       leads: {
         Row: {
           budget: string;

@@ -11,12 +11,15 @@ import {
   Rocket,
   Check,
   Mail,
+  Share2,
+  Copy,
 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { generatePlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
+import { generatePlan, savePlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
 import { getGeneratePlanStreamConfig } from "@/lib/ai-generate-stream.functions";
 import { joinWaitlist } from "@/lib/waitlist.functions";
+import { useUser } from "@/hooks/useUser";
 
 export const Route = createFileRoute("/ai")({
   head: () => ({
@@ -73,9 +76,39 @@ function AiPage() {
     deploy_plan: "",
   });
   const [completedStages, setCompletedStages] = useState<PipelineStage[]>([]);
+  const { user } = useUser();
+  const [sharing, setSharing] = useState(false);
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const generate = useServerFn(generatePlan);
   const getStreamConfig = useServerFn(getGeneratePlanStreamConfig);
+  const save = useServerFn(savePlan);
+
+  const handleShare = async () => {
+    if (!plan) return;
+    setSharing(true);
+    setCopied(false);
+    try {
+      const result = await save({
+        data: {
+          prompt,
+          plan,
+          userId: user?.id,
+        },
+      });
+      const url = `${window.location.origin}/ai/share/${result.id}`;
+      setShareUrl(url);
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    } catch (err) {
+      console.error("[handleShare] failed:", err);
+      alert("Could not share plan. Try again.");
+    } finally {
+      setSharing(false);
+    }
+  };
 
   const run = async (text?: string) => {
     const value = (text ?? prompt).trim();
@@ -385,6 +418,33 @@ function AiPage() {
 
             <WaitlistForm prompt={prompt} />
 
+            {shareUrl && (
+              <div className="mt-6 p-4 rounded-xl border border-primary/20 bg-primary/5 flex items-center justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <span className="text-xs uppercase tracking-wider text-muted-foreground block mb-1">
+                    Shareable Plan Link
+                  </span>
+                  <input
+                    readOnly
+                    value={shareUrl}
+                    className="w-full bg-transparent text-sm text-foreground font-mono outline-none"
+                    onClick={(e) => (e.target as HTMLInputElement).select()}
+                  />
+                </div>
+                <button
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(shareUrl);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 3000);
+                  }}
+                  className="shrink-0 text-xs rounded-md border border-border bg-surface hover:border-primary/60 px-3 py-2 transition inline-flex items-center gap-1.5"
+                >
+                  {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                  {copied ? "Copied!" : "Copy"}
+                </button>
+              </div>
+            )}
+
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 to="/contact"
@@ -393,10 +453,30 @@ function AiPage() {
                 Have Signhify build this <ArrowRight size={16} />
               </Link>
               <button
+                onClick={handleShare}
+                disabled={sharing}
+                className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-5 py-3 text-sm font-semibold hover:border-primary/60 transition disabled:opacity-60"
+              >
+                {sharing ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" /> Sharing…
+                  </>
+                ) : copied ? (
+                  <>
+                    <Check size={16} className="text-emerald-400" /> Link copied!
+                  </>
+                ) : (
+                  <>
+                    <Share2 size={16} /> Share plan
+                  </>
+                )}
+              </button>
+              <button
                 onClick={() => {
                   setStage("idle");
                   setPlan(null);
                   setPrompt("");
+                  setShareUrl(null);
                 }}
                 className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-5 py-3 text-sm font-semibold hover:border-primary/60 transition"
               >

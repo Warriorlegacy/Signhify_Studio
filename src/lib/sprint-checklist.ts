@@ -128,7 +128,7 @@ export const sprintTracks: SprintTrack[] = [
         title: "Save + share plan",
         detail: "Plans persisted, shareable public URL.",
         owner: "Piyush",
-        status: "todo",
+        status: "done",
         due: "Jun 13",
       },
       {

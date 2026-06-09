@@ -36,6 +36,7 @@ import { Route as AppSettingsRouteImport } from './routes/app/settings'
 import { Route as AppProjectsNewRouteImport } from './routes/app/projects/new'
 import { Route as AppProjectsIdRouteImport } from './routes/app/projects/$id'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as AiShareIdRouteImport } from './routes/ai.share.$id'
 import { Route as AppProjectsIdAnalyticsRouteImport } from './routes/app/projects/$id.analytics'
 import { Route as AppProjectsIdRunsRunIdRouteImport } from './routes/app/projects/$id/runs/$runId'
 
@@ -174,6 +175,11 @@ const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   path: '/api/public/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiShareIdRoute = AiShareIdRouteImport.update({
+  id: '/share/$id',
+  path: '/share/$id',
+  getParentRoute: () => AiRoute,
+} as any)
 const AppProjectsIdAnalyticsRoute = AppProjectsIdAnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
@@ -188,7 +194,7 @@ const AppProjectsIdRunsRunIdRoute = AppProjectsIdRunsRunIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/ai': typeof AiRoute
+  '/ai': typeof AiRouteWithChildren
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
@@ -210,6 +216,7 @@ export interface FileRoutesByFullPath {
   '/marketplace/success': typeof MarketplaceSuccessRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/app/': typeof AppIndexRoute
+  '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
@@ -219,7 +226,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/ai': typeof AiRoute
+  '/ai': typeof AiRouteWithChildren
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
@@ -241,6 +248,7 @@ export interface FileRoutesByTo {
   '/marketplace/success': typeof MarketplaceSuccessRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/app': typeof AppIndexRoute
+  '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
@@ -251,7 +259,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/ai': typeof AiRoute
+  '/ai': typeof AiRouteWithChildren
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
@@ -273,6 +281,7 @@ export interface FileRoutesById {
   '/marketplace/success': typeof MarketplaceSuccessRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/app/': typeof AppIndexRoute
+  '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
@@ -306,6 +315,7 @@ export interface FileRouteTypes {
     | '/marketplace/success'
     | '/projects/$slug'
     | '/app/'
+    | '/ai/share/$id'
     | '/api/public/health'
     | '/app/projects/$id'
     | '/app/projects/new'
@@ -337,6 +347,7 @@ export interface FileRouteTypes {
     | '/marketplace/success'
     | '/projects/$slug'
     | '/app'
+    | '/ai/share/$id'
     | '/api/public/health'
     | '/app/projects/$id'
     | '/app/projects/new'
@@ -368,6 +379,7 @@ export interface FileRouteTypes {
     | '/marketplace/success'
     | '/projects/$slug'
     | '/app/'
+    | '/ai/share/$id'
     | '/api/public/health'
     | '/app/projects/$id'
     | '/app/projects/new'
@@ -378,7 +390,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AiRoute: typeof AiRoute
+  AiRoute: typeof AiRouteWithChildren
   BookRoute: typeof BookRoute
   ContactRoute: typeof ContactRoute
   HelpRoute: typeof HelpRoute
@@ -593,6 +605,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai/share/$id': {
+      id: '/ai/share/$id'
+      path: '/share/$id'
+      fullPath: '/ai/share/$id'
+      preLoaderRoute: typeof AiShareIdRouteImport
+      parentRoute: typeof AiRoute
+    }
     '/app/projects/$id/analytics': {
       id: '/app/projects/$id/analytics'
       path: '/analytics'
@@ -609,6 +628,16 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AiRouteChildren {
+  AiShareIdRoute: typeof AiShareIdRoute
+}
+
+const AiRouteChildren: AiRouteChildren = {
+  AiShareIdRoute: AiShareIdRoute,
+}
+
+const AiRouteWithChildren = AiRoute._addFileChildren(AiRouteChildren)
 
 interface MarketplaceRouteChildren {
   MarketplaceSellRoute: typeof MarketplaceSellRoute
@@ -653,7 +682,7 @@ const AppProjectsIdRouteWithChildren = AppProjectsIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AiRoute: AiRoute,
+  AiRoute: AiRouteWithChildren,
   BookRoute: BookRoute,
   ContactRoute: ContactRoute,
   HelpRoute: HelpRoute,

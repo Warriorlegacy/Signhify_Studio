@@ -77,7 +77,7 @@ export const generatePlan = createServerFn({ method: "POST" })
         });
 
         if (res.ok) {
-          const json = (await res.json()) as any;
+          const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
           const content = json.choices?.[0]?.message?.content ?? "";
           const parsed = JSON.parse(content) as GeneratedPlan;
           if (
@@ -172,17 +172,17 @@ function generateLocalMockPlan(prompt: string): GeneratedPlan {
     "Map key typography settings using premium font scales (Space Grotesk).",
     "Design fluid card components utilizing smooth 3D parallax hover states.",
   ];
-  let frontBullets = [
+  const frontBullets = [
     "Create type-safe layouts and dynamic routing via TanStack Router.",
     "Build interactive components utilizing spring physics (framer-motion).",
     "Optimize asset loader pipelines for perfect Core Web Vitals score.",
   ];
-  let backBullets = [
+  const backBullets = [
     "Develop robust TanStack Start server functions to isolate credentials.",
     "Integrate webhook handlers to receive notifications from partner platforms.",
     "Implement rate limiting guards on all public client-facing actions.",
   ];
-  let deployBullets = [
+  const deployBullets = [
     "Configure CI/CD pipelines to trigger builds on push to main branch.",
     "Set up Cloudflare Workers edge caching layer to optimize static pages.",
     "Wire up automated SSL validation and custom DNS mapping details.",
@@ -266,3 +266,60 @@ function generateLocalMockPlan(prompt: string): GeneratedPlan {
     stack,
   };
 }
+
+export const savePlan = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => {
+    const obj = input as Record<string, unknown>;
+    const prompt = typeof obj?.prompt === "string" ? obj.prompt.trim() : "";
+    const plan = obj?.plan as GeneratedPlan | undefined;
+    const userId = typeof obj?.userId === "string" ? obj.userId : undefined;
+
+    if (!prompt) throw new Error("Prompt is required.");
+    if (!plan || !plan.productName) throw new Error("Plan is required.");
+
+    return { prompt, plan, userId };
+  })
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row, error } = await supabaseAdmin
+      .from("ai_sessions")
+      .insert({
+        prompt: data.prompt,
+        response: data.plan,
+        user_id: data.userId || null,
+      })
+      .select("id")
+      .single();
+    if (error) {
+      console.error("[savePlan] failed:", error);
+      throw new Error(error.message);
+    }
+    return { id: row.id as string };
+  });
+
+export const getSavedPlan = createServerFn({ method: "GET" })
+  .inputValidator((input: unknown) => {
+    const id = (input as Record<string, unknown>)?.id;
+    if (typeof id !== "string" || !id.trim()) {
+      throw new Error("Session ID is required.");
+    }
+    return { id: id.trim() };
+  })
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row, error } = await supabaseAdmin
+      .from("ai_sessions")
+      .select("prompt, response, user_id")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (error) {
+      console.error("[getSavedPlan] failed:", error);
+      throw new Error(error.message);
+    }
+    if (!row) return null;
+    return {
+      prompt: row.prompt as string,
+      plan: row.response as GeneratedPlan,
+      userId: row.user_id as string | null,
+    };
+  });
