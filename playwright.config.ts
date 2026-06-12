@@ -13,7 +13,7 @@ import { defineConfig, devices } from "@playwright/test";
  *
  * Override the target URL with PLAYWRIGHT_BASE_URL=https://signhify.online
  */
-const baseURL = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000";
+const baseURL = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:8080";
 
 export default defineConfig({
   testDir: "./tests/visual",

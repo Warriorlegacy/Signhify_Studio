@@ -170,7 +170,8 @@ function AiPage() {
           const stageIndex = AGENT_META.findIndex((a) => a.stage === event.stage);
           if (stageIndex >= 0) setActiveAgent(stageIndex);
           setStreamText((prev) => prev + event.delta);
-          accumulatedStageText[event.stage] = (accumulatedStageText[event.stage] ?? "") + event.delta;
+          accumulatedStageText[event.stage] =
+            (accumulatedStageText[event.stage] ?? "") + event.delta;
           setStageText((prev) => ({
             ...prev,
             [event.stage]: (prev[event.stage] ?? "") + event.delta,

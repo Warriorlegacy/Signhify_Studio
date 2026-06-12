@@ -29,6 +29,7 @@ import { Route as AiRouteImport } from './routes/ai'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as StudioSpikeRouteImport } from './routes/studio.spike'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
 import { Route as MarketplaceSuccessRouteImport } from './routes/marketplace.success'
 import { Route as MarketplaceSellRouteImport } from './routes/marketplace.sell'
@@ -140,6 +141,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/app/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudioSpikeRoute = StudioSpikeRouteImport.update({
+  id: '/studio/spike',
+  path: '/studio/spike',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -215,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/studio/spike': typeof StudioSpikeRoute
   '/app/': typeof AppIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
@@ -247,6 +254,7 @@ export interface FileRoutesByTo {
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/studio/spike': typeof StudioSpikeRoute
   '/app': typeof AppIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
@@ -280,6 +288,7 @@ export interface FileRoutesById {
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/studio/spike': typeof StudioSpikeRoute
   '/app/': typeof AppIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
@@ -314,6 +323,7 @@ export interface FileRouteTypes {
     | '/marketplace/sell'
     | '/marketplace/success'
     | '/projects/$slug'
+    | '/studio/spike'
     | '/app/'
     | '/ai/share/$id'
     | '/api/public/health'
@@ -346,6 +356,7 @@ export interface FileRouteTypes {
     | '/marketplace/sell'
     | '/marketplace/success'
     | '/projects/$slug'
+    | '/studio/spike'
     | '/app'
     | '/ai/share/$id'
     | '/api/public/health'
@@ -378,6 +389,7 @@ export interface FileRouteTypes {
     | '/marketplace/sell'
     | '/marketplace/success'
     | '/projects/$slug'
+    | '/studio/spike'
     | '/app/'
     | '/ai/share/$id'
     | '/api/public/health'
@@ -408,6 +420,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   VisionRoute: typeof VisionRoute
   AppSettingsRoute: typeof AppSettingsRoute
+  StudioSpikeRoute: typeof StudioSpikeRoute
   AppIndexRoute: typeof AppIndexRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   AppProjectsIdRoute: typeof AppProjectsIdRouteWithChildren
@@ -556,6 +569,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/studio/spike': {
+      id: '/studio/spike'
+      path: '/studio/spike'
+      fullPath: '/studio/spike'
+      preLoaderRoute: typeof StudioSpikeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/$slug': {
       id: '/projects/$slug'
       path: '/$slug'
@@ -700,6 +720,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   VisionRoute: VisionRoute,
   AppSettingsRoute: AppSettingsRoute,
+  StudioSpikeRoute: StudioSpikeRoute,
   AppIndexRoute: AppIndexRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   AppProjectsIdRoute: AppProjectsIdRouteWithChildren,

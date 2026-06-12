@@ -305,21 +305,25 @@ export const getSavedPlan = createServerFn({ method: "GET" })
     }
     return { id: id.trim() };
   })
-  .handler(async ({ data }): Promise<{ prompt: string; plan: GeneratedPlan; userId: string | null } | null> => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: row, error } = await supabaseAdmin
-      .from("ai_sessions")
-      .select("prompt, response, user_id")
-      .eq("id", data.id)
-      .maybeSingle();
-    if (error) {
-      console.error("[getSavedPlan] failed:", error);
-      throw new Error(error.message);
-    }
-    if (!row) return null;
-    return {
-      prompt: row.prompt as string,
-      plan: row.response as GeneratedPlan,
-      userId: row.user_id as string | null,
-    };
-  });
+  .handler(
+    async ({
+      data,
+    }): Promise<{ prompt: string; plan: GeneratedPlan; userId: string | null } | null> => {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { data: row, error } = await supabaseAdmin
+        .from("ai_sessions")
+        .select("prompt, response, user_id")
+        .eq("id", data.id)
+        .maybeSingle();
+      if (error) {
+        console.error("[getSavedPlan] failed:", error);
+        throw new Error(error.message);
+      }
+      if (!row) return null;
+      return {
+        prompt: row.prompt as string,
+        plan: row.response as GeneratedPlan,
+        userId: row.user_id as string | null,
+      };
+    },
+  );

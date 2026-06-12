@@ -27,6 +27,8 @@ export const Route = createFileRoute("/templates")({
       subdomain="marketplace.signhify.online"
       description="A curated library of SaaS, AI, landing, CRM and dashboard templates — opinionated, deployable, and built on the same stack we use for client work."
       week="Week 3 · June 15–21"
+      prototypeTo="/studio/spike"
+      prototypeLabel="Try Scroll Studio (Spike)"
       bullets={[
         "10+ launch-ready Next.js / TanStack templates",
         "One-click deploy through Signhify Deploy",

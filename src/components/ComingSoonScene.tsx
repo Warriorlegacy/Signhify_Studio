@@ -9,9 +9,20 @@ type Props = {
   description: string;
   week: string;
   bullets: string[];
+  prototypeTo?: string;
+  prototypeLabel?: string;
 };
 
-export function ComingSoonScene({ eyebrow, title, subdomain, description, week, bullets }: Props) {
+export function ComingSoonScene({
+  eyebrow,
+  title,
+  subdomain,
+  description,
+  week,
+  bullets,
+  prototypeTo,
+  prototypeLabel,
+}: Props) {
   return (
     <section className="relative isolate min-h-[100svh] flex items-center pt-32 pb-24 overflow-hidden">
       <div
@@ -97,6 +108,15 @@ export function ComingSoonScene({ eyebrow, title, subdomain, description, week, 
             Get early access
             <ArrowRight size={16} className="group-hover:translate-x-0.5 transition" />
           </Link>
+          {prototypeTo && prototypeLabel && (
+            <Link
+              to={prototypeTo}
+              className="inline-flex items-center gap-2 rounded-md border border-primary/30 bg-primary/10 px-6 py-3.5 text-sm font-semibold text-primary hover:bg-primary/20 transition"
+            >
+              <Sparkles size={16} />
+              {prototypeLabel}
+            </Link>
+          )}
           <Link
             to="/sprint"
             className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 backdrop-blur px-6 py-3.5 text-sm font-semibold text-foreground hover:border-primary/60 transition"
