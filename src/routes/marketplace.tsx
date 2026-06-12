@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowUpRight, Download, Search, Sparkles } from "lucide-react";
@@ -7,6 +7,7 @@ import { downloadAsset } from "@/lib/marketplace-download.functions";
 import { createCheckoutSession } from "@/lib/stripe-checkout.functions";
 import { fetchMarketplaceListings } from "@/lib/marketplace-listings.functions";
 import { ThreeDCard } from "@/components/ui/ThreeDCard";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/marketplace")({
   loader: async () => {
@@ -71,7 +72,7 @@ function MarketplacePage() {
             </p>
           </div>
           <Link
-            to="/contact"
+            to="/marketplace/sell"
             className="self-start inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-2 text-sm text-foreground hover:bg-primary/15 transition"
           >
             <Sparkles size={14} className="text-primary" />
@@ -138,7 +139,7 @@ function MarketplacePage() {
             </p>
           </div>
           <Link
-            to="/contact"
+            to="/marketplace/sell"
             className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
           >
             Apply as creator <ArrowUpRight size={14} />
@@ -153,17 +154,33 @@ function MarketCard({ item }: { item: MarketItem }) {
   const isFree = (item.price_cents ?? item.price * 100) === 0;
   const download = useServerFn(downloadAsset);
   const checkout = useServerFn(createCheckoutSession);
+  const navigate = useNavigate();
   const handleCta = async () => {
     if (!item.id) {
-      if (item.preview_url) window.location.href = item.preview_url;
+      if (item.preview_url) {
+        window.location.href = item.preview_url;
+      } else {
+        toast(`${item.name} is a curated template.`, {
+          description: "Let's discuss deploying this exact stack for your business!",
+          action: {
+            label: "Contact",
+            onClick: () => navigate({ to: "/contact" }),
+          },
+        });
+      }
       return;
     }
-    if (isFree) {
-      const { signedUrl } = await download({ data: { listingId: item.id } });
-      window.location.href = signedUrl;
-    } else {
-      const { url } = await checkout({ data: { listingId: item.id } });
-      window.location.href = url;
+    try {
+      if (isFree) {
+        const { signedUrl } = await download({ data: { listingId: item.id } });
+        window.location.href = signedUrl;
+      } else {
+        const { url } = await checkout({ data: { listingId: item.id } });
+        window.location.href = url;
+      }
+    } catch (e) {
+      console.error("[marketplace] checkout failed:", e);
+      toast.error("Checkout failed. Please try again.");
     }
   };
   return (

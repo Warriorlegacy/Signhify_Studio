@@ -18,6 +18,7 @@ export const Route = createFileRoute("/app/projects/$id/analytics")({
     ],
     links: [{ rel: "canonical", href: "https://signhify.online/app/projects/analytics" }],
   }),
+  loader: async ({ params }) => ({ id: params.id }),
   component: AnalyticsPage,
 });
 function tally(rows: any[], key: string) {

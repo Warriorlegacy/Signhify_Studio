@@ -34,13 +34,23 @@ export const generatePlan = createServerFn({ method: "POST" })
     const groqKey = process.env.GROQ_API_KEY;
     const openrouterKey = process.env.OPENROUTER_API_KEY;
     const mistralKey = process.env.MISTRAL_API_KEY;
+    const cerebrasKey = process.env.CEREBRAS_API_KEY;
+    const geminiKey = process.env.GEMINI_API_KEY;
 
-    if (!apiKey && (groqKey || openrouterKey || mistralKey)) {
+    if (!apiKey && (cerebrasKey || geminiKey || groqKey || openrouterKey || mistralKey)) {
       let apiUrl = "";
       let authKey = "";
       let modelName = "";
 
-      if (groqKey) {
+      if (cerebrasKey) {
+        apiUrl = "https://api.cerebras.ai/v1/chat/completions";
+        authKey = cerebrasKey;
+        modelName = "llama-3.3-70b";
+      } else if (geminiKey) {
+        apiUrl = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+        authKey = geminiKey;
+        modelName = "gemini-2.5-flash";
+      } else if (groqKey) {
         apiUrl = "https://api.groq.com/openai/v1/chat/completions";
         authKey = groqKey;
         modelName = "llama-3.3-70b-versatile";

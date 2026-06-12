@@ -50,13 +50,23 @@ serve(async (req) => {
   const openrouterKey = Deno.env.get("OPENROUTER_API_KEY");
   const mistralKey = Deno.env.get("MISTRAL_API_KEY");
   const anthropicKey = Deno.env.get("ANTHROPIC_API_KEY");
+  const cerebrasKey = Deno.env.get("CEREBRAS_API_KEY");
+  const geminiKey = Deno.env.get("GEMINI_API_KEY");
 
   let apiUrl = "";
   let apiKey = "";
   let modelName = "";
   let isAnthropic = false;
 
-  if (groqKey) {
+  if (cerebrasKey) {
+    apiUrl = "https://api.cerebras.ai/v1/chat/completions";
+    apiKey = cerebrasKey;
+    modelName = "llama-3.3-70b";
+  } else if (geminiKey) {
+    apiUrl = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+    apiKey = geminiKey;
+    modelName = "gemini-2.5-flash";
+  } else if (groqKey) {
     apiUrl = "https://api.groq.com/openai/v1/chat/completions";
     apiKey = groqKey;
     modelName = "llama-3.3-70b-versatile";
@@ -75,7 +85,9 @@ serve(async (req) => {
     isAnthropic = true;
   } else {
     return new Response(
-      JSON.stringify({ error: "Missing API Key. Set GROQ_API_KEY or OPENROUTER_API_KEY." }),
+      JSON.stringify({
+        error: "Missing API Key. Set CEREBRAS_API_KEY, GEMINI_API_KEY, or GROQ_API_KEY.",
+      }),
       {
         status: 500,
         headers: { ...corsHeaders, "content-type": "application/json" },

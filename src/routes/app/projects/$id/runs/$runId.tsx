@@ -20,8 +20,10 @@ export const Route = createFileRoute("/app/projects/$id/runs/$runId")({
     links: [{ rel: "canonical", href: "https://signhify.online/app/projects/run" }],
   }),
   component: RunViewer,
+  loader: async ({ params }) => ({ projectId: params.id, runId: params.runId }),
 });
-const icons: any = {
+const Fallback = "__FALLBACK__";
+const icons: Record<string, any> = {
   code_gen: Code2,
   schema_design: Database,
   design_tokens: Palette,
@@ -34,7 +36,8 @@ const badge = (s: string) =>
       ? "border-red-500/40 bg-red-500/10 text-red-300"
       : "border-yellow-500/40 bg-yellow-500/10 text-yellow-300";
 function RunViewer() {
-  const { runId } = Route.useParams();
+  const { id, runId } = Route.useParams();
+  const loaderData = Route.useLoaderData();
   const q = useQuery({
     queryKey: ["run", runId],
     queryFn: async () => {
