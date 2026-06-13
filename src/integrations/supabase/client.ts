@@ -7,13 +7,22 @@ import type { Database } from "./types";
 
 type AnyClient = SupabaseClient<Database>;
 
+// Public Supabase project values — safe to embed (anon/publishable key, RLS-protected).
+// Used as a fallback when the build env lacks VITE_* vars (e.g. published builds
+// where .env isn't propagated to the bundler).
+const FALLBACK_URL = "https://nqeuarvpkxupxeeuzuow.supabase.co";
+const FALLBACK_PUBLISHABLE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5xZXVhcnZwa3h1cHhlZXV6dW93Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NzE1MTQsImV4cCI6MjA5NjE0NzUxNH0.t0J5x_KjxvTrQ9vnJiadaYH8_XVqJ0hX_gR4hTJ6QMk";
+
 function readEnv() {
   const url =
     (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
-    (typeof process !== "undefined" ? process.env?.SUPABASE_URL : undefined);
+    (typeof process !== "undefined" ? process.env?.SUPABASE_URL : undefined) ||
+    FALLBACK_URL;
   const key =
     (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined) ||
-    (typeof process !== "undefined" ? process.env?.SUPABASE_PUBLISHABLE_KEY : undefined);
+    (typeof process !== "undefined" ? process.env?.SUPABASE_PUBLISHABLE_KEY : undefined) ||
+    FALLBACK_PUBLISHABLE_KEY;
   return { url, key };
 }
 
