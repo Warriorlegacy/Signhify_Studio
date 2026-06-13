@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import {
   insertVideoJob,
   updateVideoJob,
@@ -10,8 +11,22 @@ import {
   type DbFrame,
 } from "./studio.server";
 
-// Expose triggering video generation
+async function assertProjectOwnership(
+  supabase: any,
+  projectId: string,
+  userId: string,
+): Promise<void> {
+  const { data, error } = await supabase
+    .from("user_projects")
+    .select("id")
+    .eq("id", projectId)
+    .eq("user_id", userId)
+    .single();
+  if (error || !data) throw new Error("Project not found or access denied");
+}
+
 export const triggerVideoGeneration = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
     const obj = input as Record<string, unknown>;
     const projectId = typeof obj?.projectId === "string" ? obj.projectId : "";
@@ -21,18 +36,18 @@ export const triggerVideoGeneration = createServerFn({ method: "POST" })
         ? (obj.style as "wireframe" | "glowing" | "particle")
         : "glowing";
     const frameCount = typeof obj?.frameCount === "number" ? obj.frameCount : 150;
-    const userId = typeof obj?.userId === "string" ? obj.userId : "";
 
     if (!projectId) throw new Error("Project ID is required");
     if (!prompt || prompt.length < 4) throw new Error("Prompt must be at least 4 characters");
-    if (!userId) throw new Error("User ID is required");
 
-    return { projectId, prompt, style, frameCount, userId };
+    return { projectId, prompt, style, frameCount };
   })
-  .handler(async ({ data }) => {
-    const { projectId, prompt, style, frameCount, userId } = data;
+  .handler(async ({ context, data }) => {
+    const { projectId, prompt, style, frameCount } = data;
+    const userId = context.userId;
 
-    // Create the job in queued state
+    await assertProjectOwnership(context.supabase, projectId, userId);
+
     const job = await insertVideoJob({
       project_id: projectId,
       user_id: userId,
@@ -48,14 +63,13 @@ export const triggerVideoGeneration = createServerFn({ method: "POST" })
       throw new Error("Failed to create video job");
     }
 
-    // Trigger mock background rendering process
     void simulateBackgroundProcessing(job.id, projectId, userId, frameCount, style);
 
     return { jobId: job.id };
   });
 
-// Expose polling job status
 export const getVideoJobStatus = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
     const id = (input as Record<string, unknown>)?.jobId;
     if (typeof id !== "string" || !id.trim()) {
@@ -63,12 +77,17 @@ export const getVideoJobStatus = createServerFn({ method: "GET" })
     }
     return { jobId: id.trim() };
   })
-  .handler(async ({ data }): Promise<DbVideoJob | null> => {
-    return fetchVideoJob(data.jobId);
+  .handler(async ({ context, data }): Promise<DbVideoJob | null> => {
+    const job = await fetchVideoJob(data.jobId);
+    if (!job) return null;
+    if ((job as any).user_id && (job as any).user_id !== context.userId) {
+      throw new Error("Job not found or access denied");
+    }
+    return job;
   });
 
-// Expose querying project frames
 export const getProjectFramesList = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
     const id = (input as Record<string, unknown>)?.projectId;
     if (typeof id !== "string" || !id.trim()) {
@@ -76,12 +95,13 @@ export const getProjectFramesList = createServerFn({ method: "GET" })
     }
     return { projectId: id.trim() };
   })
-  .handler(async ({ data }): Promise<DbFrame[]> => {
+  .handler(async ({ context, data }): Promise<DbFrame[]> => {
+    await assertProjectOwnership(context.supabase, data.projectId, context.userId);
     return fetchProjectFrames(data.projectId);
   });
 
-// Expose updating user project code
 export const saveProjectCodeServer = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
     const obj = input as Record<string, unknown>;
     const projectId = typeof obj?.projectId === "string" ? obj.projectId : "";
@@ -93,28 +113,26 @@ export const saveProjectCodeServer = createServerFn({ method: "POST" })
 
     return { projectId, html, css, js };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ context, data }) => {
+    await assertProjectOwnership(context.supabase, data.projectId, context.userId);
     const success = await updateProjectCode(data.projectId, data.html, data.css, data.js);
     return { success };
   });
 
-// Background simulation of AI video generation and frame extraction
 async function simulateBackgroundProcessing(
   jobId: string,
   projectId: string,
-  userId: string,
+  _userId: string,
   frameCount: number,
   style: string,
 ) {
   try {
-    // 1. Transition to processing
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await updateVideoJob(jobId, {
       status: "processing",
       started_at: new Date().toISOString(),
     });
 
-    // 2. Simulate frames extraction
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
     const mockFrames: Partial<DbFrame>[] = [];
@@ -123,29 +141,25 @@ async function simulateBackgroundProcessing(
         video_job_id: jobId,
         project_id: projectId,
         frame_index: i,
-        // Procedural simulated CDN URLs using placeholder vectors
         cdn_url: `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80&index=${i}`,
         width: 800,
         height: 450,
-        file_size_bytes: 25 * 1024, // 25KB mock WebP
+        file_size_bytes: 25 * 1024,
       });
     }
 
-    // Insert frames in database
     await insertFrames(mockFrames);
 
-    // 3. Mark completed
     await updateVideoJob(jobId, {
       status: "completed",
       frame_count: frameCount,
-      cost_usd: 0.12, // mock price for Runway generation
+      cost_usd: 0.12,
       processing_time_ms: 8000,
       video_url:
         "https://assets.mixkit.co/videos/preview/mixkit-abstract-glowing-lines-41582-large.mp4",
       completed_at: new Date().toISOString(),
     });
 
-    // Also update project settings in user_projects
     const { updateProjectSettings } = await import("./studio.server");
     await updateProjectSettings(projectId, {
       status: "completed",
