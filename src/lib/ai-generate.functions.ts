@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { generateAIResponse } from "./ai-gateway.server";
 
 type GenerateInput = { prompt: string };
@@ -29,6 +30,7 @@ Given a single product idea, return a concise build plan as STRICT JSON matching
 - Output ONLY the JSON object. No prose, no code fences.`;
 
 export const generatePlan = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => validate(input))
   .handler(async ({ data }): Promise<GeneratedPlan> => {
     try {
@@ -38,11 +40,11 @@ export const generatePlan = createServerFn({ method: "POST" })
           { role: "user", content: data.prompt },
         ],
         temperature: 0.6,
-        response_format: { type: "json_object" }
+        response_format: { type: "json_object" },
       });
 
       const parsed = JSON.parse(content) as GeneratedPlan;
-      
+
       if (
         parsed?.productName &&
         parsed?.oneLiner &&
@@ -51,10 +53,13 @@ export const generatePlan = createServerFn({ method: "POST" })
       ) {
         return parsed;
       }
-      
+
       throw new Error("Incomplete plan returned by AI.");
     } catch (e) {
-      console.warn("[ai] AI Gateway failed or returned invalid JSON. Falling back to local mock generator.", e);
+      console.warn(
+        "[ai] AI Gateway failed or returned invalid JSON. Falling back to local mock generator.",
+        e,
+      );
       return generateLocalMockPlan(data.prompt);
     }
   });
@@ -116,49 +121,6 @@ function generateLocalMockPlan(prompt: string): GeneratedPlan {
       "Build bento-grid dashboards showcasing daily check-in charts.",
       "Design minimal check-in scanner interface optimized for mobile views.",
     ];
-  } else if (
-    p.includes("ngo") ||
-    p.includes("donate") ||
-    p.includes("profit") ||
-    p.includes("sewa")
-  ) {
-    productName = "Sewarth Path NGO Platform";
-    oneLiner = "Unified digital hub for campaign tracking, volunteers, and donations.";
-    stack = ["TanStack Start", "Supabase", "Razorpay", "Tailwind", "Resend"];
-    strategBullets = [
-      "Focus on transparency to increase donor trust and return rates.",
-      "Build interactive dashboard showing live campaign impacts.",
-      "Design quick-donate funnels with single-tap payment methods.",
-    ];
-    archBullets = [
-      "Define schemas for campaigns, donations, and volunteer rosters.",
-      "Configure webhooks to listen for Razorpay payment success states.",
-      "Secure donor identity records with strict RLS policies.",
-    ];
-    designBullets = [
-      "Select warm, welcoming HSL colors (soft emeralds and earth tones).",
-      "Draft typography layouts emphasizing powerful project storytelling.",
-      "Create custom progress indicators showing funding achievements.",
-    ];
-  } else if (p.includes("notion") || p.includes("workspace") || p.includes("doc")) {
-    productName = "NebulaWorkspace";
-    oneLiner = "AI-powered documentation and task organizer for distributed teams.";
-    stack = ["React", "Supabase", "TipTap", "Clerk", "Tailwind CSS"];
-    strategBullets = [
-      "Target small remote teams seeking a faster, minimal Notion replacement.",
-      "Detail collaborative editing and sharing flow structures.",
-      "Plan offline-first sync capability checklist for future sprint.",
-    ];
-    archBullets = [
-      "Implement document trees using recursive parent-child references.",
-      "Configure real-time sync channel broadcasts via Supabase Realtime.",
-      "Draft server functions to handle rich-text exports to markdown files.",
-    ];
-    designBullets = [
-      "Implement a sleek glassmorphic sidebar layout with micro-animations.",
-      "Establish typography system utilizing JetBrains Mono for blocks.",
-      "Design fluid popup menus reactively aligning with selection offsets.",
-    ];
   }
 
   return {
@@ -177,22 +139,25 @@ function generateLocalMockPlan(prompt: string): GeneratedPlan {
 }
 
 export const savePlan = createServerFn({ method: "POST" })
-  .handler(async ({ context, data }) => {
-    // Require authentication
-    if (!context.userId) throw new Error("Unauthorized");
-
-    const { prompt, plan } = data;
-
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => {
+    const obj = input as Record<string, unknown>;
+    const prompt = typeof obj?.prompt === "string" ? obj.prompt : "";
+    const plan = obj?.plan as GeneratedPlan | undefined;
     if (!prompt) throw new Error("Prompt is required.");
     if (!plan || !plan.productName) throw new Error("Plan is required.");
+    return { prompt, plan };
+  })
+  .handler(async ({ context, data }) => {
+    const { supabase, userId } = context;
+    const { prompt, plan } = data;
 
-    const { supabase } = await import("@/integrations/supabase/client");
     const { data: row, error } = await supabase
       .from("ai_sessions")
       .insert({
-        prompt: prompt,
-        response: plan,
-        user_id: context.userId, // Use authenticated user's ID
+        prompt,
+        response: plan as any,
+        user_id: userId,
       })
       .select("id")
       .single();
@@ -204,25 +169,23 @@ export const savePlan = createServerFn({ method: "POST" })
   });
 
 export const getSavedPlan = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => {
+    const id = (input as Record<string, unknown>)?.id;
+    if (typeof id !== "string" || !id.trim()) throw new Error("Session ID is required.");
+    return { id: id.trim() };
+  })
   .handler(
     async ({
       context,
       data,
     }): Promise<{ prompt: string; plan: GeneratedPlan; userId: string | null } | null> => {
-      // Require authentication
-      if (!context.userId) throw new Error("Unauthorized");
-
-      const { id } = data;
-      if (typeof id !== "string" || !id.trim()) {
-        throw new Error("Session ID is required.");
-      }
-
-      const { supabase } = await import("@/integrations/supabase/client");
+      const { supabase, userId } = context;
       const { data: row, error } = await supabase
         .from("ai_sessions")
         .select("prompt, response, user_id")
-        .eq("id", id.trim())
-        .eq("user_id", context.userId) // Ensure user owns the session
+        .eq("id", data.id)
+        .eq("user_id", userId)
         .maybeSingle();
       if (error) {
         console.error("[getSavedPlan] failed:", error);
