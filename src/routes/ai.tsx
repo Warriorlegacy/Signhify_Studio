@@ -85,6 +85,30 @@ function AiPage() {
   const generate = useServerFn(generatePlan);
   const getStreamConfig = useServerFn(getGeneratePlanStreamConfig);
   const save = useServerFn(savePlan);
+  const build = useServerFn(buildProduct);
+
+  const [buildState, setBuildState] = useState<"idle" | "building" | "done" | "error">("idle");
+  const [productHtml, setProductHtml] = useState<string | null>(null);
+  const [buildError, setBuildError] = useState<string | null>(null);
+
+  const handleBuild = async () => {
+    if (!plan) return;
+    setBuildState("building");
+    setBuildError(null);
+    setProductHtml(null);
+    try {
+      const planText = plan.sections
+        .map((s) => `## ${s.title}\n${s.bullets.join("\n")}`)
+        .join("\n\n");
+      const res = await build({ data: { prompt, planText } });
+      setProductHtml(res.html);
+      setBuildState("done");
+    } catch (e) {
+      setBuildError(e instanceof Error ? e.message : "Build failed.");
+      setBuildState("error");
+    }
+  };
+
 
   const handleShare = async () => {
     if (!plan) return;
