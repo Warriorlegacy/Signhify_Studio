@@ -90,17 +90,37 @@ function AiPage() {
   const [buildState, setBuildState] = useState<"idle" | "building" | "done" | "error">("idle");
   const [productHtml, setProductHtml] = useState<string | null>(null);
   const [buildError, setBuildError] = useState<string | null>(null);
+  const [builderMode, setBuilderMode] = useState(false);
 
-  const handleBuild = async () => {
-    if (!plan) return;
+  // Restore admin builder-mode preference
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const flag = window.localStorage.getItem("signhify_builder_mode");
+    if (flag === "1") setBuilderMode(true);
+  }, []);
+
+  const toggleBuilderMode = () => {
+    setBuilderMode((v) => {
+      const next = !v;
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem("signhify_builder_mode", next ? "1" : "0");
+      }
+      return next;
+    });
+  };
+
+  const handleBuild = async (overridePlan?: GeneratedPlan, overridePrompt?: string) => {
+    const activePlan = overridePlan ?? plan;
+    const activePrompt = overridePrompt ?? prompt;
+    if (!activePlan || !activePrompt) return;
     setBuildState("building");
     setBuildError(null);
     setProductHtml(null);
     try {
-      const planText = plan.sections
+      const planText = activePlan.sections
         .map((s) => `## ${s.title}\n${s.bullets.join("\n")}`)
         .join("\n\n");
-      const res = await build({ data: { prompt, planText } });
+      const res = await build({ data: { prompt: activePrompt, planText } });
       setProductHtml(res.html);
       setBuildState("done");
     } catch (e) {
@@ -108,6 +128,14 @@ function AiPage() {
       setBuildState("error");
     }
   };
+
+  // Auto-build when plan completes in builder mode
+  useEffect(() => {
+    if (builderMode && stage === "done" && plan && buildState === "idle") {
+      void handleBuild(plan, prompt);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [builderMode, stage, plan]);
 
 
   const handleShare = async () => {
@@ -299,6 +327,32 @@ function AiPage() {
           </div>
         </div>
 
+        {/* Builder Mode toggle (admin) */}
+        <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
+          <label className="inline-flex items-center gap-2 cursor-pointer select-none">
+            <span
+              role="switch"
+              aria-checked={builderMode}
+              onClick={toggleBuilderMode}
+              className={`relative inline-block w-9 h-5 rounded-full transition ${
+                builderMode ? "bg-primary" : "bg-border"
+              }`}
+            >
+              <span
+                className={`absolute top-0.5 h-4 w-4 rounded-full bg-background transition ${
+                  builderMode ? "left-[18px]" : "left-0.5"
+                }`}
+              />
+            </span>
+            <span className="font-medium text-foreground">Builder Mode</span>
+            <span className="text-muted-foreground/70">
+              {builderMode
+                ? "auto-builds the live product after planning"
+                : "plan first, build on demand"}
+            </span>
+          </label>
+        </div>
+
         {/* Examples */}
         {stage === "idle" && (
           <div className="mt-6 flex flex-wrap gap-2">
@@ -482,7 +536,7 @@ function AiPage() {
 
             <div className="mt-6 flex flex-wrap gap-3">
               <button
-                onClick={handleBuild}
+                onClick={() => handleBuild()}
                 disabled={buildState === "building"}
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition disabled:opacity-60"
               >

@@ -1,6 +1,25 @@
 import { createServerFn } from "@tanstack/react-start";
 import { generateAIResponse } from "./ai-gateway.server";
 
+function extractHtml(text: string): string | null {
+  // 1) Try fenced ```html ... ``` blocks
+  const fence = text.match(/```(?:html)?\s*([\s\S]*?)```/i);
+  if (fence && fence[1].includes("<")) return fence[1].trim();
+  // 2) Try doctype/html block
+  const doc = text.match(/<!doctype[\s\S]*?<\/html>/i);
+  if (doc) return doc[0];
+  const html = text.match(/<html[\s\S]*?<\/html>/i);
+  if (html) return `<!doctype html>\n${html[0]}`;
+  // 3) Try parsing as JSON
+  try {
+    const parsed = JSON.parse(text);
+    if (typeof parsed.html === "string" && parsed.html.includes("<")) return parsed.html;
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
 export const buildProduct = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
@@ -10,50 +29,44 @@ export const buildProduct = createServerFn({ method: "POST" })
     return { prompt, planText };
   })
   .handler(async ({ data }) => {
-    const SYSTEM = `You are Signhify AI's code generator. Output a SINGLE self-contained HTML document (the full product MVP) implementing the user's request.
+    const SYSTEM = `You are Signhify AI's builder. Output ONE self-contained HTML document that IS the working product MVP (not a description, not a marketing page unless requested).
 
-STRICT RULES:
-1. Return ONLY a JSON object: {"html":"<!doctype html>...</html>","summary":"one short sentence"}.
-2. No markdown fences, no commentary outside JSON.
-3. The HTML must be a complete, runnable, beautiful, production-quality single-file app:
-   - Inline <style> using a modern dark cinematic aesthetic (deep blacks, orange/amber #FF6A00 accents, glassy cards, gradient glows, smooth motion).
-   - Inline <script> with interactivity, state, fake data where needed.
-   - Use Tailwind via CDN: <script src="https://cdn.tailwindcss.com"></script>.
-   - Use Google Fonts (Inter + Space Grotesk) via <link>.
-   - Use lucide icons via https://unpkg.com/lucide@latest if needed.
-   - Responsive, accessible, semantic.
-4. Build the ACTUAL working product UI (dashboards, forms, lists, flows) — not a marketing page — unless the prompt is a landing page.
-5. Keep total size under ~60KB.`;
+OUTPUT FORMAT — STRICT:
+- Output the complete HTML starting with <!doctype html> and ending with </html>.
+- NO prose before or after. NO markdown fences. NO JSON wrapper.
 
-    const user = `User prompt:
+QUALITY BAR:
+- Dark cinematic aesthetic: deep blacks (#0A0A0A), amber/orange accents (#FF6A00), glassy cards, gradient glows.
+- Inline <style> + inline <script>. Use Tailwind via CDN: <script src="https://cdn.tailwindcss.com"></script>.
+- Google Fonts (Inter + Space Grotesk) via <link>. Lucide icons from https://unpkg.com/lucide@latest if helpful.
+- Build the ACTUAL working UI: real state, real interactivity, fake data where needed, working forms/buttons/lists.
+- Responsive, accessible, semantic HTML.
+- Keep under ~80KB.`;
+
+    const user = `Product prompt:
 ${data.prompt}
 
-Plan context (use it as the spec):
-${data.planText || "(no plan provided — infer from prompt)"}
+${data.planText ? `Plan / spec to implement:\n${data.planText}\n` : ""}Now output the complete standalone HTML for this product. Start with <!doctype html>.`;
 
-Now output the JSON with the full standalone HTML product.`;
-
-    const content = await generateAIResponse({
-      messages: [
-        { role: "system", content: SYSTEM },
-        { role: "user", content: user },
-      ],
-      temperature: 0.6,
-      response_format: { type: "json_object" },
-      max_tokens: 8000,
-    });
-
+    let content: string;
     try {
-      const parsed = JSON.parse(content);
-      if (typeof parsed.html !== "string" || !parsed.html.includes("<")) {
-        throw new Error("Invalid HTML in response");
-      }
-      return { html: parsed.html as string, summary: (parsed.summary as string) ?? "" };
+      content = await generateAIResponse({
+        messages: [
+          { role: "system", content: SYSTEM },
+          { role: "user", content: user },
+        ],
+        temperature: 0.65,
+        max_tokens: 8000,
+      });
     } catch (e) {
-      // Try to salvage: maybe the model returned raw HTML
-      if (content.trim().startsWith("<")) {
-        return { html: content, summary: "" };
-      }
-      throw new Error("Could not parse generated product.");
+      throw new Error(
+        `AI build failed: ${e instanceof Error ? e.message : "all providers unavailable"}`,
+      );
     }
+
+    const html = extractHtml(content);
+    if (!html) {
+      throw new Error("AI returned no usable HTML. Try a more specific prompt.");
+    }
+    return { html, summary: "" };
   });
