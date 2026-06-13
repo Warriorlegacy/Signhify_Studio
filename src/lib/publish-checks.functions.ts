@@ -1,5 +1,16 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { MARKET, MARKET_CATEGORIES } from "@/lib/marketplace";
+
+function isAdmin(claims: any): boolean {
+  const allow = (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+  const email = String(claims?.email ?? "").toLowerCase();
+  // If no allowlist configured, default-deny admin actions.
+  return allow.length > 0 && email !== "" && allow.includes(email);
+}
 
 const EXPECTED_TITLE = "Marketplace — Signhify";
 const EXPECTED_DESCRIPTION_TOKEN = "templates, AI agents, components";
@@ -65,6 +76,7 @@ function checkContains(html: string, needle: string) {
 }
 
 export const runMarketplaceSmoke = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
     const origin = (input as any)?.origin;
     return { origin: typeof origin === "string" ? origin : undefined };
@@ -113,6 +125,7 @@ export const runMarketplaceSmoke = createServerFn({ method: "POST" })
   });
 
 export const runMarketplaceDiff = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
     const origin = (input as any)?.origin;
     return { origin: typeof origin === "string" ? origin : undefined };
@@ -187,10 +200,10 @@ export type AuditPayload = {
 };
 
 export const recordPublishAudit = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => input as AuditPayload)
   .handler(async ({ context, data }) => {
-    // Require authentication
-    if (!context.userId) throw new Error("Unauthorized");
+    if (!isAdmin(context.claims)) throw new Error("Forbidden: admin only");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await (supabaseAdmin.from as any)("publish_audit")
@@ -210,9 +223,9 @@ export const recordPublishAudit = createServerFn({ method: "POST" })
   });
 
 export const listPublishAudits = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    // Require authentication
-    if (!context.userId) throw new Error("Unauthorized");
+    if (!isAdmin(context.claims)) throw new Error("Forbidden: admin only");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data, error } = await (supabaseAdmin.from as any)("publish_audit")
@@ -225,6 +238,7 @@ export const listPublishAudits = createServerFn({ method: "GET" })
     return { audits: (data ?? []) as Array<Record<string, any>> };
   });
 
+
 export type ConnectivityStatus = {
   ok: boolean;
   hasUrl: boolean;
@@ -233,8 +247,11 @@ export type ConnectivityStatus = {
   checkedAt: string;
 };
 
-export const checkSupabaseConnectivity = createServerFn({ method: "GET" }).handler(
-  async (): Promise<ConnectivityStatus> => {
+export const checkSupabaseConnectivity = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<ConnectivityStatus> => {
+    if (!isAdmin(context.claims)) throw new Error("Forbidden: admin only");
+
     const hasUrl = !!process.env.SUPABASE_URL;
     const hasServiceRole = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
     const checkedAt = new Date().toISOString();
@@ -273,5 +290,5 @@ export const checkSupabaseConnectivity = createServerFn({ method: "GET" }).handl
         checkedAt,
       };
     }
-  },
-);
+  });
+

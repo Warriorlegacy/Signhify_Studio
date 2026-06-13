@@ -1,52 +1,54 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import Stripe from "stripe";
 
 export const getUserCredits = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    // Require authentication
-    if (!context.userId) throw new Error("Unauthorized");
+    const { supabase, userId } = context;
 
-    const { supabase } = await import("@/integrations/supabase/client");
-
-    // Fetch user credits from the database
-    const { data: creditsData, error } = await supabase
+    // user_credits table is optional; return defaults when missing
+    const { data: creditsData, error } = await (supabase as any)
       .from("user_credits")
       .select("tier, credits_remaining, max_credits, projects_count, videos_generated")
-      .eq("user_id", context.userId)
-      .single();
+      .eq("user_id", userId)
+      .maybeSingle();
 
-    if (error) {
-      // If no record found, return default free tier values
+    if (error || !creditsData) {
       return {
-        tier: "free",
+        tier: "free" as const,
         creditsRemaining: 2,
         maxCredits: 2,
         projectsCount: 0,
-        videosGenerated: 0
+        videosGenerated: 0,
       };
     }
 
     return {
-      tier: creditsData.tier,
-      creditsRemaining: creditsData.credits_remaining,
-      maxCredits: creditsData.max_credits,
-      projectsCount: creditsData.projects_count,
-      videosGenerated: creditsData.videos_generated
+      tier: creditsData.tier as string,
+      creditsRemaining: creditsData.credits_remaining as number,
+      maxCredits: creditsData.max_credits as number,
+      projectsCount: creditsData.projects_count as number,
+      videosGenerated: creditsData.videos_generated as number,
     };
   });
 
 export const createCheckoutSession = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => {
+    const plan = (input as Record<string, unknown>)?.plan;
+    if (typeof plan !== "string" || !plan.trim()) throw new Error("Plan is required");
+    return { plan: plan.trim() };
+  })
   .handler(async ({ context, data }) => {
-    // Require authentication
-    if (!context.userId) throw new Error("Unauthorized");
-
+    const { userId } = context;
     const { plan } = data;
     const stripeKey = process.env.STRIPE_SECRET_KEY;
 
     if (!stripeKey) {
       return {
-        success: true,
-        url: "https://checkout.stripe.com/c/pay/mock_session_id"
+        success: true as const,
+        url: "https://checkout.stripe.com/c/pay/mock_session_id" as string | null,
       };
     }
 
@@ -71,14 +73,13 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         mode: "subscription",
         success_url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/scroll-studio?success=true`,
         cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/scroll-studio?canceled=true`,
-        // Add metadata to link the session to the user
         metadata: {
-          user_id: context.userId,
-          plan: plan
-        }
+          user_id: userId,
+          plan,
+        },
       });
 
-      return { success: true, url: session.url };
+      return { success: true as const, url: session.url };
     } catch (err) {
       console.error("Stripe error:", err);
       throw new Error("Failed to create Stripe session.");

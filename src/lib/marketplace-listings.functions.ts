@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { MarketItem } from "@/lib/marketplace";
 import { MARKET } from "@/lib/marketplace";
 
@@ -33,20 +34,23 @@ export const fetchMarketplaceListings = createServerFn({ method: "GET" }).handle
 );
 
 export const publishProjectToMarketplace = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => {
+    const projectId = (input as Record<string, unknown>)?.projectId;
+    if (typeof projectId !== "string" || !projectId.trim())
+      throw new Error("Project ID is required");
+    return { projectId: projectId.trim() };
+  })
   .handler(async ({ context, data }) => {
-    // Require authentication
-    if (!context.userId) throw new Error("Unauthorized");
-
     try {
-      const { supabase } = await import("@/integrations/supabase/client");
+      const { supabase, userId } = context;
       const projectId = data.projectId;
 
-      // Fetch the project data - ensure user owns it
       const { data: project, error: projErr } = await supabase
         .from("user_projects")
         .select("*")
         .eq("id", projectId)
-        .eq("user_id", context.userId) // Verify ownership
+        .eq("user_id", userId)
         .single();
 
       if (projErr || !project) {
@@ -61,15 +65,16 @@ export const publishProjectToMarketplace = createServerFn({ method: "POST" })
           {
             slug,
             title: project.title || "Untitled Cinematic Template",
-            description: "An AI-generated cinematic scroll experience built in Signhify Scroll Studio.",
+            description:
+              "An AI-generated cinematic scroll experience built in Signhify Scroll Studio.",
             category: "Template",
-            price_cents: 0, // Free by default
-            preview_url: `/projects/${project.id}`, // Route directly to a preview page
+            price_cents: 0,
+            preview_url: `/projects/${project.id}`,
             asset_path: null,
-            creator_id: project.user_id || "system",
-          }
+            creator_id: project.user_id || userId,
+          },
         ])
-        .select()
+        .select("id, slug, title")
         .single();
 
       if (insertErr) {
@@ -77,9 +82,10 @@ export const publishProjectToMarketplace = createServerFn({ method: "POST" })
         throw new Error("Failed to insert marketplace listing");
       }
 
-      return { success: true, listing: inserted };
+      return { success: true as const, listing: inserted };
     } catch (e: any) {
       console.error("[publishProjectToMarketplace]", e);
       throw new Error(e.message || "Failed to publish to marketplace");
     }
   });
+

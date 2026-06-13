@@ -1,43 +1,43 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import JSZip from "jszip";
 
 export const exportProjectZip = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => {
+    const projectId = (input as Record<string, unknown>)?.projectId;
+    if (typeof projectId !== "string" || !projectId.trim())
+      throw new Error("Project ID is required");
+    return { projectId: projectId.trim() };
+  })
   .handler(async ({ context, data }) => {
-    // Require authentication
-    if (!context.userId) throw new Error("Unauthorized");
-
+    const { supabase, userId } = context;
     const { projectId } = data;
-    if (!projectId) throw new Error("Project ID is required");
 
-    const { supabase } = await import("@/integrations/supabase/client");
-
-    // Fetch project - ensure user owns it
     const { data: project, error } = await supabase
       .from("user_projects")
       .select("*")
       .eq("id", projectId)
-      .eq("user_id", context.userId) // Verify ownership
+      .eq("user_id", userId)
       .single();
 
-    if (error) {
-      console.error("[exportProjectZip] Error:", error);
-      throw new Error("Failed to fetch project for export");
-    }
-
-    if (!project) {
+    if (error || !project) {
       throw new Error("Project not found or access denied");
     }
 
-    // Actual implementation of ZIP building using JSZip
     const zip = new JSZip();
 
-    // Add source code files
-    zip.file("index.html", project.current_html || "<!DOCTYPE html>\\n<html>\\n<body>\\n</body>\\n</html>");
+    zip.file(
+      "index.html",
+      project.current_html || "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>",
+    );
     zip.file("styles.css", project.current_css || "/* Styles */");
     zip.file("script.js", project.current_js || "// Script");
-    zip.file("README.md", "# Exported Project\\n\\nDeploy this folder to any static hosting provider like Vercel, Netlify, or AWS S3.");
+    zip.file(
+      "README.md",
+      "# Exported Project\n\nDeploy this folder to any static hosting provider like Vercel, Netlify, or AWS S3.",
+    );
 
-    // Fetch frames (if any) and add to a /frames folder
     const { data: frames } = await supabase
       .from("frames")
       .select("*")
@@ -46,20 +46,16 @@ export const exportProjectZip = createServerFn({ method: "POST" })
 
     if (frames && frames.length > 0) {
       const framesFolder = zip.folder("frames");
-      // In a fully real implementation we would fetch the image blobs here
-      // and attach them to the ZIP. For now, since they might be large and remote,
-      // we'll write a JSON manifest or placeholder text.
       framesFolder?.file("frames.json", JSON.stringify(frames, null, 2));
     }
 
-    // Generate base64 string
     const zipBase64 = await zip.generateAsync({ type: "base64" });
     const mockDownloadUrl = `data:application/zip;base64,${zipBase64}`;
 
     return {
       success: true,
       downloadUrl: mockDownloadUrl,
-      fileSizeMb: (zipBase64.length * 0.75) / (1024 * 1024), // Rough estimate
-      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+      fileSizeMb: (zipBase64.length * 0.75) / (1024 * 1024),
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
     };
   });

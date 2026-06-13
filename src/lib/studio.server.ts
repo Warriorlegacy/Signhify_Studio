@@ -47,6 +47,7 @@ export async function insertVideoJob(job: Partial<DbVideoJob> & { userId: string
     const { data, error } = await supabase
       .from("video_jobs")
       .insert({
+        ...(job as any),
         ...job,
         user_id: job.userId // Ensure user_id is set from the passed userId
       })
@@ -196,7 +197,7 @@ export async function insertFrames(framesList: Array<Partial<DbFrame> & { video_
 
     const { data, error } = await supabase
       .from("frames")
-      .insert(framesList.map(({ userId, ...frame }) => frame)) // Remove userId from insert
+      .insert(framesList.map(({ userId, ...frame }) => frame) as any) // Remove userId from insert
       .select();
 
     if (error) {
@@ -287,7 +288,7 @@ export async function updateProjectSettings(
   try {
     const { error } = await supabase
       .from("user_projects")
-      .update(settings)
+      .update(settings as any)
       .eq("id", projectId)
       .eq("user_id", userId); // Ensure user owns the project
 
