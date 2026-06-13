@@ -117,8 +117,7 @@ function StudioSpike() {
             prompt: promptText,
             style: renderStyle,
             frameCount: count,
-            userId,
-          }
+          },
         });
 
         // 2. Poll job status
