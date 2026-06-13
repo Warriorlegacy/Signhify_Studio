@@ -27,7 +27,7 @@ export const generateVideoJob = createServerFn({ method: "POST" })
       throw new Error("Project not found or access denied");
     }
 
-    const { data: job, error } = await supabase
+    const { data: job, error } = await (supabase as any)
       .from("video_jobs")
       .insert({
         project_id: projectId,
