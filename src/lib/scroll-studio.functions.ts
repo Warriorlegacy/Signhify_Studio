@@ -1,8 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { generateAIResponse, type Message } from "./ai-gateway.server";
 
 // This is the AI endpoint for Scroll Studio Chat
 export const scrollStudioChat = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
     const obj = input as Record<string, unknown>;
     const projectId = typeof obj?.projectId === "string" ? obj.projectId : null;
