@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { generateAIResponse } from "./ai-gateway.server";
 
 type GenerateInput = { prompt: string };
 
@@ -30,134 +31,32 @@ Given a single product idea, return a concise build plan as STRICT JSON matching
 export const generatePlan = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => validate(input))
   .handler(async ({ data }): Promise<GeneratedPlan> => {
-    const apiKey = process.env.LOVABLE_API_KEY;
-    const groqKey = process.env.GROQ_API_KEY;
-    const openrouterKey = process.env.OPENROUTER_API_KEY;
-    const mistralKey = process.env.MISTRAL_API_KEY;
-    const cerebrasKey = process.env.CEREBRAS_API_KEY;
-    const geminiKey = process.env.GEMINI_API_KEY;
-
-    if (!apiKey && (cerebrasKey || geminiKey || groqKey || openrouterKey || mistralKey)) {
-      let apiUrl = "";
-      let authKey = "";
-      let modelName = "";
-
-      if (cerebrasKey) {
-        apiUrl = "https://api.cerebras.ai/v1/chat/completions";
-        authKey = cerebrasKey;
-        modelName = "llama-3.3-70b";
-      } else if (geminiKey) {
-        apiUrl = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
-        authKey = geminiKey;
-        modelName = "gemini-2.5-flash";
-      } else if (groqKey) {
-        apiUrl = "https://api.groq.com/openai/v1/chat/completions";
-        authKey = groqKey;
-        modelName = "llama-3.3-70b-versatile";
-      } else if (openrouterKey) {
-        apiUrl = "https://openrouter.ai/api/v1/chat/completions";
-        authKey = openrouterKey;
-        modelName = "google/gemini-2.5-flash";
-      } else {
-        apiUrl = "https://api.mistral.ai/v1/chat/completions";
-        authKey = mistralKey!;
-        modelName = "mistral-tiny";
-      }
-
-      console.info(
-        `[ai] LOVABLE_API_KEY is missing. Querying real LLM fallback (${modelName}) locally.`,
-      );
-
-      try {
-        const res = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authKey}`,
-          },
-          body: JSON.stringify({
-            model: modelName,
-            temperature: 0.6,
-            response_format: { type: "json_object" },
-            messages: [
-              { role: "system", content: SYSTEM },
-              { role: "user", content: data.prompt },
-            ],
-          }),
-        });
-
-        if (res.ok) {
-          const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
-          const content = json.choices?.[0]?.message?.content ?? "";
-          const parsed = JSON.parse(content) as GeneratedPlan;
-          if (
-            parsed?.productName &&
-            parsed?.oneLiner &&
-            Array.isArray(parsed?.sections) &&
-            Array.isArray(parsed?.stack)
-          ) {
-            return parsed;
-          }
-        } else {
-          console.warn("[ai] Fallback LLM query failed. Status:", res.status);
-        }
-      } catch (e) {
-        console.warn("[ai] Error querying fallback LLM, falling back to mock:", e);
-      }
-    }
-
-    if (!apiKey) {
-      console.warn("[ai] LOVABLE_API_KEY is missing. Falling back to local mock generator.");
-      return generateLocalMockPlan(data.prompt);
-    }
-
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "anthropic/claude-sonnet-4-5",
-        temperature: 0.6,
-        response_format: { type: "json_object" },
+    try {
+      const content = await generateAIResponse({
         messages: [
           { role: "system", content: SYSTEM },
           { role: "user", content: data.prompt },
         ],
-      }),
-    });
+        temperature: 0.6,
+        response_format: { type: "json_object" }
+      });
 
-    if (res.status === 429) throw new Error("Rate limited. Please wait a moment and try again.");
-    if (res.status === 402)
-      throw new Error("Signhify AI credits exhausted. Email hello@signhify.online.");
-    if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      console.error("[ai] gateway error", res.status, text);
-      throw new Error("AI gateway error. Try again.");
+      const parsed = JSON.parse(content) as GeneratedPlan;
+      
+      if (
+        parsed?.productName &&
+        parsed?.oneLiner &&
+        Array.isArray(parsed?.sections) &&
+        Array.isArray(parsed?.stack)
+      ) {
+        return parsed;
+      }
+      
+      throw new Error("Incomplete plan returned by AI.");
+    } catch (e) {
+      console.warn("[ai] AI Gateway failed or returned invalid JSON. Falling back to local mock generator.", e);
+      return generateLocalMockPlan(data.prompt);
     }
-
-    const json = (await res.json()) as {
-      choices?: { message?: { content?: string } }[];
-    };
-    const content = json.choices?.[0]?.message?.content ?? "";
-
-    let parsed: GeneratedPlan;
-    try {
-      parsed = JSON.parse(content) as GeneratedPlan;
-    } catch {
-      throw new Error("AI returned an unexpected response. Try again.");
-    }
-
-    if (
-      !parsed?.productName ||
-      !parsed?.oneLiner ||
-      !Array.isArray(parsed?.sections) ||
-      !Array.isArray(parsed?.stack)
-    ) {
-      throw new Error("AI returned an incomplete plan. Try again.");
-    }
-    return parsed;
   });
 
 function generateLocalMockPlan(prompt: string): GeneratedPlan {

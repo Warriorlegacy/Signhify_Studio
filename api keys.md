@@ -1,0 +1,19 @@
+openrouter:- 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
+
+groq:- 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
+
+ollama:- d15ff5ae19ff437a894667ffecaa9263.rGQbhYwE9Nj6pUJ6Ya97fd_j
+
+gemini:- AQ.Ab8RN6IMQHl9kAEaE2OU2qssNGOT6pbNgW19anaw9i9Kkgos8g
+
+xai:- xai-vQFTgCf40MsCmTn5oseLEcbEwcdXLA4K8WMpO7A4HbHgz2JRGNV5Ec5Sc1ulHzPVXJEDe2i2P4MouaHZ
+
+Cerebras:- csk-x46dfn649ypn6e8v642wk3yxwpy9e2vmhnk89hmwrremjyhv
+
+Mistral:- vb0TkktQxDKVp6zpZqHqsy94DcZA9xAe
+
+Cohere:- DwWHaC8i8UyxrQSfTDh7oaHPAbN1vy7M5vKZWqBr
+
+NVIDIA NIM:- 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
+
+OPENCODE:- sk-WjeS3s0OmPuK5OUPyOFruogzMWUil4X9Pu8bdD2KOAGw3GAgbQMegTDXLIszFXwj

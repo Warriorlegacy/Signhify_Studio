@@ -33,7 +33,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     }
     
     try {
-      const stripe = new Stripe(stripeKey, { apiVersion: "2024-04-10" });
+      const stripe = new Stripe(stripeKey);
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: [
