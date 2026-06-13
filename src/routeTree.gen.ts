@@ -39,6 +39,7 @@ import { Route as AppSettingsRouteImport } from './routes/app/settings'
 import { Route as AppProjectsNewRouteImport } from './routes/app/projects/new'
 import { Route as AppProjectsIdRouteImport } from './routes/app/projects/$id'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as ApiPublicAuthProviderRouteImport } from './routes/api/public/auth-provider'
 import { Route as AiShareIdRouteImport } from './routes/ai.share.$id'
 import { Route as AppProjectsIdAnalyticsRouteImport } from './routes/app/projects/$id.analytics'
 import { Route as AppProjectsIdRunsRunIdRouteImport } from './routes/app/projects/$id/runs/$runId'
@@ -193,6 +194,11 @@ const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   path: '/api/public/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicAuthProviderRoute = ApiPublicAuthProviderRouteImport.update({
+  id: '/api/public/auth-provider',
+  path: '/api/public/auth-provider',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AiShareIdRoute = AiShareIdRouteImport.update({
   id: '/share/$id',
   path: '/share/$id',
@@ -238,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/app/': typeof AppIndexRoute
   '/scroll-studio/': typeof ScrollStudioIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
+  '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
@@ -273,6 +280,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppIndexRoute
   '/scroll-studio': typeof ScrollStudioIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
+  '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
@@ -309,6 +317,7 @@ export interface FileRoutesById {
   '/app/': typeof AppIndexRoute
   '/scroll-studio/': typeof ScrollStudioIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
+  '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
@@ -346,6 +355,7 @@ export interface FileRouteTypes {
     | '/app/'
     | '/scroll-studio/'
     | '/ai/share/$id'
+    | '/api/public/auth-provider'
     | '/api/public/health'
     | '/app/projects/$id'
     | '/app/projects/new'
@@ -381,6 +391,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/scroll-studio'
     | '/ai/share/$id'
+    | '/api/public/auth-provider'
     | '/api/public/health'
     | '/app/projects/$id'
     | '/app/projects/new'
@@ -416,6 +427,7 @@ export interface FileRouteTypes {
     | '/app/'
     | '/scroll-studio/'
     | '/ai/share/$id'
+    | '/api/public/auth-provider'
     | '/api/public/health'
     | '/app/projects/$id'
     | '/app/projects/new'
@@ -448,6 +460,7 @@ export interface RootRouteChildren {
   StudioSpikeRoute: typeof StudioSpikeRoute
   AppIndexRoute: typeof AppIndexRoute
   ScrollStudioIndexRoute: typeof ScrollStudioIndexRoute
+  ApiPublicAuthProviderRoute: typeof ApiPublicAuthProviderRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   AppProjectsIdRoute: typeof AppProjectsIdRouteWithChildren
   AppProjectsNewRoute: typeof AppProjectsNewRoute
@@ -665,6 +678,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/auth-provider': {
+      id: '/api/public/auth-provider'
+      path: '/api/public/auth-provider'
+      fullPath: '/api/public/auth-provider'
+      preLoaderRoute: typeof ApiPublicAuthProviderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ai/share/$id': {
       id: '/ai/share/$id'
       path: '/share/$id'
@@ -764,6 +784,7 @@ const rootRouteChildren: RootRouteChildren = {
   StudioSpikeRoute: StudioSpikeRoute,
   AppIndexRoute: AppIndexRoute,
   ScrollStudioIndexRoute: ScrollStudioIndexRoute,
+  ApiPublicAuthProviderRoute: ApiPublicAuthProviderRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   AppProjectsIdRoute: AppProjectsIdRouteWithChildren,
   AppProjectsNewRoute: AppProjectsNewRoute,
