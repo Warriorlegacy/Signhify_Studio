@@ -40,35 +40,35 @@ export function useUser() {
     [],
   );
   const signInWithGoogle = useCallback(async (redirectTo = `${window.location.origin}/app`) => {
-      const res = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo, skipBrowserRedirect: true },
-      });
+    const res = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo, skipBrowserRedirect: true },
+    });
 
-      if (res.error || !res.data.url) return res;
+    if (res.error || !res.data.url) return res;
 
-      try {
-        const probe = await fetch(res.data.url, { method: "GET", redirect: "manual" });
-        if (probe.status >= 400) {
-          const payload = await probe.json().catch(() => null);
-          return {
-            data: res.data,
-            error: new AuthError(
-              payload?.msg ||
-                payload?.message ||
-                "Google sign-in is not enabled for this Supabase project yet.",
-              probe.status,
-              "provider_not_enabled",
-            ),
-          };
-        }
-      } catch {
-        // If the browser blocks the preflight check, continue with the OAuth redirect.
+    try {
+      const probe = await fetch(res.data.url, { method: "GET", redirect: "manual" });
+      if (probe.status >= 400) {
+        const payload = await probe.json().catch(() => null);
+        return {
+          data: res.data,
+          error: new AuthError(
+            payload?.msg ||
+              payload?.message ||
+              "Google sign-in is not enabled for this Supabase project yet.",
+            probe.status,
+            "provider_not_enabled",
+          ),
+        };
       }
+    } catch {
+      // If the browser blocks the preflight check, continue with the OAuth redirect.
+    }
 
-      window.location.assign(res.data.url);
-      return res;
-    }, []);
+    window.location.assign(res.data.url);
+    return res;
+  }, []);
   const signOut = useCallback(() => supabase.auth.signOut(), []);
 
   return { user, session, loading, signIn, signUp, signOut, signInWithGoogle };
