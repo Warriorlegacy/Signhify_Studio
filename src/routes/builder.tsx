@@ -2,8 +2,23 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "@/hooks/useUser";
 import { isAdminEmail } from "@/lib/admin";
-import { buildProduct, editProduct } from "@/lib/build-product.functions";
-import { Loader2, Plus, Trash2, Download, ExternalLink, Send, Sparkles } from "lucide-react";
+import {
+  buildProduct,
+  editProduct,
+  ejectProduct,
+  editFiles,
+} from "@/lib/build-product.functions";
+import {
+  Loader2,
+  Plus,
+  Trash2,
+  Download,
+  ExternalLink,
+  Send,
+  Sparkles,
+  Layers,
+  FileCode,
+} from "lucide-react";
 
 export const Route = createFileRoute("/builder")({
   head: () => ({
@@ -16,18 +31,26 @@ export const Route = createFileRoute("/builder")({
 });
 
 type ChatMsg = { role: "user" | "assistant"; text: string; ts: number };
-type Version = { html: string; ts: number; note: string };
+type FileEntry = { path: string; content: string };
+type Version = {
+  ts: number;
+  note: string;
+  mode: "single" | "multi";
+  html?: string;
+  files?: FileEntry[];
+};
 type Project = {
   id: string;
   name: string;
+  mode: "single" | "multi";
   createdAt: number;
   updatedAt: number;
   chat: ChatMsg[];
   versions: Version[];
 };
 
-const LS_KEY = "signhify_builder_projects_v1";
-const LS_ACTIVE = "signhify_builder_active_v1";
+const LS_KEY = "signhify_builder_projects_v2";
+const LS_ACTIVE = "signhify_builder_active_v2";
 
 function loadProjects(): Project[] {
   if (typeof window === "undefined") return [];
@@ -44,6 +67,30 @@ function uid() {
   return Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 }
 
+// Assemble multi-file project into a single HTML string for iframe preview.
+function assembleMultiHtml(files: FileEntry[]): string {
+  const index = files.find((f) => f.path === "index.html");
+  if (!index) return "<!doctype html><html><body>No index.html</body></html>";
+  let html = index.content;
+  for (const f of files) {
+    if (f.path === "index.html") continue;
+    if (f.path.endsWith(".css")) {
+      const re = new RegExp(
+        `<link[^>]+href=["']${f.path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["'][^>]*>`,
+        "gi",
+      );
+      html = html.replace(re, `<style>\n${f.content}\n</style>`);
+    } else if (f.path.endsWith(".js")) {
+      const re = new RegExp(
+        `<script[^>]+src=["']${f.path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["'][^>]*></script>`,
+        "gi",
+      );
+      html = html.replace(re, `<script>\n${f.content}\n</script>`);
+    }
+  }
+  return html;
+}
+
 function BuilderPage() {
   const { user, loading } = useUser();
   const admin = isAdminEmail(user?.email);
@@ -52,7 +99,10 @@ function BuilderPage() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [busyLabel, setBusyLabel] = useState("Working…");
   const [error, setError] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [rightTab, setRightTab] = useState<"preview" | "code">("preview");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,8 +116,29 @@ function BuilderPage() {
     if (activeId) window.localStorage.setItem(LS_ACTIVE, activeId);
   }, [activeId]);
 
-  const active = useMemo(() => projects.find((p) => p.id === activeId) || null, [projects, activeId]);
-  const currentHtml = active?.versions.at(-1)?.html || "";
+  const active = useMemo(
+    () => projects.find((p) => p.id === activeId) || null,
+    [projects, activeId],
+  );
+  const lastVersion = active?.versions.at(-1) || null;
+  const currentHtml = lastVersion?.mode === "single" ? lastVersion.html || "" : "";
+  const currentFiles = lastVersion?.mode === "multi" ? lastVersion.files || [] : [];
+  const previewHtml =
+    lastVersion?.mode === "multi"
+      ? assembleMultiHtml(currentFiles)
+      : currentHtml;
+
+  // pick a default selected file when switching to a multi project
+  useEffect(() => {
+    if (lastVersion?.mode === "multi" && currentFiles.length) {
+      if (!selectedFile || !currentFiles.find((f) => f.path === selectedFile)) {
+        setSelectedFile(currentFiles[0].path);
+      }
+    } else {
+      setSelectedFile(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeId, lastVersion?.ts]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: 9e9, behavior: "smooth" });
@@ -82,6 +153,7 @@ function BuilderPage() {
     const p: Project = {
       id: uid(),
       name: "Untitled build",
+      mode: "single",
       createdAt: Date.now(),
       updatedAt: Date.now(),
       chat: [],
@@ -103,6 +175,12 @@ function BuilderPage() {
     persist(projects.map((p) => (p.id === id ? { ...p, name } : p)));
   }
 
+  function upsert(p: Project, list: Project[]): Project[] {
+    return list.find((x) => x.id === p.id)
+      ? list.map((x) => (x.id === p.id ? p : x))
+      : [p, ...list];
+  }
+
   async function send() {
     const text = input.trim();
     if (!text || busy) return;
@@ -113,42 +191,86 @@ function BuilderPage() {
       project = {
         id: uid(),
         name: text.slice(0, 40),
+        mode: "single",
         createdAt: Date.now(),
         updatedAt: Date.now(),
         chat: [],
         versions: [],
       };
-      const next = [project, ...projects];
-      persist(next);
+      persist(upsert(project, projects));
       setActiveId(project.id);
     }
 
     const userMsg: ChatMsg = { role: "user", text, ts: Date.now() };
-    let working: Project = { ...project, chat: [...project.chat, userMsg], updatedAt: Date.now() };
-    persist(projects.map((p) => (p.id === working.id ? working : p)).concat(projects.find((p) => p.id === working.id) ? [] : [working]));
+    let working: Project = {
+      ...project,
+      chat: [...project.chat, userMsg],
+      updatedAt: Date.now(),
+    };
+    persist(upsert(working, projects));
     setInput("");
     setBusy(true);
 
     try {
       const isFirst = working.versions.length === 0;
-      const result = isFirst
-        ? await buildProduct({ data: { prompt: text } })
-        : await editProduct({ data: { currentHtml: working.versions.at(-1)!.html, instruction: text } });
+      let version: Version;
 
-      const version: Version = { html: result.html, ts: Date.now(), note: text.slice(0, 80) };
+      if (working.mode === "multi") {
+        setBusyLabel("Editing files…");
+        const baseFiles =
+          working.versions.at(-1)?.files ||
+          (working.versions.at(-1)?.html
+            ? [{ path: "index.html", content: working.versions.at(-1)!.html! }]
+            : []);
+        const result = await editFiles({
+          data: { files: baseFiles, instruction: text },
+        });
+        version = {
+          ts: Date.now(),
+          note: text.slice(0, 80),
+          mode: "multi",
+          files: result.files,
+        };
+      } else if (isFirst) {
+        setBusyLabel("Building product…");
+        const result = await buildProduct({ data: { prompt: text } });
+        version = {
+          ts: Date.now(),
+          note: text.slice(0, 80),
+          mode: "single",
+          html: result.html,
+        };
+      } else {
+        setBusyLabel("Editing build…");
+        const result = await editProduct({
+          data: { currentHtml: working.versions.at(-1)!.html!, instruction: text },
+        });
+        version = {
+          ts: Date.now(),
+          note: text.slice(0, 80),
+          mode: "single",
+          html: result.html,
+        };
+      }
+
       const asst: ChatMsg = {
         role: "assistant",
-        text: isFirst ? "Built v1 — see preview." : `Updated → v${working.versions.length + 1}.`,
+        text:
+          working.mode === "multi"
+            ? `Updated ${version.files!.length} files → v${working.versions.length + 1}.`
+            : isFirst
+              ? "Built v1 — see preview."
+              : `Updated → v${working.versions.length + 1}.`,
         ts: Date.now(),
       };
       const done: Project = {
         ...working,
         chat: [...working.chat, asst],
         versions: [...working.versions, version],
-        name: isFirst ? text.slice(0, 40) : working.name,
+        name: isFirst && working.mode === "single" ? text.slice(0, 40) : working.name,
         updatedAt: Date.now(),
       };
-      persist(projects.map((p) => (p.id === done.id ? done : p)).concat(projects.find((p) => p.id === done.id) ? [] : [done]));
+      persist(upsert(done, projects));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Build failed.");
       const asst: ChatMsg = {
@@ -156,16 +278,49 @@ function BuilderPage() {
         text: `Error: ${e instanceof Error ? e.message : "build failed"}`,
         ts: Date.now(),
       };
-      const failed: Project = { ...working, chat: [...working.chat, asst] };
-      persist(projects.map((p) => (p.id === failed.id ? failed : p)));
+      persist(upsert({ ...working, chat: [...working.chat, asst] }, projects));
     } finally {
       setBusy(false);
     }
   }
 
-  function download() {
-    if (!currentHtml || !active) return;
-    const blob = new Blob([currentHtml], { type: "text/html" });
+  async function eject() {
+    if (!active || !currentHtml || busy) return;
+    setError(null);
+    setBusy(true);
+    setBusyLabel("Ejecting to multi-file…");
+    try {
+      const result = await ejectProduct({ data: { currentHtml } });
+      const version: Version = {
+        ts: Date.now(),
+        note: "Ejected to multi-file",
+        mode: "multi",
+        files: result.files,
+      };
+      const asst: ChatMsg = {
+        role: "assistant",
+        text: `Ejected to ${result.files.length} files. You're now in multi-file mode — every edit will update the project.`,
+        ts: Date.now(),
+      };
+      const done: Project = {
+        ...active,
+        mode: "multi",
+        chat: [...active.chat, asst],
+        versions: [...active.versions, version],
+        updatedAt: Date.now(),
+      };
+      persist(upsert(done, projects));
+      setRightTab("code");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Eject failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function downloadSingle() {
+    if (!previewHtml || !active) return;
+    const blob = new Blob([previewHtml], { type: "text/html" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -174,12 +329,31 @@ function BuilderPage() {
     URL.revokeObjectURL(url);
   }
 
+  function downloadFile(path: string, content: string) {
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = path.split("/").pop() || path;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function downloadAll() {
+    if (!active) return;
+    if (lastVersion?.mode === "multi") {
+      for (const f of currentFiles) downloadFile(f.path, f.content);
+    } else {
+      downloadSingle();
+    }
+  }
+
   function openInTab() {
-    if (!currentHtml) return;
+    if (!previewHtml) return;
     const w = window.open();
     if (w) {
       w.document.open();
-      w.document.write(currentHtml);
+      w.document.write(previewHtml);
       w.document.close();
     }
   }
@@ -222,10 +396,12 @@ function BuilderPage() {
     );
   }
 
+  const selected = currentFiles.find((f) => f.path === selectedFile) || null;
+
   return (
     <div className="flex h-screen w-full overflow-hidden bg-[#0A0A0A] text-white">
       {/* Sidebar */}
-      <aside className="flex w-64 flex-col border-r border-white/10 bg-black/40">
+      <aside className="flex w-60 flex-col border-r border-white/10 bg-black/40">
         <div className="flex items-center justify-between border-b border-white/10 px-3 py-3">
           <div className="flex items-center gap-2 text-sm font-semibold">
             <Sparkles className="h-4 w-4 text-[#FF6A00]" />
@@ -257,6 +433,11 @@ function BuilderPage() {
               >
                 {p.name}
               </button>
+              {p.mode === "multi" && (
+                <span className="rounded bg-[#FF6A00]/20 px-1 text-[9px] uppercase text-[#FF6A00]">
+                  multi
+                </span>
+              )}
               <button
                 onClick={() => deleteProject(p.id)}
                 className="opacity-0 transition group-hover:opacity-100"
@@ -273,7 +454,7 @@ function BuilderPage() {
       </aside>
 
       {/* Chat */}
-      <section className="flex w-[420px] flex-col border-r border-white/10">
+      <section className="flex w-[380px] flex-col border-r border-white/10">
         <div className="flex items-center justify-between border-b border-white/10 px-3 py-2">
           {active ? (
             <input
@@ -284,18 +465,27 @@ function BuilderPage() {
           ) : (
             <span className="text-sm text-white/40">New build</span>
           )}
-          {active && active.versions.length > 0 && (
-            <span className="ml-2 rounded bg-white/10 px-1.5 py-0.5 text-[10px]">
-              v{active.versions.length}
-            </span>
-          )}
+          <div className="ml-2 flex items-center gap-1">
+            {active && (
+              <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px]">
+                {active.mode === "multi" ? "multi" : "single"}
+              </span>
+            )}
+            {active && active.versions.length > 0 && (
+              <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px]">
+                v{active.versions.length}
+              </span>
+            )}
+          </div>
         </div>
         <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-3">
           {(!active || active.chat.length === 0) && (
             <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-white/60">
               Describe a product. e.g. <em>"A pomodoro timer with todo list, dark glassy UI."</em>
               <br />
-              Iterate after: <em>"Add a stats page with a chart."</em>
+              Iterate: <em>"Add a stats page with a chart."</em>
+              <br />
+              Hit <strong>Eject</strong> when you want index.html / styles.css / app.js / README.md.
             </div>
           )}
           {active?.chat.map((m, i) => (
@@ -313,7 +503,7 @@ function BuilderPage() {
           {busy && (
             <div className="mr-6 flex items-center gap-2 rounded-lg bg-white/5 p-2.5 text-xs text-white/60">
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              {active && active.versions.length > 0 ? "Editing build…" : "Building product…"}
+              {busyLabel}
             </div>
           )}
           {error && (
@@ -353,41 +543,115 @@ function BuilderPage() {
         </div>
       </section>
 
-      {/* Preview */}
+      {/* Right pane: preview + code */}
       <section className="flex flex-1 flex-col">
         <div className="flex items-center justify-between border-b border-white/10 px-3 py-2">
-          <span className="text-xs text-white/50">Live preview</span>
+          <div className="flex gap-1">
+            <button
+              onClick={() => setRightTab("preview")}
+              className={`rounded px-2 py-1 text-xs ${
+                rightTab === "preview" ? "bg-white/15 text-white" : "text-white/50 hover:text-white"
+              }`}
+            >
+              Preview
+            </button>
+            <button
+              onClick={() => setRightTab("code")}
+              className={`rounded px-2 py-1 text-xs ${
+                rightTab === "code" ? "bg-white/15 text-white" : "text-white/50 hover:text-white"
+              }`}
+            >
+              Code{lastVersion?.mode === "multi" ? ` (${currentFiles.length})` : ""}
+            </button>
+          </div>
           <div className="flex gap-2">
+            {active && active.mode === "single" && currentHtml && (
+              <button
+                onClick={eject}
+                disabled={busy}
+                className="flex items-center gap-1 rounded border border-[#FF6A00]/40 bg-[#FF6A00]/10 px-2 py-1 text-xs text-[#FF6A00] hover:bg-[#FF6A00]/20 disabled:opacity-30"
+                title="Convert to multi-file project"
+              >
+                <Layers className="h-3 w-3" /> Eject
+              </button>
+            )}
             <button
               onClick={openInTab}
-              disabled={!currentHtml}
+              disabled={!previewHtml}
               className="flex items-center gap-1 rounded border border-white/15 px-2 py-1 text-xs hover:bg-white/10 disabled:opacity-30"
             >
               <ExternalLink className="h-3 w-3" /> Open
             </button>
             <button
-              onClick={download}
-              disabled={!currentHtml}
+              onClick={downloadAll}
+              disabled={!previewHtml}
               className="flex items-center gap-1 rounded border border-white/15 px-2 py-1 text-xs hover:bg-white/10 disabled:opacity-30"
             >
-              <Download className="h-3 w-3" /> .html
+              <Download className="h-3 w-3" />{" "}
+              {lastVersion?.mode === "multi" ? "All files" : ".html"}
             </button>
           </div>
         </div>
-        <div className="flex-1 bg-white/5">
-          {currentHtml ? (
-            <iframe
-              title="preview"
-              srcDoc={currentHtml}
-              sandbox="allow-scripts allow-forms allow-popups allow-modals"
-              className="h-full w-full bg-white"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center text-xs text-white/40">
-              No build yet — send your first prompt.
-            </div>
-          )}
-        </div>
+
+        {rightTab === "preview" ? (
+          <div className="flex-1 bg-white/5">
+            {previewHtml ? (
+              <iframe
+                title="preview"
+                srcDoc={previewHtml}
+                sandbox="allow-scripts allow-forms allow-popups allow-modals"
+                className="h-full w-full bg-white"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center text-xs text-white/40">
+                No build yet — send your first prompt.
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="flex flex-1 overflow-hidden">
+            {lastVersion?.mode === "multi" ? (
+              <>
+                <div className="w-52 overflow-y-auto border-r border-white/10 bg-black/30 p-2">
+                  {currentFiles.map((f) => (
+                    <button
+                      key={f.path}
+                      onClick={() => setSelectedFile(f.path)}
+                      className={`mb-0.5 flex w-full items-center gap-1.5 truncate rounded px-2 py-1 text-left text-xs ${
+                        selectedFile === f.path
+                          ? "bg-white/10 text-white"
+                          : "text-white/60 hover:bg-white/5"
+                      }`}
+                    >
+                      <FileCode className="h-3 w-3 shrink-0" />
+                      {f.path}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex flex-1 flex-col">
+                  <div className="flex items-center justify-between border-b border-white/10 px-3 py-1.5 text-[11px] text-white/50">
+                    <span>{selected?.path || "—"}</span>
+                    {selected && (
+                      <button
+                        onClick={() => downloadFile(selected.path, selected.content)}
+                        className="text-white/50 hover:text-white"
+                      >
+                        <Download className="h-3 w-3" />
+                      </button>
+                    )}
+                  </div>
+                  <pre className="flex-1 overflow-auto bg-black/60 p-3 font-mono text-[11px] leading-relaxed text-white/85">
+                    {selected?.content || ""}
+                  </pre>
+                </div>
+              </>
+            ) : (
+              <pre className="flex-1 overflow-auto bg-black/60 p-3 font-mono text-[11px] leading-relaxed text-white/85">
+                {currentHtml || "// No build yet."}
+              </pre>
+            )}
+          </div>
+        )}
       </section>
     </div>
   );
