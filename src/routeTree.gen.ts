@@ -24,6 +24,7 @@ import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BuilderRouteImport } from './routes/builder'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AboutRouteImport } from './routes/about'
@@ -117,6 +118,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BuilderRoute = BuilderRouteImport.update({
+  id: '/builder',
+  path: '/builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BookRoute = BookRouteImport.update({
   id: '/book',
   path: '/book',
@@ -208,6 +214,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/ai': typeof AiRouteWithChildren
   '/book': typeof BookRoute
+  '/builder': typeof BuilderRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
   '/login': typeof LoginRoute
@@ -242,6 +249,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/ai': typeof AiRouteWithChildren
   '/book': typeof BookRoute
+  '/builder': typeof BuilderRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
   '/login': typeof LoginRoute
@@ -277,6 +285,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/ai': typeof AiRouteWithChildren
   '/book': typeof BookRoute
+  '/builder': typeof BuilderRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
   '/login': typeof LoginRoute
@@ -313,6 +322,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/ai'
     | '/book'
+    | '/builder'
     | '/contact'
     | '/help'
     | '/login'
@@ -347,6 +357,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/ai'
     | '/book'
+    | '/builder'
     | '/contact'
     | '/help'
     | '/login'
@@ -381,6 +392,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/ai'
     | '/book'
+    | '/builder'
     | '/contact'
     | '/help'
     | '/login'
@@ -416,6 +428,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AiRoute: typeof AiRouteWithChildren
   BookRoute: typeof BookRoute
+  BuilderRoute: typeof BuilderRoute
   ContactRoute: typeof ContactRoute
   HelpRoute: typeof HelpRoute
   LoginRoute: typeof LoginRoute
@@ -545,6 +558,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/builder': {
+      id: '/builder'
+      path: '/builder'
+      fullPath: '/builder'
+      preLoaderRoute: typeof BuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/book': {
@@ -724,6 +744,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AiRoute: AiRouteWithChildren,
   BookRoute: BookRoute,
+  BuilderRoute: BuilderRoute,
   ContactRoute: ContactRoute,
   HelpRoute: HelpRoute,
   LoginRoute: LoginRoute,
