@@ -9,7 +9,13 @@ import { Loader2, Download, Rocket, Film, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { extractFramesFromVideo } from "@/lib/client-video-extractor";
 
-export function SettingsPanel({ projectId }: { projectId: string | null }) {
+export function SettingsPanel({ 
+  projectId,
+  onFramesExtracted
+}: { 
+  projectId: string | null;
+  onFramesExtracted?: (frames: string[]) => void;
+}) {
   const [isExporting, setIsExporting] = useState(false);
   const [isExtracting, setIsExtracting] = useState(false);
   const [extractionProgress, setExtractionProgress] = useState(0);
@@ -53,7 +59,13 @@ export function SettingsPanel({ projectId }: { projectId: string | null }) {
         setExtractionProgress(progress);
       });
       
-      toast.success(`Successfully extracted ${frames.length} frames!`);
+      console.log(`Extracted ${frames.length} frames successfully.`);
+      toast.success(`Successfully extracted ${frames.length} frames for scroll sequence!`);
+      
+      if (onFramesExtracted) {
+        onFramesExtracted(frames);
+      }
+      
       // Here you would upload the frames to Supabase storage or pass them to the PreviewCanvas
       console.log("Extracted frames payload:", frames.slice(0, 2), "... and more.");
       

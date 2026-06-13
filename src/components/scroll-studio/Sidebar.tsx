@@ -8,11 +8,13 @@ import { Bot, Settings, Layers } from "lucide-react";
 export function Sidebar({ 
   projectId, 
   onProjectSelect,
-  onUpdatePreview
+  onUpdatePreview,
+  onFramesExtracted
 }: { 
   projectId: string | null;
   onProjectSelect: (id: string) => void;
   onUpdatePreview: (data: { html: string; css: string; js: string }) => void;
+  onFramesExtracted?: (frames: string[]) => void;
 }) {
   return (
     <div className="w-[350px] flex flex-col h-full bg-background border-r border-border">
@@ -44,7 +46,7 @@ export function Sidebar({
         </TabsContent>
         
         <TabsContent value="settings" className="flex-1 overflow-y-auto m-0 p-0">
-          <SettingsPanel projectId={projectId} />
+          <SettingsPanel projectId={projectId} onFramesExtracted={onFramesExtracted} />
         </TabsContent>
       </Tabs>
       
