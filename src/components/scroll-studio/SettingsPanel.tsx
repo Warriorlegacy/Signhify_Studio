@@ -5,7 +5,8 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { useServerFn } from "@tanstack/react-start";
 import { exportProjectZip } from "@/lib/export.functions";
-import { Loader2, Download, Rocket, Film, Upload } from "lucide-react";
+import { publishProjectToMarketplace } from "@/lib/marketplace-listings.functions";
+import { Loader2, Download, Store, Film, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { extractFramesFromVideo } from "@/lib/client-video-extractor";
 
@@ -17,10 +18,13 @@ export function SettingsPanel({
   onFramesExtracted?: (frames: string[]) => void;
 }) {
   const [isExporting, setIsExporting] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
   const [isExtracting, setIsExtracting] = useState(false);
   const [extractionProgress, setExtractionProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const exportFn = useServerFn(exportProjectZip);
+  const publishFn = useServerFn(publishProjectToMarketplace);
 
   const handleExport = async () => {
     if (!projectId) {
@@ -33,7 +37,6 @@ export function SettingsPanel({
       const result = await exportFn({ data: { projectId } });
       if (result.success) {
         toast.success("Export ready! Downloading bundle...");
-        // Simulate download
         window.open(result.downloadUrl, "_blank");
       }
     } catch (err) {
@@ -41,6 +44,28 @@ export function SettingsPanel({
       toast.error("Failed to generate export bundle.");
     } finally {
       setIsExporting(false);
+    }
+  };
+
+  const handlePublish = async () => {
+    if (!projectId) return;
+    setIsPublishing(true);
+    try {
+      const result = await publishFn({ data: { projectId } });
+      if (result.success) {
+        toast.success("Published to Marketplace!", {
+          description: "Your template is now live in the global directory.",
+          action: {
+            label: "View",
+            onClick: () => window.open("/marketplace", "_blank")
+          }
+        });
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Failed to publish to marketplace.");
+    } finally {
+      setIsPublishing(false);
     }
   };
 
@@ -65,9 +90,6 @@ export function SettingsPanel({
       if (onFramesExtracted) {
         onFramesExtracted(frames);
       }
-      
-      // Here you would upload the frames to Supabase storage or pass them to the PreviewCanvas
-      console.log("Extracted frames payload:", frames.slice(0, 2), "... and more.");
       
     } catch (err) {
       console.error(err);
@@ -135,12 +157,13 @@ export function SettingsPanel({
           Export ZIP Bundle
         </Button>
         <Button 
-          variant="outline" 
+          variant="default" 
           className="w-full justify-start text-sm h-9"
-          disabled={!projectId}
+          disabled={!projectId || isPublishing}
+          onClick={handlePublish}
         >
-          <Rocket className="w-4 h-4 mr-2" />
-          Deploy to Vercel
+          {isPublishing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Store className="w-4 h-4 mr-2" />}
+          Publish to Marketplace
         </Button>
       </div>
     </div>

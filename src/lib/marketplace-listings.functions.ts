@@ -29,3 +29,54 @@ export const fetchMarketplaceListings = createServerFn({ method: "GET" }).handle
     }
   },
 );
+
+export const publishProjectToMarketplace = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => {
+    const obj = input as Record<string, unknown>;
+    const projectId = typeof obj?.projectId === "string" ? obj.projectId : "";
+    if (!projectId) throw new Error("Project ID is required");
+    return { projectId };
+  })
+  .handler(async ({ data }) => {
+    try {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+      // Fetch the project data
+      const { data: project, error: projErr } = await (supabaseAdmin.from as any)("user_projects")
+        .select("*")
+        .eq("id", data.projectId)
+        .single();
+
+      if (projErr || !project) {
+        throw new Error("Project not found");
+      }
+
+      const slug = `template-${project.id.slice(0, 8)}`;
+
+      const { data: inserted, error: insertErr } = await (supabaseAdmin.from as any)("marketplace_listings")
+        .insert([
+          {
+            slug,
+            title: project.title || "Untitled Cinematic Template",
+            description: "An AI-generated cinematic scroll experience built in Signhify Scroll Studio.",
+            category: "Template",
+            price_cents: 0, // Free by default
+            preview_url: `/projects/${project.id}`, // Route directly to a preview page
+            asset_path: null,
+            creator_id: project.user_id || "system",
+          }
+        ])
+        .select()
+        .single();
+
+      if (insertErr) {
+        console.error("Insert error:", insertErr);
+        throw new Error("Failed to insert marketplace listing");
+      }
+
+      return { success: true, listing: inserted };
+    } catch (e: any) {
+      console.error("[publishProjectToMarketplace]", e);
+      throw new Error(e.message || "Failed to publish to marketplace");
+    }
+  });
