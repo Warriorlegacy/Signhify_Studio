@@ -18,6 +18,7 @@ import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { generatePlan, savePlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
 import { getGeneratePlanStreamConfig } from "@/lib/ai-generate-stream.functions";
+import { buildProduct } from "@/lib/build-product.functions";
 import { joinWaitlist } from "@/lib/waitlist.functions";
 import { useUser } from "@/hooks/useUser";
 
