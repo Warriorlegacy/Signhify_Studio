@@ -40,32 +40,29 @@ export function useUser() {
     [],
   );
   const signInWithGoogle = useCallback(async (redirectTo = `${window.location.origin}/app`) => {
+    const providerCheck = await fetch("/api/public/auth-provider?provider=google", {
+      headers: { accept: "application/json" },
+    })
+      .then((r) => r.json())
+      .catch(() => null);
+
+    if (providerCheck?.enabled === false) {
+      return {
+        data: { provider: "google" as const, url: null },
+        error: new AuthError(
+          providerCheck.message || "Google sign-in is not enabled for this Supabase project yet.",
+          400,
+          "provider_not_enabled",
+        ),
+      };
+    }
+
     const res = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo, skipBrowserRedirect: true },
     });
 
     if (res.error || !res.data.url) return res;
-
-    try {
-      const probe = await fetch(res.data.url, { method: "GET", redirect: "manual" });
-      if (probe.status >= 400) {
-        const payload = await probe.json().catch(() => null);
-        return {
-          data: res.data,
-          error: new AuthError(
-            payload?.msg ||
-              payload?.message ||
-              "Google sign-in is not enabled for this Supabase project yet.",
-            probe.status,
-            "provider_not_enabled",
-          ),
-        };
-      }
-    } catch {
-      // If the browser blocks the preflight check, continue with the OAuth redirect.
-    }
-
     window.location.assign(res.data.url);
     return res;
   }, []);
