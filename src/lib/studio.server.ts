@@ -47,6 +47,7 @@ export async function insertVideoJob(job: Partial<DbVideoJob> & { userId: string
     const { data, error } = await supabase
       .from("video_jobs")
       .insert({
+        ...(job as any),
         ...job,
         user_id: job.userId // Ensure user_id is set from the passed userId
       })
