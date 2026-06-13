@@ -54,7 +54,7 @@ export function useUser() {
           return {
             data: res.data,
             error: new AuthError(
-                payload?.msg ||
+              payload?.msg ||
                 payload?.message ||
                 "Google sign-in is not enabled for this Supabase project yet.",
               probe.status,
