@@ -21,9 +21,9 @@ type ProviderConfig = {
 };
 
 export async function generateAIResponse(options: AIGatewayOptions): Promise<string> {
-  // Fallback cascade. Lovable AI Gateway is primary (auto-provisioned, no setup).
+  // Signhify AI cascade — best free/fast models from each provider, auto-failover on 429/5xx.
   const providers: ProviderConfig[] = [
-    // 0. Lovable AI Gateway (primary — auto-provisioned, billed via workspace credits)
+    // 0. Lovable AI Gateway (auto-provisioned, billed via workspace credits) — most reliable
     {
       name: "LovableAI",
       url: "https://ai.gateway.lovable.dev/v1/chat/completions",
@@ -31,48 +31,73 @@ export async function generateAIResponse(options: AIGatewayOptions): Promise<str
       apiKey: process.env.LOVABLE_API_KEY,
       headers: { "Lovable-API-Key": process.env.LOVABLE_API_KEY ?? "" },
     },
-    // 1. Groq (Extremely fast Llama 3)
+    // 1. Groq — fastest free Llama 3.3 70B
     {
       name: "Groq",
       url: "https://api.groq.com/openai/v1/chat/completions",
       model: "llama-3.3-70b-versatile",
       apiKey: process.env.GROQ_API_KEY,
     },
-    // 2. Cerebras
+    // 2. Cerebras — wafer-scale Llama 3.3 70B
     {
       name: "Cerebras",
       url: "https://api.cerebras.ai/v1/chat/completions",
-      model: "llama3.1-70b",
+      model: "llama-3.3-70b",
       apiKey: process.env.CEREBRAS_API_KEY,
     },
-    // 3. Google Gemini
+    // 3. NVIDIA NIM — free hosted Nemotron 49B
+    {
+      name: "NVIDIA",
+      url: "https://integrate.api.nvidia.com/v1/chat/completions",
+      model: "nvidia/llama-3.3-nemotron-super-49b-v1",
+      apiKey: process.env.NVIDIA_API_KEY,
+    },
+    // 4. OpenRouter — best free model (DeepSeek V3.1)
+    {
+      name: "OpenRouter",
+      url: "https://openrouter.ai/api/v1/chat/completions",
+      model: "deepseek/deepseek-chat-v3.1:free",
+      apiKey: process.env.OPENROUTER_API_KEY,
+      headers: {
+        "HTTP-Referer": "https://signhify.lovable.app",
+        "X-Title": "Signhify",
+      },
+    },
+    // 5. Google Gemini — generous free tier
     {
       name: "Gemini",
       url: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
       model: "gemini-2.0-flash",
       apiKey: process.env.GEMINI_API_KEY,
     },
-    // 4. Mistral
+    // 6. Ollama Turbo — gpt-oss 120B hosted
+    {
+      name: "Ollama",
+      url: "https://ollama.com/v1/chat/completions",
+      model: "gpt-oss:120b",
+      apiKey: process.env.OLLAMA_API_KEY,
+    },
+    // 7. Mistral — free tier small
     {
       name: "Mistral",
       url: "https://api.mistral.ai/v1/chat/completions",
       model: "mistral-small-latest",
       apiKey: process.env.MISTRAL_API_KEY,
     },
-    // 5. xAI (Grok)
+    // 8. Cohere — Command R+ via OpenAI-compatible endpoint
+    {
+      name: "Cohere",
+      url: "https://api.cohere.ai/compatibility/v1/chat/completions",
+      model: "command-r-plus",
+      apiKey: process.env.COHERE_API_KEY,
+    },
+    // 9. xAI Grok — last resort
     {
       name: "xAI",
       url: "https://api.x.ai/v1/chat/completions",
-      model: "grok-beta",
+      model: "grok-2-latest",
       apiKey: process.env.XAI_API_KEY,
     },
-    // 6. OpenRouter
-    {
-      name: "OpenRouter",
-      url: "https://openrouter.ai/api/v1/chat/completions",
-      model: "google/gemini-2.0-flash-lite-preview-02-05:free",
-      apiKey: process.env.OPENROUTER_API_KEY,
-    }
   ];
 
   const activeProviders = providers.filter(p => !!p.apiKey);
