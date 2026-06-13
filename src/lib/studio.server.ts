@@ -288,7 +288,7 @@ export async function updateProjectSettings(
   try {
     const { error } = await supabase
       .from("user_projects")
-      .update(settings)
+      .update(settings as any)
       .eq("id", projectId)
       .eq("user_id", userId); // Ensure user owns the project
 
