@@ -200,10 +200,10 @@ export type AuditPayload = {
 };
 
 export const recordPublishAudit = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => input as AuditPayload)
   .handler(async ({ context, data }) => {
-    // Require authentication
-    if (!context.userId) throw new Error("Unauthorized");
+    if (!isAdmin(context.claims)) throw new Error("Forbidden: admin only");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await (supabaseAdmin.from as any)("publish_audit")
@@ -223,9 +223,9 @@ export const recordPublishAudit = createServerFn({ method: "POST" })
   });
 
 export const listPublishAudits = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    // Require authentication
-    if (!context.userId) throw new Error("Unauthorized");
+    if (!isAdmin(context.claims)) throw new Error("Forbidden: admin only");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data, error } = await (supabaseAdmin.from as any)("publish_audit")
@@ -237,6 +237,7 @@ export const listPublishAudits = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
     return { audits: (data ?? []) as Array<Record<string, any>> };
   });
+
 
 export type ConnectivityStatus = {
   ok: boolean;
