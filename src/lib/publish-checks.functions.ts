@@ -1,5 +1,16 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { MARKET, MARKET_CATEGORIES } from "@/lib/marketplace";
+
+function isAdmin(claims: any): boolean {
+  const allow = (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+  const email = String(claims?.email ?? "").toLowerCase();
+  // If no allowlist configured, default-deny admin actions.
+  return allow.length > 0 && email !== "" && allow.includes(email);
+}
 
 const EXPECTED_TITLE = "Marketplace — Signhify";
 const EXPECTED_DESCRIPTION_TOKEN = "templates, AI agents, components";
