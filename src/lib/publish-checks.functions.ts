@@ -247,8 +247,11 @@ export type ConnectivityStatus = {
   checkedAt: string;
 };
 
-export const checkSupabaseConnectivity = createServerFn({ method: "GET" }).handler(
-  async (): Promise<ConnectivityStatus> => {
+export const checkSupabaseConnectivity = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<ConnectivityStatus> => {
+    if (!isAdmin(context.claims)) throw new Error("Forbidden: admin only");
+
     const hasUrl = !!process.env.SUPABASE_URL;
     const hasServiceRole = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
     const checkedAt = new Date().toISOString();
@@ -288,4 +291,5 @@ export const checkSupabaseConnectivity = createServerFn({ method: "GET" }).handl
       };
     }
   },
+
 );
