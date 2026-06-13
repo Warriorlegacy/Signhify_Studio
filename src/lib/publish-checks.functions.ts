@@ -76,6 +76,7 @@ function checkContains(html: string, needle: string) {
 }
 
 export const runMarketplaceSmoke = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
     const origin = (input as any)?.origin;
     return { origin: typeof origin === "string" ? origin : undefined };
