@@ -31,15 +31,46 @@ export function useUser() {
     [],
   );
   const signUp = useCallback(
-    (email: string, password: string) => supabase.auth.signUp({ email, password }),
+    (email: string, password: string, emailRedirectTo = `${window.location.origin}/login`) =>
+      supabase.auth.signUp({
+        email,
+        password,
+        options: { emailRedirectTo },
+      }),
     [],
   );
   const signInWithGoogle = useCallback(
-    () =>
-      supabase.auth.signInWithOAuth({
+    async (redirectTo = `${window.location.origin}/app`) => {
+      const res = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: `${window.location.origin}/app` },
-      }),
+        options: { redirectTo, skipBrowserRedirect: true },
+      });
+
+      if (res.error || !res.data.url) return res;
+
+      try {
+        const probe = await fetch(res.data.url, { method: "GET", redirect: "manual" });
+        if (probe.status >= 400) {
+          const payload = await probe.json().catch(() => null);
+          return {
+            data: res.data,
+            error: {
+              name: "OAuthProviderUnavailable",
+              message:
+                payload?.msg ||
+                payload?.message ||
+                "Google sign-in is not enabled for this Supabase project yet.",
+              status: probe.status,
+            } as any,
+          };
+        }
+      } catch {
+        // If the browser blocks the preflight check, continue with the OAuth redirect.
+      }
+
+      window.location.assign(res.data.url);
+      return res;
+    },
     [],
   );
   const signOut = useCallback(() => supabase.auth.signOut(), []);
