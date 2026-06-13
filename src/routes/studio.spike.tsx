@@ -112,11 +112,13 @@ function StudioSpike() {
         // 1. Trigger the server function to start generation job
         const promptText = `Generate a cinematic scroll animation in ${renderStyle} style with ${colorHex} primary color.`;
         const { jobId } = await triggerVideoGeneration({
-          projectId,
-          prompt: promptText,
-          style: renderStyle,
-          frameCount: count,
-          userId,
+          data: {
+            projectId,
+            prompt: promptText,
+            style: renderStyle,
+            frameCount: count,
+            userId,
+          }
         });
 
         // 2. Poll job status
@@ -124,7 +126,7 @@ function StudioSpike() {
         while (status === "queued" || status === "processing") {
           // Poll every 1.5s
           await new Promise((resolve) => setTimeout(resolve, 1500));
-          const job = await getVideoJobStatus({ jobId });
+          const job = await getVideoJobStatus({ data: { jobId } });
           if (!job) {
             throw new Error("Failed to retrieve job status");
           }
@@ -135,7 +137,7 @@ function StudioSpike() {
         }
 
         // 3. Fetch frames list
-        const framesList = await getProjectFramesList({ projectId });
+        const framesList = await getProjectFramesList({ data: { projectId } });
         if (!framesList || framesList.length === 0) {
           throw new Error("No frames returned from server");
         }

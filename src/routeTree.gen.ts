@@ -28,6 +28,7 @@ import { Route as BookRouteImport } from './routes/book'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ScrollStudioIndexRouteImport } from './routes/scroll-studio/index'
 import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as StudioSpikeRouteImport } from './routes/studio.spike'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
@@ -136,6 +137,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScrollStudioIndexRoute = ScrollStudioIndexRouteImport.update({
+  id: '/scroll-studio/',
+  path: '/scroll-studio/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/app/',
   path: '/app/',
@@ -223,6 +229,7 @@ export interface FileRoutesByFullPath {
   '/projects/$slug': typeof ProjectsSlugRoute
   '/studio/spike': typeof StudioSpikeRoute
   '/app/': typeof AppIndexRoute
+  '/scroll-studio/': typeof ScrollStudioIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
@@ -256,6 +263,7 @@ export interface FileRoutesByTo {
   '/projects/$slug': typeof ProjectsSlugRoute
   '/studio/spike': typeof StudioSpikeRoute
   '/app': typeof AppIndexRoute
+  '/scroll-studio': typeof ScrollStudioIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
@@ -290,6 +298,7 @@ export interface FileRoutesById {
   '/projects/$slug': typeof ProjectsSlugRoute
   '/studio/spike': typeof StudioSpikeRoute
   '/app/': typeof AppIndexRoute
+  '/scroll-studio/': typeof ScrollStudioIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
@@ -325,6 +334,7 @@ export interface FileRouteTypes {
     | '/projects/$slug'
     | '/studio/spike'
     | '/app/'
+    | '/scroll-studio/'
     | '/ai/share/$id'
     | '/api/public/health'
     | '/app/projects/$id'
@@ -358,6 +368,7 @@ export interface FileRouteTypes {
     | '/projects/$slug'
     | '/studio/spike'
     | '/app'
+    | '/scroll-studio'
     | '/ai/share/$id'
     | '/api/public/health'
     | '/app/projects/$id'
@@ -391,6 +402,7 @@ export interface FileRouteTypes {
     | '/projects/$slug'
     | '/studio/spike'
     | '/app/'
+    | '/scroll-studio/'
     | '/ai/share/$id'
     | '/api/public/health'
     | '/app/projects/$id'
@@ -422,6 +434,7 @@ export interface RootRouteChildren {
   AppSettingsRoute: typeof AppSettingsRoute
   StudioSpikeRoute: typeof StudioSpikeRoute
   AppIndexRoute: typeof AppIndexRoute
+  ScrollStudioIndexRoute: typeof ScrollStudioIndexRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   AppProjectsIdRoute: typeof AppProjectsIdRouteWithChildren
   AppProjectsNewRoute: typeof AppProjectsNewRoute
@@ -560,6 +573,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scroll-studio/': {
+      id: '/scroll-studio/'
+      path: '/scroll-studio'
+      fullPath: '/scroll-studio/'
+      preLoaderRoute: typeof ScrollStudioIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/': {
@@ -722,6 +742,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppSettingsRoute: AppSettingsRoute,
   StudioSpikeRoute: StudioSpikeRoute,
   AppIndexRoute: AppIndexRoute,
+  ScrollStudioIndexRoute: ScrollStudioIndexRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   AppProjectsIdRoute: AppProjectsIdRouteWithChildren,
   AppProjectsNewRoute: AppProjectsNewRoute,
