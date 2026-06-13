@@ -52,7 +52,10 @@ function LoginPage() {
     }
     setSubmitting(true);
     const target = `${window.location.origin}${redirect || "/app"}`;
-    const res = mode === "in" ? await signIn(email.trim(), password) : await signUp(email.trim(), password, target);
+    const res =
+      mode === "in"
+        ? await signIn(email.trim(), password)
+        : await signUp(email.trim(), password, target);
     setSubmitting(false);
     if (res.error) setError(authMessage(res.error.message));
     else if (mode === "up" && !res.data.session) {

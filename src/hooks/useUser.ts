@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import type { Session, User } from "@supabase/supabase-js";
+import { AuthError, type Session, type User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
 export function useUser() {
@@ -39,8 +39,7 @@ export function useUser() {
       }),
     [],
   );
-  const signInWithGoogle = useCallback(
-    async (redirectTo = `${window.location.origin}/app`) => {
+  const signInWithGoogle = useCallback(async (redirectTo = `${window.location.origin}/app`) => {
       const res = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: { redirectTo, skipBrowserRedirect: true },
@@ -54,14 +53,13 @@ export function useUser() {
           const payload = await probe.json().catch(() => null);
           return {
             data: res.data,
-            error: {
-              name: "OAuthProviderUnavailable",
-              message:
+            error: new AuthError(
                 payload?.msg ||
                 payload?.message ||
                 "Google sign-in is not enabled for this Supabase project yet.",
-              status: probe.status,
-            } as any,
+              probe.status,
+              "provider_not_enabled",
+            ),
           };
         }
       } catch {
@@ -70,9 +68,7 @@ export function useUser() {
 
       window.location.assign(res.data.url);
       return res;
-    },
-    [],
-  );
+    }, []);
   const signOut = useCallback(() => supabase.auth.signOut(), []);
 
   return { user, session, loading, signIn, signUp, signOut, signInWithGoogle };
