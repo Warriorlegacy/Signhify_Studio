@@ -327,6 +327,32 @@ function AiPage() {
           </div>
         </div>
 
+        {/* Builder Mode toggle (admin) */}
+        <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
+          <label className="inline-flex items-center gap-2 cursor-pointer select-none">
+            <span
+              role="switch"
+              aria-checked={builderMode}
+              onClick={toggleBuilderMode}
+              className={`relative inline-block w-9 h-5 rounded-full transition ${
+                builderMode ? "bg-primary" : "bg-border"
+              }`}
+            >
+              <span
+                className={`absolute top-0.5 h-4 w-4 rounded-full bg-background transition ${
+                  builderMode ? "left-[18px]" : "left-0.5"
+                }`}
+              />
+            </span>
+            <span className="font-medium text-foreground">Builder Mode</span>
+            <span className="text-muted-foreground/70">
+              {builderMode
+                ? "auto-builds the live product after planning"
+                : "plan first, build on demand"}
+            </span>
+          </label>
+        </div>
+
         {/* Examples */}
         {stage === "idle" && (
           <div className="mt-6 flex flex-wrap gap-2">
