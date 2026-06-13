@@ -21,30 +21,38 @@ type ProviderConfig = {
 };
 
 export async function generateAIResponse(options: AIGatewayOptions): Promise<string> {
-  // Define our fallback cascade of top-tier free/accessible models
+  // Fallback cascade. Lovable AI Gateway is primary (auto-provisioned, no setup).
   const providers: ProviderConfig[] = [
-    // 1. Groq (Best Free - Extremely fast Llama 3)
+    // 0. Lovable AI Gateway (primary — auto-provisioned, billed via workspace credits)
+    {
+      name: "LovableAI",
+      url: "https://ai.gateway.lovable.dev/v1/chat/completions",
+      model: "google/gemini-3-flash-preview",
+      apiKey: process.env.LOVABLE_API_KEY,
+      headers: { "Lovable-API-Key": process.env.LOVABLE_API_KEY ?? "" },
+    },
+    // 1. Groq (Extremely fast Llama 3)
     {
       name: "Groq",
       url: "https://api.groq.com/openai/v1/chat/completions",
       model: "llama-3.3-70b-versatile",
       apiKey: process.env.GROQ_API_KEY,
     },
-    // 2. Cerebras (Ultra-fast fallback)
+    // 2. Cerebras
     {
       name: "Cerebras",
       url: "https://api.cerebras.ai/v1/chat/completions",
       model: "llama3.1-70b",
       apiKey: process.env.CEREBRAS_API_KEY,
     },
-    // 3. Google Gemini (Reliable free tier)
+    // 3. Google Gemini
     {
       name: "Gemini",
       url: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
       model: "gemini-2.0-flash",
       apiKey: process.env.GEMINI_API_KEY,
     },
-    // 4. Mistral (Fallback)
+    // 4. Mistral
     {
       name: "Mistral",
       url: "https://api.mistral.ai/v1/chat/completions",
@@ -58,7 +66,7 @@ export async function generateAIResponse(options: AIGatewayOptions): Promise<str
       model: "grok-beta",
       apiKey: process.env.XAI_API_KEY,
     },
-    // 6. OpenRouter (Primary - very flexible)
+    // 6. OpenRouter
     {
       name: "OpenRouter",
       url: "https://openrouter.ai/api/v1/chat/completions",
