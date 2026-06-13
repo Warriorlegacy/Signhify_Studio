@@ -290,6 +290,5 @@ export const checkSupabaseConnectivity = createServerFn({ method: "GET" })
         checkedAt,
       };
     }
-  },
+  });
 
-);
