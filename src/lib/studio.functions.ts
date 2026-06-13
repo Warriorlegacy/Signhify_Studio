@@ -51,6 +51,7 @@ export const triggerVideoGeneration = createServerFn({ method: "POST" })
     const job = await insertVideoJob({
       project_id: projectId,
       user_id: userId,
+      userId,
       provider: "mock-runner",
       model: "runway-gen3-turbo",
       input_type: "text_to_video",
@@ -78,12 +79,7 @@ export const getVideoJobStatus = createServerFn({ method: "GET" })
     return { jobId: id.trim() };
   })
   .handler(async ({ context, data }): Promise<DbVideoJob | null> => {
-    const job = await fetchVideoJob(data.jobId);
-    if (!job) return null;
-    if ((job as any).user_id && (job as any).user_id !== context.userId) {
-      throw new Error("Job not found or access denied");
-    }
-    return job;
+    return fetchVideoJob(data.jobId, context.userId);
   });
 
 export const getProjectFramesList = createServerFn({ method: "GET" })
@@ -97,7 +93,7 @@ export const getProjectFramesList = createServerFn({ method: "GET" })
   })
   .handler(async ({ context, data }): Promise<DbFrame[]> => {
     await assertProjectOwnership(context.supabase, data.projectId, context.userId);
-    return fetchProjectFrames(data.projectId);
+    return fetchProjectFrames(data.projectId, context.userId);
   });
 
 export const saveProjectCodeServer = createServerFn({ method: "POST" })
@@ -114,28 +110,37 @@ export const saveProjectCodeServer = createServerFn({ method: "POST" })
     return { projectId, html, css, js };
   })
   .handler(async ({ context, data }) => {
-    await assertProjectOwnership(context.supabase, data.projectId, context.userId);
-    const success = await updateProjectCode(data.projectId, data.html, data.css, data.js);
+    const success = await updateProjectCode(
+      data.projectId,
+      data.html,
+      data.css,
+      data.js,
+      context.userId,
+    );
     return { success };
   });
 
 async function simulateBackgroundProcessing(
   jobId: string,
   projectId: string,
-  _userId: string,
+  userId: string,
   frameCount: number,
   style: string,
 ) {
   try {
     await new Promise((resolve) => setTimeout(resolve, 3000));
-    await updateVideoJob(jobId, {
-      status: "processing",
-      started_at: new Date().toISOString(),
-    });
+    await updateVideoJob(
+      jobId,
+      {
+        status: "processing",
+        started_at: new Date().toISOString(),
+      },
+      userId,
+    );
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    const mockFrames: Partial<DbFrame>[] = [];
+    const mockFrames: Array<Partial<DbFrame> & { video_job_id: string; userId: string }> = [];
     for (let i = 0; i < frameCount; i++) {
       mockFrames.push({
         video_job_id: jobId,
@@ -145,40 +150,53 @@ async function simulateBackgroundProcessing(
         width: 800,
         height: 450,
         file_size_bytes: 25 * 1024,
+        userId,
       });
     }
 
     await insertFrames(mockFrames);
 
-    await updateVideoJob(jobId, {
-      status: "completed",
-      frame_count: frameCount,
-      cost_usd: 0.12,
-      processing_time_ms: 8000,
-      video_url:
-        "https://assets.mixkit.co/videos/preview/mixkit-abstract-glowing-lines-41582-large.mp4",
-      completed_at: new Date().toISOString(),
-    });
+    await updateVideoJob(
+      jobId,
+      {
+        status: "completed",
+        frame_count: frameCount,
+        cost_usd: 0.12,
+        processing_time_ms: 8000,
+        video_url:
+          "https://assets.mixkit.co/videos/preview/mixkit-abstract-glowing-lines-41582-large.mp4",
+        completed_at: new Date().toISOString(),
+      },
+      userId,
+    );
 
     const { updateProjectSettings } = await import("./studio.server");
-    await updateProjectSettings(projectId, {
-      status: "completed",
-      frame_metadata: {
-        total_frames: frameCount,
-        fps: 30,
-        total_size_bytes: frameCount * 25 * 1024,
+    await updateProjectSettings(
+      projectId,
+      {
+        status: "completed",
+        frame_metadata: {
+          total_frames: frameCount,
+          fps: 30,
+          total_size_bytes: frameCount * 25 * 1024,
+        },
+        settings: {
+          style,
+          frameCount,
+        },
       },
-      settings: {
-        style,
-        frameCount,
-      },
-    });
+      userId,
+    );
   } catch (err) {
     console.error("[studio.functions] background processing failed:", err);
-    await updateVideoJob(jobId, {
-      status: "failed",
-      error_message: err instanceof Error ? err.message : String(err),
-      completed_at: new Date().toISOString(),
-    });
+    await updateVideoJob(
+      jobId,
+      {
+        status: "failed",
+        error_message: err instanceof Error ? err.message : String(err),
+        completed_at: new Date().toISOString(),
+      },
+      userId,
+    );
   }
 }
