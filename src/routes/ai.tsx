@@ -94,7 +94,6 @@ function AiPage() {
         data: {
           prompt,
           plan,
-          userId: user?.id,
         },
       });
       const url = `${window.location.origin}/ai/share/${result.id}`;
