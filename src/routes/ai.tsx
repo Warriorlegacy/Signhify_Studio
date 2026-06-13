@@ -510,7 +510,7 @@ function AiPage() {
 
             <div className="mt-6 flex flex-wrap gap-3">
               <button
-                onClick={handleBuild}
+                onClick={() => handleBuild()}
                 disabled={buildState === "building"}
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition disabled:opacity-60"
               >
