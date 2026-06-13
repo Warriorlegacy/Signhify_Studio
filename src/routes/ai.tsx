@@ -481,11 +481,30 @@ function AiPage() {
             )}
 
             <div className="mt-6 flex flex-wrap gap-3">
+              <button
+                onClick={handleBuild}
+                disabled={buildState === "building"}
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition disabled:opacity-60"
+              >
+                {buildState === "building" ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" /> Building the live product…
+                  </>
+                ) : buildState === "done" ? (
+                  <>
+                    <Check size={16} /> Rebuild product
+                  </>
+                ) : (
+                  <>
+                    Build the live product <ArrowRight size={16} />
+                  </>
+                )}
+              </button>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition"
+                className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-5 py-3 text-sm font-semibold hover:border-primary/60 transition"
               >
-                Have Signhify build this <ArrowRight size={16} />
+                Have Signhify ship it
               </Link>
               <button
                 onClick={handleShare}
@@ -512,12 +531,56 @@ function AiPage() {
                   setPlan(null);
                   setPrompt("");
                   setShareUrl(null);
+                  setProductHtml(null);
+                  setBuildState("idle");
                 }}
                 className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-5 py-3 text-sm font-semibold hover:border-primary/60 transition"
               >
                 Try another prompt
               </button>
             </div>
+
+            {buildState === "error" && buildError && (
+              <div className="mt-6 rounded-xl border border-red-500/40 bg-red-500/5 p-4 text-sm text-red-200">
+                {buildError}
+              </div>
+            )}
+
+            {productHtml && (
+              <div className="mt-8 rounded-2xl border border-primary/40 bg-background overflow-hidden shadow-[var(--shadow-glow)]">
+                <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-surface/60">
+                  <div className="text-xs uppercase tracking-[0.22em] text-primary">
+                    Live product preview
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        const blob = new Blob([productHtml], { type: "text/html" });
+                        const url = URL.createObjectURL(blob);
+                        window.open(url, "_blank");
+                      }}
+                      className="text-xs rounded-md border border-border bg-surface px-3 py-1.5 hover:border-primary/60 transition"
+                    >
+                      Open in new tab
+                    </button>
+                    <a
+                      href={`data:text/html;charset=utf-8,${encodeURIComponent(productHtml)}`}
+                      download="signhify-product.html"
+                      className="text-xs rounded-md border border-border bg-surface px-3 py-1.5 hover:border-primary/60 transition"
+                    >
+                      Download .html
+                    </a>
+                  </div>
+                </div>
+                <iframe
+                  title="Signhify generated product"
+                  srcDoc={productHtml}
+                  sandbox="allow-scripts allow-forms allow-same-origin"
+                  className="w-full h-[720px] bg-white"
+                />
+              </div>
+            )}
+
           </motion.div>
         )}
       </div>
