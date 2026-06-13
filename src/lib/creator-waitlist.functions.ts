@@ -9,10 +9,14 @@ export const joinCreatorWaitlist = createServerFn({ method: "POST" })
     return { email };
   })
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await (supabaseAdmin.from as any)("creator_waitlist").insert({
-      email: data.email,
-    });
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { error } = await supabase
+      .from("creator_waitlist")
+      .insert({
+        email: data.email,
+      });
+
+    // Ignore duplicate entry error (code 23505) as it's okay if user already exists
     if (error && error.code !== "23505") throw new Error("Could not join creator waitlist.");
     return { ok: true };
   });

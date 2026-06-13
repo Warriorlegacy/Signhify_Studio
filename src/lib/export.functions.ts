@@ -2,20 +2,21 @@ import { createServerFn } from "@tanstack/react-start";
 import JSZip from "jszip";
 
 export const exportProjectZip = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => {
-    const obj = input as Record<string, unknown>;
-    const projectId = typeof obj?.projectId === "string" ? obj.projectId : "";
-    if (!projectId) throw new Error("Project ID is required");
-    return { projectId };
-  })
-  .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  .handler(async ({ context, data }) => {
+    // Require authentication
+    if (!context.userId) throw new Error("Unauthorized");
 
-    // Fetch project
-    const { data: project, error } = await (supabaseAdmin as any)
+    const { projectId } = data;
+    if (!projectId) throw new Error("Project ID is required");
+
+    const { supabase } = await import("@/integrations/supabase/client");
+
+    // Fetch project - ensure user owns it
+    const { data: project, error } = await supabase
       .from("user_projects")
       .select("*")
-      .eq("id", data.projectId)
+      .eq("id", projectId)
+      .eq("user_id", context.userId) // Verify ownership
       .single();
 
     if (error) {
@@ -23,9 +24,13 @@ export const exportProjectZip = createServerFn({ method: "POST" })
       throw new Error("Failed to fetch project for export");
     }
 
+    if (!project) {
+      throw new Error("Project not found or access denied");
+    }
+
     // Actual implementation of ZIP building using JSZip
     const zip = new JSZip();
-    
+
     // Add source code files
     zip.file("index.html", project.current_html || "<!DOCTYPE html>\\n<html>\\n<body>\\n</body>\\n</html>");
     zip.file("styles.css", project.current_css || "/* Styles */");
@@ -33,16 +38,16 @@ export const exportProjectZip = createServerFn({ method: "POST" })
     zip.file("README.md", "# Exported Project\\n\\nDeploy this folder to any static hosting provider like Vercel, Netlify, or AWS S3.");
 
     // Fetch frames (if any) and add to a /frames folder
-    const { data: frames } = await (supabaseAdmin as any)
+    const { data: frames } = await supabase
       .from("frames")
       .select("*")
-      .eq("project_id", data.projectId)
+      .eq("project_id", projectId)
       .order("frame_index", { ascending: true });
 
     if (frames && frames.length > 0) {
       const framesFolder = zip.folder("frames");
-      // In a fully real implementation we would fetch the image blobs here 
-      // and attach them to the ZIP. For now, since they might be large and remote, 
+      // In a fully real implementation we would fetch the image blobs here
+      // and attach them to the ZIP. For now, since they might be large and remote,
       // we'll write a JSON manifest or placeholder text.
       framesFolder?.file("frames.json", JSON.stringify(frames, null, 2));
     }

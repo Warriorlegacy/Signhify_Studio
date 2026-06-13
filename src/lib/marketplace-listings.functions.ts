@@ -17,7 +17,9 @@ export const fetchMarketplaceListings = createServerFn({ method: "GET" }).handle
         price: Math.round((row.price_cents ?? 0) / 100),
         price_cents: row.price_cents ?? 0,
         preview_url: row.preview_url,
-        asset_path: row.asset_path,
+        // asset_path is intentionally omitted from public listings for security
+        // Internal systems can access it through secure channels if needed
+        asset_path: null,
         tags: row.category ? [row.category] : [],
         accent: "linear-gradient(135deg, oklch(0.72 0.21 45), oklch(0.22 0.06 260))",
         badge: (row.price_cents ?? 0) === 0 ? "Free" : undefined,
@@ -31,29 +33,30 @@ export const fetchMarketplaceListings = createServerFn({ method: "GET" }).handle
 );
 
 export const publishProjectToMarketplace = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => {
-    const obj = input as Record<string, unknown>;
-    const projectId = typeof obj?.projectId === "string" ? obj.projectId : "";
-    if (!projectId) throw new Error("Project ID is required");
-    return { projectId };
-  })
-  .handler(async ({ data }) => {
-    try {
-      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  .handler(async ({ context, data }) => {
+    // Require authentication
+    if (!context.userId) throw new Error("Unauthorized");
 
-      // Fetch the project data
-      const { data: project, error: projErr } = await (supabaseAdmin.from as any)("user_projects")
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const projectId = data.projectId;
+
+      // Fetch the project data - ensure user owns it
+      const { data: project, error: projErr } = await supabase
+        .from("user_projects")
         .select("*")
-        .eq("id", data.projectId)
+        .eq("id", projectId)
+        .eq("user_id", context.userId) // Verify ownership
         .single();
 
       if (projErr || !project) {
-        throw new Error("Project not found");
+        throw new Error("Project not found or access denied");
       }
 
       const slug = `template-${project.id.slice(0, 8)}`;
 
-      const { data: inserted, error: insertErr } = await (supabaseAdmin.from as any)("marketplace_listings")
+      const { data: inserted, error: insertErr } = await supabase
+        .from("marketplace_listings")
         .insert([
           {
             slug,

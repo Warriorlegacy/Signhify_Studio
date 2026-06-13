@@ -2,36 +2,54 @@ import { createServerFn } from "@tanstack/react-start";
 import Stripe from "stripe";
 
 export const getUserCredits = createServerFn({ method: "GET" })
-  .handler(async () => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    
-    // In a real implementation we would fetch the user ID from auth context.
-    // For this mock, we'll return a static shape or fetch the first user.
+  .handler(async ({ context }) => {
+    // Require authentication
+    if (!context.userId) throw new Error("Unauthorized");
+
+    const { supabase } = await import("@/integrations/supabase/client");
+
+    // Fetch user credits from the database
+    const { data: creditsData, error } = await supabase
+      .from("user_credits")
+      .select("tier, credits_remaining, max_credits, projects_count, videos_generated")
+      .eq("user_id", context.userId)
+      .single();
+
+    if (error) {
+      // If no record found, return default free tier values
+      return {
+        tier: "free",
+        creditsRemaining: 2,
+        maxCredits: 2,
+        projectsCount: 0,
+        videosGenerated: 0
+      };
+    }
+
     return {
-      tier: "free",
-      creditsRemaining: 2,
-      maxCredits: 2,
-      projectsCount: 1,
-      videosGenerated: 0
+      tier: creditsData.tier,
+      creditsRemaining: creditsData.credits_remaining,
+      maxCredits: creditsData.max_credits,
+      projectsCount: creditsData.projects_count,
+      videosGenerated: creditsData.videos_generated
     };
   });
 
 export const createCheckoutSession = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => {
-    const obj = input as Record<string, unknown>;
-    const plan = typeof obj?.plan === "string" ? obj.plan : "pro";
-    return { plan };
-  })
-  .handler(async ({ data }) => {
+  .handler(async ({ context, data }) => {
+    // Require authentication
+    if (!context.userId) throw new Error("Unauthorized");
+
+    const { plan } = data;
     const stripeKey = process.env.STRIPE_SECRET_KEY;
-    
+
     if (!stripeKey) {
-      return { 
+      return {
         success: true,
-        url: "https://checkout.stripe.com/c/pay/mock_session_id" 
+        url: "https://checkout.stripe.com/c/pay/mock_session_id"
       };
     }
-    
+
     try {
       const stripe = new Stripe(stripeKey);
       const session = await stripe.checkout.sessions.create({
@@ -53,6 +71,11 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         mode: "subscription",
         success_url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/scroll-studio?success=true`,
         cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/scroll-studio?canceled=true`,
+        // Add metadata to link the session to the user
+        metadata: {
+          user_id: context.userId,
+          plan: plan
+        }
       });
 
       return { success: true, url: session.url };

@@ -19,7 +19,8 @@ export async function fetchListings(
   free?: boolean,
 ): Promise<DbListing[]> {
   let q: any = (supabaseAdmin.from as any)("marketplace_listings").select(
-    "id, slug, title, description, category, price_cents, preview_url, asset_path, creator_id, created_at",
+    "id, slug, title, description, category, price_cents, preview_url, creator_id, created_at", // Exclude asset_path for security
+    // Note: asset_path is excluded from public SELECT to prevent leaking internal storage paths
   );
   if (query?.trim())
     q = q.textSearch("search_vector", query.trim(), { type: "plain", config: "english" });

@@ -177,25 +177,22 @@ function generateLocalMockPlan(prompt: string): GeneratedPlan {
 }
 
 export const savePlan = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => {
-    const obj = input as Record<string, unknown>;
-    const prompt = typeof obj?.prompt === "string" ? obj.prompt.trim() : "";
-    const plan = obj?.plan as GeneratedPlan | undefined;
-    const userId = typeof obj?.userId === "string" ? obj.userId : undefined;
+  .handler(async ({ context, data }) => {
+    // Require authentication
+    if (!context.userId) throw new Error("Unauthorized");
+
+    const { prompt, plan } = data;
 
     if (!prompt) throw new Error("Prompt is required.");
     if (!plan || !plan.productName) throw new Error("Plan is required.");
 
-    return { prompt, plan, userId };
-  })
-  .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: row, error } = await supabaseAdmin
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data: row, error } = await supabase
       .from("ai_sessions")
       .insert({
-        prompt: data.prompt,
-        response: data.plan,
-        user_id: data.userId || null,
+        prompt: prompt,
+        response: plan,
+        user_id: context.userId, // Use authenticated user's ID
       })
       .select("id")
       .single();
@@ -207,22 +204,25 @@ export const savePlan = createServerFn({ method: "POST" })
   });
 
 export const getSavedPlan = createServerFn({ method: "GET" })
-  .inputValidator((input: unknown) => {
-    const id = (input as Record<string, unknown>)?.id;
-    if (typeof id !== "string" || !id.trim()) {
-      throw new Error("Session ID is required.");
-    }
-    return { id: id.trim() };
-  })
   .handler(
     async ({
+      context,
       data,
     }): Promise<{ prompt: string; plan: GeneratedPlan; userId: string | null } | null> => {
-      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-      const { data: row, error } = await supabaseAdmin
+      // Require authentication
+      if (!context.userId) throw new Error("Unauthorized");
+
+      const { id } = data;
+      if (typeof id !== "string" || !id.trim()) {
+        throw new Error("Session ID is required.");
+      }
+
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data: row, error } = await supabase
         .from("ai_sessions")
         .select("prompt, response, user_id")
-        .eq("id", data.id)
+        .eq("id", id.trim())
+        .eq("user_id", context.userId) // Ensure user owns the session
         .maybeSingle();
       if (error) {
         console.error("[getSavedPlan] failed:", error);

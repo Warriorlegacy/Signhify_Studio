@@ -1,8 +1,5 @@
-import { supabaseAdmin as adminClient } from "@/integrations/supabase/client.server";
+import { supabase } from "@/integrations/supabase/client";
 import crypto from "crypto";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const supabaseAdmin = adminClient as any;
 
 export type DbVideoJob = {
   id: string;
@@ -45,9 +42,16 @@ const memoryFrames = new Map<string, DbFrame[]>();
 const memoryProjectCode = new Map<string, { html: string; css: string; js: string }>();
 const memoryProjectSettings = new Map<string, unknown>();
 
-export async function insertVideoJob(job: Partial<DbVideoJob>): Promise<DbVideoJob | null> {
+export async function insertVideoJob(job: Partial<DbVideoJob> & { userId: string }): Promise<DbVideoJob | null> {
   try {
-    const { data, error } = await supabaseAdmin.from("video_jobs").insert(job).select().single();
+    const { data, error } = await supabase
+      .from("video_jobs")
+      .insert({
+        ...job,
+        user_id: job.userId // Ensure user_id is set from the passed userId
+      })
+      .select()
+      .single();
 
     if (error) {
       console.warn(
@@ -63,11 +67,11 @@ export async function insertVideoJob(job: Partial<DbVideoJob>): Promise<DbVideoJ
   }
 }
 
-function createMemoryJob(job: Partial<DbVideoJob>): DbVideoJob {
+function createMemoryJob(job: Partial<DbVideoJob> & { userId: string }): DbVideoJob {
   const newJob: DbVideoJob = {
     id: job.id || crypto.randomUUID(),
     project_id: job.project_id || "00000000-0000-0000-0000-000000000000",
-    user_id: job.user_id || "00000000-0000-0000-0000-000000000000",
+    user_id: job.userId, // Use the passed userId
     provider: job.provider || "mock-runner",
     model: job.model || "runway-gen3-turbo",
     input_type: job.input_type || "text_to_video",
@@ -93,12 +97,14 @@ function createMemoryJob(job: Partial<DbVideoJob>): DbVideoJob {
 export async function updateVideoJob(
   jobId: string,
   updates: Partial<DbVideoJob>,
+  userId: string
 ): Promise<DbVideoJob | null> {
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabase
       .from("video_jobs")
       .update(updates)
       .eq("id", jobId)
+      .eq("user_id", userId) // Ensure user owns the job
       .select()
       .single();
 
@@ -124,12 +130,13 @@ function updateMemoryJob(jobId: string, updates: Partial<DbVideoJob>): DbVideoJo
   return updated;
 }
 
-export async function fetchVideoJob(jobId: string): Promise<DbVideoJob | null> {
+export async function fetchVideoJob(jobId: string, userId: string): Promise<DbVideoJob | null> {
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabase
       .from("video_jobs")
       .select("*")
       .eq("id", jobId)
+      .eq("user_id", userId) // Ensure user owns the job
       .maybeSingle();
 
     if (error) {
@@ -146,12 +153,13 @@ export async function fetchVideoJob(jobId: string): Promise<DbVideoJob | null> {
   }
 }
 
-export async function fetchProjectFrames(projectId: string): Promise<DbFrame[]> {
+export async function fetchProjectFrames(projectId: string, userId: string): Promise<DbFrame[]> {
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabase
       .from("frames")
-      .select("*")
+      .select("*, video_jobs!inner(user_id)") // Join with video_jobs to verify ownership via project
       .eq("project_id", projectId)
+      .eq("video_jobs.user_id", userId) // Ensure user owns the project through the video job
       .order("frame_index", { ascending: true });
 
     if (error) {
@@ -171,9 +179,25 @@ export async function fetchProjectFrames(projectId: string): Promise<DbFrame[]> 
   }
 }
 
-export async function insertFrames(framesList: Partial<DbFrame>[]): Promise<DbFrame[]> {
+export async function insertFrames(framesList: Array<Partial<DbFrame> & { video_job_id: string, userId: string }>): Promise<DbFrame[]> {
   try {
-    const { data, error } = await supabaseAdmin.from("frames").insert(framesList).select();
+    // Verify user owns all the video_jobs these frames belong to
+    const videoJobIds = [...new Set(framesList.map(f => f.video_job_id))];
+    const { data: ownedJobs, error: ownershipError } = await supabase
+      .from("video_jobs")
+      .select("id")
+      .in("id", videoJobIds)
+      .eq("user_id", framesList[0].userId); // Assuming all frames belong to same user
+
+    if (ownershipError) throw ownershipError;
+    if (ownedJobs.length !== videoJobIds.length) {
+      throw new Error("Unauthorized: One or more video jobs do not belong to the user");
+    }
+
+    const { data, error } = await supabase
+      .from("frames")
+      .insert(framesList.map(({ userId, ...frame }) => frame)) // Remove userId from insert
+      .select();
 
     if (error) {
       console.warn(
@@ -222,16 +246,18 @@ export async function updateProjectCode(
   html: string,
   css: string,
   js: string,
+  userId: string
 ): Promise<boolean> {
   try {
-    const { error } = await supabaseAdmin
+    const { error } = await supabase
       .from("user_projects")
       .update({
         current_html: html,
         current_css: css,
         current_js: js,
       })
-      .eq("id", projectId);
+      .eq("id", projectId)
+      .eq("user_id", userId); // Ensure user owns the project
 
     if (error) {
       console.warn(
@@ -256,12 +282,14 @@ export async function updateProjectSettings(
     frame_metadata: unknown;
     settings: unknown;
   },
+  userId: string
 ): Promise<boolean> {
   try {
-    const { error } = await supabaseAdmin
+    const { error } = await supabase
       .from("user_projects")
       .update(settings)
-      .eq("id", projectId);
+      .eq("id", projectId)
+      .eq("user_id", userId); // Ensure user owns the project
 
     if (error) {
       console.warn(

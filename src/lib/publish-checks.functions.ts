@@ -5,12 +5,35 @@ const EXPECTED_TITLE = "Marketplace — Signhify";
 const EXPECTED_DESCRIPTION_TOKEN = "templates, AI agents, components";
 const EXPECTED_OG_URL = "https://signhify.online/marketplace";
 
+const ALLOWED_ORIGINS = [
+  "https://signhify.online",
+  "https://id-preview--*.lovable.app",
+  // Add other allowed domains as needed
+];
+
 function pickOrigin(input: { origin?: string } | undefined, fallback: string) {
   const o = input?.origin?.trim();
   if (!o) return fallback;
+
   try {
     const u = new URL(o);
-    return `${u.protocol}//${u.host}`;
+    const origin = `${u.protocol}//${u.host}`;
+
+    // Validate against allowed origins
+    const isAllowed = ALLOWED_ORIGINS.some(allowed => {
+      if (allowed.includes("*")) {
+        // Handle wildcard domains
+        const regex = new RegExp("^" + allowed.replace(/\*/g, ".*") + "$");
+        return regex.test(origin);
+      }
+      return allowed === origin;
+    });
+
+    if (!isAllowed) {
+      throw new Error(`Origin not allowed: ${origin}`);
+    }
+
+    return origin;
   } catch {
     return fallback;
   }
@@ -165,7 +188,10 @@ export type AuditPayload = {
 
 export const recordPublishAudit = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => input as AuditPayload)
-  .handler(async ({ data }) => {
+  .handler(async ({ context, data }) => {
+    // Require authentication
+    if (!context.userId) throw new Error("Unauthorized");
+
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await (supabaseAdmin.from as any)("publish_audit")
       .insert({
@@ -183,17 +209,21 @@ export const recordPublishAudit = createServerFn({ method: "POST" })
     return { id: row.id as string, createdAt: row.created_at as string };
   });
 
-export const listPublishAudits = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data, error } = await (supabaseAdmin.from as any)("publish_audit")
-    .select(
-      "id, created_at, gates, smoke_result, diff_result, preview_url, approver_email, commit_sha",
-    )
-    .order("created_at", { ascending: false })
-    .limit(20);
-  if (error) throw new Error(error.message);
-  return { audits: (data ?? []) as Array<Record<string, any>> };
-});
+export const listPublishAudits = createServerFn({ method: "GET" })
+  .handler(async ({ context }) => {
+    // Require authentication
+    if (!context.userId) throw new Error("Unauthorized");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await (supabaseAdmin.from as any)("publish_audit")
+      .select(
+        "id, created_at, gates, smoke_result, diff_result, preview_url, approver_email, commit_sha",
+      )
+      .order("created_at", { ascending: false })
+      .limit(20);
+    if (error) throw new Error(error.message);
+    return { audits: (data ?? []) as Array<Record<string, any>> };
+  });
 
 export type ConnectivityStatus = {
   ok: boolean;

@@ -3,14 +3,13 @@ import { leadSchema, type Lead } from "./leads-schema";
 
 /**
  * Persist a lead from the Studio contact wizard. Validated server-side
- * with the same Zod schema the client uses. The admin client is imported
- * inside the handler so it never leaks into the client bundle graph.
+ * with the same Zod schema the client uses.
  */
 export const submitLead = createServerFn({ method: "POST" })
   .inputValidator((input: Lead) => leadSchema.parse(input))
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("leads").insert({
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { error } = await supabase.from("leads").insert({
       name: data.name,
       email: data.email,
       company: data.company || null,

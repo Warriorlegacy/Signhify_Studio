@@ -1,11 +1,15 @@
 import { createServerFn } from "@tanstack/react-start";
 
 export const getScrollStudioProjects = createServerFn({ method: "GET" })
-  .handler(async () => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: projects, error } = await (supabaseAdmin as any)
+  .handler(async ({ context }) => {
+    // Require authentication
+    if (!context.userId) throw new Error("Unauthorized");
+
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data: projects, error } = await supabase
       .from("user_projects")
       .select("*")
+      .eq("user_id", context.userId) // Only get current user's projects
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -17,18 +21,16 @@ export const getScrollStudioProjects = createServerFn({ method: "GET" })
   });
 
 export const getScrollStudioProject = createServerFn({ method: "GET" })
-  .inputValidator((input: unknown) => {
-    const obj = input as Record<string, unknown>;
-    const id = typeof obj?.id === "string" ? obj.id : "";
-    if (!id) throw new Error("Project ID is required");
-    return { id };
-  })
-  .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: project, error } = await (supabaseAdmin as any)
+  .handler(async ({ context, data }) => {
+    // Require authentication
+    if (!context.userId) throw new Error("Unauthorized");
+
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data: project, error } = await supabase
       .from("user_projects")
       .select("*")
       .eq("id", data.id)
+      .eq("user_id", context.userId) // Ensure user owns the project
       .single();
 
     if (error) {
@@ -40,22 +42,21 @@ export const getScrollStudioProject = createServerFn({ method: "GET" })
   });
 
 export const createScrollStudioProject = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => {
-    const obj = input as Record<string, unknown>;
-    const title = typeof obj?.title === "string" ? obj.title : "Untitled Project";
-    const initialPrompt = typeof obj?.initialPrompt === "string" ? obj.initialPrompt : "";
-    const userId = typeof obj?.userId === "string" ? obj.userId : "";
-    if (!userId) throw new Error("User ID is required to create a project");
-    return { title, initialPrompt, userId };
-  })
-  .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: project, error } = await (supabaseAdmin as any)
+  .handler(async ({ context, data }) => {
+    // Require authentication
+    if (!context.userId) throw new Error("Unauthorized");
+
+    // Use authenticated user's ID instead of client-supplied one
+    const userId = context.userId;
+    const { title, initialPrompt } = data;
+
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data: project, error } = await supabase
       .from("user_projects")
       .insert({
-        user_id: data.userId,
-        name: data.title,
-        description: data.initialPrompt,
+        user_id: userId,
+        name: title,
+        description: initialPrompt,
         conversation_history: [{
           id: "welcome",
           role: "assistant",
@@ -63,7 +64,7 @@ export const createScrollStudioProject = createServerFn({ method: "POST" })
         }, {
           id: Date.now().toString(),
           role: "user",
-          content: data.initialPrompt
+          content: initialPrompt
         }]
       })
       .select()
@@ -78,19 +79,18 @@ export const createScrollStudioProject = createServerFn({ method: "POST" })
   });
 
 export const updateScrollStudioProject = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => {
-    const obj = input as Record<string, unknown>;
-    const id = typeof obj?.id === "string" ? obj.id : "";
-    const updates = typeof obj?.updates === "object" ? obj.updates : {};
-    if (!id) throw new Error("Project ID is required");
-    return { id, updates };
-  })
-  .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: project, error } = await (supabaseAdmin as any)
+  .handler(async ({ context, data }) => {
+    // Require authentication
+    if (!context.userId) throw new Error("Unauthorized");
+
+    const { id, updates } = data;
+
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data: project, error } = await supabase
       .from("user_projects")
-      .update(data.updates)
-      .eq("id", data.id)
+      .update(updates)
+      .eq("id", id)
+      .eq("user_id", context.userId) // Ensure user owns the project
       .select()
       .single();
 
