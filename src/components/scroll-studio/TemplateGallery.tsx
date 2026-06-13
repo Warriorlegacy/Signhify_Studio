@@ -74,8 +74,7 @@ export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: str
         data: {
           title: "Blank Project",
           initialPrompt: "Start with a blank cinematic canvas.",
-          userId: user.id
-        }
+        },
       });
       toast.success("Project created!");
       onSelectProject(project.id);
