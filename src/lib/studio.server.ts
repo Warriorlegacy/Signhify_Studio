@@ -197,7 +197,7 @@ export async function insertFrames(framesList: Array<Partial<DbFrame> & { video_
 
     const { data, error } = await supabase
       .from("frames")
-      .insert(framesList.map(({ userId, ...frame }) => frame)) // Remove userId from insert
+      .insert(framesList.map(({ userId, ...frame }) => frame) as any) // Remove userId from insert
       .select();
 
     if (error) {
