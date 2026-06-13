@@ -18,7 +18,8 @@ import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { generatePlan, savePlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
 import { getGeneratePlanStreamConfig } from "@/lib/ai-generate-stream.functions";
-import { buildProduct } from "@/lib/build-product.functions";
+import { buildProduct, buildMultiProduct } from "@/lib/build-product.functions";
+import JSZip from "jszip";
 import { joinWaitlist } from "@/lib/waitlist.functions";
 import { useUser } from "@/hooks/useUser";
 
@@ -90,6 +91,9 @@ function AiPage() {
   const [buildState, setBuildState] = useState<"idle" | "building" | "done" | "error">("idle");
   const [productHtml, setProductHtml] = useState<string | null>(null);
   const [buildError, setBuildError] = useState<string | null>(null);
+  const [zipBuildState, setZipBuildState] = useState<"idle" | "building" | "done" | "error">("idle");
+  const [zipBlob, setZipBlob] = useState<Blob | null>(null);
+  const [zipError, setZipError] = useState<string | null>(null);
   const [builderMode, setBuilderMode] = useState(false);
 
   // Restore admin builder-mode preference
@@ -128,6 +132,37 @@ function AiPage() {
       setBuildState("error");
     }
   };
+  const handleBuildZip = async (overridePlan?: GeneratedPlan, overridePrompt?: string) => {
+    const activePlan = overridePlan ?? plan;
+    const activePrompt = overridePrompt ?? prompt;
+    if (!activePlan || !activePrompt) return;
+    setZipBuildState("building");
+    setZipError(null);
+    setZipBlob(null);
+    try {
+      const res = await buildMultiProduct({ data: { prompt: activePrompt } });
+      const zip = new JSZip();
+      for (const file of res.files) {
+        zip.file(file.path, file.content);
+      }
+      const blob = await zip.generateAsync({ type: "blob" });
+      setZipBlob(blob);
+      setZipBuildState("done");
+      // Trigger download
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "signhify-product.zip");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      setZipError(e instanceof Error ? e.message : "Build failed.");
+      setZipBuildState("error");
+    }
+  };
+
 
   // Auto-build when plan completes in builder mode
   useEffect(() => {
@@ -554,6 +589,26 @@ function AiPage() {
                   </>
                 )}
               </button>
+              <button
+                onClick={() => handleBuildZip()}
+                disabled={zipBuildState === "building"}
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition disabled:opacity-60"
+              >
+                {zipBuildState === "building" ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" /> Building ZIP…
+                  </>
+                ) : zipBuildState === "done" ? (
+                  <>
+                    <Check size={16} /> Rebuild ZIP
+                  </>
+                ) : (
+                  <>
+                    Build and download ZIP <ArrowRight size={16} />
+                  </>
+                )}
+              </button>
+
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-5 py-3 text-sm font-semibold hover:border-primary/60 transition"
