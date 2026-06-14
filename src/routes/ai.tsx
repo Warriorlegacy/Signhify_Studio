@@ -19,6 +19,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { generatePlan, savePlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
 import { getGeneratePlanStreamConfig } from "@/lib/ai-generate-stream.functions";
 import { buildProduct, buildMultiProduct } from "@/lib/build-product.functions";
+import { buildFullStackApp } from "@/lib/build-full-stack.functions";
 import JSZip from "jszip";
 import { joinWaitlist } from "@/lib/waitlist.functions";
 import { useUser } from "@/hooks/useUser";
@@ -87,6 +88,8 @@ function AiPage() {
   const getStreamConfig = useServerFn(getGeneratePlanStreamConfig);
   const save = useServerFn(savePlan);
   const build = useServerFn(buildProduct);
+  const buildMulti = useServerFn(buildMultiProduct);
+  const buildFullStack = useServerFn(buildFullStackApp);
 
   const [buildState, setBuildState] = useState<"idle" | "building" | "done" | "error">("idle");
   const [productHtml, setProductHtml] = useState<string | null>(null);
@@ -94,6 +97,9 @@ function AiPage() {
   const [zipBuildState, setZipBuildState] = useState<"idle" | "building" | "done" | "error">("idle");
   const [zipBlob, setZipBlob] = useState<Blob | null>(null);
   const [zipError, setZipError] = useState<string | null>(null);
+  const [fullStackState, setFullStackState] = useState<"idle" | "building" | "done" | "error">("idle");
+  const [fullStackUrl, setFullStackUrl] = useState<string | null>(null);
+  const [fullStackError, setFullStackError] = useState<string | null>(null);
   const [builderMode, setBuilderMode] = useState(false);
 
   // Restore admin builder-mode preference
@@ -140,7 +146,7 @@ function AiPage() {
     setZipError(null);
     setZipBlob(null);
     try {
-      const res = await buildMultiProduct({ data: { prompt: activePrompt } });
+      const res = await buildMulti({ data: { prompt: activePrompt } });
       const zip = new JSZip();
       for (const file of res.files) {
         zip.file(file.path, file.content);
@@ -160,6 +166,32 @@ function AiPage() {
     } catch (e) {
       setZipError(e instanceof Error ? e.message : "Build failed.");
       setZipBuildState("error");
+    }
+  };
+  const handleBuildFullStack = async (overridePlan?: GeneratedPlan, overridePrompt?: string) => {
+    const activePlan = overridePlan ?? plan;
+    const activePrompt = overridePrompt ?? prompt;
+    if (!activePlan || !activePrompt) return;
+    setFullStackState("building");
+    setFullStackError(null);
+    setFullStackUrl(null);
+    try {
+      const planText = activePlan.sections
+        .map((s) => `## ${s.title}\n${s.bullets.join("\n")}`)
+        .join("\n\n");
+      const res = await buildFullStack({ data: { prompt: activePrompt, planText } });
+      setFullStackUrl(res.downloadUrl);
+      setFullStackState("done");
+      // Trigger download
+      const link = document.createElement("a");
+      link.href = res.downloadUrl;
+      link.setAttribute("download", "signhify-fullstack-app.zip");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (e) {
+      setFullStackError(e instanceof Error ? e.message : "Build failed.");
+      setFullStackState("error");
     }
   };
 
@@ -608,6 +640,25 @@ function AiPage() {
                   </>
                 )}
               </button>
+              <button
+                onClick={() => handleBuildFullStack()}
+                disabled={fullStackState === "building"}
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:brightness-110 transition disabled:opacity-60"
+              >
+                {fullStackState === "building" ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" /> Building full-stack app…
+                  </>
+                ) : fullStackState === "done" ? (
+                  <>
+                    <Check size={16} /> Rebuild full-stack
+                  </>
+                ) : (
+                  <>
+                    Build and download full-stack app <ArrowRight size={16} />
+                  </>
+                )}
+              </button>
 
               <Link
                 to="/contact"
@@ -652,6 +703,11 @@ function AiPage() {
             {buildState === "error" && buildError && (
               <div className="mt-6 rounded-xl border border-red-500/40 bg-red-500/5 p-4 text-sm text-red-200">
                 {buildError}
+              </div>
+            )}
+            {fullStackState === "error" && fullStackError && (
+              <div className="mt-6 rounded-xl border border-red-500/40 bg-red-500/5 p-4 text-sm text-red-200">
+                {fullStackError}
               </div>
             )}
 

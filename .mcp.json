@@ -3,6 +3,19 @@
     "supabase": {
       "type": "http",
       "url": "https://mcp.supabase.com/mcp?project_ref=nqeuarvpkxupxeeuzuow"
+    },
+    "browser-use": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "browser-use",
+        "--mcp"
+      ],
+      "env": {
+        "BROWSER_USE_HEADLESS": "true",
+        "BROWSER_USE_LLM_MODEL": "claude-3-5-sonnet-20241022",
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}"
+      }
     }
   }
 }

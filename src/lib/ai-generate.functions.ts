@@ -75,51 +75,94 @@ function generateLocalMockPlan(prompt: string): GeneratedPlan {
     "Define core user personas and primary conversion goal.",
     "Draft high-fidelity wireframes focusing on clean, minimal UI layout.",
     "Outline phased release timeline targeting MVP features first.",
+    "Define success metrics and key performance indicators (KPIs).",
+    "Research competitor landscape and identify unique value proposition.",
   ];
   let archBullets = [
-    "Design database schema with proper relational keys.",
-    "Configure secure Supabase RLS (Row Level Security) policies.",
-    "Optimize query indexes to keep sub-100ms response latencies.",
+    "Design database schema with proper relational keys and indexing strategy.",
+    "Configure secure Supabase RLS (Row Level Security) policies for data protection.",
+    "Optimize query performance with indexed views and connection pooling.",
+    "Design microservices architecture for scalability and maintainability.",
+    "Plan API rate limiting and caching strategies for optimal performance.",
   ];
   let designBullets = [
-    "Establish harmonious dark/light mode CSS design system tokens.",
-    "Map key typography settings using premium font scales (Space Grotesk).",
-    "Design fluid card components utilizing smooth 3D parallax hover states.",
+    "Establish harmonious dark/light mode CSS design system tokens with CSS variables.",
+    "Map key typography settings using premium font scales (Space Grotesk and Inter).",
+    "Design fluid card components utilizing smooth 3D parallax hover states and animations.",
+    "Create responsive breakpoints for mobile, tablet, and desktop experiences.",
+    "Implement accessibility standards (WCAG 2.1) for inclusive design.",
   ];
   const frontBullets = [
-    "Create type-safe layouts and dynamic routing via TanStack Router.",
-    "Build interactive components utilizing spring physics (framer-motion).",
-    "Optimize asset loader pipelines for perfect Core Web Vitals score.",
+    "Create type-safe layouts and dynamic routing via TanStack Router with route loading states.",
+    "Build interactive components utilizing spring physics (framer-motion) for natural interactions.",
+    "Optimize asset loader pipelines for perfect Core Web Vitals score with code splitting.",
+    "Implement state management with TanStack Query for efficient data synchronization.",
+    "Add offline capabilities with service workers for progressive enhancement.",
   ];
   const backBullets = [
-    "Develop robust TanStack Start server functions to isolate credentials.",
-    "Integrate webhook handlers to receive notifications from partner platforms.",
-    "Implement rate limiting guards on all public client-facing actions.",
+    "Develop robust TanStack Start server functions with input validation and error handling.",
+    "Integrate webhook handlers to receive notifications from partner platforms with retry logic.",
+    "Implement rate limiting guards on all public client-facing actions using token bucket algorithm.",
+    "Design database connection pooling and query optimization for high throughput.",
+    "Add comprehensive logging and monitoring with structured logging and health checks.",
   ];
   const deployBullets = [
-    "Configure CI/CD pipelines to trigger builds on push to main branch.",
-    "Set up Cloudflare Workers edge caching layer to optimize static pages.",
-    "Wire up automated SSL validation and custom DNS mapping details.",
+    "Configure CI/CD pipelines with automated testing, security scanning, and deployment automation.",
+    "Set up Cloudflare Workers edge caching layer with intelligent cache invalidation.",
+    "Wire up automated SSL validation and custom DNS mapping with zero-downtime renewals.",
+    "Implement blue-green deployment strategy for zero-downtime releases.",
+    "Set up comprehensive observability with metrics, logs, and distributed tracing.",
   ];
 
   if (p.includes("gym") || p.includes("crm") || p.includes("fit")) {
     productName = "GymFlow CRM";
-    oneLiner = "Multi-tenant operating system for fitness centers and gyms.";
-    stack = ["React", "Next.js", "Supabase", "Stripe", "Tailwind CSS"];
+    oneLiner = "Multi-tenant operating system for fitness centers and gyms with member management, class scheduling, and payment processing.";
+    stack = ["React", "Next.js", "Supabase", "Stripe", "Tailwind CSS", "TypeScript"];
     strategBullets = [
-      "Target gym owners looking to replace legacy fragmented billing tools.",
-      "Map out user journeys for front-desk managers, members, and owners.",
-      "Design flexible pricing model separating membership tiers and add-ons.",
+      "Target gym owners looking to replace legacy fragmented billing tools with integrated solution.",
+      "Map out user journeys for front-desk managers, members, and owners with role-based access control.",
+      "Design flexible pricing model separating membership tiers, class packages, and personal training add-ons.",
+      "Implement member progress tracking and goal setting features for engagement.",
+      "Add community features like challenges and leaderboards to increase retention.",
     ];
     archBullets = [
-      "Create tables for memberships, check-ins, classes, and payments.",
-      "Establish tenant isolation layer using database filters.",
-      "Integrate Stripe Webhooks to sync invoice status changes in real-time.",
+      "Create tables for memberships, check-ins, classes, payments, members, and trainers with proper relationships.",
+      "Establish tenant isolation layer using Row Level Security (RLS) policies for multi-tenancy.",
+      "Integrate Stripe Webhooks to sync invoice status changes in real-time with idempotency handling.",
+      "Design read replicas for reporting analytics to prevent performance impact on operational queries.",
+      "Plan backup and disaster recovery strategy with point-in-time recovery capabilities.",
     ];
     designBullets = [
-      "Choose a bold, high-contrast dark palette with energetic orange accents.",
-      "Build bento-grid dashboards showcasing daily check-in charts.",
-      "Design minimal check-in scanner interface optimized for mobile views.",
+      "Choose a bold, high-contrast dark palette with energetic orange accents for high energy motivation.",
+      "Build bento-grid dashboards showcasing daily check-in charts, attendance trends, and revenue metrics.",
+      "Design minimal check-in scanner interface optimized for mobile views with camera permission handling.",
+      "Create member portal with profile management, booking history, and payment methods.",
+      "Implement accessible color contrast and font sizing for users with visual impairments.",
+    ];
+  } else if (p.includes("ecommerce") || p.includes("store") || p.includes("shop")) {
+    productName = "ShopFlow Ecommerce";
+    oneLiner = "Complete ecommerce platform for online stores with product catalog, cart, checkout, and order management.";
+    stack = ["React", "Next.js", "Supabase", "Stripe", "Tailwind CSS", "TypeScript"];
+    strategBullets = [
+      "Target entrepreneurs and small businesses needing complete online store solution.",
+      "Map customer journey from product discovery to post-purchase support and reviews.",
+      "Design comprehensive product catalog with categories, filters, search, and recommendations.",
+      "Implement abandoned cart recovery and email marketing automation for conversion optimization.",
+      "Add multi-vendor marketplace capabilities for platform scalability.",
+    ];
+    archBullets = [
+      "Create tables for products, categories, orders, order items, customers, payments, and inventory.",
+      "Design flexible product variant system for sizes, colors, and customizable attributes.",
+      "Integrate multiple payment gateways (Stripe, PayPal) with PCI DSS compliance.",
+      "Implement inventory management with real-time stock levels and low stock alerts.",
+      "Plan search optimization with full-text search and faceted filtering for large catalogs.",
+    ];
+    designBullets = [
+      "Choose clean, trustworthy palette with brandable accent colors for product highlighting.",
+      "Create product grid and list views with quick add-to-cart and wishlist functionality.",
+      "Design streamlined one-page checkout with guest checkout and account creation options.",
+      "Build admin dashboard for inventory management, order fulfillment, and sales analytics.",
+      "Implement responsive design with mobile-first approach for shopping on any device.",
     ];
   }
 

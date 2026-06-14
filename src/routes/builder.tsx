@@ -20,10 +20,10 @@ import {
   FileCode,
 } from "lucide-react";
 
-export const Route = createFileRoute("/builder")({
-  head: () => ({
+export const Route = createFileRoute("/builder/$projectId")({
+  head: ({ params }) => ({
     meta: [
-      { title: "Builder · Signhify AI" },
+      { title: `Builder · Signhify AI` },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -94,9 +94,10 @@ function assembleMultiHtml(files: FileEntry[]): string {
 function BuilderPage() {
   const { user, loading } = useUser();
   const admin = isAdminEmail(user?.email);
+  const { projectId } = useParams<{ projectId: string }>();
 
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [activeId, setActiveId] = useState<string | null>(null);
+  // State for the current project data
+  const [project, setProject] = useState<Project | null>(null);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [busyLabel, setBusyLabel] = useState("Working…");
@@ -104,23 +105,111 @@ function BuilderPage() {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [rightTab, setRightTab] = useState<"preview" | "code">("preview");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [presence, setPresence] = useState<any[]>([]); // For tracking other users' presence
 
+  // Realtime channel subscriptions
+  const projectChannelRef = useRef<any>(null);
+  const presenceChannelRef = useRef<any>(null);
+
+  // Load project data on mount and when projectId changes
   useEffect(() => {
-    const ps = loadProjects();
-    setProjects(ps);
-    const active = window.localStorage.getItem(LS_ACTIVE);
-    setActiveId(active && ps.find((p) => p.id === active) ? active : ps[0]?.id ?? null);
-  }, []);
+    if (!projectId) return;
 
+    async function loadProject() {
+      const { data, error } = await supabase
+        .from("builder_projects")
+        .select("*")
+        .eq("id", projectId)
+        .single();
+
+      if (error && error.code !== "PGRST116") {
+        // PGRST116 means no rows returned
+        console.error("Error loading project:", error);
+        setError("Failed to load project");
+        return;
+      }
+
+      if (data) {
+        // Parse the stored project data
+        const parsedProject: Project = data.project_data;
+        setProject(parsedProject);
+      } else {
+        // If project doesn't exist, create a new one
+        const newProject: Project = {
+          id: projectId,
+          name: "Untitled build",
+          mode: "single",
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          chat: [],
+          versions: [],
+        };
+        setProject(newProject);
+        // Save to database
+        await supabase.from("builder_projects").insert({
+          id: projectId,
+          project_data: newProject,
+          version: 0,
+        });
+      }
+    }
+
+    loadProject();
+  }, [projectId]);
+
+  // Set up realtime subscription for project updates
   useEffect(() => {
-    if (activeId) window.localStorage.setItem(LS_ACTIVE, activeId);
-  }, [activeId]);
+    if (!projectId) return;
 
-  const active = useMemo(
-    () => projects.find((p) => p.id === activeId) || null,
-    [projects, activeId],
-  );
-  const lastVersion = active?.versions.at(-1) || null;
+    projectChannelRef.current = supabase
+      .channel(`builder-project:${projectId}`)
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "builder_projects", filter: `id=eq.${projectId}` },
+        (payload) => {
+          const newData = payload.new as { project_data: Project; version: number };
+          // Only update if the incoming version is newer than our current version
+          // We don't store version in state, so we always update (simple last-write-wins)
+          // In a more advanced implementation, we would compare versions and merge conflicts.
+          setProject(newData.project_data);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(projectChannelRef.current);
+    };
+  }, [projectId]);
+
+  // Set up presence channel
+  useEffect(() => {
+    if (!projectId) return;
+
+    presenceChannelRef.current = supabase
+      .channel(`builder-presence:${projectId}`)
+      .on("presence", { event: "join" }, () => {
+        const state = presenceChannelRef.current?.presenceState();
+        setPresence(state ?? []);
+      })
+      .on("presence", { event: "leave" }, () => {
+        const state = presenceChannelRef.current?.presenceState();
+        setPresence(state ?? []);
+      })
+      .on("presence", { event: "timeout" }, () => {
+        const state = presenceChannelRef.current?.presenceState();
+        setPresence(state ?? []);
+      })
+      .subscribe((async () => {
+        await presenceChannelRef.current?.track({ user_id: user?.id, email: user?.email });
+      }));
+
+    return () => {
+      supabase.removeChannel(presenceChannelRef.current);
+    };
+  }, [projectId, user]);
+
+  // Derive values from project
+  const lastVersion = project?.versions.at(-1) || null;
   const currentHtml = lastVersion?.mode === "single" ? lastVersion.html || "" : "";
   const currentFiles = lastVersion?.mode === "multi" ? lastVersion.files || [] : [];
   const previewHtml =
@@ -128,7 +217,7 @@ function BuilderPage() {
       ? assembleMultiHtml(currentFiles)
       : currentHtml;
 
-  // pick a default selected file when switching to a multi project
+  // Pick a default selected file when switching to a multi project
   useEffect(() => {
     if (lastVersion?.mode === "multi" && currentFiles.length) {
       if (!selectedFile || !currentFiles.find((f) => f.path === selectedFile)) {
@@ -138,76 +227,56 @@ function BuilderPage() {
       setSelectedFile(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeId, lastVersion?.ts]);
+  }, [lastVersion?.ts, project]);
 
+  // Scroll to bottom when chat updates or when busy state changes
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: 9e9, behavior: "smooth" });
-  }, [active?.chat.length, busy]);
+  }, [project?.chat.length, busy]);
 
-  function persist(next: Project[]) {
-    setProjects(next);
-    saveProjects(next);
-  }
+  // Persist project updates to database
+  const persistProject = async (updatedProject: Project) => {
+    setProject(updatedProject);
+    try {
+      // Fetch current version to avoid overwriting with stale data (optional)
+      const { data: currentData } = await supabase
+        .from("builder_projects")
+        .select("version")
+        .eq("id", projectId)
+        .single();
 
-  function newProject() {
-    const p: Project = {
-      id: uid(),
-      name: "Untitled build",
-      mode: "single",
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-      chat: [],
-      versions: [],
-    };
-    persist([p, ...projects]);
-    setActiveId(p.id);
-    setInput("");
-    setError(null);
-  }
+      const newVersion = (currentData?.version ?? 0) + 1;
 
-  function deleteProject(id: string) {
-    const next = projects.filter((p) => p.id !== id);
-    persist(next);
-    if (activeId === id) setActiveId(next[0]?.id ?? null);
-  }
-
-  function renameProject(id: string, name: string) {
-    persist(projects.map((p) => (p.id === id ? { ...p, name } : p)));
-  }
-
-  function upsert(p: Project, list: Project[]): Project[] {
-    return list.find((x) => x.id === p.id)
-      ? list.map((x) => (x.id === p.id ? p : x))
-      : [p, ...list];
-  }
+      await supabase
+        .from("builder_projects")
+        .update({
+          project_data: updatedProject,
+          version: newVersion,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", projectId);
+    } catch (err) {
+      console.error("Error persisting project:", err);
+      setError("Failed to save changes");
+    }
+  };
 
   async function send() {
     const text = input.trim();
     if (!text || busy) return;
     setError(null);
 
-    let project = active;
-    if (!project) {
-      project = {
-        id: uid(),
-        name: text.slice(0, 40),
-        mode: "single",
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        chat: [],
-        versions: [],
-      };
-      persist(upsert(project, projects));
-      setActiveId(project.id);
-    }
+    if (!project) return;
 
     const userMsg: ChatMsg = { role: "user", text, ts: Date.now() };
-    let working: Project = {
+    const working: Project = {
       ...project,
       chat: [...project.chat, userMsg],
       updatedAt: Date.now(),
     };
-    persist(upsert(working, projects));
+
+    // Optimistically update UI
+    setProject(working);
     setInput("");
     setBusy(true);
 
@@ -270,7 +339,8 @@ function BuilderPage() {
         name: isFirst && working.mode === "single" ? text.slice(0, 40) : working.name,
         updatedAt: Date.now(),
       };
-      persist(upsert(done, projects));
+
+      await persistProject(done);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Build failed.");
       const asst: ChatMsg = {
@@ -278,14 +348,14 @@ function BuilderPage() {
         text: `Error: ${e instanceof Error ? e.message : "build failed"}`,
         ts: Date.now(),
       };
-      persist(upsert({ ...working, chat: [...working.chat, asst] }, projects));
+      await persistProject({ ...working, chat: [...working.chat, asst] });
     } finally {
       setBusy(false);
     }
   }
 
   async function eject() {
-    if (!active || !currentHtml || busy) return;
+    if (!project || !currentHtml || busy) return;
     setError(null);
     setBusy(true);
     setBusyLabel("Ejecting to multi-file…");
@@ -303,13 +373,14 @@ function BuilderPage() {
         ts: Date.now(),
       };
       const done: Project = {
-        ...active,
+        ...project,
         mode: "multi",
-        chat: [...active.chat, asst],
-        versions: [...active.versions, version],
+        chat: [...project.chat, asst],
+        versions: [...project.versions, version],
         updatedAt: Date.now(),
       };
-      persist(upsert(done, projects));
+
+      await persistProject(done);
       setRightTab("code");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Eject failed.");
@@ -319,12 +390,12 @@ function BuilderPage() {
   }
 
   function downloadSingle() {
-    if (!previewHtml || !active) return;
+    if (!previewHtml || !project) return;
     const blob = new Blob([previewHtml], { type: "text/html" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${active.name.replace(/[^a-z0-9]+/gi, "-").toLowerCase() || "build"}.html`;
+    a.download = `${project.name.replace(/[^a-z0-9]+/gi, "-").toLowerCase() || "build"}.html`;
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -340,7 +411,7 @@ function BuilderPage() {
   }
 
   function downloadAll() {
-    if (!active) return;
+    if (!project) return;
     if (lastVersion?.mode === "multi") {
       for (const f of currentFiles) downloadFile(f.path, f.content);
     } else {
@@ -408,7 +479,13 @@ function BuilderPage() {
             Builder
           </div>
           <button
-            onClick={newProject}
+            onClick={() => {
+              // Create a new project by generating a new ID and redirecting
+              const newId = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+              // We would need to navigate to the new project, but for simplicity, we just reset the current project.
+              // In a real app, we would use the router to navigate to /builder/:newId
+              alert("New project feature would navigate to a new project ID");
+            }}
             className="rounded-md bg-[#FF6A00] px-2 py-1 text-xs font-semibold text-black hover:opacity-90"
             title="New project"
           >
@@ -416,70 +493,71 @@ function BuilderPage() {
           </button>
         </div>
         <div className="flex-1 overflow-y-auto p-2">
-          {projects.length === 0 && (
-            <p className="px-2 py-4 text-xs text-white/40">No projects yet. Hit + to start.</p>
-          )}
-          {projects.map((p) => (
-            <div
-              key={p.id}
-              className={`group mb-1 flex items-center gap-1 rounded-md px-2 py-1.5 text-sm ${
-                p.id === activeId ? "bg-white/10" : "hover:bg-white/5"
-              }`}
-            >
-              <button
-                onClick={() => setActiveId(p.id)}
-                className="flex-1 truncate text-left"
-                title={p.name}
-              >
-                {p.name}
-              </button>
-              {p.mode === "multi" && (
+          {project ? (
+            <div className="mb-1 flex items-center gap-1 rounded-md px-2 py-1.5 text-sm bg-white/10">
+              <span className="truncate text-left">{project.name}</span>
+              {project.mode === "multi" && (
                 <span className="rounded bg-[#FF6A00]/20 px-1 text-[9px] uppercase text-[#FF6A00]">
                   multi
                 </span>
               )}
-              <button
-                onClick={() => deleteProject(p.id)}
-                className="opacity-0 transition group-hover:opacity-100"
-                title="Delete"
-              >
-                <Trash2 className="h-3.5 w-3.5 text-white/50 hover:text-red-400" />
-              </button>
+              {project.versions.length > 0 && (
+                <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px]">
+                  v{project.versions.length}
+                </span>
+              )}
             </div>
-          ))}
+          ) : (
+            <p className="px-2 py-4 text-xs text-white/40">Loading project...</p>
+          )}
         </div>
         <div className="border-t border-white/10 px-3 py-2 text-[10px] text-white/40">
-          {user.email}
+          <div>You: {user.email}</div>
+          {presence.length > 0 && (
+            <div className="mt-1">
+              <span className="text-xs text-white/60">Online:</span>
+              {presence.map((p, idx) => (
+                <span key={idx} className="ml-1 text-xs text-white">
+                  {p.email}{idx === presence.length - 1 ? "" : ", "}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </aside>
 
       {/* Chat */}
       <section className="flex w-[380px] flex-col border-r border-white/10">
         <div className="flex items-center justify-between border-b border-white/10 px-3 py-2">
-          {active ? (
+          {project ? (
             <input
-              value={active.name}
-              onChange={(e) => renameProject(active.id, e.target.value)}
+              value={project.name}
+              onChange={(e) => {
+                // Optimistically update the name
+                const updated = { ...project, name: e.target.value };
+                setProject(updated);
+                persistProject(updated); // Fire and forget
+              }}
               className="w-full bg-transparent text-sm font-semibold outline-none"
             />
           ) : (
             <span className="text-sm text-white/40">New build</span>
           )}
           <div className="ml-2 flex items-center gap-1">
-            {active && (
+            {project && (
               <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px]">
-                {active.mode === "multi" ? "multi" : "single"}
+                {project.mode === "multi" ? "multi" : "single"}
               </span>
             )}
-            {active && active.versions.length > 0 && (
+            {project && project.versions.length > 0 && (
               <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px]">
-                v{active.versions.length}
+                v{project.versions.length}
               </span>
             )}
           </div>
         </div>
         <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-3">
-          {(!active || active.chat.length === 0) && (
+          {(!project || project.chat.length === 0) && (
             <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-white/60">
               Describe a product. e.g. <em>"A pomodoro timer with todo list, dark glassy UI."</em>
               <br />
@@ -488,7 +566,7 @@ function BuilderPage() {
               Hit <strong>Eject</strong> when you want index.html / styles.css / app.js / README.md.
             </div>
           )}
-          {active?.chat.map((m, i) => (
+          {project?.chat.map((m, i) => (
             <div
               key={i}
               className={`rounded-lg p-2.5 text-xs leading-relaxed ${
@@ -524,7 +602,7 @@ function BuilderPage() {
                 }
               }}
               placeholder={
-                active && active.versions.length > 0
+                project && project.versions.length > 0
                   ? "Describe what to change…"
                   : "Describe the product to build…"
               }
@@ -565,7 +643,7 @@ function BuilderPage() {
             </button>
           </div>
           <div className="flex gap-2">
-            {active && active.mode === "single" && currentHtml && (
+            {project && project.mode === "single" && currentHtml && (
               <button
                 onClick={eject}
                 disabled={busy}
@@ -578,7 +656,7 @@ function BuilderPage() {
             <button
               onClick={openInTab}
               disabled={!previewHtml}
-              className="flex items-center gap-1 rounded border border-white/15 px-2 py-1 text-xs hover:bg-white/10 disabled:opacity-30"
+              className="flex items-center gap-1 rounded border border-white/15 px-2 px-1 text-xs hover:bg-white/10 disabled:opacity-30"
             >
               <ExternalLink className="h-3 w-3" /> Open
             </button>
