@@ -120,7 +120,7 @@ function BuilderPage() {
       const { data, error } = await supabase
         .from("builder_projects")
         .select("*")
-        .eq("id", projectId)
+        .eq("id", projectId!)
         .single();
 
       if (error && error.code !== "PGRST116") {
@@ -137,7 +137,7 @@ function BuilderPage() {
       } else {
         // If project doesn't exist, create a new one
         const newProject: Project = {
-          id: projectId,
+          id: projectId!,
           name: "Untitled build",
           mode: "single",
           createdAt: Date.now(),
@@ -239,7 +239,7 @@ function BuilderPage() {
       const { data: currentData } = await supabase
         .from("builder_projects")
         .select("version")
-        .eq("id", projectId)
+        .eq("id", projectId!)
         .single();
 
       const newVersion = (currentData?.version ?? 0) + 1;
@@ -247,11 +247,11 @@ function BuilderPage() {
       await supabase
         .from("builder_projects")
         .update({
-          project_data: updatedProject,
+          project_data: updatedProject as any,
           version: newVersion,
           updated_at: new Date().toISOString(),
         })
-        .eq("id", projectId);
+        .eq("id", projectId!);
     } catch (err) {
       console.error("Error persisting project:", err);
       setError("Failed to save changes");
