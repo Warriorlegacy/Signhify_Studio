@@ -1,7 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "@/hooks/useUser";
 import { isAdminEmail } from "@/lib/admin";
+import { supabase } from "@/integrations/supabase/client";
 import {
   buildProduct,
   editProduct,
@@ -94,7 +95,7 @@ function assembleMultiHtml(files: FileEntry[]): string {
 function BuilderPage() {
   const { user, loading } = useUser();
   const admin = isAdminEmail(user?.email);
-  const { projectId } = useParams<{ projectId: string }>();
+  const projectId = user?.id;
 
   // State for the current project data
   const [project, setProject] = useState<Project | null>(null);
@@ -119,7 +120,7 @@ function BuilderPage() {
       const { data, error } = await supabase
         .from("builder_projects")
         .select("*")
-        .eq("id", projectId)
+        .eq("id", projectId!)
         .single();
 
       if (error && error.code !== "PGRST116") {
@@ -131,12 +132,12 @@ function BuilderPage() {
 
       if (data) {
         // Parse the stored project data
-        const parsedProject: Project = data.project_data;
+        const parsedProject = data.project_data as unknown as Project;
         setProject(parsedProject);
       } else {
         // If project doesn't exist, create a new one
         const newProject: Project = {
-          id: projectId,
+          id: projectId!,
           name: "Untitled build",
           mode: "single",
           createdAt: Date.now(),
@@ -148,7 +149,8 @@ function BuilderPage() {
         // Save to database
         await supabase.from("builder_projects").insert({
           id: projectId,
-          project_data: newProject,
+          user_id: projectId!,
+          project_data: newProject as any,
           version: 0,
         });
       }
@@ -166,7 +168,7 @@ function BuilderPage() {
       .on(
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "builder_projects", filter: `id=eq.${projectId}` },
-        (payload) => {
+        (payload: any) => {
           const newData = payload.new as { project_data: Project; version: number };
           // Only update if the incoming version is newer than our current version
           // We don't store version in state, so we always update (simple last-write-wins)
@@ -185,23 +187,18 @@ function BuilderPage() {
   useEffect(() => {
     if (!projectId) return;
 
-    presenceChannelRef.current = supabase
-      .channel(`builder-presence:${projectId}`)
+    const channel: any = supabase.channel(`builder-presence:${projectId}`);
+    presenceChannelRef.current = channel;
+    channel
       .on("presence", { event: "join" }, () => {
-        const state = presenceChannelRef.current?.presenceState();
-        setPresence(state ?? []);
+        setPresence(channel.presenceState?.() ?? []);
       })
       .on("presence", { event: "leave" }, () => {
-        const state = presenceChannelRef.current?.presenceState();
-        setPresence(state ?? []);
+        setPresence(channel.presenceState?.() ?? []);
       })
-      .on("presence", { event: "timeout" }, () => {
-        const state = presenceChannelRef.current?.presenceState();
-        setPresence(state ?? []);
-      })
-      .subscribe((async () => {
-        await presenceChannelRef.current?.track({ user_id: user?.id, email: user?.email });
-      }));
+      .subscribe(async () => {
+        await channel.track?.({ user_id: user?.id, email: user?.email });
+      });
 
     return () => {
       supabase.removeChannel(presenceChannelRef.current);
@@ -242,7 +239,7 @@ function BuilderPage() {
       const { data: currentData } = await supabase
         .from("builder_projects")
         .select("version")
-        .eq("id", projectId)
+        .eq("id", projectId!)
         .single();
 
       const newVersion = (currentData?.version ?? 0) + 1;
@@ -250,11 +247,11 @@ function BuilderPage() {
       await supabase
         .from("builder_projects")
         .update({
-          project_data: updatedProject,
+          project_data: updatedProject as any,
           version: newVersion,
           updated_at: new Date().toISOString(),
         })
-        .eq("id", projectId);
+        .eq("id", projectId!);
     } catch (err) {
       console.error("Error persisting project:", err);
       setError("Failed to save changes");

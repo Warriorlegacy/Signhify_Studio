@@ -120,7 +120,7 @@ export class ProductValidationService {
       return {
         success: false,
         score: 0,
-        issues: [`Validation failed: ${error.message}`],
+        issues: [`Validation failed: ${error instanceof Error ? error.message : String(error)}`],
         recommendations: ["Fix critical errors before attempting validation"],
         loadTime: 0
       };
@@ -324,7 +324,7 @@ export class ProductValidationService {
         validationResults: [{
           success: false,
           score: 0,
-          issues: [`Cycle failed: ${error.message}`],
+          issues: [`Cycle failed: ${error instanceof Error ? error.message : String(error)}`],
           recommendations: ["Fix critical errors"],
           loadTime: 0
         }],
