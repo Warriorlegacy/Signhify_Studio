@@ -1,7 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "@/hooks/useUser";
 import { isAdminEmail } from "@/lib/admin";
+import { supabase } from "@/integrations/supabase/client";
 import {
   buildProduct,
   editProduct,
@@ -166,7 +167,7 @@ function BuilderPage() {
       .on(
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "builder_projects", filter: `id=eq.${projectId}` },
-        (payload) => {
+        (payload: any) => {
           const newData = payload.new as { project_data: Project; version: number };
           // Only update if the incoming version is newer than our current version
           // We don't store version in state, so we always update (simple last-write-wins)

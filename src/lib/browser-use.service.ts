@@ -322,7 +322,7 @@ export class BrowserUseService {
             }
           } catch (error) {
             checks[`text_${check.selector}`] = false;
-            errors.push(`Failed to check text in ${check.selector}: ${error.message}`);
+            errors.push(`Failed to check text in ${check.selector}: ${error instanceof Error ? error.message : String(error)}`);
           }
         }
       }
@@ -345,7 +345,7 @@ export class BrowserUseService {
       };
     } catch (error) {
       const loadTime = Date.now() - startTime;
-      errors.push(`Navigation failed: ${error.message}`);
+      errors.push(`Navigation failed: ${error instanceof Error ? error.message : String(error)}`);
 
       return {
         success: false,
