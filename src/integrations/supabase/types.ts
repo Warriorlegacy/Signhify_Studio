@@ -111,6 +111,27 @@ export type Database = {
           },
         ]
       }
+      builder_projects: {
+        Row: {
+          id: string
+          project_data: Json
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          id?: string
+          project_data?: Json
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          id?: string
+          project_data?: Json
+          updated_at?: string
+          version?: number
+        }
+        Relationships: []
+      }
       creator_waitlist: {
         Row: {
           created_at: string | null
