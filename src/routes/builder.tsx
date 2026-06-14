@@ -20,7 +20,7 @@ import {
   FileCode,
 } from "lucide-react";
 
-export const Route = createFileRoute("/builder/$projectId")({
+export const Route = createFileRoute("/builder")({
   head: ({ params }) => ({
     meta: [
       { title: `Builder · Signhify AI` },

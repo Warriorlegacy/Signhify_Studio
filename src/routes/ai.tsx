@@ -146,7 +146,7 @@ function AiPage() {
     setZipError(null);
     setZipBlob(null);
     try {
-      const res = await buildMulti({ data: { prompt: activePrompt } });
+      const res = await buildMultiProduct({ data: { prompt: activePrompt } });
       const zip = new JSZip();
       for (const file of res.files) {
         zip.file(file.path, file.content);
