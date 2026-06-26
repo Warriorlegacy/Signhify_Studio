@@ -38,6 +38,7 @@ import { Route as MarketplaceSellRouteImport } from './routes/marketplace.sell'
 import { Route as AppSettingsRouteImport } from './routes/app/settings'
 import { Route as AppProjectsNewRouteImport } from './routes/app/projects/new'
 import { Route as AppProjectsIdRouteImport } from './routes/app/projects/$id'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as ApiPublicAuthProviderRouteImport } from './routes/api/public/auth-provider'
 import { Route as AiShareIdRouteImport } from './routes/ai.share.$id'
@@ -189,6 +190,11 @@ const AppProjectsIdRoute = AppProjectsIdRouteImport.update({
   path: '/app/projects/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/api/stripe/webhook',
+  path: '/api/stripe/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   id: '/api/public/health',
   path: '/api/public/health',
@@ -246,6 +252,7 @@ export interface FileRoutesByFullPath {
   '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
   '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
@@ -282,6 +289,7 @@ export interface FileRoutesByTo {
   '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
   '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
@@ -319,6 +327,7 @@ export interface FileRoutesById {
   '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
   '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
   '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
@@ -357,6 +366,7 @@ export interface FileRouteTypes {
     | '/ai/share/$id'
     | '/api/public/auth-provider'
     | '/api/public/health'
+    | '/api/stripe/webhook'
     | '/app/projects/$id'
     | '/app/projects/new'
     | '/app/projects/$id/analytics'
@@ -393,6 +403,7 @@ export interface FileRouteTypes {
     | '/ai/share/$id'
     | '/api/public/auth-provider'
     | '/api/public/health'
+    | '/api/stripe/webhook'
     | '/app/projects/$id'
     | '/app/projects/new'
     | '/app/projects/$id/analytics'
@@ -429,6 +440,7 @@ export interface FileRouteTypes {
     | '/ai/share/$id'
     | '/api/public/auth-provider'
     | '/api/public/health'
+    | '/api/stripe/webhook'
     | '/app/projects/$id'
     | '/app/projects/new'
     | '/app/projects/$id/analytics'
@@ -462,6 +474,7 @@ export interface RootRouteChildren {
   ScrollStudioIndexRoute: typeof ScrollStudioIndexRoute
   ApiPublicAuthProviderRoute: typeof ApiPublicAuthProviderRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   AppProjectsIdRoute: typeof AppProjectsIdRouteWithChildren
   AppProjectsNewRoute: typeof AppProjectsNewRoute
 }
@@ -671,6 +684,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProjectsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stripe/webhook': {
+      id: '/api/stripe/webhook'
+      path: '/api/stripe/webhook'
+      fullPath: '/api/stripe/webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/health': {
       id: '/api/public/health'
       path: '/api/public/health'
@@ -786,9 +806,20 @@ const rootRouteChildren: RootRouteChildren = {
   ScrollStudioIndexRoute: ScrollStudioIndexRoute,
   ApiPublicAuthProviderRoute: ApiPublicAuthProviderRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   AppProjectsIdRoute: AppProjectsIdRouteWithChildren,
   AppProjectsNewRoute: AppProjectsNewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
