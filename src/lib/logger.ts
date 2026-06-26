@@ -25,7 +25,7 @@ async function initLogger(): Promise<Logger> {
   if (_initialized) return _logger;
   try {
     // Dynamic import — Rollup/Nitro will externalize pino at build time
-    const pino = (await import("pino")).default;
+    const pino = (await import(/* @vite-ignore */ "pino" as string)).default;
     const isDev = process.env.NODE_ENV !== "production";
     _logger = pino({
       level: isDev ? "debug" : "info",
