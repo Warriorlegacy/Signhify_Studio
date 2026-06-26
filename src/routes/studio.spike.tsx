@@ -22,6 +22,7 @@ import {
   getVideoJobStatus,
   getProjectFramesList,
 } from "@/lib/studio.functions";
+import { exportScrollStudioProject } from "@/lib/studio-export.functions";
 
 export const Route = createFileRoute("/studio/spike")({
   head: () => ({
@@ -74,6 +75,10 @@ function StudioSpike() {
   const [frames, setFrames] = useState<ImageBitmap[]>([]);
   const [activeFrameIndex, setActiveFrameIndex] = useState(0);
   const [exported, setExported] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [exportReady, setExportReady] = useState(false);
+  const [exportUrl, setExportUrl] = useState<string | null>(null);
+  const [exportFileName, setExportFileName] = useState<string | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
@@ -463,10 +468,30 @@ function StudioSpike() {
             "Frame count out of bounds. Please specify a count between 50 and 400 frames for browser sanity.";
         }
       } else if (lower.includes("export")) {
-        setExported(true);
-        setTimeout(() => setExported(false), 3000);
-        reply =
-          "Export process initialized. Compiled HTML template, style hooks, and procedural canvas renderer code. Download links ready.";
+        // Start actual export process
+        setExporting(true);
+        reply = "Export process initialized. Compiling project files...";
+
+        // Call the export function
+        exportScrollStudioProject
+          .call({ projectId })
+          .then((result) => {
+            if (result.data?.success) {
+              setExportReady(true);
+              setExportUrl(result.data.downloadUrl);
+              setExportFileName(result.data.fileName);
+              reply = `Export complete! Your project is ready for download as ${result.data.fileName}.`;
+            } else {
+              throw new Error("Export failed");
+            }
+          })
+          .catch((error) => {
+            console.error("Export failed:", error);
+            reply = "Export failed. Please try again.";
+          })
+          .finally(() => {
+            setExporting(false);
+          });
       } else {
         reply = `I've analyzed your command: "${commandText}". Try commands like:
 • *"change style to wireframe"*
@@ -717,16 +742,71 @@ function StudioSpike() {
                 </button>
               </div>
 
+              {/* Export Button */}
               <button
-                onClick={() => handleSendCommand("export code")}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary hover:brightness-110 text-primary-foreground transition shadow-md"
+                onClick={async () => {
+                  if (exportUrl && exportFileName) {
+                    // Trigger download
+                    const link = document.createElement("a");
+                    link.href = exportUrl;
+                    link.download = exportFileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }
+                }}
+                disabled={exporting}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg ${
+                  exporting
+                    ? "bg-surface border border-primary/50 text-primary/50 cursor-not-allowed"
+                    : exportReady
+                      ? "bg-primary hover:brightness-110 text-primary-foreground transition shadow-md"
+                      : "bg-primary hover:brightness-110 text-primary-foreground transition shadow-md"
+                }`}
               >
-                {exported ? (
+                {exporting ? (
+                  <Loader2 className="w-3.5 h-3.5 text-white animate-spin" />
+                ) : exportReady ? (
                   <Check className="w-3.5 h-3.5 text-white" />
                 ) : (
                   <Download className="w-3.5 h-3.5" />
                 )}
-                <span>{exported ? "Ready!" : "Export ZIP"}</span>
+                <span>
+                  {exporting ? "Exporting..." : exportReady ? "Download ZIP" : "Export ZIP"}
+                </span>
+              </button>
+
+              {/* Deploy Button */}
+              <button
+                onClick={async () => {
+                  setExporting(true);
+                  // Call the deploy function
+                  const { deployScrollStudioProject } = await import(
+                    "@/lib/studio-export.functions"
+                  );
+                  deployScrollStudioProject
+                    .call({ projectId })
+                    .then((result) => {
+                      if (result.data?.success) {
+                        // Show success and open deployment URL in new tab
+                        window.open(result.data.deploymentUrl, "_blank");
+                      } else {
+                        throw new Error("Deployment failed");
+                      }
+                    })
+                    .catch((error) => {
+                      console.error("Deployment failed:", error);
+                      // In a real app, we'd show a toast notification
+                      alert("Deployment failed. Please check credentials and try again.");
+                    })
+                    .finally(() => {
+                      setExporting(false);
+                    });
+                }}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border border-primary/50 text-primary/50 hover:border-primary/70 hover:text-primary/70 transition`}
+              >
+                <Play className="w-3.5 h-3.5" />
+                <span>Deploy</span>
               </button>
             </div>
           </div>

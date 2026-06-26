@@ -94,10 +94,14 @@ function AiPage() {
   const [buildState, setBuildState] = useState<"idle" | "building" | "done" | "error">("idle");
   const [productHtml, setProductHtml] = useState<string | null>(null);
   const [buildError, setBuildError] = useState<string | null>(null);
-  const [zipBuildState, setZipBuildState] = useState<"idle" | "building" | "done" | "error">("idle");
+  const [zipBuildState, setZipBuildState] = useState<"idle" | "building" | "done" | "error">(
+    "idle",
+  );
   const [zipBlob, setZipBlob] = useState<Blob | null>(null);
   const [zipError, setZipError] = useState<string | null>(null);
-  const [fullStackState, setFullStackState] = useState<"idle" | "building" | "done" | "error">("idle");
+  const [fullStackState, setFullStackState] = useState<"idle" | "building" | "done" | "error">(
+    "idle",
+  );
   const [fullStackUrl, setFullStackUrl] = useState<string | null>(null);
   const [fullStackError, setFullStackError] = useState<string | null>(null);
   const [builderMode, setBuilderMode] = useState(false);
@@ -195,7 +199,6 @@ function AiPage() {
     }
   };
 
-
   // Auto-build when plan completes in builder mode
   useEffect(() => {
     if (builderMode && stage === "done" && plan && buildState === "idle") {
@@ -203,7 +206,6 @@ function AiPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [builderMode, stage, plan]);
-
 
   const handleShare = async () => {
     if (!plan) return;
@@ -745,7 +747,6 @@ function AiPage() {
                 />
               </div>
             )}
-
           </motion.div>
         )}
       </div>

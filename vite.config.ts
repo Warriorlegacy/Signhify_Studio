@@ -12,4 +12,12 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    ssr: {
+      // pino and pino-pretty are Node.js native packages — Rollup cannot bundle them.
+      // Externalize so they are loaded at runtime from node_modules.
+      external: ["pino", "pino-pretty", "os"],
+    },
+  },
 });
+
