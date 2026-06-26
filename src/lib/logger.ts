@@ -23,21 +23,8 @@ let _initialized = false;
 
 async function initLogger(): Promise<Logger> {
   if (_initialized) return _logger;
-  try {
-    // Dynamic import — Rollup/Nitro will externalize pino at build time
-    const pino = (await import(/* @vite-ignore */ "pino" as string)).default;
-    const isDev = process.env.NODE_ENV !== "production";
-    _logger = pino({
-      level: isDev ? "debug" : "info",
-      transport: isDev
-        ? { target: "pino-pretty", options: { colorize: true } }
-        : undefined,
-      timestamp: pino.stdTimeFunctions.isoTime,
-    });
-  } catch {
-    // pino not available (edge runtime) — keep console fallback
-    _logger = consoleLogger;
-  }
+  // pino is intentionally not bundled (edge/worker runtime); use console fallback.
+  _logger = consoleLogger;
   _initialized = true;
   return _logger;
 }
