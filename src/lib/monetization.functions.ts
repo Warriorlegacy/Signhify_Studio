@@ -36,13 +36,15 @@ export const getUserCredits = createServerFn({ method: "GET" })
 export const createCheckoutSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
-    const plan = (input as Record<string, unknown>)?.plan;
-    if (typeof plan !== "string" || !plan.trim()) throw new Error("Plan is required");
-    return { plan: plan.trim() };
+    const raw = input as Record<string, unknown>;
+    const plan = raw?.plan;
+    const priceId = raw?.priceId;
+    if (plan && typeof plan === "string") return { plan: plan.trim() };
+    if (priceId && typeof priceId === "string") return { priceId: priceId.trim() };
+    throw new Error("Plan or priceId is required");
   })
   .handler(async ({ context, data }) => {
     const { userId } = context;
-    const { plan } = data;
     const stripeKey = process.env.STRIPE_SECRET_KEY;
 
     if (!stripeKey) {
@@ -54,28 +56,37 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
 
     try {
       const stripe = new Stripe(stripeKey);
+
+      const isSubscription = "plan" in data;
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
-        line_items: [
-          {
-            price_data: {
-              currency: "usd",
-              product_data: {
-                name: "Scroll Studio Pro",
-                description: "Unlimited AI scroll generation",
+        line_items: isSubscription
+          ? [
+              {
+                price_data: {
+                  currency: "usd",
+                  product_data: {
+                    name: "Scroll Studio Pro",
+                    description: "Unlimited AI scroll generation",
+                  },
+                  unit_amount: 4900,
+                  recurring: { interval: "month" },
+                },
+                quantity: 1,
               },
-              unit_amount: 4900,
-              recurring: { interval: "month" },
-            },
-            quantity: 1,
-          },
-        ],
-        mode: "subscription",
-        success_url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/scroll-studio?success=true`,
-        cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/scroll-studio?canceled=true`,
+            ]
+          : [
+              {
+                price: (data as { priceId: string }).priceId,
+                quantity: 1,
+              },
+            ],
+        mode: isSubscription ? "subscription" : "payment",
+        success_url: `${process.env.VITE_SITE_URL || "http://localhost:3000"}/app/billing?success=true`,
+        cancel_url: `${process.env.VITE_SITE_URL || "http://localhost:3000"}/app/billing?canceled=true`,
         metadata: {
           user_id: userId,
-          plan,
+          ...(isSubscription ? { plan: data.plan } : { priceId: data.priceId }),
         },
       });
 

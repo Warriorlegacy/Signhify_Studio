@@ -4,39 +4,39 @@ import { CheckCircle2, Clock, Circle } from "lucide-react";
 const layers = [
   {
     name: "Signhify Studio",
-    year: "Week 1 · June",
+    year: "Live now",
     status: "live",
     desc: "AI engineering studio. Revenue-generating today.",
   },
   {
     name: "Signhify AI",
-    year: "Week 2 · June",
-    status: "soon",
-    desc: "Vibe-coding platform. Prompt-to-product builder.",
+    year: "Live now",
+    status: "live",
+    desc: "Prompt-to-product pipeline. 6-agent generation, streaming, and builder.",
   },
   {
     name: "Signhify Deploy",
-    year: "Week 3 · June",
-    status: "planned",
-    desc: "One-click deployment infrastructure for AI apps.",
+    year: "Live now",
+    status: "live",
+    desc: "One-click deployment dashboard for Cloudflare Pages and custom domains.",
   },
   {
     name: "Signhify Marketplace",
-    year: "Week 3 · June",
-    status: "planned",
-    desc: "Templates, agents and blueprints, community-built.",
+    year: "Live now",
+    status: "live",
+    desc: "Browse, sell, and purchase templates and agents with Stripe checkout.",
   },
   {
     name: "Signhify Cloud",
-    year: "Week 4 · June",
-    status: "planned",
-    desc: "Managed infrastructure for AI-native businesses.",
+    year: "Live now",
+    status: "live",
+    desc: "Workspace dashboard, project management, secrets vault, and analytics.",
   },
   {
     name: "Signhify OS",
-    year: "June 30, 2026",
-    status: "planned",
-    desc: "An operating system for running an AI business end-to-end.",
+    year: "Live now",
+    status: "live",
+    desc: "Agent orchestration runtime. Manage agents, workflows, and system logs.",
   },
 ];
 
@@ -67,14 +67,14 @@ export function EcosystemSection() {
       <div className="absolute inset-0 bg-grid mask-fade-edges opacity-30" />
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">
-          Sprint completed · 6 products shipped
+          July 2026 · All 6 products shipped
         </div>
         <h2 className="font-display text-4xl sm:text-5xl font-bold max-w-3xl">
-          Live now. Studio and AI are shipping. The rest is queued.
+          The full Signhify ecosystem. Live and shipping.
         </h2>
         <p className="mt-5 max-w-2xl text-muted-foreground">
-          Studio is live and generating revenue. AI is in preview — try the prompt-to-product
-          pipeline. Deploy, Marketplace, Cloud, and OS are built and queued for launch.
+          All six products are built and deployed — Studio, AI, Deploy, Marketplace, Cloud and OS.
+          Each one is accessible from your dashboard.
         </p>
 
         <div className="mt-14 relative">
