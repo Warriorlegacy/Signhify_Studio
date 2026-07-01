@@ -20,6 +20,7 @@ import { Route as PublishRouteImport } from './routes/publish'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as OsRouteImport } from './routes/os'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HelpRouteImport } from './routes/help'
@@ -33,9 +34,19 @@ import { Route as ScrollStudioIndexRouteImport } from './routes/scroll-studio/in
 import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as StudioSpikeRouteImport } from './routes/studio.spike'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
+import { Route as OsMarketplaceRouteImport } from './routes/os/marketplace'
+import { Route as OsLogsRouteImport } from './routes/os/logs'
 import { Route as MarketplaceSuccessRouteImport } from './routes/marketplace.success'
 import { Route as MarketplaceSellRouteImport } from './routes/marketplace.sell'
 import { Route as AppSettingsRouteImport } from './routes/app/settings'
+import { Route as OsWorkflowsIndexRouteImport } from './routes/os/workflows/index'
+import { Route as OsAgentsIndexRouteImport } from './routes/os/agents/index'
+import { Route as AppServicesIndexRouteImport } from './routes/app/services/index'
+import { Route as AppMarketplaceIndexRouteImport } from './routes/app/marketplace/index'
+import { Route as AppDeployIndexRouteImport } from './routes/app/deploy/index'
+import { Route as AppBillingIndexRouteImport } from './routes/app/billing/index'
+import { Route as OsWorkflowsNewRouteImport } from './routes/os/workflows/new'
+import { Route as OsAgentsNewRouteImport } from './routes/os/agents/new'
 import { Route as AppProjectsNewRouteImport } from './routes/app/projects/new'
 import { Route as AppProjectsIdRouteImport } from './routes/app/projects/$id'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
@@ -98,6 +109,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OsRoute = OsRouteImport.update({
+  id: '/os',
+  path: '/os',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketplaceRoute = MarketplaceRouteImport.update({
@@ -165,6 +181,16 @@ const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ProjectsRoute,
 } as any)
+const OsMarketplaceRoute = OsMarketplaceRouteImport.update({
+  id: '/marketplace',
+  path: '/marketplace',
+  getParentRoute: () => OsRoute,
+} as any)
+const OsLogsRoute = OsLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => OsRoute,
+} as any)
 const MarketplaceSuccessRoute = MarketplaceSuccessRouteImport.update({
   id: '/success',
   path: '/success',
@@ -179,6 +205,46 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/app/settings',
   path: '/app/settings',
   getParentRoute: () => rootRouteImport,
+} as any)
+const OsWorkflowsIndexRoute = OsWorkflowsIndexRouteImport.update({
+  id: '/workflows/',
+  path: '/workflows/',
+  getParentRoute: () => OsRoute,
+} as any)
+const OsAgentsIndexRoute = OsAgentsIndexRouteImport.update({
+  id: '/agents/',
+  path: '/agents/',
+  getParentRoute: () => OsRoute,
+} as any)
+const AppServicesIndexRoute = AppServicesIndexRouteImport.update({
+  id: '/app/services/',
+  path: '/app/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppMarketplaceIndexRoute = AppMarketplaceIndexRouteImport.update({
+  id: '/app/marketplace/',
+  path: '/app/marketplace/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppDeployIndexRoute = AppDeployIndexRouteImport.update({
+  id: '/app/deploy/',
+  path: '/app/deploy/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppBillingIndexRoute = AppBillingIndexRouteImport.update({
+  id: '/app/billing/',
+  path: '/app/billing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OsWorkflowsNewRoute = OsWorkflowsNewRouteImport.update({
+  id: '/workflows/new',
+  path: '/workflows/new',
+  getParentRoute: () => OsRoute,
+} as any)
+const OsAgentsNewRoute = OsAgentsNewRouteImport.update({
+  id: '/agents/new',
+  path: '/agents/new',
+  getParentRoute: () => OsRoute,
 } as any)
 const AppProjectsNewRoute = AppProjectsNewRouteImport.update({
   id: '/app/projects/new',
@@ -231,6 +297,7 @@ export interface FileRoutesByFullPath {
   '/help': typeof HelpRoute
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
+  '/os': typeof OsRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -245,6 +312,8 @@ export interface FileRoutesByFullPath {
   '/app/settings': typeof AppSettingsRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
+  '/os/logs': typeof OsLogsRoute
+  '/os/marketplace': typeof OsMarketplaceRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/studio/spike': typeof StudioSpikeRoute
   '/app/': typeof AppIndexRoute
@@ -255,6 +324,14 @@ export interface FileRoutesByFullPath {
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
+  '/os/agents/new': typeof OsAgentsNewRoute
+  '/os/workflows/new': typeof OsWorkflowsNewRoute
+  '/app/billing/': typeof AppBillingIndexRoute
+  '/app/deploy/': typeof AppDeployIndexRoute
+  '/app/marketplace/': typeof AppMarketplaceIndexRoute
+  '/app/services/': typeof AppServicesIndexRoute
+  '/os/agents/': typeof OsAgentsIndexRoute
+  '/os/workflows/': typeof OsWorkflowsIndexRoute
   '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
   '/app/projects/$id/runs/$runId': typeof AppProjectsIdRunsRunIdRoute
 }
@@ -268,6 +345,7 @@ export interface FileRoutesByTo {
   '/help': typeof HelpRoute
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
+  '/os': typeof OsRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -282,6 +360,8 @@ export interface FileRoutesByTo {
   '/app/settings': typeof AppSettingsRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
+  '/os/logs': typeof OsLogsRoute
+  '/os/marketplace': typeof OsMarketplaceRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/studio/spike': typeof StudioSpikeRoute
   '/app': typeof AppIndexRoute
@@ -292,6 +372,14 @@ export interface FileRoutesByTo {
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
+  '/os/agents/new': typeof OsAgentsNewRoute
+  '/os/workflows/new': typeof OsWorkflowsNewRoute
+  '/app/billing': typeof AppBillingIndexRoute
+  '/app/deploy': typeof AppDeployIndexRoute
+  '/app/marketplace': typeof AppMarketplaceIndexRoute
+  '/app/services': typeof AppServicesIndexRoute
+  '/os/agents': typeof OsAgentsIndexRoute
+  '/os/workflows': typeof OsWorkflowsIndexRoute
   '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
   '/app/projects/$id/runs/$runId': typeof AppProjectsIdRunsRunIdRoute
 }
@@ -306,6 +394,7 @@ export interface FileRoutesById {
   '/help': typeof HelpRoute
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
+  '/os': typeof OsRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -320,6 +409,8 @@ export interface FileRoutesById {
   '/app/settings': typeof AppSettingsRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
+  '/os/logs': typeof OsLogsRoute
+  '/os/marketplace': typeof OsMarketplaceRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/studio/spike': typeof StudioSpikeRoute
   '/app/': typeof AppIndexRoute
@@ -330,6 +421,14 @@ export interface FileRoutesById {
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
+  '/os/agents/new': typeof OsAgentsNewRoute
+  '/os/workflows/new': typeof OsWorkflowsNewRoute
+  '/app/billing/': typeof AppBillingIndexRoute
+  '/app/deploy/': typeof AppDeployIndexRoute
+  '/app/marketplace/': typeof AppMarketplaceIndexRoute
+  '/app/services/': typeof AppServicesIndexRoute
+  '/os/agents/': typeof OsAgentsIndexRoute
+  '/os/workflows/': typeof OsWorkflowsIndexRoute
   '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
   '/app/projects/$id/runs/$runId': typeof AppProjectsIdRunsRunIdRoute
 }
@@ -345,6 +444,7 @@ export interface FileRouteTypes {
     | '/help'
     | '/login'
     | '/marketplace'
+    | '/os'
     | '/pricing'
     | '/privacy'
     | '/projects'
@@ -359,6 +459,8 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/marketplace/sell'
     | '/marketplace/success'
+    | '/os/logs'
+    | '/os/marketplace'
     | '/projects/$slug'
     | '/studio/spike'
     | '/app/'
@@ -369,6 +471,14 @@ export interface FileRouteTypes {
     | '/api/stripe/webhook'
     | '/app/projects/$id'
     | '/app/projects/new'
+    | '/os/agents/new'
+    | '/os/workflows/new'
+    | '/app/billing/'
+    | '/app/deploy/'
+    | '/app/marketplace/'
+    | '/app/services/'
+    | '/os/agents/'
+    | '/os/workflows/'
     | '/app/projects/$id/analytics'
     | '/app/projects/$id/runs/$runId'
   fileRoutesByTo: FileRoutesByTo
@@ -382,6 +492,7 @@ export interface FileRouteTypes {
     | '/help'
     | '/login'
     | '/marketplace'
+    | '/os'
     | '/pricing'
     | '/privacy'
     | '/projects'
@@ -396,6 +507,8 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/marketplace/sell'
     | '/marketplace/success'
+    | '/os/logs'
+    | '/os/marketplace'
     | '/projects/$slug'
     | '/studio/spike'
     | '/app'
@@ -406,6 +519,14 @@ export interface FileRouteTypes {
     | '/api/stripe/webhook'
     | '/app/projects/$id'
     | '/app/projects/new'
+    | '/os/agents/new'
+    | '/os/workflows/new'
+    | '/app/billing'
+    | '/app/deploy'
+    | '/app/marketplace'
+    | '/app/services'
+    | '/os/agents'
+    | '/os/workflows'
     | '/app/projects/$id/analytics'
     | '/app/projects/$id/runs/$runId'
   id:
@@ -419,6 +540,7 @@ export interface FileRouteTypes {
     | '/help'
     | '/login'
     | '/marketplace'
+    | '/os'
     | '/pricing'
     | '/privacy'
     | '/projects'
@@ -433,6 +555,8 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/marketplace/sell'
     | '/marketplace/success'
+    | '/os/logs'
+    | '/os/marketplace'
     | '/projects/$slug'
     | '/studio/spike'
     | '/app/'
@@ -443,6 +567,14 @@ export interface FileRouteTypes {
     | '/api/stripe/webhook'
     | '/app/projects/$id'
     | '/app/projects/new'
+    | '/os/agents/new'
+    | '/os/workflows/new'
+    | '/app/billing/'
+    | '/app/deploy/'
+    | '/app/marketplace/'
+    | '/app/services/'
+    | '/os/agents/'
+    | '/os/workflows/'
     | '/app/projects/$id/analytics'
     | '/app/projects/$id/runs/$runId'
   fileRoutesById: FileRoutesById
@@ -457,6 +589,7 @@ export interface RootRouteChildren {
   HelpRoute: typeof HelpRoute
   LoginRoute: typeof LoginRoute
   MarketplaceRoute: typeof MarketplaceRouteWithChildren
+  OsRoute: typeof OsRouteWithChildren
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
@@ -477,6 +610,10 @@ export interface RootRouteChildren {
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   AppProjectsIdRoute: typeof AppProjectsIdRouteWithChildren
   AppProjectsNewRoute: typeof AppProjectsNewRoute
+  AppBillingIndexRoute: typeof AppBillingIndexRoute
+  AppDeployIndexRoute: typeof AppDeployIndexRoute
+  AppMarketplaceIndexRoute: typeof AppMarketplaceIndexRoute
+  AppServicesIndexRoute: typeof AppServicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -556,6 +693,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/os': {
+      id: '/os'
+      path: '/os'
+      fullPath: '/os'
+      preLoaderRoute: typeof OsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/marketplace': {
@@ -649,6 +793,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsSlugRouteImport
       parentRoute: typeof ProjectsRoute
     }
+    '/os/marketplace': {
+      id: '/os/marketplace'
+      path: '/marketplace'
+      fullPath: '/os/marketplace'
+      preLoaderRoute: typeof OsMarketplaceRouteImport
+      parentRoute: typeof OsRoute
+    }
+    '/os/logs': {
+      id: '/os/logs'
+      path: '/logs'
+      fullPath: '/os/logs'
+      preLoaderRoute: typeof OsLogsRouteImport
+      parentRoute: typeof OsRoute
+    }
     '/marketplace/success': {
       id: '/marketplace/success'
       path: '/success'
@@ -669,6 +827,62 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/settings'
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/os/workflows/': {
+      id: '/os/workflows/'
+      path: '/workflows'
+      fullPath: '/os/workflows/'
+      preLoaderRoute: typeof OsWorkflowsIndexRouteImport
+      parentRoute: typeof OsRoute
+    }
+    '/os/agents/': {
+      id: '/os/agents/'
+      path: '/agents'
+      fullPath: '/os/agents/'
+      preLoaderRoute: typeof OsAgentsIndexRouteImport
+      parentRoute: typeof OsRoute
+    }
+    '/app/services/': {
+      id: '/app/services/'
+      path: '/app/services'
+      fullPath: '/app/services/'
+      preLoaderRoute: typeof AppServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/marketplace/': {
+      id: '/app/marketplace/'
+      path: '/app/marketplace'
+      fullPath: '/app/marketplace/'
+      preLoaderRoute: typeof AppMarketplaceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/deploy/': {
+      id: '/app/deploy/'
+      path: '/app/deploy'
+      fullPath: '/app/deploy/'
+      preLoaderRoute: typeof AppDeployIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/billing/': {
+      id: '/app/billing/'
+      path: '/app/billing'
+      fullPath: '/app/billing/'
+      preLoaderRoute: typeof AppBillingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/os/workflows/new': {
+      id: '/os/workflows/new'
+      path: '/workflows/new'
+      fullPath: '/os/workflows/new'
+      preLoaderRoute: typeof OsWorkflowsNewRouteImport
+      parentRoute: typeof OsRoute
+    }
+    '/os/agents/new': {
+      id: '/os/agents/new'
+      path: '/agents/new'
+      fullPath: '/os/agents/new'
+      preLoaderRoute: typeof OsAgentsNewRouteImport
+      parentRoute: typeof OsRoute
     }
     '/app/projects/new': {
       id: '/app/projects/new'
@@ -753,6 +967,26 @@ const MarketplaceRouteWithChildren = MarketplaceRoute._addFileChildren(
   MarketplaceRouteChildren,
 )
 
+interface OsRouteChildren {
+  OsLogsRoute: typeof OsLogsRoute
+  OsMarketplaceRoute: typeof OsMarketplaceRoute
+  OsAgentsNewRoute: typeof OsAgentsNewRoute
+  OsWorkflowsNewRoute: typeof OsWorkflowsNewRoute
+  OsAgentsIndexRoute: typeof OsAgentsIndexRoute
+  OsWorkflowsIndexRoute: typeof OsWorkflowsIndexRoute
+}
+
+const OsRouteChildren: OsRouteChildren = {
+  OsLogsRoute: OsLogsRoute,
+  OsMarketplaceRoute: OsMarketplaceRoute,
+  OsAgentsNewRoute: OsAgentsNewRoute,
+  OsWorkflowsNewRoute: OsWorkflowsNewRoute,
+  OsAgentsIndexRoute: OsAgentsIndexRoute,
+  OsWorkflowsIndexRoute: OsWorkflowsIndexRoute,
+}
+
+const OsRouteWithChildren = OsRoute._addFileChildren(OsRouteChildren)
+
 interface ProjectsRouteChildren {
   ProjectsSlugRoute: typeof ProjectsSlugRoute
 }
@@ -789,6 +1023,7 @@ const rootRouteChildren: RootRouteChildren = {
   HelpRoute: HelpRoute,
   LoginRoute: LoginRoute,
   MarketplaceRoute: MarketplaceRouteWithChildren,
+  OsRoute: OsRouteWithChildren,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
@@ -809,7 +1044,21 @@ const rootRouteChildren: RootRouteChildren = {
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   AppProjectsIdRoute: AppProjectsIdRouteWithChildren,
   AppProjectsNewRoute: AppProjectsNewRoute,
+  AppBillingIndexRoute: AppBillingIndexRoute,
+  AppDeployIndexRoute: AppDeployIndexRoute,
+  AppMarketplaceIndexRoute: AppMarketplaceIndexRoute,
+  AppServicesIndexRoute: AppServicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
