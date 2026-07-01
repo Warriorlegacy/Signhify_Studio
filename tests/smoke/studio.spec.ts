@@ -10,7 +10,7 @@ test.describe("studio spike smoke", () => {
     await expect(page.getByText("Something glitched")).toHaveCount(0);
 
     // Headline or title in sidebar
-    await expect(page.getByText("Scroll Studio Spike")).toBeVisible();
+    await expect(page.getByText("Scroll Studio Spike", { exact: true })).toBeVisible();
 
     // Visual Tokens header
     await expect(page.getByText("VISUAL TOKENS")).toBeVisible();

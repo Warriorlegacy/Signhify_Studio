@@ -27,9 +27,8 @@ test.describe("marketplace smoke", () => {
       await expect(page.getByRole("button", { name: c, exact: true })).toBeVisible();
     }
 
-    // At least one listing card.
-    const cards = page.locator("article");
-    await expect.poll(async () => cards.count()).toBeGreaterThan(0);
+    // At least one listing card in the grid.
+    await expect(page.locator('[class*="rounded-2xl"][class*="bg-card"]').first()).toBeVisible();
 
     // SEO essentials.
     await expect(page).toHaveTitle(/Marketplace — Signhify/);
