@@ -883,7 +883,7 @@ export const buildProduct = createServerFn({ method: "POST" })
     return { prompt, planText };
   })
   .handler(async ({ context, data }) => {
-    const userId = context.userId ?? null;
+    const userId = (context as any)?.userId ?? null;
     try {
       const user = `Product prompt:\n${data.prompt}\n\n${data.planText ? `Plan / spec to implement:\n${data.planText}\n` : ""}Now output the complete standalone HTML for this product. Start with <!doctype html>.`;
       const { content } = await generateAIResponseWithMetadataAndUsage(
@@ -921,7 +921,7 @@ export const editProduct = createServerFn({ method: "POST" })
     return { currentHtml, instruction };
   })
   .handler(async ({ context, data }) => {
-    const userId = context.userId ?? null;
+    const userId = (context as any)?.userId ?? null;
     const user = `Here is the CURRENT product HTML:\n\n${data.currentHtml}\n\n---\nUser change request:\n${data.instruction}\n\nReturn the COMPLETE updated HTML document (full file, not a diff). Preserve everything that wasn't asked to change. Start with <!doctype html>.`;
     const { content } = await generateAIResponseWithMetadataAndUsage(
       {
@@ -949,7 +949,7 @@ export const ejectProduct = createServerFn({ method: "POST" })
     return { currentHtml };
   })
   .handler(async ({ context, data }) => {
-    const userId = context.userId ?? null;
+    const userId = (context as any)?.userId ?? null;
     const user = `Split this single-file HTML into a clean multi-file project. Extract <style> into styles.css and <script> (non-CDN) into app.js. Keep Tailwind CDN <script> in index.html <head>. Add a short README.md.\n\nCURRENT HTML:\n${data.currentHtml}\n\nReturn ONLY the JSON object: { "files": [ {"path":"index.html","content":"..."}, {"path":"styles.css","content":"..."}, {"path":"app.js","content":"..."}, {"path":"README.md","content":"..."} ] }.`;
     const { content } = await generateAIResponseWithMetadataAndUsage(
       {
@@ -979,7 +979,7 @@ export const buildMultiProduct = createServerFn({ method: "POST" })
     return { prompt };
   })
   .handler(async ({ context, data }) => {
-    const userId = context.userId ?? null;
+    const userId = (context as any)?.userId ?? null;
     try {
       const user = `Product prompt:\n${data.prompt}\n\nOutput the multi-file project JSON now.`;
       const { content } = await generateAIResponseWithMetadataAndUsage(
@@ -1019,7 +1019,7 @@ export const editFiles = createServerFn({ method: "POST" })
     return { files, instruction };
   })
   .handler(async ({ context, data }) => {
-    const userId = context.userId ?? null;
+    const userId = (context as any)?.userId ?? null;
     const dump = data.files.map((f) => `=== ${f.path} ===\n${f.content}`).join("\n\n");
     const user = `Here is the CURRENT multi-file project:\n\n${dump}\n\n---\nUser change request:\n${data.instruction}\n\nReturn the COMPLETE updated project as JSON: { "files": [...] }. Include EVERY file (changed or not). No diffs.`;
     const { content } = await generateAIResponseWithMetadataAndUsage(
