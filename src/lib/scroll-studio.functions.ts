@@ -5,15 +5,7 @@ import { rateLimitMiddleware } from "./rate-limit.server";
 
 // This is the AI endpoint for Scroll Studio Chat
 export const scrollStudioChat = createServerFn({ method: "POST" })
-  .middleware([
-    requireSupabaseAuth,
-    async ({ context }) => {
-      const { request } = context as any;
-      const cfConnectingIP = request.headers.get("cf-connecting-ip") || null;
-      const xForwardedFor = request.headers.get("x-forwarded-for") || null;
-      await rateLimitMiddleware(cfConnectingIP, xForwardedFor, { limit: 15, key: "scrollStudioChat" });
-    },
-  ])
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
     const obj = input as Record<string, unknown>;
     const projectId = typeof obj?.projectId === "string" ? obj.projectId : null;

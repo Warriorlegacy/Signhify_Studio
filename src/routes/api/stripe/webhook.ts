@@ -1,7 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { supabaseAdmin as _supabaseAdmin } from "@/integrations/supabase/client.server";
 import { STRIPE_PRICE_IDS } from "@/lib/stripe-prices.server";
 import logger from "@/lib/logger";
+
+// Cast to any: this webhook writes to extended tables/columns (marketplace_purchases,
+// profiles.stripe_customer_id, subscription_plan, etc.) that aren't yet reflected
+// in the generated Database types.
+const supabaseAdmin: any = _supabaseAdmin;
 
 // ─── Price-to-plan mapping ───────────────────────────────────────────────────
 type PlanTier = "free" | "studio" | "scale";

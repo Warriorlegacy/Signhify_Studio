@@ -875,14 +875,6 @@ MIT License - feel free to use, modify, and distribute this application as neede
 }
 
 export const buildProduct = createServerFn({ method: "POST" })
-  .middleware([
-    async ({ context }) => {
-      const { request } = context as any;
-      const cfConnectingIP = request.headers.get("cf-connecting-ip") || null;
-      const xForwardedFor = request.headers.get("x-forwarded-for") || null;
-      await rateLimitMiddleware(cfConnectingIP, xForwardedFor, { limit: 5, key: "buildProduct" });
-    },
-  ])
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
     const prompt = typeof obj.prompt === "string" ? obj.prompt.slice(0, 4000) : "";
