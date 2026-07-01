@@ -73,3 +73,19 @@
 | What's the goal?     | Implement the Signhify Scroll Studio by establishing the frame-based scroll-linked canvas playback spike and data hookups. |
 | What have I learned? | Preloading bitmaps in chunks combined with in-memory fallback layers makes frontend WebGL-free motion extremely resilient. |
 | What have I done?    | Connected the spike page, implemented in-memory DB fallbacks, configured Playwright, and verified tests successfully pass. |
+
+## Session: 2026-07-01
+
+### Phase 6: UI Expansion & Template Gallery
+
+- **Status:** in-progress
+- **Started:** 2026-07-01 11:30
+- Actions taken:
+  - Reviewed Draftly reference implementation via Firecrawl-scraped plan files.
+  - Expanded TemplateGallery with Draftly-style preset categories (SaaS, E-commerce, Portfolio, AI, Fintech, Logistics, Newsletter).
+  - Added preset template data with real content, tags, and preview URLs.
+  - Built TemplatePreview component for live scroll preview of presets.
+  - Implemented Pipeline section (Pick → Describe → Generate → Animate → Build → Deploy).
+  - Added multi-video continuation support in SettingsPanel.
+  - Improved export pipeline with README and deployment instructions.
+  - Updated progress tracking files.

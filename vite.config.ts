@@ -8,16 +8,16 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
   tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
     server: { entry: "server" },
   },
   vite: {
+    build: {
+      rollupOptions: {
+        external: ["pino", "pino-pretty", "os", "@sentry/node", "@sentry/tracing"],
+      },
+    },
     ssr: {
-      // pino and pino-pretty are Node.js native packages — Rollup cannot bundle them.
-      // Externalize so they are loaded at runtime from node_modules.
-      external: ["pino", "pino-pretty", "os"],
+      external: ["pino", "pino-pretty", "os", "@sentry/node", "@sentry/tracing"],
     },
   },
 });
-

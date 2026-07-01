@@ -6,7 +6,7 @@ Implement the Signhify Scroll Studio by establishing the frame-based scroll-link
 
 ## Current Phase
 
-Phase 1: requirements-and-discovery
+Phase 6: UI Expansion & Template Gallery
 
 ## Phases
 
@@ -44,6 +44,16 @@ Phase 1: requirements-and-discovery
 - [x] Verify 60 fps rendering on desktop, frame loading progress indicator, and responsiveness
 - [x] Add basic Playwright test for visual stability
 - **Status:** complete
+
+### Phase 6: UI Expansion & Template Gallery
+
+- [x] Expand TemplateGallery with Draftly-style preset categories (SaaS, E-commerce, Portfolio, AI, Fintech, Logistics, Newsletter)
+- [x] Add preset template data with real content, tags, and preview URLs
+- [x] Build TemplatePreview component for live scroll preview of presets
+- [x] Implement Pipeline section (Pick → Describe → Generate → Animate → Build → Deploy)
+- [x] Add multi-video continuation support in SettingsPanel
+- [x] Improve export pipeline with README and deployment instructions
+- **Status:** in-progress
 
 ## Key Questions
 
