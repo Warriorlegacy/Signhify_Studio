@@ -42,14 +42,16 @@ const memoryFrames = new Map<string, DbFrame[]>();
 const memoryProjectCode = new Map<string, { html: string; css: string; js: string }>();
 const memoryProjectSettings = new Map<string, unknown>();
 
-export async function insertVideoJob(job: Partial<DbVideoJob> & { userId: string }): Promise<DbVideoJob | null> {
+export async function insertVideoJob(
+  job: Partial<DbVideoJob> & { userId: string },
+): Promise<DbVideoJob | null> {
   try {
     const { data, error } = await supabase
       .from("video_jobs")
       .insert({
         ...(job as any),
         ...job,
-        user_id: job.userId // Ensure user_id is set from the passed userId
+        user_id: job.userId, // Ensure user_id is set from the passed userId
       })
       .select()
       .single();
@@ -98,7 +100,7 @@ function createMemoryJob(job: Partial<DbVideoJob> & { userId: string }): DbVideo
 export async function updateVideoJob(
   jobId: string,
   updates: Partial<DbVideoJob>,
-  userId: string
+  userId: string,
 ): Promise<DbVideoJob | null> {
   try {
     const { data, error } = await supabase
@@ -180,10 +182,12 @@ export async function fetchProjectFrames(projectId: string, userId: string): Pro
   }
 }
 
-export async function insertFrames(framesList: Array<Partial<DbFrame> & { video_job_id: string, userId: string }>): Promise<DbFrame[]> {
+export async function insertFrames(
+  framesList: Array<Partial<DbFrame> & { video_job_id: string; userId: string }>,
+): Promise<DbFrame[]> {
   try {
     // Verify user owns all the video_jobs these frames belong to
-    const videoJobIds = [...new Set(framesList.map(f => f.video_job_id))];
+    const videoJobIds = [...new Set(framesList.map((f) => f.video_job_id))];
     const { data: ownedJobs, error: ownershipError } = await supabase
       .from("video_jobs")
       .select("id")
@@ -247,7 +251,7 @@ export async function updateProjectCode(
   html: string,
   css: string,
   js: string,
-  userId: string
+  userId: string,
 ): Promise<boolean> {
   try {
     const { error } = await supabase
@@ -283,7 +287,7 @@ export async function updateProjectSettings(
     frame_metadata: unknown;
     settings: unknown;
   },
-  userId: string
+  userId: string,
 ): Promise<boolean> {
   try {
     const { error } = await supabase

@@ -1,5 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { STRIPE_PRICE_IDS } from "@/lib/stripe-prices.server";
 import logger from "@/lib/logger";
+
+// ─── Price-to-plan mapping ───────────────────────────────────────────────────
+type PlanTier = "free" | "studio" | "scale";
+
+function priceIdToPlan(priceId: string | undefined | null): PlanTier {
+  if (!priceId) return "free";
+  if (priceId === STRIPE_PRICE_IDS.studioMonthly) return "studio";
+  if (priceId === STRIPE_PRICE_IDS.scaleMonthly) return "scale";
+  return "free";
+}
 
 // ─── Stripe signature verification (no SDK needed) ───────────────────────────
 // Manually verify Stripe-Signature header using HMAC-SHA256 so we stay
@@ -53,52 +65,190 @@ async function handleCheckoutCompleted(event: any) {
   const session = event.data.object;
   logger.info(`[stripe/webhook] checkout.session.completed: ${session.id}`);
 
-  // TODO: Update order status in Supabase after confirmed payment.
-  // Example:
-  // const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  // await supabaseAdmin.from("orders").update({ status: "paid" }).eq("stripe_session_id", session.id);
-  //
-  // For marketplace: grant download access to buyer
-  // const listingId = session.metadata?.listing_id;
-  // const userId = session.client_reference_id;
-  // if (listingId && userId) {
-  //   await supabaseAdmin.from("marketplace_purchases").insert({ listing_id: listingId, user_id: userId });
-  // }
+  // Marketplace purchase: grant download access to buyer
+  const listingId = session.metadata?.listing_id;
+  const userId = session.client_reference_id;
+
+  if (listingId && userId) {
+    const { error } = await supabaseAdmin.from("marketplace_purchases").insert({
+      listing_id: listingId,
+      user_id: userId,
+      stripe_session_id: session.id,
+      purchased_at: new Date().toISOString(),
+    });
+
+    if (error) {
+      logger.error(`[stripe/webhook] Failed to record marketplace purchase: ${error.message}`);
+    } else {
+      logger.info(`[stripe/webhook] Marketplace purchase recorded: listing=${listingId} user=${userId}`);
+    }
+  }
+
+  // Credit pack purchase
+  if (session.metadata?.type === "credit_pack" && session.client_reference_id) {
+    const credits = Number(session.metadata.credits) || 10;
+    const userId = session.client_reference_id;
+
+    const { error } = await supabaseAdmin.rpc("add_credits" as any, {
+      p_user_id: userId,
+      p_amount: credits,
+    });
+
+    if (error) {
+      logger.error(`[stripe/webhook] Failed to add credits: ${error.message}`);
+    } else {
+      logger.info(`[stripe/webhook] Credits added: ${credits} for user=${userId}`);
+    }
+  }
 }
 
 async function handleSubscriptionCreated(event: any) {
   const subscription = event.data.object;
   logger.info(`[stripe/webhook] customer.subscription.created: ${subscription.id}`);
 
-  // TODO: Provision plan in Supabase.
-  // const customerId = subscription.customer;
-  // const priceId = subscription.items.data[0]?.price?.id;
-  // Map priceId → plan tier and update user record.
+  const customerId = subscription.customer as string;
+  const priceId = subscription.items.data[0]?.price?.id;
+  const plan = priceIdToPlan(priceId);
+
+  // Find user by Stripe customer ID
+  const { data: profile, error: lookupError } = await supabaseAdmin
+    .from("profiles")
+    .select("id")
+    .eq("stripe_customer_id", customerId)
+    .single();
+
+  if (lookupError || !profile) {
+    logger.error(`[stripe/webhook] No profile found for customer ${customerId}: ${lookupError?.message}`);
+    return;
+  }
+
+  const { error } = await supabaseAdmin
+    .from("profiles")
+    .update({
+      subscription_plan: plan,
+      subscription_status: subscription.status,
+      stripe_subscription_id: subscription.id,
+      subscription_current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+    })
+    .eq("id", profile.id);
+
+  if (error) {
+    logger.error(`[stripe/webhook] Failed to provision subscription: ${error.message}`);
+  } else {
+    logger.info(`[stripe/webhook] Subscription provisioned: user=${profile.id} plan=${plan} status=${subscription.status}`);
+  }
 }
 
 async function handleSubscriptionUpdated(event: any) {
   const subscription = event.data.object;
   logger.info(`[stripe/webhook] customer.subscription.updated: ${subscription.id}`);
-  // TODO: Handle plan upgrades / downgrades.
+
+  const customerId = subscription.customer as string;
+  const priceId = subscription.items.data[0]?.price?.id;
+  const plan = priceIdToPlan(priceId);
+
+  const { data: profile } = await supabaseAdmin
+    .from("profiles")
+    .select("id")
+    .eq("stripe_customer_id", customerId)
+    .single();
+
+  if (!profile) {
+    logger.error(`[stripe/webhook] No profile found for customer ${customerId}`);
+    return;
+  }
+
+  const { error } = await supabaseAdmin
+    .from("profiles")
+    .update({
+      subscription_plan: plan,
+      subscription_status: subscription.status,
+      subscription_current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+    })
+    .eq("id", profile.id);
+
+  if (error) {
+    logger.error(`[stripe/webhook] Failed to update subscription: ${error.message}`);
+  } else {
+    logger.info(`[stripe/webhook] Subscription updated: user=${profile.id} plan=${plan} status=${subscription.status}`);
+  }
 }
 
 async function handleSubscriptionDeleted(event: any) {
   const subscription = event.data.object;
   logger.info(`[stripe/webhook] customer.subscription.deleted: ${subscription.id}`);
-  // TODO: Revoke plan access in Supabase.
+
+  const customerId = subscription.customer as string;
+
+  const { data: profile } = await supabaseAdmin
+    .from("profiles")
+    .select("id")
+    .eq("stripe_customer_id", customerId)
+    .single();
+
+  if (!profile) {
+    logger.error(`[stripe/webhook] No profile found for customer ${customerId}`);
+    return;
+  }
+
+  const { error } = await supabaseAdmin
+    .from("profiles")
+    .update({
+      subscription_plan: "free",
+      subscription_status: "canceled",
+      stripe_subscription_id: null,
+    })
+    .eq("id", profile.id);
+
+  if (error) {
+    logger.error(`[stripe/webhook] Failed to revoke subscription: ${error.message}`);
+  } else {
+    logger.info(`[stripe/webhook] Subscription revoked: user=${profile.id} → free`);
+  }
 }
 
 async function handleInvoicePaymentFailed(event: any) {
   const invoice = event.data.object;
   logger.warn(`[stripe/webhook] invoice.payment_failed for customer: ${invoice.customer}`);
-  // TODO: Notify user via email / in-app notification.
-  // Consider downgrading to free tier after N failures.
+
+  const customerId = invoice.customer as string;
+
+  const { data: profile } = await supabaseAdmin
+    .from("profiles")
+    .select("id")
+    .eq("stripe_customer_id", customerId)
+    .single();
+
+  if (profile) {
+    await supabaseAdmin
+      .from("profiles")
+      .update({ subscription_status: "past_due" })
+      .eq("id", profile.id);
+
+    logger.info(`[stripe/webhook] Marked subscription as past_due: user=${profile.id}`);
+  }
 }
 
 async function handleInvoicePaid(event: any) {
   const invoice = event.data.object;
   logger.info(`[stripe/webhook] invoice.paid: ${invoice.id}`);
-  // TODO: Renew subscription period access in Supabase.
+
+  const customerId = invoice.customer as string;
+
+  const { data: profile } = await supabaseAdmin
+    .from("profiles")
+    .select("id")
+    .eq("stripe_customer_id", customerId)
+    .single();
+
+  if (profile) {
+    await supabaseAdmin
+      .from("profiles")
+      .update({ subscription_status: "active" })
+      .eq("id", profile.id);
+
+    logger.info(`[stripe/webhook] Subscription reactivated: user=${profile.id}`);
+  }
 }
 
 // ─── Route ───────────────────────────────────────────────────────────────────

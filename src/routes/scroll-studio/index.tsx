@@ -6,7 +6,5 @@ export const Route = createFileRoute("/scroll-studio/")({
 });
 
 function ScrollStudioPage() {
-  return (
-    <ScrollStudioBuilder />
-  );
+  return <ScrollStudioBuilder />;
 }

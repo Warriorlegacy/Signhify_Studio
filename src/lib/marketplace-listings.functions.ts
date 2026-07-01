@@ -88,4 +88,3 @@ export const publishProjectToMarketplace = createServerFn({ method: "POST" })
       throw new Error(e.message || "Failed to publish to marketplace");
     }
   });
-

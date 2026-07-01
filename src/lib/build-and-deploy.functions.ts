@@ -1,8 +1,21 @@
 import { createServerFn } from "@tanstack/react-start";
 import { generateAIResponse } from "./ai-gateway.server";
 import JSZip from "jszip";
+import { deployToCloudflare } from "./cloudflare.server";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { rateLimitMiddleware } from "./rate-limit.server";
 
 export const buildAndDeploy = createServerFn({ method: "POST" })
+  .middleware([
+    requireSupabaseAuth,
+    async ({ context }) => {
+      // Apply rate limiting (10 requests per hour per IP)
+      const { request } = context as any;
+      const cfConnectingIP = request.headers.get("cf-connecting-ip") || null;
+      const xForwardedFor = request.headers.get("x-forwarded-for") || null;
+      await rateLimitMiddleware(cfConnectingIP, xForwardedFor, { key: "buildAndDeploy" });
+    },
+  ])
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
     const prompt = typeof obj.prompt === "string" ? obj.prompt.slice(0, 4000) : "";
@@ -10,74 +23,66 @@ export const buildAndDeploy = createServerFn({ method: "POST" })
     if (!prompt) throw new Error("Prompt required.");
     return { prompt, planText };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const { prompt, planText } = data;
+    const { userId } = context as any;
 
-    // Step 1: Generate the full-stack app (ZIP)
-    const zip = new JSZip();
+    // Step 1: Generate the full-stack app contents
+    const files: Array<{ name: string; content: string }> = [];
 
     // 1. Generate README.md
     const readmeContent = await generateREADME(prompt, planText);
-    zip.file("README.md", readmeContent);
+    files.push({ name: "README.md", content: readmeContent });
 
     // 2. Generate package.json
     const packageJsonContent = await generatePackageJson(prompt, planText);
-    zip.file("package.json", packageJsonContent);
+    files.push({ name: "package.json", content: packageJsonContent });
 
     // 3. Generate tsconfig.json
     const tsconfigContent = await generateTsconfig(prompt, planText);
-    zip.file("tsconfig.json", tsconfigContent);
+    files.push({ name: "tsconfig.json", content: tsconfigContent });
 
     // 4. Generate vite.config.ts
     const viteConfigContent = await generateViteConfig(prompt, planText);
-    zip.file("vite.config.ts", viteConfigContent);
+    files.push({ name: "vite.config.ts", content: viteConfigContent });
 
     // 5. Generate Supabase migration
     const migrationContent = await generateSupabaseMigration(prompt, planText);
-    zip.file("supabase/migrations/20260613000000_init.sql", migrationContent);
+    files.push({ name: "supabase/migrations/20260613000000_init.sql", content: migrationContent });
 
     // 6. Generate src/lib/supabase.ts
     const supabaseClientContent = await generateSupabaseClient(prompt, planText);
-    zip.file("src/lib/supabase.ts", supabaseClientContent);
+    files.push({ name: "src/lib/supabase.ts", content: supabaseClientContent });
 
     // 7. Generate src/routes/index.tsx (home page)
     const homePageContent = await generateHomePage(prompt, planText);
-    zip.file("src/routes/index.tsx", homePageContent);
+    files.push({ name: "src/routes/index.tsx", content: homePageContent });
 
     // Generate the zip as base64 for download
+    const zip = new JSZip();
+    files.forEach((file) => {
+      zip.file(file.name, file.content);
+    });
     const zipBase64 = await zip.generateAsync({ type: "base64" });
     const downloadUrl = `data:application/zip;base64,${zipBase64}`;
 
-    // Step 2: Prepare for deployment
-    // For Cloudflare Pages deployment, we need to extract the ZIP and deploy individual files
-    // For simplicity in this implementation, we'll deploy a simplified version
-    // In a production implementation, we would:
-    // 1. Extract the ZIP to get individual files
-    // 2. Deploy those files to Cloudflare Pages (for static assets)
-    // 3. Deploy server functions to Cloudflare Workers (for API routes)
-
-    // For now, we'll return both the download URL and a placeholder deployment URL
-    // In a full implementation, this would integrate with the deployToCloudflare function
-
-    // Generate a unique project slug from the prompt
+    // Step 2: Deploy to Cloudflare Pages
     const projectSlug = prompt
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-|-$/g, "")
       .substring(0, 50);
 
-    // TODO: Implement actual deployment to Cloudflare Pages/Workers
-    // This would involve:
-    // 1. Extracting the ZIP file
-    // 2. Using the deployToCloudflare function or a modified version
-    // 3. Handling both static assets (for Pages) and server functions (for Workers)
-
-    const deploymentUrl = `https://${projectSlug}.signhify.app`;
+    const deploymentResult = await deployToCloudflare({
+      projectSlug,
+      userId,
+      files,
+    });
 
     return {
       success: true,
       downloadUrl,
-      deploymentUrl,
+      deploymentUrl: deploymentResult.deploymentUrl,
       fileSizeMb: (zipBase64.length * 0.75) / (1024 * 1024),
       expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
     };
@@ -127,19 +132,19 @@ async function generatePackageJson(prompt: string, planText: string): Promise<st
         "@tanstack/react-router": "^1.168.25",
         "@tanstack/react-start": "^1.167.50",
         "@supabase/supabase-js": "^2.107.0",
-        "react": "^19.2.0",
+        react: "^19.2.0",
         "react-dom": "^19.2.0",
       },
       devDependencies: {
         "@types/react": "^19.2.0",
         "@types/react-dom": "^19.2.0",
         "@vitejs/plugin-react": "^5.0.4",
-        "typescript": "^5.8.3",
-        "vite": "^7.3.1",
+        typescript: "^5.8.3",
+        vite: "^7.3.1",
       },
     },
     null,
-    2
+    2,
   );
 }
 
@@ -165,7 +170,7 @@ async function generateTsconfig(prompt: string, planText: string): Promise<strin
       },
     },
     null,
-    2
+    2,
   );
 }
 

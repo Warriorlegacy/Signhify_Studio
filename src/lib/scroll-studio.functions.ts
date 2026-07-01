@@ -1,10 +1,19 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { generateAIResponse, type Message } from "./ai-gateway.server";
+import { rateLimitMiddleware } from "./rate-limit.server";
 
 // This is the AI endpoint for Scroll Studio Chat
 export const scrollStudioChat = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([
+    requireSupabaseAuth,
+    async ({ context }) => {
+      const { request } = context as any;
+      const cfConnectingIP = request.headers.get("cf-connecting-ip") || null;
+      const xForwardedFor = request.headers.get("x-forwarded-for") || null;
+      await rateLimitMiddleware(cfConnectingIP, xForwardedFor, { limit: 15, key: "scrollStudioChat" });
+    },
+  ])
   .inputValidator((input: unknown) => {
     const obj = input as Record<string, unknown>;
     const projectId = typeof obj?.projectId === "string" ? obj.projectId : null;
@@ -43,7 +52,7 @@ Always output high-quality, production-ready, beautiful designs.`;
           { role: "user", content: message },
         ],
         temperature: 0.7,
-        response_format: { type: "json_object" }
+        response_format: { type: "json_object" },
       });
 
       try {
@@ -51,12 +60,16 @@ Always output high-quality, production-ready, beautiful designs.`;
         return parsed;
       } catch (parseError) {
         console.error("[scrollStudioChat] JSON Parse Error:", parseError, content);
-        return { message: "I generated a response, but it was not in the expected format. Please try again." };
+        return {
+          message:
+            "I generated a response, but it was not in the expected format. Please try again.",
+        };
       }
     } catch (e) {
       console.error("[scrollStudioChat] AI Gateway Error:", e);
-      return { 
-        message: "All available AI models are currently overloaded. Please add more API keys to .env (GROQ_API_KEY, CEREBRAS_API_KEY, etc.) or try again later." 
+      return {
+        message:
+          "All available AI models are currently overloaded. Please add more API keys to .env (GROQ_API_KEY, CEREBRAS_API_KEY, etc.) or try again later.",
       };
     }
   });

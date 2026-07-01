@@ -1,4 +1,5 @@
 import { Json } from "../integrations/supabase/types";
+import logger from "./logger";
 
 export type Message = {
   role: "system" | "user" | "assistant";
@@ -55,7 +56,7 @@ class RobustAIService {
         enabled: !!env("LOVABLE_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 1. Groq — fastest free Llama 3.3 70B
       {
@@ -68,7 +69,7 @@ class RobustAIService {
         enabled: !!env("GROQ_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 2. Cerebras — wafer-scale Llama 3.3 70B
       {
@@ -81,7 +82,7 @@ class RobustAIService {
         enabled: !!env("CEREBRAS_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 3. NVIDIA NIM — free hosted Nemotron 49B
       {
@@ -94,7 +95,7 @@ class RobustAIService {
         enabled: !!env("NVIDIA_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 4. OpenRouter — best free model (DeepSeek V3.1)
       {
@@ -111,7 +112,7 @@ class RobustAIService {
         enabled: !!env("OPENROUTER_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 5. Google Gemini — generous free tier
       {
@@ -124,7 +125,7 @@ class RobustAIService {
         enabled: !!env("GEMINI_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 6. Ollama Turbo — gpt-oss 120B hosted
       {
@@ -137,7 +138,7 @@ class RobustAIService {
         enabled: !!env("OLLAMA_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 7. Mistral — free tier small
       {
@@ -150,7 +151,7 @@ class RobustAIService {
         enabled: !!env("MISTRAL_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 8. Cohere — Command R+ via OpenAI-compatible endpoint
       {
@@ -163,7 +164,7 @@ class RobustAIService {
         enabled: !!env("COHERE_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 9. xAI Grok — last resort
       {
@@ -176,7 +177,7 @@ class RobustAIService {
         enabled: !!env("XAI_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 10. Anthropic Claude (if available)
       {
@@ -189,18 +190,20 @@ class RobustAIService {
         enabled: !!env("ANTHROPIC_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
-      }
+        cooldownPeriod: this.defaultCooldownPeriod,
+      },
     ];
 
     // Filter enabled providers and sort by priority
     this.providers = allProviders
-      .filter(provider => provider.enabled)
+      .filter((provider) => provider.enabled)
       .sort((a, b) => a.priority - b.priority);
 
-    console.log(`[RobustAIService] Initialized ${this.providers.length} AI providers`);
+    logger.info(`[RobustAIService] Initialized ${this.providers.length} AI providers`);
     this.providers.forEach((provider, index) => {
-      console.log(`[RobustAIService] Provider ${index + 1}: ${provider.name} (priority: ${provider.priority})`);
+      logger.info(
+        `[RobustAIService] Provider ${index + 1}: ${provider.name} (priority: ${provider.priority})`,
+      );
     });
   }
 
@@ -220,15 +223,15 @@ class RobustAIService {
   }
 
   private performHealthChecks() {
-    console.log('[RobustAIService] Performing health checks on AI providers');
+    logger.debug("[RobustAIService] Performing health checks on AI providers");
 
     const now = Date.now();
-    this.providers.forEach(provider => {
+    this.providers.forEach((provider) => {
       // If provider is in cooldown, check if cooldown has expired
       if (!provider.enabled && provider.lastFailureTime !== null) {
         const timeSinceFailure = now - provider.lastFailureTime;
         if (timeSinceFailure > provider.cooldownPeriod) {
-          console.log(`[RobustAIService] Provider ${provider.name} cooldown expired, re-enabling`);
+          logger.debug(`[RobustAIService] Provider ${provider.name} cooldown expired, re-enabling`);
           provider.enabled = true;
           provider.failureCount = 0;
           provider.lastFailureTime = null;
@@ -244,9 +247,13 @@ class RobustAIService {
     // Disable provider if it has too many failures
     if (provider.failureCount >= this.maxFailuresBeforeCooldown) {
       provider.enabled = false;
-      console.warn(`[RobustAIService] Provider ${provider.name} disabled after ${provider.failureCount} failures`);
+      logger.warn(
+        `[RobustAIService] Provider ${provider.name} disabled after ${provider.failureCount} failures`,
+      );
     } else {
-      console.warn(`[RobustAIService] Provider ${provider.name} failure ${provider.failureCount}/${this.maxFailuresBeforeCooldown}`);
+      logger.warn(
+        `[RobustAIService] Provider ${provider.name} failure ${provider.failureCount}/${this.maxFailuresBeforeCooldown}`,
+      );
     }
   }
 
@@ -275,25 +282,28 @@ class RobustAIService {
     return headers;
   }
 
-  private buildRequestBody(provider: ProviderConfig, options: AIGatewayOptions): Record<string, unknown> {
+  private buildRequestBody(
+    provider: ProviderConfig,
+    options: AIGatewayOptions,
+  ): Record<string, unknown> {
     if (provider.isAnthropic) {
       return {
         model: provider.model,
         max_tokens: options.max_tokens ?? 2400,
         stream: false,
-        system: options.messages.find(m => m.role === "system")?.content || "",
+        system: options.messages.find((m) => m.role === "system")?.content || "",
         messages: options.messages
-          .filter(m => m.role !== "system")
-          .map(m => ({ role: m.role, content: m.content }))
+          .filter((m) => m.role !== "system")
+          .map((m) => ({ role: m.role, content: m.content })),
       };
     } else {
       return {
         model: provider.model,
         max_tokens: options.max_tokens,
         stream: false,
-        messages: options.messages.map(m => ({ role: m.role, content: m.content })),
+        messages: options.messages.map((m) => ({ role: m.role, content: m.content })),
         temperature: options.temperature ?? 0.7,
-        response_format: options.response_format
+        response_format: options.response_format,
       };
     }
   }
@@ -308,10 +318,12 @@ class RobustAIService {
 
   async generateAIResponse(options: AIGatewayOptions): Promise<string> {
     // Filter to only enabled providers
-    const availableProviders = this.providers.filter(p => p.enabled);
+    const availableProviders = this.providers.filter((p) => p.enabled);
 
     if (availableProviders.length === 0) {
-      throw new Error("No AI providers available. All providers are either disabled or out of cooldown.");
+      throw new Error(
+        "No AI providers available. All providers are either disabled or out of cooldown.",
+      );
     }
 
     let lastError: any = null;
@@ -320,7 +332,9 @@ class RobustAIService {
     // Try each provider in priority order
     for (const provider of availableProviders) {
       try {
-        console.log(`[RobustAIService] Attempting generation with ${provider.name} (${provider.model})...`);
+        logger.debug(
+          `[RobustAIService] Attempting generation with ${provider.name} (${provider.model})...`,
+        );
 
         const res = await fetch(provider.url, {
           method: "POST",
@@ -330,7 +344,7 @@ class RobustAIService {
 
         if (!res.ok) {
           const errorData = await res.text().catch(() => "Unknown error");
-          console.warn(`[RobustAIService] ${provider.name} failed (${res.status}): ${errorData}`);
+          logger.warn(`[RobustAIService] ${provider.name} failed (${res.status}): ${errorData}`);
 
           // Record failure and continue to next provider
           this.recordFailure(provider);
@@ -351,20 +365,20 @@ class RobustAIService {
         let content = this.parseResponse(provider, json);
 
         if (!content) {
-          console.warn(`[RobustAIService] ${provider.name} returned empty content.`);
+          logger.warn(`[RobustAIService] ${provider.name} returned empty content.`);
           this.recordFailure(provider);
           lastError = new Error(`${provider.name} returned empty content`);
           attempts.push(`${provider.name}:empty`);
           continue;
         }
 
-        // Success! Record it and return the content
+        // Success! Record it and return the content and provider used
         this.recordSuccess(provider);
-        console.log(`[RobustAIService] Successfully generated response with ${provider.name}`);
+        logger.info(`[RobustAIService] Successfully generated response with ${provider.name}`);
         attempts.push(`${provider.name}:ok`);
-        return content;
+        return { content, providerUsed: provider.name };
       } catch (e) {
-        console.warn(`[RobustAIService] Exception with ${provider.name}:`, e);
+        logger.warn(`[RobustAIService] Exception with ${provider.name}:`, e);
         this.recordFailure(provider);
         lastError = e;
         attempts.push(`${provider.name}:err`);
@@ -374,29 +388,29 @@ class RobustAIService {
 
     // If we got here, all providers failed
     const errorMessage = `All AI providers failed: ${attempts.join(", ")}`;
-    console.error(`[RobustAIService] ${errorMessage}`);
+    logger.error(`[RobustAIService] ${errorMessage}`);
     throw lastError || new Error(errorMessage);
   }
 
   // Method to manually reset a provider (useful for admin actions)
   resetProvider(providerName: string) {
-    const provider = this.providers.find(p => p.name === providerName);
+    const provider = this.providers.find((p) => p.name === providerName);
     if (provider) {
       provider.enabled = true;
       provider.failureCount = 0;
       provider.lastFailureTime = null;
-      console.log(`[RobustAIService] Provider ${providerName} manually reset`);
+      logger.info(`[RobustAIService] Provider ${providerName} manually reset`);
     }
   }
 
   // Get provider status for monitoring
   getProviderStatus() {
-    return this.providers.map(p => ({
+    return this.providers.map((p) => ({
       name: p.name,
       enabled: p.enabled,
       failureCount: p.failureCount,
       lastFailureTime: p.lastFailureTime,
-      priority: p.priority
+      priority: p.priority,
     }));
   }
 

@@ -117,19 +117,19 @@ async function generatePackageJson(prompt: string, planText: string): Promise<st
         "@tanstack/react-router": "^1.168.25",
         "@tanstack/react-start": "^1.167.50",
         "@supabase/supabase-js": "^2.107.0",
-        "react": "^19.2.0",
+        react: "^19.2.0",
         "react-dom": "^19.2.0",
       },
       devDependencies: {
         "@types/react": "^19.2.0",
         "@types/react-dom": "^19.2.0",
         "@vitejs/plugin-react": "^5.0.4",
-        "typescript": "^5.8.3",
-        "vite": "^7.3.1",
+        typescript: "^5.8.3",
+        vite: "^7.3.1",
       },
     },
     null,
-    2
+    2,
   );
 }
 
@@ -155,7 +155,7 @@ async function generateTsconfig(prompt: string, planText: string): Promise<strin
       },
     },
     null,
-    2
+    2,
   );
 }
 
@@ -240,7 +240,10 @@ Generate the content for src/routes/index.tsx that includes:
   return content.trim();
 }
 
-async function generateItemsCRUD(prompt: string, planText: string): Promise<{
+async function generateItemsCRUD(
+  prompt: string,
+  planText: string,
+): Promise<{
   itemsRoute?: string;
   itemsApi?: string;
 }> {

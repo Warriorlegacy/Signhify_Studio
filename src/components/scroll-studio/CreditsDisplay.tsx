@@ -9,13 +9,19 @@ import { toast } from "sonner";
 export function CreditsDisplay() {
   const getCreditsFn = useServerFn(getUserCredits);
   const checkoutFn = useServerFn(createCheckoutSession);
-  
-  const [data, setData] = useState<{tier: string; creditsRemaining: number; maxCredits: number} | null>(null);
+
+  const [data, setData] = useState<{
+    tier: string;
+    creditsRemaining: number;
+    maxCredits: number;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [upgrading, setUpgrading] = useState(false);
 
   useEffect(() => {
-    getCreditsFn().then(setData).finally(() => setLoading(false));
+    getCreditsFn()
+      .then(setData)
+      .finally(() => setLoading(false));
   }, []);
 
   const handleUpgrade = async () => {
@@ -33,7 +39,11 @@ export function CreditsDisplay() {
   };
 
   if (loading || !data) {
-    return <div className="p-4 flex justify-center"><Loader2 className="w-4 h-4 animate-spin text-muted-foreground" /></div>;
+    return (
+      <div className="p-4 flex justify-center">
+        <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+      </div>
+    );
   }
 
   const percent = ((data.maxCredits - data.creditsRemaining) / data.maxCredits) * 100;
@@ -49,18 +59,22 @@ export function CreditsDisplay() {
           {data.creditsRemaining} / {data.maxCredits} credits
         </div>
       </div>
-      
+
       <Progress value={percent} className="h-1.5 mb-3 bg-muted" />
-      
+
       {data.tier === "free" && (
-        <Button 
-          variant="default" 
-          size="sm" 
+        <Button
+          variant="default"
+          size="sm"
           className="w-full text-xs h-8 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0"
           onClick={handleUpgrade}
           disabled={upgrading}
         >
-          {upgrading ? <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" /> : <CreditCard className="w-3.5 h-3.5 mr-2" />}
+          {upgrading ? (
+            <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />
+          ) : (
+            <CreditCard className="w-3.5 h-3.5 mr-2" />
+          )}
           Upgrade to Pro ($49/mo)
         </Button>
       )}

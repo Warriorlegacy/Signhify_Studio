@@ -23,8 +23,8 @@ export const buildAndValidateProduct = createServerFn({ method: "POST" })
       const buildResult = await buildProduct({
         data: {
           prompt: data.prompt,
-          planText: data.planText
-        }
+          planText: data.planText,
+        },
       });
 
       // If validation is not requested, just return the build result
@@ -32,7 +32,7 @@ export const buildAndValidateProduct = createServerFn({ method: "POST" })
         return {
           ...buildResult,
           validation: null,
-          enhancement: null
+          enhancement: null,
         };
       }
 
@@ -57,10 +57,10 @@ export const buildAndValidateProduct = createServerFn({ method: "POST" })
           simulatedScore: 85, // Simulated good score
           recommendations: [
             "In production, this would be validated using browser automation",
-            "Check for responsiveness, accessibility, and basic interactivity"
-          ]
+            "Check for responsiveness, accessibility, and basic interactivity",
+          ],
         },
-        enhancement: null
+        enhancement: null,
       };
     } catch (error) {
       console.error("[buildAndValidateProduct] Error:", error);
@@ -86,8 +86,8 @@ export const buildAndValidateMultiProduct = createServerFn({ method: "POST" })
       // Step 1: Generate the multi-file product using existing buildMultiProduct function
       const buildResult = await buildMultiProduct({
         data: {
-          prompt: data.prompt
-        }
+          prompt: data.prompt,
+        },
       });
 
       // If validation is not requested, just return the build result
@@ -95,7 +95,7 @@ export const buildAndValidateMultiProduct = createServerFn({ method: "POST" })
         return {
           ...buildResult,
           validation: null,
-          enhancement: null
+          enhancement: null,
         };
       }
 
@@ -111,10 +111,10 @@ export const buildAndValidateMultiProduct = createServerFn({ method: "POST" })
           recommendations: [
             "In production, this would be validated using browser automation",
             "Check for responsiveness, accessibility, and basic interactivity",
-            "Validate all routes and user flows"
-          ]
+            "Validate all routes and user flows",
+          ],
         },
-        enhancement: null
+        enhancement: null,
       };
     } catch (error) {
       console.error("[buildAndValidateMultiProduct] Error:", error);
@@ -142,7 +142,7 @@ export const deployAndValidateProduct = createServerFn({ method: "POST" })
         await productValidationService.validateAndEnhanceProduct(
           data.deployedUrl,
           data.productType,
-          data.maxIterations
+          data.maxIterations,
         );
 
       return {
@@ -150,7 +150,7 @@ export const deployAndValidateProduct = createServerFn({ method: "POST" })
         validationResults: validationAndEnhancementResult.validationResults,
         enhancementResults: validationAndEnhancementResult.enhancementResults,
         overallSuccess: validationAndEnhancementResult.overallSuccess,
-        note: "Product has been validated and enhanced using browser automation"
+        note: "Product has been validated and enhanced using browser automation",
       };
     } catch (error) {
       console.error("[deployAndValidateProduct] Error:", error);

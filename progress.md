@@ -89,3 +89,24 @@
   - Added multi-video continuation support in SettingsPanel.
   - Improved export pipeline with README and deployment instructions.
   - Updated progress tracking files.
+
+## Session: 2026-07-01 (Codebase Audit & Gap Fixes)
+
+- **Status:** complete
+- **Started:** 2026-07-01 14:00
+- Actions taken:
+  - Full codebase analysis: 37 routes, 73 components, 59 server files, 24 migrations, 4 tests.
+  - Identified critical gaps: missing builder_projects CREATE TABLE migration, stubbed Stripe webhooks, rate limiting only on generatePlan.
+  - Created builder_projects migration (`20260626050000_builder_projects_create_table.sql`) with table, indexes, RLS policies, and auto-updated_at trigger.
+  - Implemented all 6 Stripe webhook handlers: checkout.session.completed (marketplace purchases + credit packs), subscription CRUD (provision/update/revoke via profiles table), invoice.paid (reactivate), invoice.payment_failed (mark past_due).
+  - Made rate limiter reusable with configurable limit/window/key params.
+  - Added rate limiting to buildProduct (5/hr) and scrollStudioChat (15/hr).
+  - All changes build cleanly.
+- Files created/modified:
+  - [supabase/migrations/20260626050000_builder_projects_create_table.sql](file:///D:/Signhify/supabase/migrations/20260626050000_builder_projects_create_table.sql) (created)
+  - [src/routes/api/stripe/webhook.ts](file:///D:/Signhify/src/routes/api/stripe/webhook.ts) (implemented handlers)
+  - [src/lib/rate-limit.server.ts](file:///D:/Signhify/src/lib/rate-limit.server.ts) (configurable limits)
+  - [src/lib/build-product.functions.ts](file:///D:/Signhify/src/lib/build-product.functions.ts) (added rate limiting)
+  - [src/lib/scroll-studio.functions.ts](file:///D:/Signhify/src/lib/scroll-studio.functions.ts) (added rate limiting)
+  - [src/lib/ai-generate.functions.ts](file:///D:/Signhify/src/lib/ai-generate.functions.ts) (added key param)
+  - [src/lib/build-and-deploy.functions.ts](file:///D:/Signhify/src/lib/build-and-deploy.functions.ts) (added key param)

@@ -5,12 +5,12 @@ import { CreditsDisplay } from "./CreditsDisplay";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bot, Settings, Layers } from "lucide-react";
 
-export function Sidebar({ 
-  projectId, 
+export function Sidebar({
+  projectId,
   onProjectSelect,
   onUpdatePreview,
-  onFramesExtracted
-}: { 
+  onFramesExtracted,
+}: {
   projectId: string | null;
   onProjectSelect: (id: string) => void;
   onUpdatePreview: (data: { html: string; css: string; js: string }) => void;
@@ -26,7 +26,7 @@ export function Sidebar({
           <h1 className="font-semibold text-sm">Scroll Studio</h1>
         </div>
       </div>
-      
+
       <Tabs defaultValue="chat" className="flex-1 flex flex-col overflow-hidden">
         <div className="px-4 pt-2">
           <TabsList className="w-full grid grid-cols-2">
@@ -40,16 +40,16 @@ export function Sidebar({
             </TabsTrigger>
           </TabsList>
         </div>
-        
+
         <TabsContent value="chat" className="flex-1 overflow-hidden m-0 p-0">
           <ChatInterface projectId={projectId} onUpdatePreview={onUpdatePreview} />
         </TabsContent>
-        
+
         <TabsContent value="settings" className="flex-1 overflow-y-auto m-0 p-0">
           <SettingsPanel projectId={projectId} onFramesExtracted={onFramesExtracted} />
         </TabsContent>
       </Tabs>
-      
+
       <CreditsDisplay />
     </div>
   );

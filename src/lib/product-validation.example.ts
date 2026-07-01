@@ -21,7 +21,7 @@ async function exampleBasicValidation() {
   try {
     const validationResult = await productValidationService.validateProductFunctionality(
       productUrl,
-      "ecommerce store" // Specify product type for more tailored validation
+      "ecommerce store", // Specify product type for more tailored validation
     );
 
     console.log("Validation Results:");
@@ -47,7 +47,7 @@ async function exampleValidationAndEnhancementCycle() {
     const cycleResult = await productValidationService.validateAndEnhanceProduct(
       productUrl,
       "task management app",
-      3 // Maximum 3 iterations of validate-enhance
+      3, // Maximum 3 iterations of validate-enhance
     );
 
     console.log("Validation and Enhancement Cycle Results:");
@@ -67,7 +67,9 @@ async function exampleValidationAndEnhancementCycle() {
     cycleResult.enhancementResults.forEach((result, index) => {
       console.log(`  Iteration ${index + 1}:`);
       console.log(`    - Enhanced: ${result.enhanced}`);
-      console.log(`    - Improvements: ${result.improvements.length} ${result.improvements.join(", ") || "none"}`);
+      console.log(
+        `    - Improvements: ${result.improvements.length} ${result.improvements.join(", ") || "none"}`,
+      );
     });
 
     return cycleResult;
@@ -106,8 +108,4 @@ async function exampleWithBuildFunctions() {
 // exampleValidationAndEnhancementCycle();
 // exampleWithBuildFunctions();
 
-export {
-  exampleBasicValidation,
-  exampleValidationAndEnhancementCycle,
-  exampleWithBuildFunctions
-};
+export { exampleBasicValidation, exampleValidationAndEnhancementCycle, exampleWithBuildFunctions };

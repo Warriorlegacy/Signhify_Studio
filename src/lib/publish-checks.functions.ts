@@ -31,7 +31,7 @@ function pickOrigin(input: { origin?: string } | undefined, fallback: string) {
     const origin = `${u.protocol}//${u.host}`;
 
     // Validate against allowed origins
-    const isAllowed = ALLOWED_ORIGINS.some(allowed => {
+    const isAllowed = ALLOWED_ORIGINS.some((allowed) => {
       if (allowed.includes("*")) {
         // Handle wildcard domains
         const regex = new RegExp("^" + allowed.replace(/\*/g, ".*") + "$");
@@ -238,7 +238,6 @@ export const listPublishAudits = createServerFn({ method: "GET" })
     return { audits: (data ?? []) as Array<Record<string, any>> };
   });
 
-
 export type ConnectivityStatus = {
   ok: boolean;
   hasUrl: boolean;
@@ -291,4 +290,3 @@ export const checkSupabaseConnectivity = createServerFn({ method: "GET" })
       };
     }
   });
-

@@ -3,12 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "@/hooks/useUser";
 import { isAdminEmail } from "@/lib/admin";
 import { supabase } from "@/integrations/supabase/client";
-import {
-  buildProduct,
-  editProduct,
-  ejectProduct,
-  editFiles,
-} from "@/lib/build-product.functions";
+import { buildProduct, editProduct, ejectProduct, editFiles } from "@/lib/build-product.functions";
 import {
   Loader2,
   Plus,
@@ -23,10 +18,7 @@ import {
 
 export const Route = createFileRoute("/builder")({
   head: ({ params }) => ({
-    meta: [
-      { title: `Builder · Signhify AI` },
-      { name: "robots", content: "noindex, nofollow" },
-    ],
+    meta: [{ title: `Builder · Signhify AI` }, { name: "robots", content: "noindex, nofollow" }],
   }),
   component: BuilderPage,
 });
@@ -167,14 +159,19 @@ function BuilderPage() {
       .channel(`builder-project:${projectId}`)
       .on(
         "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "builder_projects", filter: `id=eq.${projectId}` },
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "builder_projects",
+          filter: `id=eq.${projectId}`,
+        },
         (payload: any) => {
           const newData = payload.new as { project_data: Project; version: number };
           // Only update if the incoming version is newer than our current version
           // We don't store version in state, so we always update (simple last-write-wins)
           // In a more advanced implementation, we would compare versions and merge conflicts.
           setProject(newData.project_data);
-        }
+        },
       )
       .subscribe();
 
@@ -209,10 +206,7 @@ function BuilderPage() {
   const lastVersion = project?.versions.at(-1) || null;
   const currentHtml = lastVersion?.mode === "single" ? lastVersion.html || "" : "";
   const currentFiles = lastVersion?.mode === "multi" ? lastVersion.files || [] : [];
-  const previewHtml =
-    lastVersion?.mode === "multi"
-      ? assembleMultiHtml(currentFiles)
-      : currentHtml;
+  const previewHtml = lastVersion?.mode === "multi" ? assembleMultiHtml(currentFiles) : currentHtml;
 
   // Pick a default selected file when switching to a multi project
   useEffect(() => {
@@ -515,7 +509,8 @@ function BuilderPage() {
               <span className="text-xs text-white/60">Online:</span>
               {presence.map((p, idx) => (
                 <span key={idx} className="ml-1 text-xs text-white">
-                  {p.email}{idx === presence.length - 1 ? "" : ", "}
+                  {p.email}
+                  {idx === presence.length - 1 ? "" : ", "}
                 </span>
               ))}
             </div>

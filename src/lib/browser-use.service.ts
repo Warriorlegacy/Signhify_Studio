@@ -1,4 +1,5 @@
-import { chromium } from 'playwright';
+import { chromium } from "playwright";
+import logger from "./logger";
 
 /**
  * Browser-Use Service for Signhify AI
@@ -20,19 +21,19 @@ export class BrowserUseService {
       this.browser = await chromium.launch({
         headless: true,
         args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-accelerated-2d-canvas',
-          '--no-first-run',
-          '--no-zygote',
-          '--disable-gpu'
-        ]
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-dev-shm-usage",
+          "--disable-accelerated-2d-canvas",
+          "--no-first-run",
+          "--no-zygote",
+          "--disable-gpu",
+        ],
       });
 
       this.context = await this.browser.newContext({
         viewport: { width: 1280, height: 720 },
-        ignoreHTTPSErrors: true
+        ignoreHTTPSErrors: true,
       });
 
       this.page = await this.context.newPage();
@@ -41,9 +42,9 @@ export class BrowserUseService {
       this.page.setDefaultTimeout(30000);
 
       this.isInitialized = true;
-      console.log('[BrowserUseService] Browser initialized successfully');
+      logger.info("[BrowserUseService] Browser initialized successfully");
     } catch (error) {
-      console.error('[BrowserUseService] Failed to initialize browser:', error);
+      logger.error("[BrowserUseService] Failed to initialize browser:", error);
       throw error;
     }
   }
@@ -66,16 +67,19 @@ export class BrowserUseService {
       }
 
       this.isInitialized = false;
-      console.log('[BrowserUseService] Browser cleaned up successfully');
+      logger.info("[BrowserUseService] Browser cleaned up successfully");
     } catch (error) {
-      console.error('[BrowserUseService] Error during cleanup:', error);
+      logger.error("[BrowserUseService] Error during cleanup:", error);
     }
   }
 
   /**
    * Navigate to a URL and wait for page load
    */
-  async navigateTo(url: string, waitUntil: 'load' | 'domcontentloaded' | 'networkidle' = 'networkidle') {
+  async navigateTo(
+    url: string,
+    waitUntil: "load" | "domcontentloaded" | "networkidle" = "networkidle",
+  ) {
     if (!this.isInitialized) {
       await this.initialize();
     }
@@ -105,7 +109,7 @@ export class BrowserUseService {
       }
 
       const text = await element.textContent();
-      return text?.trim() || '';
+      return text?.trim() || "";
     } catch (error) {
       console.error(`[BrowserUseService] Failed to extract text from ${selector}:`, error);
       throw error;
@@ -129,7 +133,10 @@ export class BrowserUseService {
       const attribute = await element.getAttribute(attributeName);
       return attribute;
     } catch (error) {
-      console.error(`[BrowserUseService] Failed to extract attribute ${attributeName} from ${selector}:`, error);
+      console.error(
+        `[BrowserUseService] Failed to extract attribute ${attributeName} from ${selector}:`,
+        error,
+      );
       throw error;
     }
   }
@@ -137,12 +144,14 @@ export class BrowserUseService {
   /**
    * Take a screenshot of the page or specific element
    */
-  async takeScreenshot(options: {
-    path?: string;
-    fullPage?: boolean;
-    selector?: string;
-    encoding?: 'base64' | 'binary'
-  } = {}): Promise<Buffer | string> {
+  async takeScreenshot(
+    options: {
+      path?: string;
+      fullPage?: boolean;
+      selector?: string;
+      encoding?: "base64" | "binary";
+    } = {},
+  ): Promise<Buffer | string> {
     if (!this.isInitialized) {
       await this.initialize();
     }
@@ -151,7 +160,7 @@ export class BrowserUseService {
       const screenshotOptions: any = {
         path: options.path,
         fullPage: options.fullPage ?? false,
-        encoding: options.encoding ?? 'binary'
+        encoding: options.encoding ?? "binary",
       };
 
       let buffer: Buffer;
@@ -165,9 +174,9 @@ export class BrowserUseService {
         buffer = await this.page.screenshot(screenshotOptions);
       }
 
-      return options.encoding === 'base64' ? buffer.toString('base64') : buffer;
+      return options.encoding === "base64" ? buffer.toString("base64") : buffer;
     } catch (error) {
-      console.error('[BrowserUseService] Failed to take screenshot:', error);
+      console.error("[BrowserUseService] Failed to take screenshot:", error);
       throw error;
     }
   }
@@ -212,7 +221,7 @@ export class BrowserUseService {
    * Wait for a specific condition or timeout
    */
   async waitFor(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
@@ -226,7 +235,7 @@ export class BrowserUseService {
     try {
       return await this.page.evaluate(pageFunction);
     } catch (error) {
-      console.error('[BrowserUseService] Failed to evaluate function in page context:', error);
+      console.error("[BrowserUseService] Failed to evaluate function in page context:", error);
       throw error;
     }
   }
@@ -256,12 +265,15 @@ export class BrowserUseService {
   /**
    * Validate a generated product URL by checking if it loads and contains expected content
    */
-  async validateProductUrl(url: string, validationChecks: {
-    titleContains?: string;
-    elementExists?: string;
-    textContains?: { selector: string; text: string }[];
-    minLoadTime?: number;
-  } = {}): Promise<{
+  async validateProductUrl(
+    url: string,
+    validationChecks: {
+      titleContains?: string;
+      elementExists?: string;
+      textContains?: { selector: string; text: string }[];
+      minLoadTime?: number;
+    } = {},
+  ): Promise<{
     success: boolean;
     loadTime: number;
     checks: Record<string, boolean>;
@@ -277,7 +289,7 @@ export class BrowserUseService {
 
     try {
       // Navigate to the URL
-      const response = await this.page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+      const response = await this.page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
       const loadTime = Date.now() - startTime;
 
       // Check HTTP status
@@ -290,7 +302,9 @@ export class BrowserUseService {
         const title = await this.page.title();
         checks.titleContains = title.includes(validationChecks.titleContains);
         if (!checks.titleContains) {
-          errors.push(`Title does not contain "${validationChecks.titleContains}". Actual: "${title}"`);
+          errors.push(
+            `Title does not contain "${validationChecks.titleContains}". Actual: "${title}"`,
+          );
         }
       }
 
@@ -314,7 +328,9 @@ export class BrowserUseService {
               const text = await element.textContent();
               checks[`text_${check.selector}`] = text?.includes(check.text) ?? false;
               if (!checks[`text_${check.selector}`]) {
-                errors.push(`Text "${check.text}" not found in element ${check.selector}. Actual: "${text?.trim()}"`);
+                errors.push(
+                  `Text "${check.text}" not found in element ${check.selector}. Actual: "${text?.trim()}"`,
+                );
               }
             } else {
               checks[`text_${check.selector}`] = false;
@@ -322,7 +338,9 @@ export class BrowserUseService {
             }
           } catch (error) {
             checks[`text_${check.selector}`] = false;
-            errors.push(`Failed to check text in ${check.selector}: ${error instanceof Error ? error.message : String(error)}`);
+            errors.push(
+              `Failed to check text in ${check.selector}: ${error instanceof Error ? error.message : String(error)}`,
+            );
           }
         }
       }
@@ -331,7 +349,9 @@ export class BrowserUseService {
       if (validationChecks.minLoadTime) {
         checks.loadTimeAdequate = loadTime >= validationChecks.minLoadTime;
         if (!checks.loadTimeAdequate) {
-          errors.push(`Page loaded too quickly: ${loadTime}ms (minimum: ${validationChecks.minLoadTime}ms)`);
+          errors.push(
+            `Page loaded too quickly: ${loadTime}ms (minimum: ${validationChecks.minLoadTime}ms)`,
+          );
         }
       }
 
@@ -341,7 +361,7 @@ export class BrowserUseService {
         success,
         loadTime,
         checks,
-        errors
+        errors,
       };
     } catch (error) {
       const loadTime = Date.now() - startTime;
@@ -351,7 +371,7 @@ export class BrowserUseService {
         success: false,
         loadTime,
         checks: {},
-        errors
+        errors,
       };
     }
   }
@@ -359,7 +379,9 @@ export class BrowserUseService {
   /**
    * Scrape structured data from a page using CSS selectors
    */
-  async scrapeData<T extends Record<string, string>>(selectors: Record<string, string>): Promise<T> {
+  async scrapeData<T extends Record<string, string>>(
+    selectors: Record<string, string>,
+  ): Promise<T> {
     if (!this.isInitialized) {
       await this.initialize();
     }
@@ -371,14 +393,17 @@ export class BrowserUseService {
         const element = await this.page.waitForSelector(selector, { timeout: 5000 });
         if (element) {
           const text = await element.textContent();
-          result[key] = text?.trim() ?? '';
+          result[key] = text?.trim() ?? "";
         } else {
-          result[key] = '';
+          result[key] = "";
           console.warn(`[BrowserUseService] Selector not found for scraping: ${selector}`);
         }
       } catch (error) {
-        result[key] = '';
-        console.error(`[BrowserUseService] Failed to scrape data for key "${key}" with selector "${selector}":`, error);
+        result[key] = "";
+        console.error(
+          `[BrowserUseService] Failed to scrape data for key "${key}" with selector "${selector}":`,
+          error,
+        );
       }
     }
 

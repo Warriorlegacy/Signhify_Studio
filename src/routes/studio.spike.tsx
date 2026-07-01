@@ -781,9 +781,8 @@ function StudioSpike() {
                 onClick={async () => {
                   setExporting(true);
                   // Call the deploy function
-                  const { deployScrollStudioProject } = await import(
-                    "@/lib/studio-export.functions"
-                  );
+                  const { deployScrollStudioProject } =
+                    await import("@/lib/studio-export.functions");
                   deployScrollStudioProject
                     .call({ projectId })
                     .then((result) => {

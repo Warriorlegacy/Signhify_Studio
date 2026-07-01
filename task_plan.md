@@ -55,6 +55,15 @@ Phase 6: UI Expansion & Template Gallery
 - [x] Improve export pipeline with README and deployment instructions
 - **Status:** in-progress
 
+### Phase 6b: Codebase Audit & Gap Fixes
+
+- [x] Full codebase analysis (37 routes, 73 components, 59 server files, 24 migrations, 4 tests)
+- [x] Created builder_projects CREATE TABLE migration with RLS and auto-updated_at trigger
+- [x] Implemented all 6 Stripe webhook handlers (checkout, subscription CRUD, invoices)
+- [x] Made rate limiter reusable with configurable limit/window/key params
+- [x] Added rate limiting to buildProduct (5/hr) and scrollStudioChat (15/hr)
+- - **Status:** complete
+
 ## Key Questions
 
 1. Do we want to start directly with Phase 0 (technical spike for frame-based scroll-locked playback) or do we want to map out the Supabase schemas first?

@@ -12,10 +12,10 @@ interface Message {
   content: string;
 }
 
-export function ChatInterface({ 
+export function ChatInterface({
   projectId,
-  onUpdatePreview
-}: { 
+  onUpdatePreview,
+}: {
   projectId: string | null;
   onUpdatePreview: (data: { html: string; css: string; js: string }) => void;
 }) {
@@ -27,11 +27,13 @@ export function ChatInterface({
 
   useEffect(() => {
     if (!projectId) {
-      setMessages([{
-        id: "welcome",
-        role: "assistant",
-        content: "Welcome to Scroll Studio! Describe the cinematic website you want to build."
-      }]);
+      setMessages([
+        {
+          id: "welcome",
+          role: "assistant",
+          content: "Welcome to Scroll Studio! Describe the cinematic website you want to build.",
+        },
+      ]);
       return;
     }
   }, [projectId]);
@@ -44,38 +46,45 @@ export function ChatInterface({
 
   const handleSubmit = async () => {
     if (!input.trim() || isLoading) return;
-    
+
     const userMsg: Message = { id: Date.now().toString(), role: "user", content: input };
-    setMessages(prev => [...prev, userMsg]);
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsLoading(true);
 
     try {
       let currentProjectId = projectId;
-      
-      const data = await chatFn({ data: { projectId: currentProjectId, message: userMsg.content } });
-      
-      setMessages(prev => [...prev, {
-        id: Date.now().toString(),
-        role: "assistant",
-        content: data.message || "I've updated the site based on your request."
-      }]);
-      
+
+      const data = await chatFn({
+        data: { projectId: currentProjectId, message: userMsg.content },
+      });
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          role: "assistant",
+          content: data.message || "I've updated the site based on your request.",
+        },
+      ]);
+
       if (data.html || data.css || data.js) {
         onUpdatePreview({
           html: data.html || "",
           css: data.css || "",
-          js: data.js || ""
+          js: data.js || "",
         });
       }
-      
     } catch (error) {
       console.error(error);
-      setMessages(prev => [...prev, {
-        id: Date.now().toString(),
-        role: "assistant",
-        content: "Sorry, I encountered an error processing your request."
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          role: "assistant",
+          content: "Sorry, I encountered an error processing your request.",
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -86,12 +95,17 @@ export function ChatInterface({
       <ScrollArea className="flex-1 p-4" ref={scrollRef}>
         <div className="space-y-4 pb-4">
           {messages.map((msg) => (
-            <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
-                msg.role === "user" 
-                  ? "bg-primary text-primary-foreground" 
-                  : "bg-muted text-foreground"
-              }`}>
+            <div
+              key={msg.id}
+              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+            >
+              <div
+                className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
+                  msg.role === "user"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-foreground"
+                }`}
+              >
                 {msg.content}
               </div>
             </div>
@@ -106,14 +120,14 @@ export function ChatInterface({
           )}
         </div>
       </ScrollArea>
-      
+
       <div className="p-4 border-t border-border bg-background">
         <div className="relative flex items-end bg-muted/50 border border-border/50 rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-primary/30 transition-all">
-          <Textarea 
+          <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
+              if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 handleSubmit();
               }
@@ -122,9 +136,9 @@ export function ChatInterface({
             className="min-h-[60px] max-h-[200px] w-full resize-none border-0 focus-visible:ring-0 bg-transparent p-3 text-sm"
           />
           <div className="p-2">
-            <Button 
-              size="icon" 
-              className="h-8 w-8 rounded-lg" 
+            <Button
+              size="icon"
+              className="h-8 w-8 rounded-lg"
               onClick={handleSubmit}
               disabled={!input.trim() || isLoading}
             >

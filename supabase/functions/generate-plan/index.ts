@@ -82,7 +82,7 @@ class RobustAIServiceDeno {
         enabled: !!env("LOVABLE_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 1. Groq — fastest free Llama 3.3 70B
       {
@@ -95,7 +95,7 @@ class RobustAIServiceDeno {
         enabled: !!env("GROQ_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 2. Cerebras — wafer-scale Llama 3.3 70B
       {
@@ -108,7 +108,7 @@ class RobustAIServiceDeno {
         enabled: !!env("CEREBRAS_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 3. NVIDIA NIM — free hosted Nemotron 49B
       {
@@ -121,7 +121,7 @@ class RobustAIServiceDeno {
         enabled: !!env("NVIDIA_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 4. OpenRouter — best free model (DeepSeek V3.1)
       {
@@ -138,7 +138,7 @@ class RobustAIServiceDeno {
         enabled: !!env("OPENROUTER_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 5. Google Gemini — generous free tier
       {
@@ -151,7 +151,7 @@ class RobustAIServiceDeno {
         enabled: !!env("GEMINI_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 6. Ollama Turbo — gpt-oss 120B hosted
       {
@@ -164,7 +164,7 @@ class RobustAIServiceDeno {
         enabled: !!env("OLLAMA_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 7. Mistral — free tier small
       {
@@ -177,7 +177,7 @@ class RobustAIServiceDeno {
         enabled: !!env("MISTRAL_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 8. Cohere — Command R+ via OpenAI-compatible endpoint
       {
@@ -190,7 +190,7 @@ class RobustAIServiceDeno {
         enabled: !!env("COHERE_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 9. xAI Grok — last resort
       {
@@ -203,7 +203,7 @@ class RobustAIServiceDeno {
         enabled: !!env("XAI_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
+        cooldownPeriod: this.defaultCooldownPeriod,
       },
       // 10. Anthropic Claude (if available)
       {
@@ -216,13 +216,13 @@ class RobustAIServiceDeno {
         enabled: !!env("ANTHROPIC_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
-        cooldownPeriod: this.defaultCooldownPeriod
-      }
+        cooldownPeriod: this.defaultCooldownPeriod,
+      },
     ];
 
     // Filter enabled providers and sort by priority
     this.providers = allProviders
-      .filter(provider => provider.enabled)
+      .filter((provider) => provider.enabled)
       .sort((a, b) => a.priority - b.priority);
 
     console.log(`[RobustAIServiceDeno] Initialized ${this.providers.length} AI providers`);
@@ -273,16 +273,22 @@ class RobustAIServiceDeno {
     // Disable provider if it has too many failures
     if (provider.failureCount >= this.maxFailuresBeforeCooldown) {
       provider.enabled = false;
-      console.warn(`[RobustAIServiceDeno] Provider ${provider.name} disabled after ${provider.failureCount} failures`);
+      console.warn(
+        `[RobustAIServiceDeno] Provider ${provider.name} disabled after ${provider.failureCount} failures`,
+      );
     } else {
-      console.warn(`[RobustAIServiceDeno] Provider ${provider.name} failure ${provider.failureCount}/${this.maxFailuresBeforeCooldown}`);
+      console.warn(
+        `[RobustAIServiceDeno] Provider ${provider.name} failure ${provider.failureCount}/${this.maxFailuresBeforeCooldown}`,
+      );
     }
   }
 
   private recordSuccess(provider: Provider) {
     // Reset failure count on success
     if (provider.failureCount > 0) {
-      console.log(`[RobustAIServiceDeno] Provider ${provider.name} recovered, resetting failure count`);
+      console.log(
+        `[RobustAIServiceDeno] Provider ${provider.name} recovered, resetting failure count`,
+      );
       provider.failureCount = 0;
       provider.lastFailureTime = null;
     }
@@ -343,10 +349,10 @@ serve(async (req) => {
   const providers = robustAIServiceDeno.providers;
 
   if (providers.length === 0) {
-    return new Response(
-      JSON.stringify({ error: "No AI API keys configured." }),
-      { status: 500, headers: { ...corsHeaders, "content-type": "application/json" } },
-    );
+    return new Response(JSON.stringify({ error: "No AI API keys configured." }), {
+      status: 500,
+      headers: { ...corsHeaders, "content-type": "application/json" },
+    });
   }
 
   const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
@@ -390,7 +396,11 @@ serve(async (req) => {
         break;
       }
       attempts.push(`${p.name}:${res.status}`);
-      try { await res.body?.cancel(); } catch { /* ignore */ }
+      try {
+        await res.body?.cancel();
+      } catch {
+        /* ignore */
+      }
     } catch (e) {
       attempts.push(`${p.name}:err`);
     }
@@ -411,9 +421,7 @@ serve(async (req) => {
   const stream = new ReadableStream({
     async start(controller) {
       // Emit a meta event so the client knows which provider answered.
-      controller.enqueue(
-        encoder.encode(sse({ stage, delta: "", provider: activeProvider!.name })),
-      );
+      controller.enqueue(encoder.encode(sse({ stage, delta: "", provider: activeProvider!.name })));
       const reader = activeRes!.body!.getReader();
       try {
         while (true) {

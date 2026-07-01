@@ -1,5 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
-import { generateAIResponse } from "./ai-gateway.server";
+import { generateAIResponseWithMetadataAndUsage } from "./ai-with-usage.service";
+import logger from "./logger";
+import { supabase } from "@/integrations/supabase/client";
+import { rateLimitMiddleware } from "./rate-limit.server";
 
 function extractHtml(text: string): string | null {
   const fence = text.match(/```(?:html)?\s*([\s\S]*?)```/i);
@@ -14,6 +17,7 @@ function extractHtml(text: string): string | null {
   } catch {
     /* ignore */
   }
+  0;
   return null;
 }
 
@@ -79,7 +83,8 @@ function sanitizeFiles(input: unknown): FileEntry[] {
   const out: FileEntry[] = [];
   for (const f of arr) {
     if (!f || typeof f !== "object") continue;
-    const path = typeof f.path === "string" ? f.path.replace(/^\/+/, "").replace(/\.\.\//g, "") : "";
+    const path =
+      typeof f.path === "string" ? f.path.replace(/^\/+/, "").replace(/\.\.\//g, "") : "";
     const content = typeof f.content === "string" ? f.content : "";
     if (!path || path.length > 200) continue;
     out.push({ path, content: content.slice(0, 200_000) });
@@ -95,27 +100,42 @@ function generateMockProductHtml(prompt: string, planText: string): string {
   let description = "A functional web application";
   let features = [];
 
-  if (lowerPrompt.includes("gym") || lowerPrompt.includes("fitness") || lowerPrompt.includes("workout")) {
+  if (
+    lowerPrompt.includes("gym") ||
+    lowerPrompt.includes("fitness") ||
+    lowerPrompt.includes("workout")
+  ) {
     productName = "Gym Management System";
-    description = "Complete gym management system with member tracking, class scheduling, and payment processing";
+    description =
+      "Complete gym management system with member tracking, class scheduling, and payment processing";
     features = [
       "Member registration and profile management",
       "Class schedule and booking system",
       "Payment processing and membership billing",
       "Attendance tracking and progress reporting",
-      "Trainer management and performance analytics"
+      "Trainer management and performance analytics",
     ];
-  } else if (lowerPrompt.includes("ecommerce") || lowerPrompt.includes("store") || lowerPrompt.includes("shop") || lowerPrompt.includes("market")) {
+  } else if (
+    lowerPrompt.includes("ecommerce") ||
+    lowerPrompt.includes("store") ||
+    lowerPrompt.includes("shop") ||
+    lowerPrompt.includes("market")
+  ) {
     productName = "Ecommerce Store";
-    description = "Full-featured online store with product catalog, shopping cart, and secure checkout";
+    description =
+      "Full-featured online store with product catalog, shopping cart, and secure checkout";
     features = [
       "Product catalog with search and filtering",
       "Shopping cart with quantity adjustments",
       "Secure checkout with payment processing",
       "Order management and tracking",
-      "Admin dashboard for inventory and sales"
+      "Admin dashboard for inventory and sales",
     ];
-  } else if (lowerPrompt.includes("task") || lowerPrompt.includes("todo") || lowerPrompt.includes("project")) {
+  } else if (
+    lowerPrompt.includes("task") ||
+    lowerPrompt.includes("todo") ||
+    lowerPrompt.includes("project")
+  ) {
     productName = "Task Management App";
     description = "Collaborative task management system with team features and progress tracking";
     features = [
@@ -123,9 +143,13 @@ function generateMockProductHtml(prompt: string, planText: string): string {
       "Project organization and milestone tracking",
       "Team collaboration and real-time updates",
       "Progress reporting and analytics dashboard",
-      "File attachments and comments on tasks"
+      "File attachments and comments on tasks",
     ];
-  } else if (lowerPrompt.includes("chat") || lowerPrompt.includes("messenger") || lowerPrompt.includes("communication")) {
+  } else if (
+    lowerPrompt.includes("chat") ||
+    lowerPrompt.includes("messenger") ||
+    lowerPrompt.includes("communication")
+  ) {
     productName = "Chat Application";
     description = "Real-time messaging application with group chats and media sharing";
     features = [
@@ -133,9 +157,13 @@ function generateMockProductHtml(prompt: string, planText: string): string {
       "Media sharing (images, files, links)",
       "Read receipts and typing indicators",
       "Push notifications for new messages",
-      "Message history and search functionality"
+      "Message history and search functionality",
     ];
-  } else if (lowerPrompt.includes("blog") || lowerPrompt.includes("news") || lowerPrompt.includes("publication")) {
+  } else if (
+    lowerPrompt.includes("blog") ||
+    lowerPrompt.includes("news") ||
+    lowerPrompt.includes("publication")
+  ) {
     productName = "Blogging Platform";
     description = "Complete blogging system with content management and audience engagement";
     features = [
@@ -143,7 +171,7 @@ function generateMockProductHtml(prompt: string, planText: string): string {
       "Category and tag organization",
       "User registration and commenting system",
       "SEO optimization and social sharing",
-      "Analytics and performance tracking"
+      "Analytics and performance tracking",
     ];
   } else {
     // Default generic application
@@ -154,7 +182,7 @@ function generateMockProductHtml(prompt: string, planText: string): string {
       "Responsive design for all devices",
       "Modern UI framework with customizable themes",
       "RESTful API integration capabilities",
-      "Database connectivity and data management"
+      "Database connectivity and data management",
     ];
   }
 
@@ -331,7 +359,7 @@ function generateMockProductHtml(prompt: string, planText: string): string {
         <section>
             <h2>Key Features</h2>
             <ul class="feature-list space-y-4">
-                ${features.map(feature => `<li>${feature}</li>`).join('')}
+                ${features.map((feature) => `<li>${feature}</li>`).join("")}
             </ul>
         </section>
 
@@ -399,61 +427,85 @@ function generateMockProductHtml(prompt: string, planText: string): string {
 
 function generateMockMultiProductFiles(prompt: string): FileEntry[] {
   const lowerPrompt = prompt.toLowerCase();
-  const productName = lowerPrompt.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "generated-app";
+  const productName =
+    lowerPrompt.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "generated-app";
 
   // Determine product type based on prompt
   let description = "A functional web application";
   let features = [];
   let techStack = ["react", "typescript", "tailwindcss", "vite"];
 
-  if (lowerPrompt.includes("gym") || lowerPrompt.includes("fitness") || lowerPrompt.includes("workout")) {
-    description = "Complete gym management system with member tracking, class scheduling, and payment processing";
+  if (
+    lowerPrompt.includes("gym") ||
+    lowerPrompt.includes("fitness") ||
+    lowerPrompt.includes("workout")
+  ) {
+    description =
+      "Complete gym management system with member tracking, class scheduling, and payment processing";
     features = [
       "Member registration and profile management",
       "Class schedule and booking system",
       "Payment processing and membership billing",
       "Attendance tracking and progress reporting",
-      "Trainer management and performance analytics"
+      "Trainer management and performance analytics",
     ];
     techStack = ["react", "typescript", "tailwindcss", "vite", "supabase"];
-  } else if (lowerPrompt.includes("ecommerce") || lowerPrompt.includes("store") || lowerPrompt.includes("shop") || lowerPrompt.includes("market")) {
-    description = "Full-featured online store with product catalog, shopping cart, and secure checkout";
+  } else if (
+    lowerPrompt.includes("ecommerce") ||
+    lowerPrompt.includes("store") ||
+    lowerPrompt.includes("shop") ||
+    lowerPrompt.includes("market")
+  ) {
+    description =
+      "Full-featured online store with product catalog, shopping cart, and secure checkout";
     features = [
       "Product catalog with search and filtering",
       "Shopping cart with quantity adjustments",
       "Secure checkout with payment processing",
       "Order management and tracking",
-      "Admin dashboard for inventory and sales"
+      "Admin dashboard for inventory and sales",
     ];
     techStack = ["react", "typescript", "tailwindcss", "vite", "supabase", "stripe"];
-  } else if (lowerPrompt.includes("task") || lowerPrompt.includes("todo") || lowerPrompt.includes("project")) {
+  } else if (
+    lowerPrompt.includes("task") ||
+    lowerPrompt.includes("todo") ||
+    lowerPrompt.includes("project")
+  ) {
     description = "Collaborative task management system with team features and progress tracking";
     features = [
       "Task creation, assignment, and prioritization",
       "Project organization and milestone tracking",
       "Team collaboration and real-time updates",
       "Progress reporting and analytics dashboard",
-      "File attachments and comments on tasks"
+      "File attachments and comments on tasks",
     ];
     techStack = ["react", "typescript", "tailwindcss", "vite", "supabase"];
-  } else if (lowerPrompt.includes("chat") || lowerPrompt.includes("messenger") || lowerPrompt.includes("communication")) {
+  } else if (
+    lowerPrompt.includes("chat") ||
+    lowerPrompt.includes("messenger") ||
+    lowerPrompt.includes("communication")
+  ) {
     description = "Real-time messaging application with group chats and media sharing";
     features = [
       "Real-time one-on-one and group messaging",
       "Media sharing (images, files, links)",
       "Read receipts and typing indicators",
       "Push notifications for new messages",
-      "Message history and search functionality"
+      "Message history and search functionality",
     ];
     techStack = ["react", "typescript", "tailwindcss", "vite", "supabase"];
-  } else if (lowerPrompt.includes("blog") || lowerPrompt.includes("news") || lowerPrompt.includes("publication")) {
+  } else if (
+    lowerPrompt.includes("blog") ||
+    lowerPrompt.includes("news") ||
+    lowerPrompt.includes("publication")
+  ) {
     description = "Complete blogging system with content management and audience engagement";
     features = [
       "Content creation and editing with rich text editor",
       "Category and tag organization",
       "User registration and commenting system",
       "SEO optimization and social sharing",
-      "Analytics and performance tracking"
+      "Analytics and performance tracking",
     ];
     techStack = ["react", "typescript", "tailwindcss", "vite", "supabase"];
   } else {
@@ -464,7 +516,7 @@ function generateMockMultiProductFiles(prompt: string): FileEntry[] {
       "Responsive design for all devices",
       "Modern UI framework with customizable themes",
       "RESTful API integration capabilities",
-      "Database connectivity and data management"
+      "Database connectivity and data management",
     ];
   }
 
@@ -489,7 +541,7 @@ function generateMockMultiProductFiles(prompt: string): FileEntry[] {
             <section class="mb-8">
                 <h2 class="text-2xl font-semibold mb-4">Key Features</h2>
                 <ul class="list-disc list-inside space-y-2">
-                    ${features.map(feature => `<li>${feature}</li>`).join('')}
+                    ${features.map((feature) => `<li>${feature}</li>`).join("")}
                 </ul>
             </section>
 
@@ -507,7 +559,7 @@ function generateMockMultiProductFiles(prompt: string): FileEntry[] {
             <section class="mb-8">
                 <h2 class="text-2xl font-semibold mb-4">Technology Stack</h2>
                 <ul class="list-disc list-inside space-y-2">
-                    ${techStack.map(tech => `<li>${tech}</li>`).join('')}
+                    ${techStack.map((tech) => `<li>${tech}</li>`).join("")}
                 </ul>
             </section>
         </main>
@@ -733,7 +785,7 @@ This is a functionally generated application created by Signhify AI based on you
 
 ## Features
 
-${features.map(feature => `- ${feature}`).join('\n')}
+${features.map((feature) => `- ${feature}`).join("\n")}
 
 ## Technology Stack
 
@@ -805,24 +857,32 @@ MIT License - feel free to use, modify, and distribute this application as neede
   return [
     {
       path: "index.html",
-      content: indexHtml
+      content: indexHtml,
     },
     {
       path: "styles.css",
-      content: stylesCss
+      content: stylesCss,
     },
     {
       path: "app.js",
-      content: appJs
+      content: appJs,
     },
     {
       path: "README.md",
-      content: readmeMd
-    }
+      content: readmeMd,
+    },
   ];
 }
 
 export const buildProduct = createServerFn({ method: "POST" })
+  .middleware([
+    async ({ context }) => {
+      const { request } = context as any;
+      const cfConnectingIP = request.headers.get("cf-connecting-ip") || null;
+      const xForwardedFor = request.headers.get("x-forwarded-for") || null;
+      await rateLimitMiddleware(cfConnectingIP, xForwardedFor, { limit: 5, key: "buildProduct" });
+    },
+  ])
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
     const prompt = typeof obj.prompt === "string" ? obj.prompt.slice(0, 4000) : "";
@@ -830,23 +890,31 @@ export const buildProduct = createServerFn({ method: "POST" })
     if (!prompt) throw new Error("Prompt required.");
     return { prompt, planText };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ context, data }) => {
+    const userId = context.userId ?? null;
     try {
       const user = `Product prompt:\n${data.prompt}\n\n${data.planText ? `Plan / spec to implement:\n${data.planText}\n` : ""}Now output the complete standalone HTML for this product. Start with <!doctype html>.`;
-      const content = await generateAIResponse({
-        messages: [
-          { role: "system", content: SYSTEM },
-          { role: "user", content: user },
-        ],
-        temperature: 0.65,
-        max_tokens: 8000,
-      });
+      const { content } = await generateAIResponseWithMetadataAndUsage(
+        {
+          messages: [
+            { role: "system", content: SYSTEM },
+            { role: "user", content: user },
+          ],
+          temperature: 0.65,
+          max_tokens: 8000,
+        },
+        userId,
+        supabase,
+      );
       const html = extractHtml(content);
       if (!html) throw new Error("AI returned no usable HTML. Try a more specific prompt.");
       return { html };
     } catch (error) {
       // Fallback to mock product generation when AI is unavailable
-      console.warn("[buildProduct] AI gateway failed, falling back to mock product generation:", error);
+      logger.warn(
+        "[buildProduct] AI gateway failed, falling back to mock product generation:",
+        error,
+      );
       return { html: generateMockProductHtml(data.prompt, data.planText) };
     }
   });
@@ -854,21 +922,27 @@ export const buildProduct = createServerFn({ method: "POST" })
 export const editProduct = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
-    const currentHtml = typeof obj.currentHtml === "string" ? obj.currentHtml.slice(0, 150_000) : "";
+    const currentHtml =
+      typeof obj.currentHtml === "string" ? obj.currentHtml.slice(0, 150_000) : "";
     const instruction = typeof obj.instruction === "string" ? obj.instruction.slice(0, 4000) : "";
     if (!currentHtml || !instruction) throw new Error("currentHtml and instruction required.");
     return { currentHtml, instruction };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ context, data }) => {
+    const userId = context.userId ?? null;
     const user = `Here is the CURRENT product HTML:\n\n${data.currentHtml}\n\n---\nUser change request:\n${data.instruction}\n\nReturn the COMPLETE updated HTML document (full file, not a diff). Preserve everything that wasn't asked to change. Start with <!doctype html>.`;
-    const content = await generateAIResponse({
-      messages: [
-        { role: "system", content: SYSTEM },
-        { role: "user", content: user },
-      ],
-      temperature: 0.45,
-      max_tokens: 8000,
-    });
+    const { content } = await generateAIResponseWithMetadataAndUsage(
+      {
+        messages: [
+          { role: "system", content: SYSTEM },
+          { role: "user", content: user },
+        ],
+        temperature: 0.45,
+        max_tokens: 8000,
+      },
+      userId,
+      supabase,
+    );
     const html = extractHtml(content);
     if (!html) throw new Error("AI returned no usable HTML for the edit.");
     return { html };
@@ -877,24 +951,31 @@ export const editProduct = createServerFn({ method: "POST" })
 export const ejectProduct = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
-    const currentHtml = typeof obj.currentHtml === "string" ? obj.currentHtml.slice(0, 150_000) : "";
+    const currentHtml =
+      typeof obj.currentHtml === "string" ? obj.currentHtml.slice(0, 150_000) : "";
     if (!currentHtml) throw new Error("currentHtml required.");
     return { currentHtml };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ context, data }) => {
+    const userId = context.userId ?? null;
     const user = `Split this single-file HTML into a clean multi-file project. Extract <style> into styles.css and <script> (non-CDN) into app.js. Keep Tailwind CDN <script> in index.html <head>. Add a short README.md.\n\nCURRENT HTML:\n${data.currentHtml}\n\nReturn ONLY the JSON object: { "files": [ {"path":"index.html","content":"..."}, {"path":"styles.css","content":"..."}, {"path":"app.js","content":"..."}, {"path":"README.md","content":"..."} ] }.`;
-    const content = await generateAIResponse({
-      messages: [
-        { role: "system", content: MULTI_SYSTEM },
-        { role: "user", content: user },
-      ],
-      temperature: 0.3,
-      max_tokens: 8000,
-      response_format: { type: "json_object" },
-    });
+    const { content } = await generateAIResponseWithMetadataAndUsage(
+      {
+        messages: [
+          { role: "system", content: MULTI_SYSTEM },
+          { role: "user", content: user },
+        ],
+        temperature: 0.3,
+        max_tokens: 80000,
+        response_format: { type: "json_object" },
+      },
+      userId,
+      supabase,
+    );
     const parsed = extractJson(content);
     const files = sanitizeFiles(parsed);
-    if (!files.find((f) => f.path === "index.html")) throw new Error("Eject failed: no index.html in output.");
+    if (!files.find((f) => f.path === "index.html"))
+      throw new Error("Eject failed: no index.html in output.");
     return { files };
   });
 
@@ -905,25 +986,34 @@ export const buildMultiProduct = createServerFn({ method: "POST" })
     if (!prompt) throw new Error("Prompt required.");
     return { prompt };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ context, data }) => {
+    const userId = context.userId ?? null;
     try {
       const user = `Product prompt:\n${data.prompt}\n\nOutput the multi-file project JSON now.`;
-      const content = await generateAIResponse({
-        messages: [
-          { role: "system", content: MULTI_SYSTEM },
-          { role: "user", content: user },
-        ],
-        temperature: 0.6,
-        max_tokens: 8000,
-        response_format: { type: "json_object" },
-      });
+      const { content } = await generateAIResponseWithMetadataAndUsage(
+        {
+          messages: [
+            { role: "system", content: MULTI_SYSTEM },
+            { role: "user", content: user },
+          ],
+          temperature: 0.6,
+          max_tokens: 8000,
+          response_format: { type: "json_object" },
+        },
+        userId,
+        supabase,
+      );
       const parsed = extractJson(content);
       const files = sanitizeFiles(parsed);
-      if (!files.find((f) => f.path === "index.html")) throw new Error("AI returned no index.html.");
+      if (!files.find((f) => f.path === "index.html"))
+        throw new Error("AI returned no index.html.");
       return { files };
     } catch (error) {
       // Fallback to mock multi-file product generation when AI is unavailable
-      console.warn("[buildMultiProduct] AI gateway failed, falling back to mock multi-file product generation:", error);
+      logger.warn(
+        "[buildMultiProduct] AI gateway failed, falling back to mock multi-file product generation:",
+        error,
+      );
       return { files: generateMockMultiProductFiles(data.prompt) };
     }
   });
@@ -936,22 +1026,26 @@ export const editFiles = createServerFn({ method: "POST" })
     if (files.length === 0 || !instruction) throw new Error("files and instruction required.");
     return { files, instruction };
   })
-  .handler(async ({ data }) => {
-    const dump = data.files
-      .map((f) => `=== ${f.path} ===\n${f.content}`)
-      .join("\n\n");
+  .handler(async ({ context, data }) => {
+    const userId = context.userId ?? null;
+    const dump = data.files.map((f) => `=== ${f.path} ===\n${f.content}`).join("\n\n");
     const user = `Here is the CURRENT multi-file project:\n\n${dump}\n\n---\nUser change request:\n${data.instruction}\n\nReturn the COMPLETE updated project as JSON: { "files": [...] }. Include EVERY file (changed or not). No diffs.`;
-    const content = await generateAIResponse({
-      messages: [
-        { role: "system", content: MULTI_SYSTEM },
-        { role: "user", content: user },
-      ],
-      temperature: 0.4,
-      max_tokens: 8000,
-      response_format: { type: "json_object" },
-    });
+    const { content } = await generateAIResponseWithMetadataAndUsage(
+      {
+        messages: [
+          { role: "system", content: MULTI_SYSTEM },
+          { role: "user", content: user },
+        ],
+        temperature: 0.4,
+        max_tokens: 8000,
+        response_format: { type: "json_object" },
+      },
+      userId,
+      supabase,
+    );
     const parsed = extractJson(content);
     const files = sanitizeFiles(parsed);
-    if (!files.find((f) => f.path === "index.html")) throw new Error("Edit failed: no index.html in output.");
+    if (!files.find((f) => f.path === "index.html"))
+      throw new Error("Edit failed: no index.html in output.");
     return { files };
   });

@@ -1,4 +1,5 @@
 import { browserUseService } from "./browser-use.service";
+import logger from "./logger";
 
 /**
  * Product Validation and Enhancement Service
@@ -11,7 +12,7 @@ export class ProductValidationService {
    */
   async validateProductFunctionality(
     url: string,
-    productType: string = "web app"
+    productType: string = "web app",
   ): Promise<{
     success: boolean;
     score: number; // 0-100
@@ -20,7 +21,7 @@ export class ProductValidationService {
     loadTime: number;
   }> {
     try {
-      console.log(`[ProductValidationService] Starting validation for ${url}`);
+      logger.info(`[ProductValidationService] Starting validation for ${url}`);
 
       // Initialize browser if needed
       if (!browserUseService.isInitialized) {
@@ -34,9 +35,12 @@ export class ProductValidationService {
         titleContains: productType.charAt(0).toUpperCase() + productType.slice(1),
         elementExists: "body", // Basic check that body exists
         textContains: [
-          { selector: "h1, h2, h3", text: productType.charAt(0).toUpperCase() + productType.slice(1) }
+          {
+            selector: "h1, h2, h3",
+            text: productType.charAt(0).toUpperCase() + productType.slice(1),
+          },
         ],
-        minLoadTime: 1000 // At least 1 second to consider it a real load
+        minLoadTime: 1000, // At least 1 second to consider it a real load
       };
 
       const startTime = Date.now();
@@ -63,7 +67,9 @@ export class ProductValidationService {
       for (const [key, value] of Object.entries(checks)) {
         if (key.startsWith("text_") && value === false) {
           const selector = key.substring(5); // Remove "text_" prefix
-          recommendations.push(`Consider adding text content matching your product type in ${selector}`);
+          recommendations.push(
+            `Consider adding text content matching your product type in ${selector}`,
+          );
         }
       }
 
@@ -95,14 +101,14 @@ export class ProductValidationService {
       score = Math.max(0, Math.min(100, score));
 
       // Success is true if score is good enough and no critical issues
-      const criticalIssues = issues.filter(issue =>
-        issue.includes("HTTP") ||
-        issue.includes("missing") ||
-        issue.includes("failed")
+      const criticalIssues = issues.filter(
+        (issue) => issue.includes("HTTP") || issue.includes("missing") || issue.includes("failed"),
       );
       const finalSuccess = score >= 70 && criticalIssues.length === 0;
 
-      console.log(`[ProductValidationService] Validation complete. Score: ${score}, Success: ${finalSuccess}`);
+      logger.info(
+        `[ProductValidationService] Validation complete. Score: ${score}, Success: ${finalSuccess}`,
+      );
 
       return {
         success: finalSuccess,
@@ -111,18 +117,18 @@ export class ProductValidationService {
         recommendations: [
           ...recommendations,
           ...(score < 80 ? ["Consider improving overall polish and user experience"] : []),
-          ...(score < 60 ? ["Significant improvements needed for production readiness"] : [])
+          ...(score < 60 ? ["Significant improvements needed for production readiness"] : []),
         ],
-        loadTime: validationLoadTime
+        loadTime: validationLoadTime,
       };
     } catch (error) {
-      console.error(`[ProductValidationService] Validation failed:`, error);
+      logger.error(`[ProductValidationService] Validation failed:`, error);
       return {
         success: false,
         score: 0,
         issues: [`Validation failed: ${error instanceof Error ? error.message : String(error)}`],
         recommendations: ["Fix critical errors before attempting validation"],
-        loadTime: 0
+        loadTime: 0,
       };
     }
   }
@@ -138,13 +144,13 @@ export class ProductValidationService {
       score: number;
       issues: string[];
       recommendations: string[];
-    }
+    },
   ): Promise<{
     enhanced: boolean;
     improvements: string[];
   }> {
     try {
-      console.log(`[ProductValidationService] Starting enhancement for ${url}`);
+      logger.info(`[ProductValidationService] Starting enhancement for ${url}`);
 
       // Initialize browser if needed
       if (!browserUseService.isInitialized) {
@@ -180,23 +186,29 @@ export class ProductValidationService {
                   outline: 2px solid #ff6a00;
                   border-color: #ff6a00;
                 }
-              `
+              `,
             });
           });
           improvements.push("Added enhanced hover and focus states");
         } catch (error) {
-          console.warn("[ProductValidationService] Failed to add style enhancements:", error);
+          logger.warn("[ProductValidationService] Failed to add style enhancements:", error);
         }
       }
 
       // If missing interactive elements, we can't really add them via browser automation
       // but we can note what's missing
-      if (validationResult.recommendations && validationResult.recommendations.some(r => r.includes("interactive elements"))) {
+      if (
+        validationResult.recommendations &&
+        validationResult.recommendations.some((r) => r.includes("interactive elements"))
+      ) {
         improvements.push("Identified need for more interactive elements (requires code changes)");
       }
 
       // If accessibility issues, try to add basic attributes
-      if (validationResult.recommendations && validationResult.recommendations.some(r => r.includes("lang attribute"))) {
+      if (
+        validationResult.recommendations &&
+        validationResult.recommendations.some((r) => r.includes("lang attribute"))
+      ) {
         try {
           await browserUseService.evaluate(async (page) => {
             await page.evaluate(() => {
@@ -205,23 +217,25 @@ export class ProductValidationService {
           });
           improvements.push("Added lang attribute for accessibility");
         } catch (error) {
-          console.warn("[ProductValidationService] Failed to add lang attribute:", error);
+          logger.warn("[ProductValidationService] Failed to add lang attribute:", error);
         }
       }
 
       const enhanced = improvements.length > 0;
 
-      console.log(`[ProductValidationService] Enhancement complete. Made ${improvements.length} improvements.`);
+      logger.info(
+        `[ProductValidationService] Enhancement complete. Made ${improvements.length} improvements.`,
+      );
 
       return {
         enhanced,
-        improvements
+        improvements,
       };
     } catch (error) {
-      console.error(`[ProductValidationService] Enhancement failed:`, error);
+      logger.error(`[ProductValidationService] Enhancement failed:`, error);
       return {
         enhanced: false,
-        improvements: []
+        improvements: [],
       };
     }
   }
@@ -238,7 +252,7 @@ export class ProductValidationService {
   async validateAndEnhanceProduct(
     url: string,
     productType: string = "web app",
-    maxIterations: number = 3
+    maxIterations: number = 3,
   ): Promise<{
     finalUrl: string;
     validationResults: Array<{
@@ -256,7 +270,9 @@ export class ProductValidationService {
     improvementSuggestions: string[];
   }> {
     try {
-      console.log(`[ProductValidationService] Starting validation and enhancement cycle for ${url}`);
+      logger.info(
+        `[ProductValidationService] Starting validation and enhancement cycle for ${url}`,
+      );
 
       const validationResults: Array<{
         success: boolean;
@@ -276,7 +292,7 @@ export class ProductValidationService {
       const allImprovementSuggestions: string[] = [];
 
       for (let i = 0; i < maxIterations; i++) {
-        console.log(`[ProductValidationService] Iteration ${i + 1}/${maxIterations}`);
+        logger.info(`[ProductValidationService] Iteration ${i + 1}/${maxIterations}`);
 
         // Validate current state
         const validationResult = await this.validateProductFunctionality(currentUrl, productType);
@@ -294,7 +310,10 @@ export class ProductValidationService {
         }
 
         // Otherwise, try to enhance (in browser only - temporary changes)
-        const enhancementResult = await this.enhanceProductBasedOnValidation(currentUrl, validationResult);
+        const enhancementResult = await this.enhanceProductBasedOnValidation(
+          currentUrl,
+          validationResult,
+        );
         enhancementResults.push(enhancementResult);
 
         // Note: In a real implementation, we would need to redeploy the enhanced product
@@ -308,32 +327,38 @@ export class ProductValidationService {
 
       overallSuccess = finalValidation.success && finalValidation.score >= 70;
 
-      console.log(`[ProductValidationService] Validation and enhancement cycle complete. Overall success: ${overallSuccess}`);
+      logger.info(
+        `[ProductValidationService] Validation and enhancement cycle complete. Overall success: ${overallSuccess}`,
+      );
 
       return {
         finalUrl: currentUrl,
         validationResults,
         enhancementResults,
         overallSuccess,
-        improvementSuggestions: Array.from(new Set(allImprovementSuggestions)) // Remove duplicates
+        improvementSuggestions: Array.from(new Set(allImprovementSuggestions)), // Remove duplicates
       };
     } catch (error) {
-      console.error(`[ProductValidationService] Validation and enhancement cycle failed:`, error);
+      logger.error(`[ProductValidationService] Validation and enhancement cycle failed:`, error);
       return {
         finalUrl: url,
-        validationResults: [{
-          success: false,
-          score: 0,
-          issues: [`Cycle failed: ${error instanceof Error ? error.message : String(error)}`],
-          recommendations: ["Fix critical errors"],
-          loadTime: 0
-        }],
-        enhancementResults: [{
-          enhanced: false,
-          improvements: []
-        }],
+        validationResults: [
+          {
+            success: false,
+            score: 0,
+            issues: [`Cycle failed: ${error instanceof Error ? error.message : String(error)}`],
+            recommendations: ["Fix critical errors"],
+            loadTime: 0,
+          },
+        ],
+        enhancementResults: [
+          {
+            enhanced: false,
+            improvements: [],
+          },
+        ],
         overallSuccess: false,
-        improvementSuggestions: ["Fix critical errors before attempting validation"]
+        improvementSuggestions: ["Fix critical errors before attempting validation"],
       };
     }
   }

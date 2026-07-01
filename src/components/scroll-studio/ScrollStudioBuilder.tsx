@@ -8,21 +8,24 @@ import { TemplateGallery } from "./TemplateGallery";
 
 export function ScrollStudioBuilder() {
   const [projectId, setProjectId] = useState<string | null>(null);
-  const [previewData, setPreviewData] = useState<{ html: string; css: string; js: string } | null>(null);
+  const [previewData, setPreviewData] = useState<{ html: string; css: string; js: string } | null>(
+    null,
+  );
   const [hasFrames, setHasFrames] = useState(false);
 
   // When frames are extracted, this callback is triggered from SettingsPanel
   const handleFramesExtracted = (frames: string[]) => {
     (window as any)._signhifyScrollFrames = frames;
     setHasFrames(true);
-    
+
     // Auto-inject a payload if we have previewData
     if (previewData) {
       setPreviewData({ ...previewData }); // trigger re-render
     }
   };
 
-  const combinedHtml = previewData ? `
+  const combinedHtml = previewData
+    ? `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -48,13 +51,14 @@ export function ScrollStudioBuilder() {
       </script>
     </body>
     </html>
-  ` : null;
+  `
+    : null;
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
-      <Sidebar 
-        projectId={projectId} 
-        onProjectSelect={setProjectId} 
+      <Sidebar
+        projectId={projectId}
+        onProjectSelect={setProjectId}
         onUpdatePreview={setPreviewData}
         onFramesExtracted={handleFramesExtracted}
       />
@@ -62,12 +66,9 @@ export function ScrollStudioBuilder() {
         {!projectId ? (
           <TemplateGallery onSelectProject={setProjectId} />
         ) : (
-          <PreviewCanvas 
-            projectId={projectId} 
-            previewHtml={combinedHtml} 
-          />
+          <PreviewCanvas projectId={projectId} previewHtml={combinedHtml} />
         )}
-        
+
         {/* Helper overlay for frame status */}
         {hasFrames && projectId && (
           <div className="absolute bottom-4 right-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 px-3 py-1.5 rounded-full text-xs font-mono backdrop-blur-md flex items-center shadow-lg">

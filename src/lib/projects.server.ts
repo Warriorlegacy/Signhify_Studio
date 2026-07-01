@@ -13,7 +13,8 @@ export type DbProject = {
 };
 
 export async function fetchProjects(): Promise<DbProject[]> {
-  const { data, error } = await supabase.from("projects")
+  const { data, error } = await supabase
+    .from("projects")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) {
@@ -24,7 +25,8 @@ export async function fetchProjects(): Promise<DbProject[]> {
 }
 
 export async function fetchProjectBySlug(slug: string): Promise<DbProject | null> {
-  const { data, error } = await supabase.from("projects")
+  const { data, error } = await supabase
+    .from("projects")
     .select("*")
     .eq("slug", slug)
     .maybeSingle();

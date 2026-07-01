@@ -1,6 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { generateAIResponse } from "./ai-gateway.server";
+import { generateAIResponseWithMetadataAndUsage } from "./ai-with-usage.service";
+import { rateLimitMiddleware } from "./rate-limit.server";
+import { supabase } from "@/integrations/supabase/client";
 
 type GenerateInput = { prompt: string };
 
@@ -10,6 +12,8 @@ export type GeneratedPlan = {
   oneLiner: string;
   sections: PlanSection[];
   stack: string[];
+  providerUsed?: string;
+  tokensUsed?: number;
 };
 
 function validate(input: unknown): GenerateInput {
@@ -30,20 +34,37 @@ Given a single product idea, return a concise build plan as STRICT JSON matching
 - Output ONLY the JSON object. No prose, no code fences.`;
 
 export const generatePlan = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([
+    requireSupabaseAuth,
+    async ({ context }) => {
+      // Apply rate limiting (10 requests per hour per IP)
+      const { request } = context as any;
+      const cfConnectingIP = request.headers.get("cf-connecting-ip") || null;
+      const xForwardedFor = request.headers.get("x-forwarded-for") || null;
+      await rateLimitMiddleware(cfConnectingIP, xForwardedFor, { key: "generatePlan" });
+    },
+  ])
   .inputValidator((input: unknown) => validate(input))
-  .handler(async ({ data }): Promise<GeneratedPlan> => {
+  .handler(async ({ context, data }): Promise<GeneratedPlan> => {
+    const { supabase, userId } = context;
     try {
-      const content = await generateAIResponse({
-        messages: [
-          { role: "system", content: SYSTEM },
-          { role: "user", content: data.prompt },
-        ],
-        temperature: 0.6,
-        response_format: { type: "json_object" },
-      });
+      const { content, providerUsed, tokensUsed } = await generateAIResponseWithMetadataAndUsage(
+        {
+          messages: [
+            { role: "system", content: SYSTEM },
+            { role: "user", content: data.prompt },
+          ],
+          temperature: 0.6,
+          response_format: { type: "json_object" },
+        },
+        userId,
+        supabase,
+      );
 
       const parsed = JSON.parse(content) as GeneratedPlan;
+      // Attach usage metadata to the plan for later saving
+      parsed.providerUsed = providerUsed;
+      parsed.tokensUsed = tokensUsed;
 
       if (
         parsed?.productName &&
@@ -116,7 +137,8 @@ function generateLocalMockPlan(prompt: string): GeneratedPlan {
 
   if (p.includes("gym") || p.includes("crm") || p.includes("fit")) {
     productName = "GymFlow CRM";
-    oneLiner = "Multi-tenant operating system for fitness centers and gyms with member management, class scheduling, and payment processing.";
+    oneLiner =
+      "Multi-tenant operating system for fitness centers and gyms with member management, class scheduling, and payment processing.";
     stack = ["React", "Next.js", "Supabase", "Stripe", "Tailwind CSS", "TypeScript"];
     strategBullets = [
       "Target gym owners looking to replace legacy fragmented billing tools with integrated solution.",
@@ -141,7 +163,8 @@ function generateLocalMockPlan(prompt: string): GeneratedPlan {
     ];
   } else if (p.includes("ecommerce") || p.includes("store") || p.includes("shop")) {
     productName = "ShopFlow Ecommerce";
-    oneLiner = "Complete ecommerce platform for online stores with product catalog, cart, checkout, and order management.";
+    oneLiner =
+      "Complete ecommerce platform for online stores with product catalog, cart, checkout, and order management.";
     stack = ["React", "Next.js", "Supabase", "Stripe", "Tailwind CSS", "TypeScript"];
     strategBullets = [
       "Target entrepreneurs and small businesses needing complete online store solution.",
@@ -201,6 +224,8 @@ export const savePlan = createServerFn({ method: "POST" })
         prompt,
         response: plan as any,
         user_id: userId,
+        provider_used: plan.providerUsed ?? null,
+        tokens_used: plan.tokensUsed ?? null,
       })
       .select("id")
       .single();
