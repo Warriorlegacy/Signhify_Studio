@@ -1,8 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { generateAIResponseWithMetadataAndUsage } from "./ai-with-usage.service";
-import { rateLimitMiddleware } from "./rate-limit.server";
-import { supabase } from "@/integrations/supabase/client";
+
 
 type GenerateInput = { prompt: string };
 
@@ -34,16 +33,7 @@ Given a single product idea, return a concise build plan as STRICT JSON matching
 - Output ONLY the JSON object. No prose, no code fences.`;
 
 export const generatePlan = createServerFn({ method: "POST" })
-  .middleware([
-    requireSupabaseAuth,
-    async ({ context }) => {
-      // Apply rate limiting (10 requests per hour per IP)
-      const { request } = context as any;
-      const cfConnectingIP = request.headers.get("cf-connecting-ip") || null;
-      const xForwardedFor = request.headers.get("x-forwarded-for") || null;
-      await rateLimitMiddleware(cfConnectingIP, xForwardedFor, { key: "generatePlan" });
-    },
-  ])
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => validate(input))
   .handler(async ({ context, data }): Promise<GeneratedPlan> => {
     const { supabase, userId } = context;
@@ -218,7 +208,7 @@ export const savePlan = createServerFn({ method: "POST" })
     const { supabase, userId } = context;
     const { prompt, plan } = data;
 
-    const { data: row, error } = await supabase
+    const { data: row, error } = await (supabase as any)
       .from("ai_sessions")
       .insert({
         prompt,

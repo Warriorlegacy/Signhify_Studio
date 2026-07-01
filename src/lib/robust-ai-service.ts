@@ -316,7 +316,9 @@ class RobustAIService {
     }
   }
 
-  async generateAIResponse(options: AIGatewayOptions): Promise<string> {
+  async generateAIResponse(
+    options: AIGatewayOptions,
+  ): Promise<{ content: string; providerUsed: string }> {
     // Filter to only enabled providers
     const availableProviders = this.providers.filter((p) => p.enabled);
 
@@ -427,6 +429,8 @@ class RobustAIService {
 export const robustAIService = new RobustAIService();
 
 // Export the main function for backward compatibility
-export async function generateAIResponse(options: AIGatewayOptions): Promise<string> {
+export async function generateAIResponse(
+  options: AIGatewayOptions,
+): Promise<{ content: string; providerUsed: string }> {
   return robustAIService.generateAIResponse(options);
 }

@@ -6,16 +6,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { rateLimitMiddleware } from "./rate-limit.server";
 
 export const buildAndDeploy = createServerFn({ method: "POST" })
-  .middleware([
-    requireSupabaseAuth,
-    async ({ context }) => {
-      // Apply rate limiting (10 requests per hour per IP)
-      const { request } = context as any;
-      const cfConnectingIP = request.headers.get("cf-connecting-ip") || null;
-      const xForwardedFor = request.headers.get("x-forwarded-for") || null;
-      await rateLimitMiddleware(cfConnectingIP, xForwardedFor, { key: "buildAndDeploy" });
-    },
-  ])
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
     const prompt = typeof obj.prompt === "string" ? obj.prompt.slice(0, 4000) : "";
