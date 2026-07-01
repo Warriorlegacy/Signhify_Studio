@@ -9,8 +9,9 @@ const NAV = [
   { to: "/projects", label: "Projects" },
   { to: "/ai", label: "AI", badge: "New" },
   { to: "/marketplace", label: "Market" },
-  { to: "/pricing", label: "Pricing" },
-  { to: "/roadmap", label: "Roadmap" },
+  { to: "/app/deploy", label: "Deploy" },
+  { to: "/app", label: "Cloud" },
+  { to: "/os", label: "OS" },
 ] as const;
 
 export function SiteHeader() {
