@@ -20,7 +20,6 @@ import { Route as PublishRouteImport } from './routes/publish'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as OsRouteImport } from './routes/os'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HelpRouteImport } from './routes/help'
@@ -31,6 +30,7 @@ import { Route as AiRouteImport } from './routes/ai'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ScrollStudioIndexRouteImport } from './routes/scroll-studio/index'
+import { Route as OsIndexRouteImport } from './routes/os/index'
 import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as StudioSpikeRouteImport } from './routes/studio.spike'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
@@ -111,11 +111,6 @@ const PricingRoute = PricingRouteImport.update({
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OsRoute = OsRouteImport.update({
-  id: '/os',
-  path: '/os',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MarketplaceRoute = MarketplaceRouteImport.update({
   id: '/marketplace',
   path: '/marketplace',
@@ -166,6 +161,11 @@ const ScrollStudioIndexRoute = ScrollStudioIndexRouteImport.update({
   path: '/scroll-studio/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OsIndexRoute = OsIndexRouteImport.update({
+  id: '/os/',
+  path: '/os/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/app/',
   path: '/app/',
@@ -182,14 +182,14 @@ const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   getParentRoute: () => ProjectsRoute,
 } as any)
 const OsMarketplaceRoute = OsMarketplaceRouteImport.update({
-  id: '/marketplace',
-  path: '/marketplace',
-  getParentRoute: () => OsRoute,
+  id: '/os/marketplace',
+  path: '/os/marketplace',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const OsLogsRoute = OsLogsRouteImport.update({
-  id: '/logs',
-  path: '/logs',
-  getParentRoute: () => OsRoute,
+  id: '/os/logs',
+  path: '/os/logs',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const MarketplaceSuccessRoute = MarketplaceSuccessRouteImport.update({
   id: '/success',
@@ -207,14 +207,14 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const OsWorkflowsIndexRoute = OsWorkflowsIndexRouteImport.update({
-  id: '/workflows/',
-  path: '/workflows/',
-  getParentRoute: () => OsRoute,
+  id: '/os/workflows/',
+  path: '/os/workflows/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const OsAgentsIndexRoute = OsAgentsIndexRouteImport.update({
-  id: '/agents/',
-  path: '/agents/',
-  getParentRoute: () => OsRoute,
+  id: '/os/agents/',
+  path: '/os/agents/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppServicesIndexRoute = AppServicesIndexRouteImport.update({
   id: '/app/services/',
@@ -237,14 +237,14 @@ const AppBillingIndexRoute = AppBillingIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const OsWorkflowsNewRoute = OsWorkflowsNewRouteImport.update({
-  id: '/workflows/new',
-  path: '/workflows/new',
-  getParentRoute: () => OsRoute,
+  id: '/os/workflows/new',
+  path: '/os/workflows/new',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const OsAgentsNewRoute = OsAgentsNewRouteImport.update({
-  id: '/agents/new',
-  path: '/agents/new',
-  getParentRoute: () => OsRoute,
+  id: '/os/agents/new',
+  path: '/os/agents/new',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppProjectsNewRoute = AppProjectsNewRouteImport.update({
   id: '/app/projects/new',
@@ -297,7 +297,6 @@ export interface FileRoutesByFullPath {
   '/help': typeof HelpRoute
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
-  '/os': typeof OsRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -317,6 +316,7 @@ export interface FileRoutesByFullPath {
   '/projects/$slug': typeof ProjectsSlugRoute
   '/studio/spike': typeof StudioSpikeRoute
   '/app/': typeof AppIndexRoute
+  '/os/': typeof OsIndexRoute
   '/scroll-studio/': typeof ScrollStudioIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
@@ -345,7 +345,6 @@ export interface FileRoutesByTo {
   '/help': typeof HelpRoute
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
-  '/os': typeof OsRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -365,6 +364,7 @@ export interface FileRoutesByTo {
   '/projects/$slug': typeof ProjectsSlugRoute
   '/studio/spike': typeof StudioSpikeRoute
   '/app': typeof AppIndexRoute
+  '/os': typeof OsIndexRoute
   '/scroll-studio': typeof ScrollStudioIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
@@ -394,7 +394,6 @@ export interface FileRoutesById {
   '/help': typeof HelpRoute
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
-  '/os': typeof OsRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -414,6 +413,7 @@ export interface FileRoutesById {
   '/projects/$slug': typeof ProjectsSlugRoute
   '/studio/spike': typeof StudioSpikeRoute
   '/app/': typeof AppIndexRoute
+  '/os/': typeof OsIndexRoute
   '/scroll-studio/': typeof ScrollStudioIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
   '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
@@ -444,7 +444,6 @@ export interface FileRouteTypes {
     | '/help'
     | '/login'
     | '/marketplace'
-    | '/os'
     | '/pricing'
     | '/privacy'
     | '/projects'
@@ -464,6 +463,7 @@ export interface FileRouteTypes {
     | '/projects/$slug'
     | '/studio/spike'
     | '/app/'
+    | '/os/'
     | '/scroll-studio/'
     | '/ai/share/$id'
     | '/api/public/auth-provider'
@@ -492,7 +492,6 @@ export interface FileRouteTypes {
     | '/help'
     | '/login'
     | '/marketplace'
-    | '/os'
     | '/pricing'
     | '/privacy'
     | '/projects'
@@ -512,6 +511,7 @@ export interface FileRouteTypes {
     | '/projects/$slug'
     | '/studio/spike'
     | '/app'
+    | '/os'
     | '/scroll-studio'
     | '/ai/share/$id'
     | '/api/public/auth-provider'
@@ -540,7 +540,6 @@ export interface FileRouteTypes {
     | '/help'
     | '/login'
     | '/marketplace'
-    | '/os'
     | '/pricing'
     | '/privacy'
     | '/projects'
@@ -560,6 +559,7 @@ export interface FileRouteTypes {
     | '/projects/$slug'
     | '/studio/spike'
     | '/app/'
+    | '/os/'
     | '/scroll-studio/'
     | '/ai/share/$id'
     | '/api/public/auth-provider'
@@ -589,7 +589,6 @@ export interface RootRouteChildren {
   HelpRoute: typeof HelpRoute
   LoginRoute: typeof LoginRoute
   MarketplaceRoute: typeof MarketplaceRouteWithChildren
-  OsRoute: typeof OsRouteWithChildren
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
@@ -602,18 +601,25 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   VisionRoute: typeof VisionRoute
   AppSettingsRoute: typeof AppSettingsRoute
+  OsLogsRoute: typeof OsLogsRoute
+  OsMarketplaceRoute: typeof OsMarketplaceRoute
   StudioSpikeRoute: typeof StudioSpikeRoute
   AppIndexRoute: typeof AppIndexRoute
+  OsIndexRoute: typeof OsIndexRoute
   ScrollStudioIndexRoute: typeof ScrollStudioIndexRoute
   ApiPublicAuthProviderRoute: typeof ApiPublicAuthProviderRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   AppProjectsIdRoute: typeof AppProjectsIdRouteWithChildren
   AppProjectsNewRoute: typeof AppProjectsNewRoute
+  OsAgentsNewRoute: typeof OsAgentsNewRoute
+  OsWorkflowsNewRoute: typeof OsWorkflowsNewRoute
   AppBillingIndexRoute: typeof AppBillingIndexRoute
   AppDeployIndexRoute: typeof AppDeployIndexRoute
   AppMarketplaceIndexRoute: typeof AppMarketplaceIndexRoute
   AppServicesIndexRoute: typeof AppServicesIndexRoute
+  OsAgentsIndexRoute: typeof OsAgentsIndexRoute
+  OsWorkflowsIndexRoute: typeof OsWorkflowsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -695,13 +701,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/os': {
-      id: '/os'
-      path: '/os'
-      fullPath: '/os'
-      preLoaderRoute: typeof OsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/marketplace': {
       id: '/marketplace'
       path: '/marketplace'
@@ -772,6 +771,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScrollStudioIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/os/': {
+      id: '/os/'
+      path: '/os'
+      fullPath: '/os/'
+      preLoaderRoute: typeof OsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/': {
       id: '/app/'
       path: '/app'
@@ -795,17 +801,17 @@ declare module '@tanstack/react-router' {
     }
     '/os/marketplace': {
       id: '/os/marketplace'
-      path: '/marketplace'
+      path: '/os/marketplace'
       fullPath: '/os/marketplace'
       preLoaderRoute: typeof OsMarketplaceRouteImport
-      parentRoute: typeof OsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/os/logs': {
       id: '/os/logs'
-      path: '/logs'
+      path: '/os/logs'
       fullPath: '/os/logs'
       preLoaderRoute: typeof OsLogsRouteImport
-      parentRoute: typeof OsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/marketplace/success': {
       id: '/marketplace/success'
@@ -830,17 +836,17 @@ declare module '@tanstack/react-router' {
     }
     '/os/workflows/': {
       id: '/os/workflows/'
-      path: '/workflows'
+      path: '/os/workflows'
       fullPath: '/os/workflows/'
       preLoaderRoute: typeof OsWorkflowsIndexRouteImport
-      parentRoute: typeof OsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/os/agents/': {
       id: '/os/agents/'
-      path: '/agents'
+      path: '/os/agents'
       fullPath: '/os/agents/'
       preLoaderRoute: typeof OsAgentsIndexRouteImport
-      parentRoute: typeof OsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/app/services/': {
       id: '/app/services/'
@@ -872,17 +878,17 @@ declare module '@tanstack/react-router' {
     }
     '/os/workflows/new': {
       id: '/os/workflows/new'
-      path: '/workflows/new'
+      path: '/os/workflows/new'
       fullPath: '/os/workflows/new'
       preLoaderRoute: typeof OsWorkflowsNewRouteImport
-      parentRoute: typeof OsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/os/agents/new': {
       id: '/os/agents/new'
-      path: '/agents/new'
+      path: '/os/agents/new'
       fullPath: '/os/agents/new'
       preLoaderRoute: typeof OsAgentsNewRouteImport
-      parentRoute: typeof OsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/app/projects/new': {
       id: '/app/projects/new'
@@ -967,26 +973,6 @@ const MarketplaceRouteWithChildren = MarketplaceRoute._addFileChildren(
   MarketplaceRouteChildren,
 )
 
-interface OsRouteChildren {
-  OsLogsRoute: typeof OsLogsRoute
-  OsMarketplaceRoute: typeof OsMarketplaceRoute
-  OsAgentsNewRoute: typeof OsAgentsNewRoute
-  OsWorkflowsNewRoute: typeof OsWorkflowsNewRoute
-  OsAgentsIndexRoute: typeof OsAgentsIndexRoute
-  OsWorkflowsIndexRoute: typeof OsWorkflowsIndexRoute
-}
-
-const OsRouteChildren: OsRouteChildren = {
-  OsLogsRoute: OsLogsRoute,
-  OsMarketplaceRoute: OsMarketplaceRoute,
-  OsAgentsNewRoute: OsAgentsNewRoute,
-  OsWorkflowsNewRoute: OsWorkflowsNewRoute,
-  OsAgentsIndexRoute: OsAgentsIndexRoute,
-  OsWorkflowsIndexRoute: OsWorkflowsIndexRoute,
-}
-
-const OsRouteWithChildren = OsRoute._addFileChildren(OsRouteChildren)
-
 interface ProjectsRouteChildren {
   ProjectsSlugRoute: typeof ProjectsSlugRoute
 }
@@ -1023,7 +1009,6 @@ const rootRouteChildren: RootRouteChildren = {
   HelpRoute: HelpRoute,
   LoginRoute: LoginRoute,
   MarketplaceRoute: MarketplaceRouteWithChildren,
-  OsRoute: OsRouteWithChildren,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
@@ -1036,18 +1021,25 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   VisionRoute: VisionRoute,
   AppSettingsRoute: AppSettingsRoute,
+  OsLogsRoute: OsLogsRoute,
+  OsMarketplaceRoute: OsMarketplaceRoute,
   StudioSpikeRoute: StudioSpikeRoute,
   AppIndexRoute: AppIndexRoute,
+  OsIndexRoute: OsIndexRoute,
   ScrollStudioIndexRoute: ScrollStudioIndexRoute,
   ApiPublicAuthProviderRoute: ApiPublicAuthProviderRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   AppProjectsIdRoute: AppProjectsIdRouteWithChildren,
   AppProjectsNewRoute: AppProjectsNewRoute,
+  OsAgentsNewRoute: OsAgentsNewRoute,
+  OsWorkflowsNewRoute: OsWorkflowsNewRoute,
   AppBillingIndexRoute: AppBillingIndexRoute,
   AppDeployIndexRoute: AppDeployIndexRoute,
   AppMarketplaceIndexRoute: AppMarketplaceIndexRoute,
   AppServicesIndexRoute: AppServicesIndexRoute,
+  OsAgentsIndexRoute: OsAgentsIndexRoute,
+  OsWorkflowsIndexRoute: OsWorkflowsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
