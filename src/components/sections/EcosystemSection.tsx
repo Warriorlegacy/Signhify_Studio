@@ -81,7 +81,7 @@ export function EcosystemSection() {
           <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-amber to-transparent" />
           <div className="space-y-4">
             {layers.map((l, i) => {
-              const cfg = statusConfig[l.status];
+              const cfg = statusConfig[l.status as keyof typeof statusConfig];
               const Icon = cfg.icon;
               return (
                 <motion.div
