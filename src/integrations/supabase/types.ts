@@ -294,6 +294,38 @@ export type Database = {
         }
         Relationships: []
       }
+      marketplace_purchases: {
+        Row: {
+          id: string
+          listing_id: string
+          purchased_at: string
+          stripe_session_id: string | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          listing_id: string
+          purchased_at?: string
+          stripe_session_id?: string | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          listing_id?: string
+          purchased_at?: string
+          stripe_session_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_purchases_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -301,6 +333,11 @@ export type Database = {
           deleted_at: string | null
           display_name: string | null
           id: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          subscription_current_period_end: string | null
+          subscription_plan: string
+          subscription_status: string | null
         }
         Insert: {
           avatar_url?: string | null
@@ -308,6 +345,11 @@ export type Database = {
           deleted_at?: string | null
           display_name?: string | null
           id: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subscription_current_period_end?: string | null
+          subscription_plan?: string
+          subscription_status?: string | null
         }
         Update: {
           avatar_url?: string | null
@@ -315,6 +357,11 @@ export type Database = {
           deleted_at?: string | null
           display_name?: string | null
           id?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subscription_current_period_end?: string | null
+          subscription_plan?: string
+          subscription_status?: string | null
         }
         Relationships: []
       }
