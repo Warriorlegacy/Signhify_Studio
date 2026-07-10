@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import logger from "./logger";
 
 async function stripeFetch(path: string, body?: URLSearchParams, method = "POST") {
@@ -29,9 +30,11 @@ async function stripeFetch(path: string, body?: URLSearchParams, method = "POST"
 }
 
 export const createCheckoutSession = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => ({ listingId: String((input as any)?.listingId ?? "") }))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     try {
+      const { userId } = context;
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
       const { data: listing } = await (supabaseAdmin.from as any)("marketplace_listings")
         .select("id,title,price_cents")
@@ -47,12 +50,15 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         `${site}/marketplace/success?session_id={CHECKOUT_SESSION_ID}&listing_id=${listing.id}`,
       );
       form.set("cancel_url", `${site}/marketplace`);
+      form.set("client_reference_id", userId);
+      form.set("metadata[listing_id]", listing.id);
+      form.set("metadata[user_id]", userId);
       form.set("line_items[0][quantity]", "1");
       form.set("line_items[0][price_data][currency]", "usd");
       form.set("line_items[0][price_data][unit_amount]", String(listing.price_cents));
       form.set("line_items[0][price_data][product_data][name]", listing.title);
       const session = await stripeFetch("/checkout/sessions", form);
-      logger.info(`Created checkout session for listing ${listing.id}`);
+      logger.info(`Created checkout session for listing ${listing.id} user ${userId}`);
       return { url: session.url as string };
     } catch (error) {
       logger.error(`Failed to create checkout session: ${error}`);
