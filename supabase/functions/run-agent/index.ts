@@ -56,20 +56,35 @@ serve(async (req) => {
     const prompt = String(body.prompt ?? "");
     runId = String(body.run_id ?? "");
     const bearer = req.headers.get("authorization")?.replace("Bearer ", "") ?? "";
-    let userId = "";
-    if (bearer && bearer !== serviceKey) {
-      const { data } = await admin.auth.getUser(bearer);
-      userId = data.user?.id ?? "";
+    if (!bearer || bearer === serviceKey) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "content-type": "application/json" },
+      });
     }
-    if (!userId && runId) {
-      const { data: pending } = await admin
+    const { data: authData, error: authError } = await admin.auth.getUser(bearer);
+    const userId = authData?.user?.id ?? "";
+    if (authError || !userId) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "content-type": "application/json" },
+      });
+    }
+    if (!project_id || !prompt) throw new Error("Missing input");
+    if (runId) {
+      // Verify the caller owns the referenced run before mutating it.
+      const { data: existing } = await admin
         .from("runs")
         .select("user_id")
         .eq("id", runId)
         .maybeSingle();
-      userId = pending?.user_id ?? "";
+      if (!existing || existing.user_id !== userId) {
+        return new Response(JSON.stringify({ error: "Forbidden" }), {
+          status: 403,
+          headers: { ...corsHeaders, "content-type": "application/json" },
+        });
+      }
     }
-    if (!project_id || !prompt || !userId) throw new Error("Unauthorized or missing input");
     if (!runId) {
       const { data: pending } = await admin
         .from("runs")

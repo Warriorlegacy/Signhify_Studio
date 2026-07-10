@@ -793,7 +793,7 @@ function AiPage() {
                 <iframe
                   title="Signhify generated product"
                   srcDoc={productHtml}
-                  sandbox="allow-scripts allow-forms allow-same-origin"
+                  sandbox="allow-scripts allow-forms"
                   className="w-full h-[720px] bg-white"
                 />
               </div>
