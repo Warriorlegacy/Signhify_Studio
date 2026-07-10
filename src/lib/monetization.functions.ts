@@ -1,6 +1,21 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import Stripe from "stripe";
+import { STRIPE_PRICE_IDS } from "./stripe-prices.server";
+
+type PlanKey = "studio" | "scale";
+
+function normalizePlan(input: string): PlanKey {
+  const p = input.toLowerCase();
+  if (p === "scale") return "scale";
+  // "pro" is a legacy alias for the Studio plan in the billing UI.
+  if (p === "studio" || p === "pro") return "studio";
+  throw new Error(`Unknown subscription plan: ${input}`);
+}
+
+function planToPriceId(plan: PlanKey): string {
+  return plan === "scale" ? STRIPE_PRICE_IDS.scaleMonthly : STRIPE_PRICE_IDS.studioMonthly;
+}
 
 export const getUserCredits = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -44,7 +59,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     throw new Error("Plan or priceId is required");
   })
   .handler(async ({ context, data }) => {
-    const { userId } = context;
+    const { userId, supabase } = context;
     const stripeKey = process.env.STRIPE_SECRET_KEY;
 
     if (!stripeKey) {
@@ -56,40 +71,60 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
 
     try {
       const stripe = new Stripe(stripeKey);
-
       const isSubscription = "plan" in data;
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        line_items: isSubscription
-          ? [
-              {
-                price_data: {
-                  currency: "usd",
-                  product_data: {
-                    name: "Scroll Studio Pro",
-                    description: "Unlimited AI scroll generation",
-                  },
-                  unit_amount: 4900,
-                  recurring: { interval: "month" },
-                },
-                quantity: 1,
-              },
-            ]
-          : [
-              {
-                price: (data as { priceId: string }).priceId,
-                quantity: 1,
-              },
-            ],
+      const site = process.env.VITE_SITE_URL || "http://localhost:3000";
+
+      const sessionParams: Stripe.Checkout.SessionCreateParams = {
         mode: isSubscription ? "subscription" : "payment",
-        success_url: `${process.env.VITE_SITE_URL || "http://localhost:3000"}/app/billing?success=true`,
-        cancel_url: `${process.env.VITE_SITE_URL || "http://localhost:3000"}/app/billing?canceled=true`,
+        success_url: `${site}/app/billing?success=true`,
+        cancel_url: `${site}/app/billing?canceled=true`,
+        client_reference_id: userId,
         metadata: {
           user_id: userId,
-          ...(isSubscription ? { plan: data.plan } : { priceId: data.priceId }),
         },
-      });
+      };
 
+      if (isSubscription) {
+        const plan = normalizePlan((data as { plan: string }).plan);
+        const priceId = planToPriceId(plan);
+
+        // Find or create a Stripe customer for this user, and persist the id on
+        // their profile so subscription webhooks can look them up.
+        const { data: profile } = await (supabase as any)
+          .from("profiles")
+          .select("stripe_customer_id")
+          .eq("id", userId)
+          .maybeSingle();
+
+        let customerId: string | undefined = profile?.stripe_customer_id ?? undefined;
+
+        if (!customerId) {
+          const { data: userRes } = await supabase.auth.getUser();
+          const email = userRes?.user?.email;
+          const customer = await stripe.customers.create({
+            email: email ?? undefined,
+            metadata: { user_id: userId },
+          });
+          customerId = customer.id;
+          await (supabase as any)
+            .from("profiles")
+            .update({ stripe_customer_id: customerId } as any)
+            .eq("id", userId);
+        }
+
+        sessionParams.customer = customerId;
+        sessionParams.line_items = [{ price: priceId, quantity: 1 }];
+        (sessionParams.metadata as Record<string, string>).plan = plan;
+      } else {
+        sessionParams.line_items = [
+          { price: (data as { priceId: string }).priceId, quantity: 1 },
+        ];
+        (sessionParams.metadata as Record<string, string>).priceId = (
+          data as { priceId: string }
+        ).priceId;
+      }
+
+      const session = await stripe.checkout.sessions.create(sessionParams);
       return { success: true as const, url: session.url };
     } catch (err) {
       console.error("Stripe error:", err);
