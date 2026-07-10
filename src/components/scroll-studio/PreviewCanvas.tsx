@@ -58,7 +58,7 @@ export function PreviewCanvas({
               srcDoc={previewHtml}
               className="w-full h-full border-0"
               title="Preview"
-              sandbox="allow-scripts allow-same-origin"
+              sandbox="allow-scripts"
             />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground bg-slate-50">
