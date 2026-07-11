@@ -202,13 +202,19 @@ function MarketCard({ item }: { item: MarketItem }) {
   return (
     <ThreeDCard className="relative overflow-hidden rounded-2xl border border-border bg-card hover:border-primary/50 transition shadow-[var(--shadow-card)] flex flex-col h-full w-full">
       <div className="relative aspect-[16/9] overflow-hidden" style={{ background: item.accent }}>
+        {item.image && (
+          <img
+            src={item.image}
+            alt={item.name}
+            loading="lazy"
+            width={1280}
+            height={720}
+            className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+          />
+        )}
         <div
           aria-hidden
-          className="absolute inset-0 opacity-25 mix-blend-overlay"
-          style={{
-            backgroundImage: "radial-gradient(oklch(1 0 0 / 0.3) 1px, transparent 1px)",
-            backgroundSize: "12px 12px",
-          }}
+          className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent"
         />
         <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-background/80 backdrop-blur border border-white/15 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-foreground">
           {item.category}
