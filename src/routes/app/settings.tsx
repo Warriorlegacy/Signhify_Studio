@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import AiKeysPanel from "@/components/settings/AiKeysPanel";
 export const Route = createFileRoute("/app/settings")({
   beforeLoad: requireAppAuth,
   head: () => ({
