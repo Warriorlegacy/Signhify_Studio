@@ -527,21 +527,21 @@ export type Database = {
       }
       user_ai_keys: {
         Row: {
-          api_key: string
+          api_key_encrypted: string
           created_at: string
           provider: string
           updated_at: string
           user_id: string
         }
         Insert: {
-          api_key: string
+          api_key_encrypted: string
           created_at?: string
           provider: string
           updated_at?: string
           user_id: string
         }
         Update: {
-          api_key?: string
+          api_key_encrypted?: string
           created_at?: string
           provider?: string
           updated_at?: string
