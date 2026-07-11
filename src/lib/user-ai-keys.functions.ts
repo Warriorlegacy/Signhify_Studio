@@ -1,12 +1,60 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { BYOK_PROVIDERS, type BYOKProvider } from "./ai-access.server";
+import logger from "./logger";
 
 function assertProvider(p: unknown): BYOKProvider {
   if (typeof p !== "string" || !(BYOK_PROVIDERS as readonly string[]).includes(p)) {
     throw new Error("Unsupported provider.");
   }
   return p as BYOKProvider;
+}
+
+const AES_GCM_CIPHERTEXT_RE = /^[0-9a-f]{24}:[0-9a-f]{32}:[0-9a-f]+$/i;
+
+/**
+ * Reject obvious garbage or accidental plaintext-encrypted-looking values.
+ * Providers use various formats, so we only enforce coarse safety rules:
+ *  - printable ASCII only (no NUL, no control chars)
+ *  - no whitespace inside
+ *  - not shaped like our own AES-GCM ciphertext (a paste-back accident)
+ *  - contains at least one letter and one digit or symbol (avoids pure prose)
+ */
+function validateApiKeyShape(apiKey: string): void {
+  if (!/^[\x21-\x7e]+$/.test(apiKey)) {
+    throw new Error("API key contains invalid characters (whitespace or non-printable).");
+  }
+  if (AES_GCM_CIPHERTEXT_RE.test(apiKey)) {
+    throw new Error("This value looks like an encrypted blob, not a raw API key.");
+  }
+  const hasLetter = /[A-Za-z]/.test(apiKey);
+  const hasOther = /[0-9._\-\/+=~]/.test(apiKey);
+  if (!hasLetter || !hasOther) {
+    throw new Error("API key does not look like a valid provider key.");
+  }
+}
+
+function auditLog(
+  event: string,
+  fields: Record<string, unknown>,
+): void {
+  // Never include api_key material. Provider name + userId is enough for audit.
+  try {
+    logger.info({ event, kind: "byok_audit", ...fields });
+  } catch {
+    /* logger must never throw here */
+  }
+}
+
+function assertMasterKey(): string {
+  const masterKey = process.env.SECRETS_MASTER_KEY;
+  if (!masterKey || masterKey.length < 16) {
+    logger.error({ event: "byok.master_key_missing", kind: "byok_audit" });
+    throw new Error(
+      "Server encryption key is not configured. Please contact support — your key was not saved.",
+    );
+  }
+  return masterKey;
 }
 
 export const listMyAiKeys = createServerFn({ method: "GET" })
@@ -40,25 +88,36 @@ export const saveMyAiKey = createServerFn({ method: "POST" })
     if (apiKey.length < 10 || apiKey.length > 400) {
       throw new Error("API key must be between 10 and 400 characters.");
     }
+    validateApiKeyShape(apiKey);
     return { provider, apiKey };
   })
   .handler(async ({ context, data }) => {
     const { supabase, userId } = context;
-    const masterKey = process.env.SECRETS_MASTER_KEY;
-    if (!masterKey) throw new Error("Missing SECRETS_MASTER_KEY.");
+    const masterKey = assertMasterKey();
     const { encryptAES256GCM } = await import("./secrets.server");
+    let encrypted: string;
+    try {
+      encrypted = encryptAES256GCM(data.apiKey, masterKey);
+    } catch (err) {
+      auditLog("byok.encrypt_failed", { userId, provider: data.provider });
+      throw new Error("Failed to encrypt key. Your key was not saved.");
+    }
     const { error } = await (supabase as any)
       .from("user_ai_keys")
       .upsert(
         {
           user_id: userId,
           provider: data.provider,
-          api_key_encrypted: encryptAES256GCM(data.apiKey, masterKey),
+          api_key_encrypted: encrypted,
           updated_at: new Date().toISOString(),
         },
         { onConflict: "user_id,provider" },
       );
-    if (error) throw new Error(error.message);
+    if (error) {
+      auditLog("byok.save_failed", { userId, provider: data.provider });
+      throw new Error(error.message);
+    }
+    auditLog("byok.saved", { userId, provider: data.provider });
     return { ok: true };
   });
 
@@ -75,6 +134,10 @@ export const deleteMyAiKey = createServerFn({ method: "POST" })
       .delete()
       .eq("user_id", userId)
       .eq("provider", data.provider);
-    if (error) throw new Error(error.message);
+    if (error) {
+      auditLog("byok.delete_failed", { userId, provider: data.provider });
+      throw new Error(error.message);
+    }
+    auditLog("byok.deleted", { userId, provider: data.provider });
     return { ok: true };
   });
