@@ -44,13 +44,16 @@ export const saveMyAiKey = createServerFn({ method: "POST" })
   })
   .handler(async ({ context, data }) => {
     const { supabase, userId } = context;
+    const masterKey = process.env.SECRETS_MASTER_KEY;
+    if (!masterKey) throw new Error("Missing SECRETS_MASTER_KEY.");
+    const { encryptAES256GCM } = await import("./secrets.server");
     const { error } = await (supabase as any)
       .from("user_ai_keys")
       .upsert(
         {
           user_id: userId,
           provider: data.provider,
-          api_key: data.apiKey,
+          api_key_encrypted: encryptAES256GCM(data.apiKey, masterKey),
           updated_at: new Date().toISOString(),
         },
         { onConflict: "user_id,provider" },
