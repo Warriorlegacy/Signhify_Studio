@@ -102,6 +102,9 @@ function SettingsPage() {
               <p className="text-sm text-muted-foreground">Email: {user?.email}</p>
             </div>
           </TabsContent>
+          <TabsContent value="ai-keys">
+            <AiKeysPanel />
+          </TabsContent>
           <TabsContent value="billing">
             <div className="rounded-2xl border border-border bg-card p-6">
               <button
