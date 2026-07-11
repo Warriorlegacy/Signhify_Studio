@@ -171,6 +171,21 @@ function MarketCard({ item }: { item: MarketItem }) {
       return;
     }
     try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
+        toast("Sign in required", {
+          description: isFree
+            ? "Create a free account to download this asset."
+            : "Sign in to complete your purchase.",
+          action: {
+            label: "Sign in",
+            onClick: () =>
+              navigate({ to: "/login", search: { redirect: "/marketplace" } as any }),
+          },
+        });
+        return;
+      }
       if (isFree) {
         const { signedUrl } = await download({ data: { listingId: item.id } });
         window.location.href = signedUrl;
@@ -180,9 +195,10 @@ function MarketCard({ item }: { item: MarketItem }) {
       }
     } catch (e) {
       console.error("[marketplace] checkout failed:", e);
-      toast.error("Checkout failed. Please try again.");
+      toast.error(isFree ? "Download failed. Please try again." : "Checkout failed. Please try again.");
     }
   };
+
   return (
     <ThreeDCard className="relative overflow-hidden rounded-2xl border border-border bg-card hover:border-primary/50 transition shadow-[var(--shadow-card)] flex flex-col h-full w-full">
       <div className="relative aspect-[16/9] overflow-hidden" style={{ background: item.accent }}>
