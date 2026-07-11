@@ -56,6 +56,7 @@ function SettingsPage() {
         <Tabs defaultValue="profile" className="mt-8">
           <TabsList>
             <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="ai-keys">AI Keys</TabsTrigger>
             <TabsTrigger value="billing">Billing</TabsTrigger>
             <TabsTrigger value="danger">Danger Zone</TabsTrigger>
           </TabsList>
