@@ -13,8 +13,12 @@ export const scrollStudioChat = createServerFn({ method: "POST" })
     const message = typeof obj?.message === "string" ? obj.message : "";
     return { projectId, message };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const { projectId, message } = data;
+    const { supabase, userId, claims } = context as {
+      supabase: any; userId: string; claims?: { email?: string | null };
+    };
+    const email = claims?.email ?? null;
 
     const SYSTEM = `You are the Signhify Scroll Studio AI, an expert web developer specializing in cinematic, 3D-feeling websites driven by scroll interactions.
 
@@ -39,18 +43,20 @@ CRITICAL INSTRUCTIONS:
 Always output high-quality, production-ready, beautiful designs.`;
 
     try {
-      const content = await generateAIResponse({
-        messages: [
-          { role: "system", content: SYSTEM },
-          { role: "user", content: message },
-        ],
-        temperature: 0.7,
-        response_format: { type: "json_object" },
-      });
+      const { content } = await generateAIResponseFor(
+        {
+          messages: [
+            { role: "system", content: SYSTEM },
+            { role: "user", content: message },
+          ],
+          temperature: 0.7,
+          response_format: { type: "json_object" },
+        },
+        { supabase, userId, email },
+      );
 
       try {
-        const parsed = JSON.parse(content);
-        return parsed;
+        return JSON.parse(content);
       } catch (parseError) {
         console.error("[scrollStudioChat] JSON Parse Error:", parseError, content);
         return {
@@ -59,10 +65,18 @@ Always output high-quality, production-ready, beautiful designs.`;
         };
       }
     } catch (e) {
+      if (e instanceof BYOKRequiredError || (e as { code?: string })?.code === "BYOK_REQUIRED") {
+        return {
+          message:
+            "Signhify AI requires a paid plan or your own API key. Add one in Settings → AI Keys, or upgrade at /pricing.",
+          code: "BYOK_REQUIRED",
+        };
+      }
       console.error("[scrollStudioChat] AI Gateway Error:", e);
       return {
         message:
-          "All available AI models are currently overloaded. Please add more API keys to .env (GROQ_API_KEY, CEREBRAS_API_KEY, etc.) or try again later.",
+          "All available AI models are currently overloaded. Please try again later.",
       };
     }
   });
+
