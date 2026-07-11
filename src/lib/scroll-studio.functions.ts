@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { generateAIResponse, type Message } from "./ai-gateway.server";
+import { generateAIResponseFor, type Message } from "./ai-gateway.server";
+import { BYOKRequiredError } from "./ai-access.server";
 import { rateLimitMiddleware } from "./rate-limit.server";
 
 // This is the AI endpoint for Scroll Studio Chat
