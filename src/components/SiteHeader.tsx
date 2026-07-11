@@ -7,6 +7,7 @@ import { EcosystemSwitcher } from "./EcosystemSwitcher";
 const NAV = [
   { to: "/", label: "Studio" },
   { to: "/projects", label: "Projects" },
+  { to: "/services", label: "Services" },
   { to: "/ai", label: "AI", badge: "New" },
   { to: "/marketplace", label: "Market" },
   { to: "/app/deploy", label: "Deploy" },

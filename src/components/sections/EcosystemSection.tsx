@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { CheckCircle2, Clock, Circle } from "lucide-react";
+import { CheckCircle2, Clock, Circle, Sparkles, ArrowRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 const layers = [
   {
@@ -7,36 +8,42 @@ const layers = [
     year: "Live now",
     status: "live",
     desc: "AI engineering studio. Revenue-generating today.",
+    href: "/",
   },
   {
     name: "Signhify AI",
-    year: "Live now",
-    status: "live",
+    year: "In Preview",
+    status: "preview",
     desc: "Prompt-to-product pipeline. 6-agent generation, streaming, and builder.",
+    href: "/ai",
   },
   {
     name: "Signhify Deploy",
-    year: "Live now",
-    status: "live",
+    year: "Coming Soon",
+    status: "soon",
     desc: "One-click deployment dashboard for Cloudflare Pages and custom domains.",
+    href: "/app/deploy",
   },
   {
     name: "Signhify Marketplace",
-    year: "Live now",
-    status: "live",
+    year: "In Preview",
+    status: "preview",
     desc: "Browse, sell, and purchase templates and agents with Stripe checkout.",
+    href: "/marketplace",
   },
   {
     name: "Signhify Cloud",
-    year: "Live now",
-    status: "live",
+    year: "Coming Soon",
+    status: "soon",
     desc: "Workspace dashboard, project management, secrets vault, and analytics.",
+    href: "/app",
   },
   {
     name: "Signhify OS",
-    year: "Live now",
-    status: "live",
+    year: "Coming Soon",
+    status: "soon",
     desc: "Agent orchestration runtime. Manage agents, workflows, and system logs.",
+    href: "/os",
   },
 ];
 
@@ -47,17 +54,17 @@ const statusConfig = {
     iconClass: "text-emerald-400",
     label: "LIVE",
   },
-  soon: {
-    badgeClass: "border-amber-500/50 bg-amber-500/10 text-amber-400",
-    icon: Clock,
-    iconClass: "text-amber-400",
-    label: "SOON",
+  preview: {
+    badgeClass: "border-violet-500/50 bg-violet-500/10 text-violet-400",
+    icon: Sparkles,
+    iconClass: "text-violet-400",
+    label: "PREVIEW",
   },
-  planned: {
-    badgeClass: "border-border text-muted-foreground",
-    icon: Circle,
-    iconClass: "text-muted-foreground",
-    label: "PLANNED",
+  soon: {
+    badgeClass: "border-teal-500/50 bg-teal-500/10 text-teal-400",
+    icon: Clock,
+    iconClass: "text-teal-400",
+    label: "SOON",
   },
 } as const;
 
@@ -67,14 +74,14 @@ export function EcosystemSection() {
       <div className="absolute inset-0 bg-grid mask-fade-edges opacity-30" />
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">
-          July 2026 · All 6 products shipped
+          The Signhify Ecosystem
         </div>
         <h2 className="font-display text-4xl sm:text-5xl font-bold max-w-3xl">
-          The full Signhify ecosystem. Live and shipping.
+          One studio. Six products. Built for the AI-native era.
         </h2>
         <p className="mt-5 max-w-2xl text-muted-foreground">
-          All six products are built and deployed — Studio, AI, Deploy, Marketplace, Cloud and OS.
-          Each one is accessible from your dashboard.
+          From cinematic studio sites to autonomous agent runtimes — every product is
+          accessible from your dashboard.
         </p>
 
         <div className="mt-14 relative">
@@ -92,29 +99,39 @@ export function EcosystemSection() {
                   transition={{ duration: 0.5, delay: i * 0.06 }}
                   className="relative pl-12"
                 >
-                  <div
-                    className={`absolute left-0 top-3 flex h-8 w-8 items-center justify-center rounded-full border bg-background ${
-                      l.status === "live"
-                        ? "border-emerald-500/50"
-                        : l.status === "soon"
-                          ? "border-amber-500/50"
-                          : "border-border"
-                    }`}
+                  <Link
+                    to={l.href}
+                    className="block rounded-2xl border border-border bg-card p-5 flex flex-wrap items-center justify-between gap-3 hover:border-primary/40 transition group"
                   >
-                    <Icon size={l.status === "planned" ? 12 : 16} className={cfg.iconClass} />
-                  </div>
-                  <div className="rounded-2xl border border-border bg-card p-5 flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <div className="font-display text-lg font-semibold">{l.name}</div>
-                        <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border ${cfg.badgeClass}`}>
-                          {cfg.label}
-                        </span>
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`absolute left-0 top-3 flex h-8 w-8 items-center justify-center rounded-full border bg-background ${
+                          l.status === "live"
+                            ? "border-emerald-500/50"
+                            : l.status === "preview"
+                              ? "border-violet-500/50"
+                              : "border-teal-500/50"
+                        }`}
+                      >
+                        <Icon size={l.status === "preview" ? 15 : 16} className={cfg.iconClass} />
                       </div>
-                      <p className="mt-1 text-sm text-muted-foreground max-w-xl">{l.desc}</p>
+                      <div>
+                        <div className="flex items-center gap-3">
+                          <span className={`font-display text-lg font-semibold group-hover:text-primary transition`}>
+                            {l.name}
+                          </span>
+                          <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border ${cfg.badgeClass}`}>
+                            {cfg.label}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-sm text-muted-foreground max-w-xl">{l.desc}</p>
+                      </div>
                     </div>
-                    <div className="font-mono text-sm text-muted-foreground">{l.year}</div>
-                  </div>
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono text-xs text-muted-foreground">{l.year}</span>
+                      <ArrowRight size={14} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition" />
+                    </div>
+                  </Link>
                 </motion.div>
               );
             })}

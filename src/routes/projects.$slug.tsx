@@ -117,6 +117,21 @@ function ProjectDetailPage() {
           </div>
         </div>
 
+        {p.image && (
+          <div className="mt-16 border border-border bg-card/15 rounded-3xl overflow-hidden shadow-[var(--shadow-card)] p-2.5 backdrop-blur-md">
+            <div className="text-xs uppercase tracking-[0.22em] text-primary mb-3.5 px-4 pt-3.5 font-bold flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+              Live Workspace Interface
+            </div>
+            <img
+              src={p.image}
+              alt={`${p.name} UI interface preview`}
+              className="w-full rounded-2xl border border-border object-cover aspect-[16/10] shadow-inner"
+              loading="eager"
+            />
+          </div>
+        )}
+
         <div className="mt-12 grid sm:grid-cols-2 gap-6 pt-8 border-t border-border">
           {p.stack && p.stack.length > 0 && (
             <div>

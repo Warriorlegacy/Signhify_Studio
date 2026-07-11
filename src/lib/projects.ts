@@ -12,6 +12,7 @@ export type Project = {
   size?: ProjectSize;
   featured?: boolean;
   year?: number;
+  image?: string;
 };
 
 /**
@@ -33,6 +34,7 @@ export const projects: Project[] = [
     size: "lg",
     featured: true,
     year: 2026,
+    image: "/images/projects/veepee-engineers.png",
   },
   {
     slug: "gymflow-saas",
@@ -47,6 +49,7 @@ export const projects: Project[] = [
     size: "lg",
     featured: true,
     year: 2026,
+    image: "/images/projects/gymflow-saas.png",
   },
   {
     slug: "autoreels-ai",
@@ -61,6 +64,7 @@ export const projects: Project[] = [
     size: "md",
     featured: true,
     year: 2026,
+    image: "/images/projects/autoreels-ai.png",
   },
   {
     slug: "gigmind",
@@ -74,6 +78,7 @@ export const projects: Project[] = [
     size: "md",
     featured: true,
     year: 2026,
+    image: "/images/projects/gigmind.png",
   },
   {
     slug: "tuitiontrack",
@@ -86,6 +91,7 @@ export const projects: Project[] = [
     stack: ["React", "Supabase", "Resend"],
     size: "sm",
     year: 2025,
+    image: "/images/projects/tuitiontrack.png",
   },
   {
     slug: "signhify-crm",
@@ -98,6 +104,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "Supabase", "n8n"],
     size: "md",
     year: 2025,
+    image: "/images/projects/signhify-crm.png",
   },
   {
     slug: "vibe-coding",
@@ -109,6 +116,7 @@ export const projects: Project[] = [
     stack: ["React", "Monaco", "Claude"],
     size: "sm",
     year: 2025,
+    image: "/images/projects/vibe-coding.png",
   },
   {
     slug: "sewarth-path",
@@ -121,6 +129,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "Razorpay"],
     size: "sm",
     year: 2025,
+    image: "/images/projects/sewarth-path.png",
   },
   {
     slug: "jmd-online-book",
@@ -133,6 +142,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "Supabase", "WhatsApp API"],
     size: "sm",
     year: 2025,
+    image: "/images/projects/jmd-online-book.png",
   },
   {
     slug: "gple-sports",
@@ -144,6 +154,7 @@ export const projects: Project[] = [
     stack: ["React", "Tailwind"],
     size: "sm",
     year: 2025,
+    image: "/images/projects/gple-sports.png",
   },
   {
     slug: "rahul-silk",
@@ -155,6 +166,7 @@ export const projects: Project[] = [
     stack: ["Next.js"],
     size: "sm",
     year: 2025,
+    image: "/images/projects/rahul-silk.png",
   },
   {
     slug: "vip-tennis",
@@ -168,8 +180,8 @@ export const projects: Project[] = [
     metric: "Built for paid acquisition",
     size: "sm",
     year: 2025,
+    image: "/images/projects/vip-tennis.png",
   },
-  // Newly seeded — round out the portfolio universe
   {
     slug: "nebulapay",
     name: "NebulaPay",
@@ -183,6 +195,7 @@ export const projects: Project[] = [
     size: "md",
     featured: true,
     year: 2026,
+    image: "/images/projects/nebulapay.png",
   },
   {
     slug: "aurora-analytics",
@@ -196,6 +209,7 @@ export const projects: Project[] = [
     size: "md",
     featured: true,
     year: 2026,
+    image: "/images/projects/aurora-analytics.png",
   },
   {
     slug: "skillforge-ai",
@@ -209,5 +223,6 @@ export const projects: Project[] = [
     size: "lg",
     featured: true,
     year: 2026,
+    image: "/images/projects/skillforge-ai.png",
   },
 ];

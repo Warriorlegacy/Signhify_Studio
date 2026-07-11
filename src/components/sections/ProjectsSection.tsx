@@ -189,14 +189,25 @@ function ProjectCard({
           className="relative block w-full aspect-[16/10] overflow-hidden text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
           aria-label={`Open ${p.name} preview`}
         >
-          <div
-            className="absolute inset-0 transition-transform duration-700 group-hover:scale-[1.06]"
-            style={{ background: `linear-gradient(135deg, ${s.from} 0%, ${s.to} 100%)` }}
-          />
+          {p.image ? (
+            <img
+              src={p.image}
+              alt={p.name}
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+              loading="lazy"
+            />
+          ) : (
+            <div
+              className="absolute inset-0 transition-transform duration-700 group-hover:scale-[1.06]"
+              style={{ background: `linear-gradient(135deg, ${s.from} 0%, ${s.to} 100%)` }}
+            />
+          )}
+          {/* subtle dark overlay */}
+          <div className="absolute inset-0 bg-black/35 group-hover:bg-black/20 transition-colors duration-300 pointer-events-none" />
           {/* dotted texture */}
           <div
             aria-hidden
-            className="absolute inset-0 opacity-25 mix-blend-overlay"
+            className="absolute inset-0 opacity-15 mix-blend-overlay"
             style={{
               backgroundImage: "radial-gradient(oklch(1 0 0 / 0.25) 1px, transparent 1px)",
               backgroundSize: "14px 14px",
@@ -281,13 +292,23 @@ function ProjectPanel({ project, onClose }: { project: Project; onClose: () => v
         onClick={(e) => e.stopPropagation()}
         className="relative h-full w-full sm:max-w-xl bg-card border-l border-primary/30 shadow-[var(--shadow-glow)] overflow-y-auto"
       >
-        <div
-          className="relative h-48"
-          style={{ background: `linear-gradient(135deg, ${s.from} 0%, ${s.to} 100%)` }}
-        >
+        <div className="relative h-48 overflow-hidden">
+          {project.image ? (
+            <img
+              src={project.image}
+              alt={project.name}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          ) : (
+            <div
+              className="absolute inset-0 h-full w-full"
+              style={{ background: `linear-gradient(135deg, ${s.from} 0%, ${s.to} 100%)` }}
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-card" />
           <div
             aria-hidden
-            className="absolute inset-0 opacity-25 mix-blend-overlay"
+            className="absolute inset-0 opacity-15 mix-blend-overlay"
             style={{
               backgroundImage: "radial-gradient(oklch(1 0 0 / 0.25) 1px, transparent 1px)",
               backgroundSize: "14px 14px",
