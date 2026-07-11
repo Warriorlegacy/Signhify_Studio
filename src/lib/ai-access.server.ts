@@ -59,11 +59,21 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
   // Free plan → require BYOK. Read keys through the user-scoped client (RLS).
   const { data: keys } = await (ctx.supabase as any)
     .from("user_ai_keys")
-    .select("provider, api_key");
+    .select("provider, api_key_encrypted");
+
+  const masterKey = process.env.SECRETS_MASTER_KEY;
+  if (!masterKey) throw new Error("Missing SECRETS_MASTER_KEY.");
+  const { decryptAES256GCM } = await import("./secrets.server");
 
   const userKeys: Record<string, string> = {};
-  for (const k of (keys ?? []) as Array<{ provider: string; api_key: string }>) {
-    if (k?.api_key) userKeys[k.provider] = k.api_key;
+  for (const k of (keys ?? []) as Array<{ provider: string; api_key_encrypted: string }>) {
+    if (k?.api_key_encrypted) {
+      try {
+        userKeys[k.provider] = decryptAES256GCM(k.api_key_encrypted, masterKey);
+      } catch {
+        // Skip malformed/undecryptable entries.
+      }
+    }
   }
   if (Object.keys(userKeys).length === 0) throw new BYOKRequiredError();
   return { mode: "byok", userKeys };
