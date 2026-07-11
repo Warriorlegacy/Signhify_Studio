@@ -339,12 +339,23 @@ function AiPage() {
         setActiveAgent(AGENT_META.length - 1);
         setPlan(result);
         setStage("done");
-      } catch {
-        setError(e instanceof Error ? e.message : "Something went wrong. Try again.");
+      } catch (fallbackErr) {
+        const msg =
+          (fallbackErr instanceof Error && fallbackErr.message) ||
+          (e instanceof Error ? e.message : "Something went wrong. Try again.");
+        // BYOK gate: show a clear CTA instead of a generic error.
+        if (/BYOK|paid plan|your own API key/i.test(msg)) {
+          setError(
+            "Signhify AI is a paid feature. Add your own API key in Settings → AI Keys, or upgrade at /pricing.",
+          );
+        } else {
+          setError(msg);
+        }
         setStage("error");
       }
     }
   };
+
 
   // Pick up prompt handed off from the homepage hero input
   useEffect(() => {
