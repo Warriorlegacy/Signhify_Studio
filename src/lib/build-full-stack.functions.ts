@@ -1,8 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { generateAIResponse } from "./ai-gateway.server";
+import { resolveAIAccess } from "./ai-access.server";
 import JSZip from "jszip";
 
 export const buildFullStackApp = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
     const prompt = typeof obj.prompt === "string" ? obj.prompt.slice(0, 4000) : "";
@@ -10,8 +13,15 @@ export const buildFullStackApp = createServerFn({ method: "POST" })
     if (!prompt) throw new Error("Prompt required.");
     return { prompt, planText };
   })
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const { prompt, planText } = data;
+    const { supabase, userId, claims } = context as {
+      supabase: any; userId: string; claims?: { email?: string | null };
+    };
+    // Gate before doing any AI work: free users must BYOK, paid/admin proceed.
+    // BYOKRequiredError bubbles up to the client with an actionable message.
+    await resolveAIAccess({ supabase, userId, email: claims?.email ?? null });
+
 
     // We'll generate the file tree step by step
     const zip = new JSZip();
