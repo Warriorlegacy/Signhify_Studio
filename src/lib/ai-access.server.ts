@@ -62,19 +62,38 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
     .select("provider, api_key_encrypted");
 
   const masterKey = process.env.SECRETS_MASTER_KEY;
-  if (!masterKey) throw new Error("Missing SECRETS_MASTER_KEY.");
+  if (!masterKey || masterKey.length < 16) {
+    // Fail closed with a clear, user-safe message.
+    const { default: logger } = await import("./logger");
+    logger.error({ event: "byok.master_key_missing", kind: "byok_audit", userId: ctx.userId });
+    throw new Error(
+      "AI is temporarily unavailable: server encryption key not configured. Please contact support.",
+    );
+  }
   const { decryptAES256GCM } = await import("./secrets.server");
+  const { default: logger } = await import("./logger");
 
   const userKeys: Record<string, string> = {};
+  let decryptFailures = 0;
   for (const k of (keys ?? []) as Array<{ provider: string; api_key_encrypted: string }>) {
-    if (k?.api_key_encrypted) {
-      try {
-        userKeys[k.provider] = decryptAES256GCM(k.api_key_encrypted, masterKey);
-      } catch {
-        // Skip malformed/undecryptable entries.
-      }
+    if (!k?.api_key_encrypted) continue;
+    try {
+      userKeys[k.provider] = decryptAES256GCM(k.api_key_encrypted, masterKey);
+      logger.debug({ event: "byok.decrypt_ok", kind: "byok_audit", userId: ctx.userId, provider: k.provider });
+    } catch {
+      decryptFailures += 1;
+      // Never log key material — only provider + userId.
+      logger.warn({ event: "byok.decrypt_failed", kind: "byok_audit", userId: ctx.userId, provider: k.provider });
     }
   }
-  if (Object.keys(userKeys).length === 0) throw new BYOKRequiredError();
+  if (Object.keys(userKeys).length === 0) {
+    if (decryptFailures > 0) {
+      throw new Error(
+        "Your saved AI keys could not be decrypted. Please re-enter them in Settings → AI Keys.",
+      );
+    }
+    throw new BYOKRequiredError();
+  }
   return { mode: "byok", userKeys };
 }
+
