@@ -4,15 +4,6 @@ import logger from "./logger";
 import { supabase } from "@/integrations/supabase/client";
 import { rateLimitMiddleware } from "./rate-limit.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { isAdminEmail } from "@/lib/admin";
-
-function requireAdmin(context: any): string {
-  const email = (context?.claims?.email ?? null) as string | null;
-  if (!isAdminEmail(email)) {
-    throw new Error("Forbidden: admin only");
-  }
-  return context.userId as string;
-}
 
 function extractHtml(text: string): string | null {
   const fence = text.match(/```(?:html)?\s*([\s\S]*?)```/i);
