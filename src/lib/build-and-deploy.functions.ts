@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { generateAIResponse } from "./ai-gateway.server";
+import { resolveAIAccess } from "./ai-access.server";
 import JSZip from "jszip";
 import { deployToCloudflare } from "./cloudflare.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
@@ -16,10 +17,15 @@ export const buildAndDeploy = createServerFn({ method: "POST" })
   })
   .handler(async ({ data, context }) => {
     const { prompt, planText } = data;
-    const { userId } = context as any;
+    const { userId, supabase, claims } = context as {
+      userId: string; supabase: any; claims?: { email?: string | null };
+    };
+    // Gate: free users must BYOK; paid/admin proceed with managed Signhify AI.
+    await resolveAIAccess({ supabase, userId, email: claims?.email ?? null });
 
     // Step 1: Generate the full-stack app contents
     const files: Array<{ name: string; content: string }> = [];
+
 
     // 1. Generate README.md
     const readmeContent = await generateREADME(prompt, planText);

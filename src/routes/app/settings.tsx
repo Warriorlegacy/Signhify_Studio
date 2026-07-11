@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import AiKeysPanel from "@/components/settings/AiKeysPanel";
 export const Route = createFileRoute("/app/settings")({
   beforeLoad: requireAppAuth,
   head: () => ({
@@ -55,6 +56,7 @@ function SettingsPage() {
         <Tabs defaultValue="profile" className="mt-8">
           <TabsList>
             <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="ai-keys">AI Keys</TabsTrigger>
             <TabsTrigger value="billing">Billing</TabsTrigger>
             <TabsTrigger value="danger">Danger Zone</TabsTrigger>
           </TabsList>
@@ -99,6 +101,9 @@ function SettingsPage() {
               </button>
               <p className="text-sm text-muted-foreground">Email: {user?.email}</p>
             </div>
+          </TabsContent>
+          <TabsContent value="ai-keys">
+            <AiKeysPanel />
           </TabsContent>
           <TabsContent value="billing">
             <div className="rounded-2xl border border-border bg-card p-6">

@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { generateAIResponseWithMetadataAndUsage } from "./ai-with-usage.service";
+import { generateAIResponseFor } from "./ai-gateway.server";
+import { BYOKRequiredError } from "./ai-access.server";
 
 
 type GenerateInput = { prompt: string };
@@ -36,9 +37,10 @@ export const generatePlan = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => validate(input))
   .handler(async ({ context, data }): Promise<GeneratedPlan> => {
-    const { supabase, userId } = context;
+    const { supabase, userId, claims } = context;
+    const email = (claims as { email?: string | null } | undefined)?.email ?? null;
     try {
-      const { content, providerUsed, tokensUsed } = await generateAIResponseWithMetadataAndUsage(
+      const { content, providerUsed } = await generateAIResponseFor(
         {
           messages: [
             { role: "system", content: SYSTEM },
@@ -47,14 +49,12 @@ export const generatePlan = createServerFn({ method: "POST" })
           temperature: 0.6,
           response_format: { type: "json_object" },
         },
-        userId,
-        supabase,
+        { supabase, userId, email },
       );
 
       const parsed = JSON.parse(content) as GeneratedPlan;
-      // Attach usage metadata to the plan for later saving
       parsed.providerUsed = providerUsed;
-      parsed.tokensUsed = tokensUsed;
+      parsed.tokensUsed = 0;
 
       if (
         parsed?.productName &&
@@ -67,6 +67,10 @@ export const generatePlan = createServerFn({ method: "POST" })
 
       throw new Error("Incomplete plan returned by AI.");
     } catch (e) {
+      // BYOK gate must surface to the UI — never silently fall back to mock.
+      if (e instanceof BYOKRequiredError || (e as { code?: string })?.code === "BYOK_REQUIRED") {
+        throw e;
+      }
       console.warn(
         "[ai] AI Gateway failed or returned invalid JSON. Falling back to local mock generator.",
         e,
@@ -74,6 +78,7 @@ export const generatePlan = createServerFn({ method: "POST" })
       return generateLocalMockPlan(data.prompt);
     }
   });
+
 
 function generateLocalMockPlan(prompt: string): GeneratedPlan {
   const p = prompt.toLowerCase();

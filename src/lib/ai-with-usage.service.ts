@@ -1,12 +1,9 @@
-import {
-  generateAIResponseWithMetadata,
-  type AIGatewayOptions,
-} from "./ai-gateway.server";
+import { generateAIResponseWithMetadata, type AIGatewayOptions } from "./ai-gateway.server";
 
 /**
- * Wrapper around the robust AI service that also surfaces a token-usage
- * placeholder. The underlying provider doesn't always return usage stats,
- * so `tokensUsed` is best-effort (0 when unknown).
+ * Legacy shim used by admin-only surfaces (e.g. build-product). Admin paths
+ * always use managed Signhify AI, so no BYOK routing is applied here.
+ * User-facing AI endpoints must use `generateAIResponseFor` instead.
  */
 export async function generateAIResponseWithMetadataAndUsage(
   options: AIGatewayOptions,
