@@ -132,6 +132,40 @@ function ProjectDetailPage() {
           </div>
         )}
 
+        {p.story && (
+          <div className="mt-16 max-w-3xl">
+            <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-3">
+              The Story
+            </div>
+            <div className="space-y-4 text-base sm:text-lg text-muted-foreground leading-relaxed whitespace-pre-line">
+              {p.story}
+            </div>
+          </div>
+        )}
+
+        {p.gallery && p.gallery.length > 0 && (
+          <div className="mt-16">
+            <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-4">
+              Gallery
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {p.gallery.map((src: string, i: number) => (
+                <div
+                  key={src}
+                  className="border border-border bg-card/20 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] backdrop-blur-md"
+                >
+                  <img
+                    src={src}
+                    alt={`${p.name} — visual ${i + 1}`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="mt-12 grid sm:grid-cols-2 gap-6 pt-8 border-t border-border">
           {p.stack && p.stack.length > 0 && (
             <div>
