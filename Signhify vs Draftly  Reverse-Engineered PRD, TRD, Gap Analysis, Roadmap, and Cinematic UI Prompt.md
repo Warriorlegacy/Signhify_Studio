@@ -436,7 +436,8 @@ This report consolidates an ethical reconnaissance plan, PRD, TRD‑level archit
 7. [Demo of how to use DRFATLY](https://www.youtube.com/watch?v=UZncXbsYF8s) - Why I’m Building draftly.space
 
 my insta - piyush.glitch
-mail - piyushsingh123443@gmail.com
+mail - Piyushrajsingh092@gmail.com
+secondary mail - Rajpiyush092@gmail.com
 
 For ...
 
