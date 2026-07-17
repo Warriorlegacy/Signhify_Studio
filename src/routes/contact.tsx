@@ -164,7 +164,7 @@ function ContactPage() {
   );
 
   return (
-    <section className="relative pt-36 pb-28 min-h-[100svh]">
+    <section className="relative pt-36 pb-28 min-h-svh">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: "var(--gradient-ember)" }}
@@ -191,7 +191,7 @@ function ContactPage() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-12 rounded-2xl border border-primary/40 bg-card p-10 text-center shadow-[var(--shadow-glow)]"
+            className="mt-12 rounded-2xl border border-primary/40 bg-card p-10 text-center shadow-(--shadow-glow)"
             role="status"
             aria-live="polite"
           >

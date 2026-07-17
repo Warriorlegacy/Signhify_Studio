@@ -22,9 +22,10 @@ timeline
 ---
 
 ## 🚀 Phase 1: Studio & Brand Foundation (Completed)
+
 **Focus**: Establishes Signhify as a trusted premium studio showcasing actual shipped builds with high-fidelity, high-aesthetic branding.
 
-* **Milestones**:
+- **Milestones**:
   - [x] **22 Shipped Projects Portfolio**: Completed audit and addition of 22 real Vercel deployments (SaaS, AI automation, EdTech, Performance Marketing).
   - [x] **Premium Visual Identity**: Implemented dark cinematic theme (near-black background with electric orange glow and gold/amber accents).
   - [x] **High-Res Assets**: Generated matching premium custom hero and service banner images.
@@ -33,19 +34,22 @@ timeline
 ---
 
 ## ⚡ Phase 2: Signhify AI & Workspace OS (In Progress)
+
 **Focus**: Transitions from a static portfolio to an interactive AI playground where users get real build specs.
 
 ### 🎨 UX & Interface Architecture
-* **Interface Specification**: Interactive playground route at `/ai`. Includes a large natural-language prompt area with live SSE log console.
-* **Component Flow**: As the prompt begins executing, the console outputs streaming debug logs showing which agent is currently active:
+
+- **Interface Specification**: Interactive playground route at `/ai`. Includes a large natural-language prompt area with live SSE log console.
+- **Component Flow**: As the prompt begins executing, the console outputs streaming debug logs showing which agent is currently active:
   ```
   [12:04:12] AgentOrchestrator: Parsing requirements...
   [12:04:15] SchemaAgent: Designing relational models for app schema...
   [12:04:22] CodeAgent: Emitting React components with Tailwind CSS...
   ```
-* **Visual States**: Glowing loading bar showing percent progress, dynamic step cards that turn green as individual agents complete their tasks.
+- **Visual States**: Glowing loading bar showing percent progress, dynamic step cards that turn green as individual agents complete their tasks.
 
 ### 💾 Data & Storage Models
+
 ```sql
 -- Schema representation for AI generation runs
 create table app.runs (
@@ -65,28 +69,33 @@ create policy "Users can view and create their own runs" on app.runs
 ```
 
 ### 🔌 API & Integration Specifications
-* **SSE Endpoint**: `GET /api/ai/stream?runId=[uuid]`
+
+- **SSE Endpoint**: `GET /api/ai/stream?runId=[uuid]`
   - Headers: `Content-Type: text/event-stream`, `Cache-Control: no-cache`
   - Payloads: JSON messages representing incremental code edits, agent states, and compilation percentages.
-* **Execution Trigger**: `POST /api/ai/run`
+- **Execution Trigger**: `POST /api/ai/run`
   - Body: `{ prompt: string }`
   - Returns: `{ runId: uuid, status: 'pending' }`
 
 ### 🛡️ Security & Compliance Guardrails
-* **Rate Limiting**: Sliding-window token bucket implemented via Redis or Supabase edge functions, allowing a maximum of 5 prompts per hour for free tier users to prevent token abuse.
-* **Prompt Sanitization**: Auto-scans prompts for prompt injection attacks and excessive system instructions before passing them to the Lovable AI gateway.
+
+- **Rate Limiting**: Sliding-window token bucket implemented via Redis or Supabase edge functions, allowing a maximum of 5 prompts per hour for free tier users to prevent token abuse.
+- **Prompt Sanitization**: Auto-scans prompts for prompt injection attacks and excessive system instructions before passing them to the Lovable AI gateway.
 
 ---
 
 ## 📦 Phase 3: The Creator Marketplace & Templates
+
 **Focus**: Empowers developers to sell code/templates and helps founders download starting blocks.
 
 ### 🎨 UX & Interface Architecture
-* **Interface Specification**: Multi-column catalog grid at `/marketplace`. Sidebar filters allow sorting by category (SaaS, Landing page, API, Integrations).
-* **Listing Details Drawer**: Clicking a template slide-opens a right-side glassmorphism panel containing the template metadata, code footprint, and live demo link.
-* **Payment Modal**: Stripe checkout overlay appearing directly within the app space to avoid leaving the platform context.
+
+- **Interface Specification**: Multi-column catalog grid at `/marketplace`. Sidebar filters allow sorting by category (SaaS, Landing page, API, Integrations).
+- **Listing Details Drawer**: Clicking a template slide-opens a right-side glassmorphism panel containing the template metadata, code footprint, and live demo link.
+- **Payment Modal**: Stripe checkout overlay appearing directly within the app space to avoid leaving the platform context.
 
 ### 💾 Data & Storage Models
+
 ```sql
 -- Schema for marketplace listings
 create table app.templates (
@@ -117,27 +126,32 @@ create policy "Creators can manage their own templates" on app.templates for all
 ```
 
 ### 🔌 API & Integration Specifications
-* **Checkout API**: `POST /api/marketplace/checkout`
+
+- **Checkout API**: `POST /api/marketplace/checkout`
   - Body: `{ templateId: uuid }`
   - Action: Initiates Stripe Checkout Session, returns `{ checkoutUrl: string }`.
-* **Webhook Endpoint**: `POST /api/marketplace/webhook`
+- **Webhook Endpoint**: `POST /api/marketplace/webhook`
   - Action: Verifies Stripe signature, matches session ID, grants template access by adding record to `app.purchases`.
 
 ### 🛡️ Security & Compliance Guardrails
-* **Asset Protection**: Files are kept in a private Supabase Storage bucket. Downloads are only possible by requesting a short-lived Signed URL (`GET /api/marketplace/download?templateId=[uuid]`) which verifies purchasing history.
-* **Stripe Hook Signatures**: Every incoming webhook must have a verified signature header matching the local Stripe webhook secret.
+
+- **Asset Protection**: Files are kept in a private Supabase Storage bucket. Downloads are only possible by requesting a short-lived Signed URL (`GET /api/marketplace/download?templateId=[uuid]`) which verifies purchasing history.
+- **Stripe Hook Signatures**: Every incoming webhook must have a verified signature header matching the local Stripe webhook secret.
 
 ---
 
 ## ☁️ Phase 4: Signhify Cloud & One-Click Deploy
+
 **Focus**: Zero-config deployment and automated cloud infrastructure management.
 
 ### 🎨 UX & Interface Architecture
-* **Interface Specification**: Project workspace dashboard located at `/app/projects/:id`.
-* **Build Details View**: Displays current deployment status (Building, Active, Suspended) with deployment log streams.
-* **Secrets Configuration Panel**: Table of key-value inputs representing environment variables, masked by default.
+
+- **Interface Specification**: Project workspace dashboard located at `/app/projects/:id`.
+- **Build Details View**: Displays current deployment status (Building, Active, Suspended) with deployment log streams.
+- **Secrets Configuration Panel**: Table of key-value inputs representing environment variables, masked by default.
 
 ### 💾 Data & Storage Models
+
 ```sql
 -- Schema for deployed projects
 create table app.projects (
@@ -153,26 +167,31 @@ create table app.projects (
 ```
 
 ### 🔌 API & Integration Specifications
-* **GitHub Sync Trigger**: `POST /api/github/sync`
+
+- **GitHub Sync Trigger**: `POST /api/github/sync`
   - Body: `{ projectId: uuid, commitMessage: string }`
   - Action: Stitches files, commits, and pushes to linked repository using GitHub app installation token.
-* **Deployment Trigger**: `POST /api/deploy/project`
+- **Deployment Trigger**: `POST /api/deploy/project`
   - Action: Compiles build bundle, uploads assets to Cloudflare Pages via API, and updates subdomain bindings.
 
 ### 🛡️ Security & Compliance Guardrails
-* **Secrets Vault Security**: Env variables are encrypted inside Supabase PostgreSQL using `pgcrypto.pgp_sym_encrypt()` before save. Decryption occurs only at deployment runtime inside isolated worker contexts.
-* **GitHub Token Isolation**: Tokens are never sent to the client browser. All git operations run inside a secure server function context.
+
+- **Secrets Vault Security**: Env variables are encrypted inside Supabase PostgreSQL using `pgcrypto.pgp_sym_encrypt()` before save. Decryption occurs only at deployment runtime inside isolated worker contexts.
+- **GitHub Token Isolation**: Tokens are never sent to the client browser. All git operations run inside a secure server function context.
 
 ---
 
 ## 🤖 Phase 5: Self-Healing Agent Swarms
+
 **Focus**: Upgrading AI agents from passive code builders to active maintenance swarms.
 
 ### 🎨 UX & Interface Architecture
-* **Interface Specification**: Visual interactive preview space with overlay triggers.
-* **Debug Inspector**: Holding `Ctrl` key enables mouse inspector over preview elements. Clicking any element pulls up a sidebar displaying the corresponding React file and line numbers, with an inline prompt box saying: *"Describe changes to apply to this element..."*.
+
+- **Interface Specification**: Visual interactive preview space with overlay triggers.
+- **Debug Inspector**: Holding `Ctrl` key enables mouse inspector over preview elements. Clicking any element pulls up a sidebar displaying the corresponding React file and line numbers, with an inline prompt box saying: _"Describe changes to apply to this element..."_.
 
 ### 💾 Data & Storage Models
+
 ```sql
 -- Schema for error tracking
 create table app.run_errors (
@@ -187,54 +206,60 @@ create table app.run_errors (
 ```
 
 ### 🔌 API & Integration Specifications
-* **Telemetry Event Collector**: `POST /api/telemetry/event`
+
+- **Telemetry Event Collector**: `POST /api/telemetry/event`
   - Body: `{ projectId: uuid, error: { message: string, stack: string } }`
   - Action: Logs error. If from a test run, triggers an automatic repair sequence calling Lovable AI Gateway with the stack trace and file context.
 
 ### 🛡️ Security & Compliance Guardrails
-* **Strict Loop Budgets**: Generation runs have a hardcoded ceiling of 3 repair attempts to prevent infinite LLM feedback loops and runaway API costs.
-* **Safe Sandbox Testing**: Healing modifications are executed inside isolated Node VM sandboxes. They must pass static typechecking and linting before being promoted to main.
+
+- **Strict Loop Budgets**: Generation runs have a hardcoded ceiling of 3 repair attempts to prevent infinite LLM feedback loops and runaway API costs.
+- **Safe Sandbox Testing**: Healing modifications are executed inside isolated Node VM sandboxes. They must pass static typechecking and linting before being promoted to main.
 
 ---
 
 ## 🌐 Phase 6: Decentralized AI Product Ecosystem
+
 **Focus**: Decoupled, globally distributed agent swarm network scaling to hundreds of thousands of active deploys.
 
 ### 🎨 UX & Interface Architecture
-* **Interface Specification**: Node explorer showing healthy agent nodes, latency, token rates, and performance statistics across the network.
-* **Ecosystem dashboard**: Visual mapping of agent interactions, tasks completed, and transactions processed in real-time.
+
+- **Interface Specification**: Node explorer showing healthy agent nodes, latency, token rates, and performance statistics across the network.
+- **Ecosystem dashboard**: Visual mapping of agent interactions, tasks completed, and transactions processed in real-time.
 
 ### 🔌 API & Integration Specifications
-* **Task Allocation**: Nodes exchange tasks via a P2P protocol, validating output files and computing proofs of completion.
-* **Stablecoin Settlement**: Verification tokens are minted and distributed to participating agent nodes.
+
+- **Task Allocation**: Nodes exchange tasks via a P2P protocol, validating output files and computing proofs of completion.
+- **Stablecoin Settlement**: Verification tokens are minted and distributed to participating agent nodes.
 
 ### 🛡️ Security & Compliance Guardrails
-* **Computation Proofs**: Cryptographic proofs must accompany all generated outputs to prevent malicious nodes from returning corrupt/malicious code.
-* **Sandbox Runtime**: Autonomously executing scripts run under strict, resource-throttled WebAssembly runtimes.
+
+- **Computation Proofs**: Cryptographic proofs must accompany all generated outputs to prevent malicious nodes from returning corrupt/malicious code.
+- **Sandbox Runtime**: Autonomously executing scripts run under strict, resource-throttled WebAssembly runtimes.
 
 ---
 
 ## 🎯 Key North-Star Performance Metrics
 
-| Metric | Milestone 1 Target | Milestone 2 Target | Ultimate Target |
-| :--- | :--- | :--- | :--- |
-| **Prompts to Live Deploys** | 10,000 | 250,000 | 2,000,000+ |
-| **Active Shipped Projects** | 100+ | 5,000+ | 50,000+ |
-| **Average Build-to-Preview Time** | < 90 seconds | < 45 seconds | < 15 seconds |
-| **Self-Healing Resolution Rate** | N/A | 65% of exceptions | 90%+ of exceptions |
-| **Net Promoter Score (NPS)** | ≥ 60 | ≥ 70 | ≥ 80 |
+| Metric                            | Milestone 1 Target | Milestone 2 Target | Ultimate Target    |
+| :-------------------------------- | :----------------- | :----------------- | :----------------- |
+| **Prompts to Live Deploys**       | 10,000             | 250,000            | 2,000,000+         |
+| **Active Shipped Projects**       | 100+               | 5,000+             | 50,000+            |
+| **Average Build-to-Preview Time** | < 90 seconds       | < 45 seconds       | < 15 seconds       |
+| **Self-Healing Resolution Rate**  | N/A                | 65% of exceptions  | 90%+ of exceptions |
+| **Net Promoter Score (NPS)**      | ≥ 60               | ≥ 70               | ≥ 80               |
 
 ---
 
 ## 🛠️ Unified Tech Stack
 
-* **Frontend & Routing**: TanStack Start + Vite + TailwindCSS
-* **Interactive Dynamics**: Framer Motion + Three.js (3D cinematic particle canvas)
-* **Backend Services**: TanStack Server Functions + Node.js
-* **Database & Auth**: Supabase (PostgreSQL, RLS policies, OAuth)
-* **AI Orchestration**: Lovable AI Gateway + Anthropic Claude 3.5 Sonnet / OpenAI GPT-4o
-* **Infrastructure & Hosting**: Cloudflare Workers / Pages + GitHub Actions
+- **Frontend & Routing**: TanStack Start + Vite + TailwindCSS
+- **Interactive Dynamics**: Framer Motion + Three.js (3D cinematic particle canvas)
+- **Backend Services**: TanStack Server Functions + Node.js
+- **Database & Auth**: Supabase (PostgreSQL, RLS policies, OAuth)
+- **AI Orchestration**: Lovable AI Gateway + Anthropic Claude 3.5 Sonnet / OpenAI GPT-4o + Custom OpenAI-compatible endpoints
+- **Infrastructure & Hosting**: Cloudflare Workers / Pages + GitHub Actions
 
 ---
 
-*Last Updated: July 17, 2026 · Maintained by Piyush Raj Singh · [Piyushrajsingh092@gmail.com](mailto:Piyushrajsingh092@gmail.com)*
+_Last Updated: July 17, 2026 · Maintained by Piyush Raj Singh · [Piyushrajsingh092@gmail.com](mailto:Piyushrajsingh092@gmail.com)_

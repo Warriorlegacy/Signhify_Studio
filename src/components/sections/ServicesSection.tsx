@@ -229,11 +229,11 @@ function ServiceCard({
       transition={{ duration: 0.55, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
     >
       <ThreeDCard
-        className="group relative bg-card rounded-2xl border border-border hover:border-primary/50 transition-colors duration-300 overflow-hidden flex flex-col h-full shadow-[var(--shadow-card)]"
+        className="group relative bg-card rounded-2xl border border-border hover:border-primary/50 transition-colors duration-300 overflow-hidden flex flex-col h-full shadow-(--shadow-card)"
       >
         {/* Service preview image */}
         <div
-          className={`relative overflow-hidden ${large ? "aspect-[16/9]" : "aspect-[16/10]"} w-full shrink-0`}
+          className={`relative overflow-hidden ${large ? "aspect-video" : "aspect-16/10"} w-full shrink-0`}
         >
           <img
             src={s.image}
@@ -242,14 +242,14 @@ function ServiceCard({
             loading="lazy"
           />
           {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-card via-card/30 to-transparent" />
           {/* Category badge */}
           <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-background/70 backdrop-blur-md border border-white/15 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-foreground">
             <span className="h-1 w-1 rounded-full" style={{ background: s.accent }} />
             {s.name}
           </div>
           {/* Shimmer line on hover */}
-          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-primary/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
 
         {/* Content */}
@@ -277,7 +277,7 @@ function ServiceCard({
           <p className="relative text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
 
           {/* Bottom hover glow line */}
-          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
       </ThreeDCard>
     </motion.div>

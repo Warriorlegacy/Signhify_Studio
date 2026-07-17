@@ -182,11 +182,11 @@ function ProjectCard({
       transition={{ duration: 0.5, delay: (i % 6) * 0.05 }}
       className={spanClass}
     >
-      <ThreeDCard className="relative overflow-hidden rounded-2xl border border-border bg-card hover:border-primary/60 transition shadow-[var(--shadow-card)] flex flex-col h-full w-full">
+      <ThreeDCard className="relative overflow-hidden rounded-2xl border border-border bg-card hover:border-primary/60 transition shadow-(--shadow-card) flex flex-col h-full w-full">
         {/* PRESET COVER */}
         <button
           onClick={onOpen}
-          className="relative block w-full aspect-[16/10] overflow-hidden text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          className="relative block w-full aspect-16/10 overflow-hidden text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
           aria-label={`Open ${p.name} preview`}
         >
           {p.image ? (
@@ -228,11 +228,11 @@ function ProjectCard({
           <div className="absolute top-3 right-3 grid place-items-center h-8 w-8 rounded-full bg-background/60 backdrop-blur-md border border-white/15 text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition">
             <ArrowUpRight size={14} />
           </div>
-          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-linear-to-t from-card to-transparent" />
         </button>
 
         {/* BODY */}
-        <div className="relative p-5 flex flex-col gap-3 flex-1 z-[2]">
+        <div className="relative p-5 flex flex-col gap-3 flex-1 z-2">
           <div className="flex items-baseline justify-between gap-3">
             <h3 className="font-display text-lg font-semibold leading-tight">
               {p.name} <span className="text-muted-foreground font-medium">· {p.category}</span>
@@ -278,7 +278,7 @@ function ProjectPanel({ project, onClose }: { project: Project; onClose: () => v
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[60] flex justify-end bg-background/80 backdrop-blur"
+      className="fixed inset-0 z-60 flex justify-end bg-background/80 backdrop-blur"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -290,7 +290,7 @@ function ProjectPanel({ project, onClose }: { project: Project; onClose: () => v
         exit={{ x: "100%" }}
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
         onClick={(e) => e.stopPropagation()}
-        className="relative h-full w-full sm:max-w-xl bg-card border-l border-primary/30 shadow-[var(--shadow-glow)] overflow-y-auto"
+        className="relative h-full w-full sm:max-w-xl bg-card border-l border-primary/30 shadow-(--shadow-glow) overflow-y-auto"
       >
         <div className="relative h-48 overflow-hidden">
           {project.image ? (
@@ -305,7 +305,7 @@ function ProjectPanel({ project, onClose }: { project: Project; onClose: () => v
               style={{ background: `linear-gradient(135deg, ${s.from} 0%, ${s.to} 100%)` }}
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-card" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/50 via-black/20 to-card" />
           <div
             aria-hidden
             className="absolute inset-0 opacity-15 mix-blend-overlay"
@@ -314,7 +314,7 @@ function ProjectPanel({ project, onClose }: { project: Project; onClose: () => v
               backgroundSize: "14px 14px",
             }}
           />
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-card to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-card to-transparent" />
           <button
             onClick={onClose}
             aria-label="Close brief"

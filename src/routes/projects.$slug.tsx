@@ -105,7 +105,7 @@ function ProjectDetailPage() {
           </div>
 
           {/* 3D device frame mockup */}
-          <div className="relative border border-border bg-card/30 backdrop-blur rounded-3xl overflow-hidden aspect-[4/3] sm:aspect-square flex items-center justify-center shadow-[var(--shadow-card)]">
+          <div className="relative border border-border bg-card/30 backdrop-blur rounded-3xl overflow-hidden aspect-4/3 sm:aspect-square flex items-center justify-center shadow-(--shadow-card)">
             <div
               className="absolute inset-0 pointer-events-none opacity-20"
               style={{ background: "var(--gradient-ember)" }}
@@ -118,7 +118,7 @@ function ProjectDetailPage() {
         </div>
 
         {p.image && (
-          <div className="mt-16 border border-border bg-card/15 rounded-3xl overflow-hidden shadow-[var(--shadow-card)] p-2.5 backdrop-blur-md">
+          <div className="mt-16 border border-border bg-card/15 rounded-3xl overflow-hidden shadow-(--shadow-card) p-2.5 backdrop-blur-md">
             <div className="text-xs uppercase tracking-[0.22em] text-primary mb-3.5 px-4 pt-3.5 font-bold flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
               Live Workspace Interface
@@ -126,7 +126,7 @@ function ProjectDetailPage() {
             <img
               src={p.image}
               alt={`${p.name} UI interface preview`}
-              className="w-full rounded-2xl border border-border object-cover aspect-[16/10] shadow-inner"
+              className="w-full rounded-2xl border border-border object-cover aspect-16/10 shadow-inner"
               loading="eager"
             />
           </div>

@@ -5,7 +5,7 @@ import logoAsset from "@/assets/signhify-logo.png.asset.json";
 export function SiteFooter() {
   return (
     <footer className="relative border-t border-border bg-background">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/60 to-transparent" />
       <div className="mx-auto max-w-7xl px-6 py-16 grid gap-12 md:grid-cols-4">
         <div className="md:col-span-2 space-y-5">
           <div className="flex items-center gap-3">
