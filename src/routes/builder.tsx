@@ -84,6 +84,70 @@ function assembleMultiHtml(files: FileEntry[]): string {
   return html;
 }
 
+function injectInspector(html: string): string {
+  if (!html) return "";
+  const script = `
+<script>
+(function() {
+  const overlay = document.createElement('div');
+  overlay.style.position = 'absolute';
+  overlay.style.pointerEvents = 'none';
+  overlay.style.border = '2px dashed #FF6B00';
+  overlay.style.boxShadow = '0 0 8px rgba(255, 107, 0, 0.4)';
+  overlay.style.zIndex = '999999';
+  overlay.style.display = 'none';
+  document.body.appendChild(overlay);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Control') {
+      document.body.style.cursor = 'crosshair';
+    }
+  });
+
+  window.addEventListener('keyup', (e) => {
+    if (e.key === 'Control') {
+      document.body.style.cursor = 'default';
+      overlay.style.display = 'none';
+    }
+  });
+
+  window.addEventListener('mouseover', (e) => {
+    if (!e.ctrlKey) return;
+    const rect = e.target.getBoundingClientRect();
+    overlay.style.top = (rect.top + window.scrollY) + 'px';
+    overlay.style.left = (rect.left + window.scrollX) + 'px';
+    overlay.style.width = rect.width + 'px';
+    overlay.style.height = rect.height + 'px';
+    overlay.style.display = 'block';
+  });
+
+  window.addEventListener('mouseout', (e) => {
+    overlay.style.display = 'none';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (!e.ctrlKey) return;
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const info = {
+      tagName: e.target.tagName.toLowerCase(),
+      id: e.target.id || '',
+      className: e.target.className || '',
+      innerText: e.target.innerText ? e.target.innerText.substring(0, 100) : ''
+    };
+    
+    window.parent.postMessage({ type: 'INSPECT_ELEMENT', element: info }, '*');
+  }, true);
+})();
+</script>
+`;
+  if (html.includes("</body>")) {
+    return html.replace("</body>", `${script}\n</body>`);
+  }
+  return html + script;
+}
+
 function BuilderPage() {
   const { user, loading } = useUser();
   const admin = isAdminEmail(user?.email);
@@ -99,6 +163,19 @@ function BuilderPage() {
   const [rightTab, setRightTab] = useState<"preview" | "code">("preview");
   const scrollRef = useRef<HTMLDivElement>(null);
   const [presence, setPresence] = useState<any[]>([]); // For tracking other users' presence
+  const [inspectedElement, setInspectedElement] = useState<{ tagName: string; id: string; className: string; innerText: string } | null>(null);
+  const [inspectorPrompt, setInspectorPrompt] = useState("");
+
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data?.type === "INSPECT_ELEMENT") {
+        setInspectedElement(e.data.element);
+        setInspectorPrompt("");
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   // Realtime channel subscriptions
   const projectChannelRef = useRef<any>(null);
@@ -206,7 +283,8 @@ function BuilderPage() {
   const lastVersion = project?.versions.at(-1) || null;
   const currentHtml = lastVersion?.mode === "single" ? lastVersion.html || "" : "";
   const currentFiles = lastVersion?.mode === "multi" ? lastVersion.files || [] : [];
-  const previewHtml = lastVersion?.mode === "multi" ? assembleMultiHtml(currentFiles) : currentHtml;
+  const rawPreviewHtml = lastVersion?.mode === "multi" ? assembleMultiHtml(currentFiles) : currentHtml;
+  const previewHtml = injectInspector(rawPreviewHtml);
 
   // Pick a default selected file when switching to a multi project
   useEffect(() => {
@@ -723,6 +801,58 @@ function BuilderPage() {
           </div>
         )}
       </section>
+
+      <Sheet open={!!inspectedElement} onOpenChange={(open) => { if (!open) setInspectedElement(null); }}>
+        <SheetContent className="bg-card border-l border-white/10 text-white w-full sm:max-w-md">
+          <SheetHeader>
+            <SheetTitle className="text-white flex items-center gap-2">
+              <Sparkles className="text-primary h-5 w-5" /> Inspect Element
+            </SheetTitle>
+            <SheetDescription className="text-white/60">
+              Hold Ctrl and hover over preview elements, then click to select. Describe changes to apply to it.
+            </SheetDescription>
+          </SheetHeader>
+          {inspectedElement && (
+            <div className="mt-6 space-y-6">
+              <div className="rounded-xl border border-white/15 bg-white/5 p-4 space-y-2 font-mono text-xs">
+                <div>
+                  <span className="text-primary font-bold">Element:</span> &lt;{inspectedElement.tagName}
+                  {inspectedElement.id && <span className="text-amber-400"> id=&quot;{inspectedElement.id}&quot;</span>}
+                  {inspectedElement.className && <span className="text-blue-400"> class=&quot;{inspectedElement.className}&quot;</span>}
+                  &gt;
+                </div>
+                {inspectedElement.innerText && (
+                  <div className="text-white/70 line-clamp-3 italic">
+                    &quot;{inspectedElement.innerText}&quot;
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-white/80">Describe changes to apply to this element</label>
+                <textarea
+                  value={inspectorPrompt}
+                  onChange={(e) => setInspectorPrompt(e.target.value)}
+                  placeholder="e.g. Change the background color to amber and double the font size..."
+                  className="w-full h-32 rounded-xl bg-surface border border-white/15 p-3 text-sm text-white focus:outline-none focus:border-primary"
+                />
+              </div>
+
+              <button
+                onClick={async () => {
+                  if (!inspectorPrompt.trim()) return;
+                  const targetDesc = `In the element <${inspectedElement.tagName}${inspectedElement.id ? ` id="${inspectedElement.id}"` : ""}${inspectedElement.className ? ` class="${inspectedElement.className}"` : ""}> containing text "${inspectedElement.innerText}": ${inspectorPrompt}`;
+                  setInput(targetDesc);
+                  setInspectedElement(null);
+                }}
+                className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 transition duration-300"
+              >
+                Apply Changes to Prompt
+              </button>
+            </div>
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

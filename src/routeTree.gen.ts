@@ -25,6 +25,7 @@ import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ConfirmRouteImport } from './routes/confirm'
 import { Route as BuilderRouteImport } from './routes/builder'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as AiRouteImport } from './routes/ai'
@@ -135,6 +136,11 @@ const HelpRoute = HelpRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmRoute = ConfirmRouteImport.update({
+  id: '/confirm',
+  path: '/confirm',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BuilderRoute = BuilderRouteImport.update({
@@ -299,6 +305,7 @@ export interface FileRoutesByFullPath {
   '/ai': typeof AiRouteWithChildren
   '/book': typeof BookRoute
   '/builder': typeof BuilderRoute
+  '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
   '/login': typeof LoginRoute
@@ -348,6 +355,7 @@ export interface FileRoutesByTo {
   '/ai': typeof AiRouteWithChildren
   '/book': typeof BookRoute
   '/builder': typeof BuilderRoute
+  '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
   '/login': typeof LoginRoute
@@ -397,6 +405,7 @@ export interface FileRoutesById {
   '/ai': typeof AiRouteWithChildren
   '/book': typeof BookRoute
   '/builder': typeof BuilderRoute
+  '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
   '/login': typeof LoginRoute
@@ -448,6 +457,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/book'
     | '/builder'
+    | '/confirm'
     | '/contact'
     | '/help'
     | '/login'
@@ -497,6 +507,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/book'
     | '/builder'
+    | '/confirm'
     | '/contact'
     | '/help'
     | '/login'
@@ -545,6 +556,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/book'
     | '/builder'
+    | '/confirm'
     | '/contact'
     | '/help'
     | '/login'
@@ -595,6 +607,7 @@ export interface RootRouteChildren {
   AiRoute: typeof AiRouteWithChildren
   BookRoute: typeof BookRoute
   BuilderRoute: typeof BuilderRoute
+  ConfirmRoute: typeof ConfirmRoute
   ContactRoute: typeof ContactRoute
   HelpRoute: typeof HelpRoute
   LoginRoute: typeof LoginRoute
@@ -738,6 +751,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirm': {
+      id: '/confirm'
+      path: '/confirm'
+      fullPath: '/confirm'
+      preLoaderRoute: typeof ConfirmRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/builder': {
@@ -1038,6 +1058,7 @@ const rootRouteChildren: RootRouteChildren = {
   AiRoute: AiRouteWithChildren,
   BookRoute: BookRoute,
   BuilderRoute: BuilderRoute,
+  ConfirmRoute: ConfirmRoute,
   ContactRoute: ContactRoute,
   HelpRoute: HelpRoute,
   LoginRoute: LoginRoute,

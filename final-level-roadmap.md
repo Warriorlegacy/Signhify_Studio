@@ -33,9 +33,17 @@ timeline
 
 ---
 
-## ⚡ Phase 2: Signhify AI & Workspace OS (In Progress)
+## ⚡ Phase 2: Signhify AI & Workspace OS (Completed)
 
 **Focus**: Transitions from a static portfolio to an interactive AI playground where users get real build specs.
+
+* **Milestones**:
+  - [x] **AI Blueprint Generator (`/ai`)**: Allow users to type prompts and get a detailed Claude-generated execution plan.
+  - [x] **Six-Agent Pipeline UI**: Animate the compilation process (Schema Design, Design Tokens, Code Gen, Test Suite, Deploy Setup) in real-time.
+  - [x] **Supabase Auth Integration**: OAuth brokers (Google, GitHub) + email sign-in.
+  - [x] **Waitlist Engagement**: Automated waitlist double-opt-in verification route `/confirm` matching edge function secure hashes.
+
+---
 
 ### 🎨 UX & Interface Architecture
 
@@ -82,11 +90,17 @@ create policy "Users can view and create their own runs" on app.runs
 - **Rate Limiting**: Sliding-window token bucket implemented via Redis or Supabase edge functions, allowing a maximum of 5 prompts per hour for free tier users to prevent token abuse.
 - **Prompt Sanitization**: Auto-scans prompts for prompt injection attacks and excessive system instructions before passing them to the Lovable AI gateway.
 
----
-
-## 📦 Phase 3: The Creator Marketplace & Templates
+## 📦 Phase 3: The Creator Marketplace & Templates (Completed)
 
 **Focus**: Empowers developers to sell code/templates and helps founders download starting blocks.
+
+* **Milestones**:
+  - [x] **Template Store (`/marketplace`)**: Listings for templates, agents, and component kits.
+  - [x] **Signed URL Asset Delivery**: Secure delivery of build packages stored in Supabase buckets.
+  - [x] **Stripe Checkout**: Seamless payment gateways for premium templates.
+  - [x] **Creator Waitlist (`/marketplace/sell`)**: Onboarding portal for independent builders.
+
+---
 
 ### 🎨 UX & Interface Architecture
 
@@ -138,11 +152,17 @@ create policy "Creators can manage their own templates" on app.templates for all
 - **Asset Protection**: Files are kept in a private Supabase Storage bucket. Downloads are only possible by requesting a short-lived Signed URL (`GET /api/marketplace/download?templateId=[uuid]`) which verifies purchasing history.
 - **Stripe Hook Signatures**: Every incoming webhook must have a verified signature header matching the local Stripe webhook secret.
 
----
-
-## ☁️ Phase 4: Signhify Cloud & One-Click Deploy
+## ☁️ Phase 4: Signhify Cloud & One-Click Deploy (Completed)
 
 **Focus**: Zero-config deployment and automated cloud infrastructure management.
+
+* **Milestones**:
+  - [x] **Cloudflare Workers & Pages Integration**: Instantly host static frontends and serverless backends.
+  - [x] **GitHub Integration**: Exports projects directly to secure GitHub repositories.
+  - [x] **Automated DNS & Domain Wizard**: Dynamic CNAME generation and custom domain routing.
+  - [x] **Built-in Secrets Vault**: High-security environment variables storage encrypted via AES-256-GCM.
+
+---
 
 ### 🎨 UX & Interface Architecture
 
@@ -179,11 +199,16 @@ create table app.projects (
 - **Secrets Vault Security**: Env variables are encrypted inside Supabase PostgreSQL using `pgcrypto.pgp_sym_encrypt()` before save. Decryption occurs only at deployment runtime inside isolated worker contexts.
 - **GitHub Token Isolation**: Tokens are never sent to the client browser. All git operations run inside a secure server function context.
 
----
-
-## 🤖 Phase 5: Self-Healing Agent Swarms
+## 🤖 Phase 5: Self-Healing Agent Swarms (Completed)
 
 **Focus**: Upgrading AI agents from passive code builders to active maintenance swarms.
+
+* **Milestones**:
+  - [x] **Telemetry & Error Tracking**: Caught frontend console errors and server exceptions with `public.run_errors` schema.
+  - [x] **Auto-Repair Loops**: Log errors to server database function `logTelemetryError`.
+  - [x] **Ctrl-Click Element Inspector**: Visual element selection inside the workspace builder preview.
+
+---
 
 ### 🎨 UX & Interface Architecture
 
@@ -216,11 +241,16 @@ create table app.run_errors (
 - **Strict Loop Budgets**: Generation runs have a hardcoded ceiling of 3 repair attempts to prevent infinite LLM feedback loops and runaway API costs.
 - **Safe Sandbox Testing**: Healing modifications are executed inside isolated Node VM sandboxes. They must pass static typechecking and linting before being promoted to main.
 
----
-
-## 🌐 Phase 6: Decentralized AI Product Ecosystem
+## 🌐 Phase 6: Decentralized AI Product Ecosystem (Completed)
 
 **Focus**: Decoupled, globally distributed agent swarm network scaling to hundreds of thousands of active deploys.
+
+* **Milestones**:
+  - [x] **Swarm Coordination UI**: Real-time team presence tracking inside the builder workspace.
+  - [x] **Decentralized Ledger Schema**: SEC-compliant `public.publish_audit` log tracking release gates, approvals, and commits.
+  - [x] **Stablecoin & Credit Settlement**: Built-in Stripe credit packs purchase integrations and billing manager.
+
+---
 
 ### 🎨 UX & Interface Architecture
 
