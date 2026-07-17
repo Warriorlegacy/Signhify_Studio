@@ -20,7 +20,10 @@ export const getPublicProjects = createServerFn({ method: "GET" }).handler(
         featured: !!p.featured,
         year: p.created_at ? new Date(p.created_at).getFullYear() : undefined,
       }));
-      return { projects: mapped };
+      // Merge in static-only projects (e.g. new curated entries) missing from DB
+      const dbSlugs = new Set(mapped.map((m) => m.slug));
+      const extras = staticProjects.filter((s) => !dbSlugs.has(s.slug));
+      return { projects: [...extras, ...mapped] };
     } catch (e) {
       console.error("[projects-list] getPublicProjects serverFn failed:", e);
       return { projects: staticProjects };

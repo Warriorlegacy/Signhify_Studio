@@ -1,3 +1,14 @@
+import signhifyAi2 from "@/assets/signhify-ai-2.jpg.asset.json";
+import signhifyAi3 from "@/assets/signhify-ai-3.jpg.asset.json";
+import signhifyAi4 from "@/assets/signhify-ai-4.jpg.asset.json";
+import signhifyAi5 from "@/assets/signhify-ai-5.jpg.asset.json";
+import signhifyAi6 from "@/assets/signhify-ai-6.jpg.asset.json";
+import signhifyAiUi1 from "@/assets/signhify-ai-ui-1.png.asset.json";
+import signhifyAiUi2 from "@/assets/signhify-ai-ui-2.png.asset.json";
+import signhifyAiUi5 from "@/assets/signhify-ai-ui-5.png.asset.json";
+import signhifyAiUi3 from "@/assets/signhify-ai-ui-3.png.asset.json";
+import signhifyAiUi4 from "@/assets/signhify-ai-ui-4.png.asset.json";
+
 export type ProjectSize = "sm" | "md" | "lg";
 
 export type Project = {
@@ -13,6 +24,8 @@ export type Project = {
   featured?: boolean;
   year?: number;
   image?: string;
+  story?: string;
+  gallery?: string[];
 };
 
 /**
@@ -21,6 +34,42 @@ export type Project = {
  * and a future Supabase-backed CMS read from one source of truth.
  */
 export const projects: Project[] = [
+  {
+    slug: "signhify-ai",
+    name: "Signhify AI",
+    category: "AI Workspace",
+    url: "https://signhify-ai-web.vercel.app/",
+    blurb:
+      "An AI workspace that learns how you work, remembers what matters, and improves with every interaction — 7 specialized agents, BYOK, open source.",
+    tags: ["AI", "Workspace", "Memory", "Open Source", "BYOK"],
+    stack: ["Next.js", "TanStack", "Supabase", "Multi-provider AI"],
+    metric: "7 agents · 10+ AI providers · 100% your data",
+    size: "lg",
+    featured: true,
+    year: 2026,
+    image: signhifyAiUi1.url,
+    story: [
+      "I got tired of explaining myself to AI.",
+      "Every new chat felt like meeting a stranger. The same goals. The same projects. The same context. The same explanations. Again. And again. And again.",
+      "The problem wasn’t intelligence. The problem was memory.",
+      "Because the most valuable thing about working together isn’t what you know. It’s what you remember.",
+      "So I built Signhify AI — an AI workspace designed to learn how you work, remember what matters, and improve with every interaction.",
+      "Not another chatbot. A workspace that grows with you.",
+      "Because technology should adapt to humans. Not the other way around.",
+    ].join("\n\n"),
+    gallery: [
+      signhifyAiUi1.url,
+      signhifyAi5.url,
+      signhifyAi6.url,
+      signhifyAi4.url,
+      signhifyAi3.url,
+      signhifyAi2.url,
+      signhifyAiUi2.url,
+      signhifyAiUi5.url,
+      signhifyAiUi3.url,
+      signhifyAiUi4.url,
+    ],
+  },
   {
     slug: "veepee-engineers",
     name: "Veepee Engineers",

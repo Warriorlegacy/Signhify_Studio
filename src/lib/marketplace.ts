@@ -11,6 +11,7 @@ export type MarketItem = {
   tags: string[];
   accent: string; // gradient
   badge?: string;
+  image?: string;
 };
 
 export const MARKET: MarketItem[] = [
@@ -23,6 +24,7 @@ export const MARKET: MarketItem[] = [
     tags: ["TanStack", "Supabase", "Stripe"],
     accent: "linear-gradient(135deg, oklch(0.72 0.21 45), oklch(0.22 0.06 260))",
     badge: "Free this week",
+    image: "/images/marketplace/saas-launch-kit.png",
   },
   {
     slug: "studio-portfolio",
@@ -32,6 +34,7 @@ export const MARKET: MarketItem[] = [
     price: 49,
     tags: ["Three.js", "Framer Motion"],
     accent: "linear-gradient(135deg, oklch(0.7 0.18 25), oklch(0.18 0.04 280))",
+    image: "/images/marketplace/studio-portfolio.png",
   },
   {
     slug: "support-agent",
@@ -41,6 +44,7 @@ export const MARKET: MarketItem[] = [
     price: 29,
     tags: ["Claude", "Tool-use", "RAG"],
     accent: "linear-gradient(135deg, oklch(0.7 0.22 320), oklch(0.2 0.04 290))",
+    image: "/images/marketplace/support-triage-agent.png",
   },
   {
     slug: "growth-agent",
@@ -50,6 +54,7 @@ export const MARKET: MarketItem[] = [
     price: 39,
     tags: ["SEO", "Schema.org"],
     accent: "linear-gradient(135deg, oklch(0.78 0.18 145), oklch(0.18 0.05 200))",
+    image: "/images/marketplace/growth-seo-agent.png",
   },
   {
     slug: "ember-ui",
@@ -59,6 +64,7 @@ export const MARKET: MarketItem[] = [
     price: 19,
     tags: ["shadcn", "Tailwind v4"],
     accent: "linear-gradient(135deg, oklch(0.74 0.2 60), oklch(0.16 0.04 30))",
+    image: "/images/marketplace/ember-ui-kit.png",
   },
   {
     slug: "lead-funnel",
@@ -69,6 +75,7 @@ export const MARKET: MarketItem[] = [
     tags: ["Supabase", "Resend"],
     accent: "linear-gradient(135deg, oklch(0.72 0.18 220), oklch(0.18 0.05 260))",
     badge: "Free",
+    image: "/images/marketplace/lead-funnel-workflow.png",
   },
 ];
 
