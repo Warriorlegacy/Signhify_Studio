@@ -237,4 +237,4 @@ create table app.run_errors (
 
 ---
 
-*Last Updated: July 17, 2026 · Maintained by Piyush Raj Singh · [hello@signhify.online](mailto:hello@signhify.online)*
+*Last Updated: July 17, 2026 · Maintained by Piyush Raj Singh · [Piyushrajsingh092@gmail.com](mailto:Piyushrajsingh092@gmail.com)*

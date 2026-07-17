@@ -68,7 +68,7 @@ function TermsPage() {
 
       <h2>8. Contact</h2>
       <p>
-        Questions? <a href="mailto:hello@signhify.online">hello@signhify.online</a>.
+        Questions? <a href="mailto:Piyushrajsingh092@gmail.com">Piyushrajsingh092@gmail.com</a>.
       </p>
     </article>
   );

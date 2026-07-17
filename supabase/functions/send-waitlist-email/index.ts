@@ -31,7 +31,7 @@ serve(async (req) => {
     method: "POST",
     headers: { authorization: `Bearer ${resendKey}`, "content-type": "application/json" },
     body: JSON.stringify({
-      from: "Signhify <hello@signhify.online>",
+      from: "Signhify <Piyushrajsingh092@gmail.com>",
       to: [email],
       subject: "Confirm your Signhify early access",
       html,

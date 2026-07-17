@@ -93,4 +93,4 @@ This is the public, living plan we are executing against. Each week has a clear 
 
 ---
 
-_Last updated: June 5, 2026 · Maintained by Piyush Raj Singh · [hello@signhify.online](mailto:hello@signhify.online)_
+_Last updated: June 5, 2026 · Maintained by Piyush Raj Singh · [Piyushrajsingh092@gmail.com](mailto:Piyushrajsingh092@gmail.com)_

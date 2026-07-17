@@ -6,7 +6,7 @@
 > shipping through **Lovable**.
 >
 > Last updated: June 8, 2026 · Maintained by Piyush Raj Singh ·
-> [hello@signhify.online](mailto:hello@signhify.online)
+> [Piyushrajsingh092@gmail.com](mailto:Piyushrajsingh092@gmail.com)
 
 This project is bidirectionally synced with GitHub. Anything you push to the
 default branch is picked up by Lovable within seconds and becomes part of the

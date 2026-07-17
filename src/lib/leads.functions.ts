@@ -23,7 +23,7 @@ export const submitLead = createServerFn({ method: "POST" })
     });
     if (error) {
       console.error("[leads] insert failed", error);
-      throw new Error("Could not save your lead. Please email hello@signhify.online.");
+      throw new Error("Could not save your lead. Please email Piyushrajsingh092@gmail.com.");
     }
     return { ok: true as const };
   });

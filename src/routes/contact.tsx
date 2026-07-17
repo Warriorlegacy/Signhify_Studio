@@ -148,7 +148,7 @@ function ContactPage() {
       setError(
         e instanceof Error
           ? e.message
-          : "Something went wrong. Email hello@signhify.online instead.",
+          : "Something went wrong. Email Piyushrajsingh092@gmail.com instead.",
       );
     } finally {
       setSubmitting(false);
@@ -214,10 +214,10 @@ function ContactPage() {
             </div>
 
             <a
-              href="mailto:hello@signhify.online"
+              href="mailto:Piyushrajsingh092@gmail.com"
               className="mt-6 inline-flex items-center gap-2 text-primary hover:underline"
             >
-              <Mail size={16} /> hello@signhify.online
+              <Mail size={16} /> Piyushrajsingh092@gmail.com
             </a>
           </motion.div>
         ) : (
@@ -409,8 +409,8 @@ function ContactPage() {
 
         <div className="mt-10 text-sm text-muted-foreground text-center">
           Prefer email?{" "}
-          <a href="mailto:hello@signhify.online" className="text-primary hover:underline">
-            hello@signhify.online
+          <a href="mailto:Piyushrajsingh092@gmail.com" className="text-primary hover:underline">
+            Piyushrajsingh092@gmail.com
           </a>
         </div>
       </div>

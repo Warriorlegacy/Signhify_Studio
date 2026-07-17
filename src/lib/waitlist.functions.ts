@@ -24,7 +24,7 @@ export const joinWaitlist = createServerFn({ method: "POST" })
     });
     if (error) {
       console.error("[waitlist] insert failed", error);
-      throw new Error("Could not join the list. Try again or email hello@signhify.online.");
+      throw new Error("Could not join the list. Try again or email Piyushrajsingh092@gmail.com.");
     }
 
     const edgeBase = process.env.SUPABASE_URL;

@@ -96,10 +96,10 @@ export function SiteFooter() {
             </li>
             <li>
               <a
-                href="mailto:hello@signhify.online"
+                href="mailto:Piyushrajsingh092@gmail.com"
                 className="inline-flex items-center gap-2 hover:text-foreground"
               >
-                <Mail size={14} /> hello@signhify.online
+                <Mail size={14} /> Piyushrajsingh092@gmail.com
               </a>
             </li>
             <li>

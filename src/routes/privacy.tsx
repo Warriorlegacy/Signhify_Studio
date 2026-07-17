@@ -28,7 +28,7 @@ function PrivacyPage() {
       <p>
         Signhify is an AI engineering studio operated by Piyush Raj Singh, registered as an MSME
         with the Government of India (UDYAM). Contact:{" "}
-        <a href="mailto:hello@signhify.online">hello@signhify.online</a>.
+        <a href="mailto:Piyushrajsingh092@gmail.com">Piyushrajsingh092@gmail.com</a>.
       </p>
 
       <h2>2. What we collect</h2>
@@ -62,7 +62,7 @@ function PrivacyPage() {
 
       <h2>5. Your rights</h2>
       <p>
-        Email <a href="mailto:hello@signhify.online">hello@signhify.online</a> to access, correct or
+        Email <a href="mailto:Piyushrajsingh092@gmail.com">Piyushrajsingh092@gmail.com</a> to access, correct or
         delete your data. We will respond within 7 days.
       </p>
 
