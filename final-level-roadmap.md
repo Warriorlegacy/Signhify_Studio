@@ -1,4 +1,4 @@
-# Signhify — The Final Level Roadmap (2026 - 2030)
+# Signhify — The Final Level Roadmap
 
 > **Vision**: Signhify is the ultimate AI-native product studio and operating system. We enable founders, creators, and enterprises to turn ideas into production-ready, revenue-generating software in minutes through steering autonomous agent swarms.
 
@@ -11,12 +11,12 @@ This is the comprehensive, multi-phase master plan to scale Signhify from an eli
 ```mermaid
 timeline
     title Signhify Horizon Roadmap
-    2026 (H1) : Studio & Brand Foundation : Visual visual upgrades & 22 Shipped projects
-              : Signhify AI Preview : Six-agent pipeline, natural language to build-plan
-    2026 (H2) : Signhify Cloud & Marketplace : Supabase auth, GitHub bidirectional sync, templates
-              : OS Orchestration & One-Click Deploy : TanStack server runtimes, Cloudflare Workers hosting
-    2027 : Self-Healing Agent Swarms : Auto-bug resolution, visual UI debugger, multi-agent cost optimization
-    2028 - 2030 : The Global AI Product Ecosystem : Decentralized agent network, custom domain DNS automation, 100K+ live apps
+    Phase 1 & 2 : Studio & Brand Foundation : Visual visual upgrades & 22 Shipped projects
+                : Signhify AI Preview : Six-agent pipeline, natural language to build-plan
+    Phase 3 & 4 : Signhify Cloud & Marketplace : Supabase auth, GitHub bidirectional sync, templates
+                : OS Orchestration & One-Click Deploy : TanStack server runtimes, Cloudflare Workers hosting
+    Phase 5 : Self-Healing Agent Swarms : Auto-bug resolution, visual UI debugger, multi-agent cost optimization
+    Phase 6 : The Global AI Product Ecosystem : Decentralized agent network, custom domain DNS automation, 100K+ live apps
 ```
 
 ---
@@ -32,7 +32,7 @@ timeline
 
 ---
 
-## ⚡ Phase 2: Signhify AI & Workspace OS (In Progress / Q3 2026)
+## ⚡ Phase 2: Signhify AI & Workspace OS (In Progress)
 **Focus**: Transitions from a static portfolio to an interactive AI playground where users get real build specs.
 
 ### 🎨 UX & Interface Architecture
@@ -78,7 +78,7 @@ create policy "Users can view and create their own runs" on app.runs
 
 ---
 
-## 📦 Phase 3: The Creator Marketplace & Templates (Q4 2026)
+## 📦 Phase 3: The Creator Marketplace & Templates
 **Focus**: Empowers developers to sell code/templates and helps founders download starting blocks.
 
 ### 🎨 UX & Interface Architecture
@@ -129,7 +129,7 @@ create policy "Creators can manage their own templates" on app.templates for all
 
 ---
 
-## ☁️ Phase 4: Signhify Cloud & One-Click Deploy (H1 2027)
+## ☁️ Phase 4: Signhify Cloud & One-Click Deploy
 **Focus**: Zero-config deployment and automated cloud infrastructure management.
 
 ### 🎨 UX & Interface Architecture
@@ -165,7 +165,7 @@ create table app.projects (
 
 ---
 
-## 🤖 Phase 5: Self-Healing Agent Swarms (H2 2027)
+## 🤖 Phase 5: Self-Healing Agent Swarms
 **Focus**: Upgrading AI agents from passive code builders to active maintenance swarms.
 
 ### 🎨 UX & Interface Architecture
@@ -197,7 +197,7 @@ create table app.run_errors (
 
 ---
 
-## 🌐 Phase 6: Decentralized AI Product Ecosystem (2028 - 2030)
+## 🌐 Phase 6: Decentralized AI Product Ecosystem
 **Focus**: Decoupled, globally distributed agent swarm network scaling to hundreds of thousands of active deploys.
 
 ### 🎨 UX & Interface Architecture
@@ -216,7 +216,7 @@ create table app.run_errors (
 
 ## 🎯 Key North-Star Performance Metrics
 
-| Metric | Target (2026) | Target (2028) | Target (2030) |
+| Metric | Milestone 1 Target | Milestone 2 Target | Ultimate Target |
 | :--- | :--- | :--- | :--- |
 | **Prompts to Live Deploys** | 10,000 | 250,000 | 2,000,000+ |
 | **Active Shipped Projects** | 100+ | 5,000+ | 50,000+ |
