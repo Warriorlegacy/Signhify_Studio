@@ -91,6 +91,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "theme-color", content: "#FF6B00" },
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
       { name: "googlebot", content: "index, follow" },
+      { name: "google-site-verification", content: "zBCOZpU_7xXpa0fRYixneNtYTIcQ9mFLXMooYm00fdE" },
       { name: "application-name", content: "Signhify" },
       { name: "generator", content: "TanStack Start" },
       { name: "keywords", content: "AI product studio, AI development, SaaS builder, AI agents, automation, Signhify, prompt to product, AI engineering, web development studio, Piyush Raj Singh" },
