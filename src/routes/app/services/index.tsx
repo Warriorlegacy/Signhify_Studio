@@ -18,7 +18,7 @@ export const Route = createFileRoute("/app/services/")({
   beforeLoad: requireAppAuth,
   head: () => ({
     meta: [{ title: "Cloud Services — Signhify" }],
-    links: [{ rel: "canonical", href: "https://signhify.online/app/services" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/app/services" }],
   }),
   component: ServicesDashboard,
 });

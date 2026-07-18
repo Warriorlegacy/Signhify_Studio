@@ -14,10 +14,10 @@ export const Route = createFileRoute("/app/projects/$id/runs/$runId")({
         content:
           "Replay a Signhify AI run timeline with tool calls, elapsed times, JSON output, and live status updates.",
       },
-      { property: "og:url", content: "https://signhify.online/app/projects/run" },
+      { property: "og:url", content: "https://signhify.dpdns.org/app/projects/run" },
       { property: "og:title", content: "Run Viewer — Signhify" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/app/projects/run" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/app/projects/run" }],
   }),
   component: RunViewer,
   loader: async ({ params }) => ({ projectId: params.id, runId: params.runId }),

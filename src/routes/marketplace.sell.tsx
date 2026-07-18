@@ -11,10 +11,10 @@ export const Route = createFileRoute("/marketplace/sell")({
         content:
           "Join the creator waitlist for Signhify Marketplace and get access when the seller console opens.",
       },
-      { property: "og:url", content: "https://signhify.online/marketplace/sell" },
+      { property: "og:url", content: "https://signhify.dpdns.org/marketplace/sell" },
       { property: "og:title", content: "Sell on Signhify Marketplace" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/marketplace/sell" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/marketplace/sell" }],
   }),
   component: SellPage,
 });

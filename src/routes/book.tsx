@@ -15,9 +15,9 @@ export const Route = createFileRoute("/book")({
         property: "og:description",
         content: "30 minutes with the Signhify founder to scope your build.",
       },
-      { property: "og:url", content: "https://signhify.online/book" },
+      { property: "og:url", content: "https://signhify.dpdns.org/book" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/book" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/book" }],
   }),
   component: BookPage,
 });

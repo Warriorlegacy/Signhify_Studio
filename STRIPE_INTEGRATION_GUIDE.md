@@ -80,7 +80,7 @@ Copy each `price_1ABC...` ID into your environment variables.
 
 **Developers → Webhooks → Add endpoint**
 
-URL: `https://signhify.online/api/stripe/webhook`
+URL: `https://signhify.dpdns.org/api/stripe/webhook`
 
 Events to subscribe:
 
@@ -289,12 +289,12 @@ Any future expiry + any 3-digit CVC.
 
 - [ ] `STRIPE_SECRET_KEY` = live key (`sk_live_...`)
 - [ ] `STRIPE_WEBHOOK_SECRET` = from Dashboard (`whsec_...`)
-- [ ] `VITE_SITE_URL` = `https://signhify.online`
+- [ ] `VITE_SITE_URL` = `https://signhify.dpdns.org`
 - [ ] All 3 Price IDs = live price IDs
 
 ### Stripe Dashboard
 
-- [ ] Webhook endpoint registered at `https://signhify.online/api/stripe/webhook`
+- [ ] Webhook endpoint registered at `https://signhify.dpdns.org/api/stripe/webhook`
 - [ ] All 6 event types selected
 - [ ] Customer Portal configured
 - [ ] One test transaction verified in live mode (refund after)

@@ -14,10 +14,10 @@ export const Route = createFileRoute("/os/agents/")({
         content:
           "Signhify OS - Manage and monitor your AI agents. View agent status, tasks completed, and control agent lifecycle.",
       },
-      { property: "og:url", content: "https://signhify.online/os/agents" },
+      { property: "og:url", content: "https://signhify.dpdns.org/os/agents" },
       { property: "og:title", content: "Agents — Signhify OS" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/os/agents" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/os/agents" }],
   }),
   component: AgentListPage,
 });

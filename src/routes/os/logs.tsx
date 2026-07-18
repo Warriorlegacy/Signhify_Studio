@@ -24,10 +24,10 @@ export const Route = createFileRoute("/os/logs")({
         content:
           "Signhify OS - View and filter system logs from agents, workflows, and the orchestration runtime.",
       },
-      { property: "og:url", content: "https://signhify.online/os/logs" },
+      { property: "og:url", content: "https://signhify.dpdns.org/os/logs" },
       { property: "og:title", content: "System Logs — Signhify OS" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/os/logs" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/os/logs" }],
   }),
   component: LogsPage,
 });

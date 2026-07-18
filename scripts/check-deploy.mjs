@@ -3,9 +3,9 @@
  * Deployment gate. Pings /api/public/health and exits non-zero if checks fail.
  *
  * Usage:
- *   BASE_URL=https://signhify.online node scripts/check-deploy.mjs
+ *   BASE_URL=https://signhify.dpdns.org node scripts/check-deploy.mjs
  *   # or
- *   node scripts/check-deploy.mjs https://signhify.online
+ *   node scripts/check-deploy.mjs https://signhify.dpdns.org
  *
  * Wire into CI / pre-publish to block ships when SSR or the Supabase
  * fallback contract is broken.

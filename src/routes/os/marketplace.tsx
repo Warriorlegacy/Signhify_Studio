@@ -16,11 +16,11 @@ export const Route = createFileRoute("/os/marketplace")({
       },
       {
         property: "og:url",
-        content: "https://signhify.online/os/marketplace",
+        content: "https://signhify.dpdns.org/os/marketplace",
       },
       { property: "og:title", content: "Agent Marketplace — Signhify OS" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/os/marketplace" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/os/marketplace" }],
   }),
   component: MarketplacePage,
 });

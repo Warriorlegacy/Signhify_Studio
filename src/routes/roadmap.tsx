@@ -20,9 +20,9 @@ export const Route = createFileRoute("/roadmap")({
         content:
           "Week-by-week shipping plan from the studio site to Signhify OS, Cloud and Deploy.",
       },
-      { property: "og:url", content: "https://signhify.online/roadmap" },
+      { property: "og:url", content: "https://signhify.dpdns.org/roadmap" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/roadmap" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/roadmap" }],
   }),
   component: RoadmapPage,
 });
@@ -103,8 +103,8 @@ const WEEKS = [
     exit: "GA with public pricing, status page, and 100 paying design partners.",
     items: [
       "Stripe (monthly + annual) + credit-pack add-ons",
-      "status.signhify.online status page",
-      "docs.signhify.online help center",
+      "status.signhify.dpdns.org status page",
+      "docs.signhify.dpdns.org help center",
       "Product Hunt + X + LinkedIn launch sequence",
     ],
   },

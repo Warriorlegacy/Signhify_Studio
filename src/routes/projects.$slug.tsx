@@ -24,7 +24,7 @@ export const Route = createFileRoute("/projects/$slug")({
     }
     const title = `${p.name} — Signhify`;
     const description = p.blurb;
-    const url = `https://signhify.online/projects/${p.slug}`;
+    const url = `https://signhify.dpdns.org/projects/${p.slug}`;
     return {
       meta: [
         { title },

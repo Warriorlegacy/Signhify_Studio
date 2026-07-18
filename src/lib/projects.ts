@@ -235,7 +235,7 @@ export const projects: Project[] = [
     slug: "nebulapay",
     name: "NebulaPay",
     category: "Fintech",
-    url: "https://signhify.online/projects/nebulapay",
+    url: "https://signhify.dpdns.org/projects/nebulapay",
     blurb:
       "Cinematic fintech checkout layer — embeddable Pay-with-Nebula button, dark glass UI, sub-200ms perceived latency.",
     tags: ["Fintech", "Embeddable", "Checkout"],
@@ -250,7 +250,7 @@ export const projects: Project[] = [
     slug: "aurora-analytics",
     name: "Aurora Analytics",
     category: "Analytics",
-    url: "https://signhify.online/projects/aurora-analytics",
+    url: "https://signhify.dpdns.org/projects/aurora-analytics",
     blurb:
       "Real-time product analytics with AI-narrated dashboards — Aurora explains why your numbers moved overnight.",
     tags: ["Analytics", "AI Narration", "Real-time"],
@@ -264,7 +264,7 @@ export const projects: Project[] = [
     slug: "skillforge-ai",
     name: "SkillForge AI",
     category: "AI Education",
-    url: "https://signhify.online/projects/skillforge",
+    url: "https://signhify.dpdns.org/projects/skillforge",
     blurb:
       "Adaptive AI tutor that turns a curriculum into a per-learner journey — adjusts pace, depth and tone in real time.",
     tags: ["AI Tutor", "Adaptive", "EdTech"],

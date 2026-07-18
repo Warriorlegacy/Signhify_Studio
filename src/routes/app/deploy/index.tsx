@@ -9,7 +9,7 @@ export const Route = createFileRoute("/app/deploy/")({
   beforeLoad: requireAppAuth,
   head: () => ({
     meta: [{ title: "Deploy — Signhify" }],
-    links: [{ rel: "canonical", href: "https://signhify.online/app/deploy" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/app/deploy" }],
   }),
   component: DeployDashboard,
 });

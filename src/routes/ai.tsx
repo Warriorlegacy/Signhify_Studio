@@ -41,9 +41,9 @@ export const Route = createFileRoute("/ai")({
         property: "og:description",
         content: "Describe anything. Signhify AI builds the plan, the stack and the starter app.",
       },
-      { property: "og:url", content: "https://signhify.online/ai" },
+      { property: "og:url", content: "https://signhify.dpdns.org/ai" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/ai" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/ai" }],
   }),
   component: AiPage,
 });

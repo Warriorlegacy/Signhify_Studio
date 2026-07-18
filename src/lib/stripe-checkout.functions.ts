@@ -42,7 +42,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         .maybeSingle();
       if (!listing || !listing.price_cents || listing.price_cents <= 0)
         throw new Error("Paid listing not found.");
-      const site = process.env.VITE_SITE_URL || "https://signhify.online";
+      const site = process.env.VITE_SITE_URL || "https://signhify.dpdns.org";
       const form = new URLSearchParams();
       form.set("mode", "payment");
       form.set(

@@ -127,7 +127,7 @@ export function SiteFooter() {
       <div className="border-t border-border">
         <div className="mx-auto max-w-7xl px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
           <div>© {new Date().getFullYear()} Signhify · Built by Piyush Raj Singh</div>
-          <div className="font-mono">signhify.online</div>
+          <div className="font-mono">signhify.dpdns.org</div>
         </div>
       </div>
     </footer>

@@ -15,11 +15,11 @@ export const Route = createFileRoute("/os/workflows/new")({
       },
       {
         property: "og:url",
-        content: "https://signhify.online/os/workflows/new",
+        content: "https://signhify.dpdns.org/os/workflows/new",
       },
       { property: "og:title", content: "New Workflow — Signhify OS" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/os/workflows/new" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/os/workflows/new" }],
   }),
   component: NewWorkflowPage,
 });

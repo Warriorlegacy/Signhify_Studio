@@ -25,10 +25,10 @@ export const Route = createFileRoute("/app/settings")({
         content:
           "Manage your Signhify profile, avatar, billing portal, connected accounts, and account deletion settings.",
       },
-      { property: "og:url", content: "https://signhify.online/app/settings" },
+      { property: "og:url", content: "https://signhify.dpdns.org/app/settings" },
       { property: "og:title", content: "Settings — Signhify" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/app/settings" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/app/settings" }],
   }),
   component: SettingsPage,
 });

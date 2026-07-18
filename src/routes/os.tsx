@@ -9,10 +9,10 @@ export const Route = createFileRoute("/os")({
         content:
           "Signhify OS - Agent orchestration runtime. Monitor and manage AI agents, workflows, and system performance.",
       },
-      { property: "og:url", content: "https://signhify.online/os" },
+      { property: "og:url", content: "https://signhify.dpdns.org/os" },
       { property: "og:title", content: "OS — Signhify" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/os" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/os" }],
   }),
   component: () => <Outlet />,
 });

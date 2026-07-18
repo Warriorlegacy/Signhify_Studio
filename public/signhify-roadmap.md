@@ -68,8 +68,8 @@ This is the public, living plan we are executing against. Each week has a clear 
 **Exit**: Signhify is generally available with a public pricing page, transparent SLA, and 100 paying design partners.
 
 - Stripe (annual + monthly), credit-pack add-ons
-- Status page (`status.signhify.online`)
-- Help docs (`docs.signhify.online`) auto-generated from internal markdown
+- Status page (`status.signhify.dpdns.org`)
+- Help docs (`docs.signhify.dpdns.org`) auto-generated from internal markdown
 - Launch sequence: Product Hunt, X, LinkedIn, Indian tech press
 
 ---

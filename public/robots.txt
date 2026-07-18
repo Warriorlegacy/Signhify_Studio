@@ -1,4 +1,55 @@
+# Signhify — robots.txt
+# https://signhify.dpdns.org
+
 User-agent: *
 Allow: /
+Disallow: /app/
+Disallow: /api/
+Disallow: /confirm
 
-Sitemap: https://signhify.online/sitemap.xml
+# Google
+User-agent: Googlebot
+Allow: /
+Disallow: /app/
+Disallow: /api/
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /app/
+Disallow: /api/
+
+# AI Crawlers — Allowed for AI search visibility
+User-agent: GPTBot
+Allow: /
+Disallow: /app/
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /app/
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /app/
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+Disallow: /app/
+Disallow: /api/
+
+User-agent: CCBot
+Allow: /
+Disallow: /app/
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://signhify.dpdns.org/sitemap.xml
+
+# AI-readable site description
+# See https://signhify.dpdns.org/llms.txt

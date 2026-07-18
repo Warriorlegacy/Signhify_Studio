@@ -345,7 +345,7 @@ Stable URLs:
 | Purpose              | URL                                             |
 | -------------------- | ----------------------------------------------- |
 | Production (Lovable) | `https://signhify.lovable.app`                  |
-| Production (custom)  | `https://signhify.online`                       |
+| Production (custom)  | `https://signhify.dpdns.org`                       |
 | Preview (stable)     | `https://project--<project-id>-dev.lovable.app` |
 | Production (stable)  | `https://project--<project-id>.lovable.app`     |
 

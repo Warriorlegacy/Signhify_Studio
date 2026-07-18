@@ -23,9 +23,9 @@ export const Route = createFileRoute("/")({
         property: "og:description",
         content: "Describe your idea. Signhify builds it.",
       },
-      { property: "og:url", content: "https://signhify.online/" },
+      { property: "og:url", content: "https://signhify.dpdns.org/" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/" }],
   }),
   component: Index,
 });

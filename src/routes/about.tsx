@@ -18,9 +18,9 @@ export const Route = createFileRoute("/about")({
         content:
           "Founded by Piyush Raj Singh. AI-native studio, registered MSME, building in the open.",
       },
-      { property: "og:url", content: "https://signhify.online/about" },
+      { property: "og:url", content: "https://signhify.dpdns.org/about" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/about" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/about" }],
   }),
   component: AboutPage,
 });

@@ -11,10 +11,10 @@ export const Route = createFileRoute("/login")({
         name: "description",
         content: "Sign in to your Signhify workspace with email, password, or Google OAuth.",
       },
-      { property: "og:url", content: "https://signhify.online/login" },
+      { property: "og:url", content: "https://signhify.dpdns.org/login" },
       { property: "og:title", content: "Login — Signhify" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/login" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/login" }],
   }),
   component: LoginPage,
 });

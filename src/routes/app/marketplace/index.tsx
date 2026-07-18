@@ -14,7 +14,7 @@ export const Route = createFileRoute("/app/marketplace/")({
   beforeLoad: requireAppAuth,
   head: () => ({
     meta: [{ title: "Marketplace — Signhify" }],
-    links: [{ rel: "canonical", href: "https://signhify.online/app/marketplace" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/app/marketplace" }],
   }),
   component: MarketplaceDashboard,
 });

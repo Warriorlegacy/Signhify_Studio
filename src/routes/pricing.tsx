@@ -19,9 +19,9 @@ export const Route = createFileRoute("/pricing")({
         content:
           "Sprint, Studio and Platform engagement models. Transparent pricing for AI-first product execution.",
       },
-      { property: "og:url", content: "https://signhify.online/pricing" },
+      { property: "og:url", content: "https://signhify.dpdns.org/pricing" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/pricing" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/pricing" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/pricing")({
           "@context": "https://schema.org",
           "@type": "WebPage",
           name: "Pricing — Signhify",
-          url: "https://signhify.online/pricing",
+          url: "https://signhify.dpdns.org/pricing",
           description:
             "Sprint, Studio and Platform engagement models for AI-first product execution.",
         }),

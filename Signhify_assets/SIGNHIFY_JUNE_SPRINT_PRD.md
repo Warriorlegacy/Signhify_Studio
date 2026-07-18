@@ -33,7 +33,7 @@ Every product ships as an **MVP** — not a prototype, not a mockup, but a **liv
 
 | Product              | "Done" Definition                                                             |
 | -------------------- | ----------------------------------------------------------------------------- |
-| Signhify Studio      | signhify.online is live, leads can book a call, all 14 projects are showcased |
+| Signhify Studio      | signhify.dpdns.org is live, leads can book a call, all 14 projects are showcased |
 | Signhify AI          | Prompt → AI-generated product plan, live and usable with real Claude API      |
 | Signhify Deploy      | GitHub repo → 1-click Vercel deploy, status dashboard working                 |
 | Signhify Marketplace | Browse + download 10+ templates, submit form working                          |
@@ -70,12 +70,12 @@ Before writing a single product-specific line, build these shared pieces. Everyt
 ```
 signhify-ecosystem/
 ├── apps/
-│   ├── studio/        → signhify.online
-│   ├── ai/            → ai.signhify.online
-│   ├── deploy/        → deploy.signhify.online
-│   ├── marketplace/   → marketplace.signhify.online
-│   ├── cloud/         → cloud.signhify.online
-│   └── os/            → os.signhify.online
+│   ├── studio/        → signhify.dpdns.org
+│   ├── ai/            → ai.signhify.dpdns.org
+│   ├── deploy/        → deploy.signhify.dpdns.org
+│   ├── marketplace/   → marketplace.signhify.dpdns.org
+│   ├── cloud/         → cloud.signhify.dpdns.org
+│   └── os/            → os.signhify.dpdns.org
 ├── packages/
 │   ├── ui/            → Shared component library (design system)
 │   ├── db/            → Supabase client + shared types
@@ -225,7 +225,7 @@ NEXT_PUBLIC_CLARITY_ID=
 
 ## WEEK 1: SIGNHIFY STUDIO
 
-### June 1–7 | signhify.online | Status: IN PROGRESS
+### June 1–7 | signhify.dpdns.org | Status: IN PROGRESS
 
 **Goal:** Live marketing website that generates leads. The face of the entire ecosystem.  
 **Remaining time from June 5:** 2 days (June 6–7)
@@ -485,11 +485,11 @@ const projects = [
 | -------------- | ---------------------------------------------------------------------------------------- |
 | June 5 (Today) | ✅ Monorepo setup · Design system tokens · Supabase schema                               |
 | June 6         | Hero + navbar + particle canvas · Trust strip · Project grid                             |
-| June 7         | Services · Roadmap timeline · Founder section · Contact form · Deploy to signhify.online |
+| June 7         | Services · Roadmap timeline · Founder section · Contact form · Deploy to signhify.dpdns.org |
 
 **Week 1 Exit Criteria:**
 
-- [ ] signhify.online resolves and loads <3s
+- [ ] signhify.dpdns.org resolves and loads <3s
 - [ ] Lead form submits to Supabase
 - [ ] All 14 projects visible and filterable
 - [ ] Calendly link working
@@ -500,7 +500,7 @@ const projects = [
 
 ## WEEK 2: SIGNHIFY AI
 
-### June 8–14 | ai.signhify.online | Status: SOON
+### June 8–14 | ai.signhify.dpdns.org | Status: SOON
 
 **Goal:** A working prompt-to-product AI builder. User enters an idea, gets a full product plan back. Real AI, real output, real value.
 
@@ -518,7 +518,7 @@ The user types a product idea. Signhify AI returns:
 6. **Development Timeline** (week-by-week estimate)
 7. **Estimated Cost** breakdown (if building with Signhify Studio)
 
-At the bottom of every output: a **"Build This With Signhify →"** CTA that goes to signhify.online/contact with the prompt pre-filled.
+At the bottom of every output: a **"Build This With Signhify →"** CTA that goes to signhify.dpdns.org/contact with the prompt pre-filled.
 
 ---
 
@@ -580,7 +580,7 @@ At the bottom of every output: a **"Build This With Signhify →"** CTA that goe
 
 ```
 You are Signhify AI, a product architect and AI engineering assistant
-by Signhify (signhify.online). When given a product idea, respond with
+by Signhify (signhify.dpdns.org). When given a product idea, respond with
 a structured JSON object only — no markdown, no preamble.
 
 JSON structure:
@@ -645,11 +645,11 @@ const response = await fetch("https://api.anthropic.com/v1/messages", {
 | June 11 | Output display components · Feature list · Tech stack · Architecture |
 | June 12 | History page · Save to Supabase · Share link                         |
 | June 13 | Rate limiting · Waitlist page · "Build With Signhify" CTA            |
-| June 14 | Deploy to ai.signhify.online · Cross-link from Studio · Test         |
+| June 14 | Deploy to ai.signhify.dpdns.org · Cross-link from Studio · Test         |
 
 **Week 2 Exit Criteria:**
 
-- [ ] ai.signhify.online is live
+- [ ] ai.signhify.dpdns.org is live
 - [ ] Prompt → JSON output working with real Claude API
 - [ ] Streaming response (text appears progressively)
 - [ ] 3 free builds per session enforced
@@ -662,7 +662,7 @@ const response = await fetch("https://api.anthropic.com/v1/messages", {
 
 ## WEEK 3: SIGNHIFY DEPLOY + SIGNHIFY MARKETPLACE
 
-### June 15–21 | deploy.signhify.online + marketplace.signhify.online | Status: PLANNED
+### June 15–21 | deploy.signhify.dpdns.org + marketplace.signhify.dpdns.org | Status: PLANNED
 
 **Split the week:** Deploy = June 15–17 (3 days). Marketplace = June 18–21 (4 days).
 
@@ -670,7 +670,7 @@ const response = await fetch("https://api.anthropic.com/v1/messages", {
 
 ## SIGNHIFY DEPLOY (June 15–17)
 
-### deploy.signhify.online
+### deploy.signhify.dpdns.org
 
 **What it does (MVP):**  
 Connect your GitHub repo → select a framework → click Deploy → it deploys to Vercel → shows live URL and deployment logs. No SSH, no DevOps knowledge needed.
@@ -775,7 +775,7 @@ const deployment = await fetch("https://api.vercel.com/v13/deployments", {
 
 ## SIGNHIFY MARKETPLACE (June 18–21)
 
-### marketplace.signhify.online
+### marketplace.signhify.dpdns.org
 
 **What it does (MVP):**  
 Browse and download free/paid templates for SaaS, landing pages, CRM, AI apps. Creators can submit templates. Downloads tracked.
@@ -835,7 +835,7 @@ _All templates built from your existing 14 projects — export their structures 
 └─────────────────────────────────────────────────────────┘
 ```
 
-_Key cross-product CTA: "Deploy with Signhify Deploy →" links to deploy.signhify.online_
+_Key cross-product CTA: "Deploy with Signhify Deploy →" links to deploy.signhify.dpdns.org_
 
 ### M4. Marketplace Daily Tasks
 
@@ -848,7 +848,7 @@ _Key cross-product CTA: "Deploy with Signhify Deploy →" links to deploy.signhi
 
 **Week 3 Exit Criteria (Deploy):**
 
-- [ ] deploy.signhify.online live
+- [ ] deploy.signhify.dpdns.org live
 - [ ] GitHub OAuth working
 - [ ] Vercel deployment triggered from UI
 - [ ] Real-time log streaming
@@ -856,7 +856,7 @@ _Key cross-product CTA: "Deploy with Signhify Deploy →" links to deploy.signhi
 
 **Week 3 Exit Criteria (Marketplace):**
 
-- [ ] marketplace.signhify.online live
+- [ ] marketplace.signhify.dpdns.org live
 - [ ] 10 templates visible and downloadable
 - [ ] Download count tracked in Supabase
 - [ ] Submit template form working
@@ -866,7 +866,7 @@ _Key cross-product CTA: "Deploy with Signhify Deploy →" links to deploy.signhi
 
 ## WEEK 4: SIGNHIFY CLOUD
 
-### June 22–28 | cloud.signhify.online | Status: PLANNED
+### June 22–28 | cloud.signhify.dpdns.org | Status: PLANNED
 
 **Goal:** A managed cloud dashboard where users can create and manage Supabase projects, storage, and auth — branded as Signhify Cloud.
 
@@ -959,11 +959,11 @@ GET https://api.supabase.com/v1/projects/{ref}/usage
 | June 25 | Storage management · Bucket list · File browser       |
 | June 26 | Functions list · Activity feed · Settings page        |
 | June 27 | Polish UI · Error states · Loading skeletons          |
-| June 28 | Deploy to cloud.signhify.online · Cross-links · Test  |
+| June 28 | Deploy to cloud.signhify.dpdns.org · Cross-links · Test  |
 
 **Week 4 Exit Criteria:**
 
-- [ ] cloud.signhify.online live
+- [ ] cloud.signhify.dpdns.org live
 - [ ] Supabase Management API connected
 - [ ] Create new database project working
 - [ ] Tables visible in database detail view
@@ -975,7 +975,7 @@ GET https://api.supabase.com/v1/projects/{ref}/usage
 
 ## JUNE 29–30: SIGNHIFY OS
 
-### os.signhify.online | Status: PLANNED — Launch June 30
+### os.signhify.dpdns.org | Status: PLANNED — Launch June 30
 
 **Goal:** A unified business operating system dashboard that brings together CRM, project management, AI access, and cross-product navigation — the homepage of the entire Signhify ecosystem for logged-in users.
 
@@ -1012,7 +1012,7 @@ MODULE 3: PROJECTS
 MODULE 4: AI ASSISTANT
 ├── Embed of Signhify AI (iframe or inline)
 ├── Quick prompts: "Plan a new project" / "Write a proposal"
-└── Links to full ai.signhify.online
+└── Links to full ai.signhify.dpdns.org
 
 MODULE 5: ECOSYSTEM NAV (THE MOST IMPORTANT PIECE)
 ├── Links to all Signhify products with status badges
@@ -1058,11 +1058,11 @@ MODULE 6: ANALYTICS OVERVIEW
 | Day     | Tasks                                                                                 |
 | ------- | ------------------------------------------------------------------------------------- |
 | June 29 | Layout (sidebar + main) · Auth check · Command center module · CRM list               |
-| June 30 | Projects module · AI embed · Ecosystem nav · Deploy to os.signhify.online · LAUNCH 🚀 |
+| June 30 | Projects module · AI embed · Ecosystem nav · Deploy to os.signhify.dpdns.org · LAUNCH 🚀 |
 
 **June 30 Exit Criteria:**
 
-- [ ] os.signhify.online live
+- [ ] os.signhify.dpdns.org live
 - [ ] Auth required (redirect to login if no session)
 - [ ] CRM contacts list showing Supabase data
 - [ ] Projects list working
@@ -1087,7 +1087,7 @@ JUNE 6
 
 JUNE 7 (WEEK 1 DONE)
 ├── Studio: Services + roadmap timeline + founder + contact
-└── 🚀 Deploy signhify.online → LIVE
+└── 🚀 Deploy signhify.dpdns.org → LIVE
 
 JUNE 8
 └── Signhify AI: Landing + auth + layout
@@ -1108,7 +1108,7 @@ JUNE 13
 └── Signhify AI: Rate limiting + waitlist
 
 JUNE 14 (WEEK 2 DONE)
-└── 🚀 Deploy ai.signhify.online → LIVE
+└── 🚀 Deploy ai.signhify.dpdns.org → LIVE
 
 JUNE 15
 └── Signhify Deploy: Landing + GitHub OAuth + repo list
@@ -1117,7 +1117,7 @@ JUNE 16
 └── Signhify Deploy: Deploy flow + Vercel API + log streaming
 
 JUNE 17 (DEPLOY DONE)
-└── 🚀 Deploy deploy.signhify.online → LIVE
+└── 🚀 Deploy deploy.signhify.dpdns.org → LIVE
 
 JUNE 18
 └── Signhify Marketplace: Home + template grid
@@ -1129,7 +1129,7 @@ JUNE 20
 └── Signhify Marketplace: Submit form + seed 10 templates
 
 JUNE 21 (WEEK 3 DONE)
-└── 🚀 Deploy marketplace.signhify.online → LIVE
+└── 🚀 Deploy marketplace.signhify.dpdns.org → LIVE
 
 JUNE 22
 └── Signhify Cloud: Landing + Supabase Management API connect
@@ -1150,14 +1150,14 @@ JUNE 27
 └── Signhify Cloud: Polish + error states
 
 JUNE 28 (WEEK 4 DONE)
-└── 🚀 Deploy cloud.signhify.online → LIVE
+└── 🚀 Deploy cloud.signhify.dpdns.org → LIVE
 
 JUNE 29
 └── Signhify OS: Layout + CRM + command center
 
 JUNE 30 (DEADLINE)
 ├── Signhify OS: Projects + AI embed + ecosystem nav
-├── 🚀 Deploy os.signhify.online → LIVE
+├── 🚀 Deploy os.signhify.dpdns.org → LIVE
 └── 🎉 ALL 6 PRODUCTS LIVE — LAUNCH ANNOUNCEMENT
 ```
 
@@ -1168,12 +1168,12 @@ JUNE 30 (DEADLINE)
 ### Domain Configuration (Vercel)
 
 ```
-signhify.online          → apps/studio
-ai.signhify.online       → apps/ai
-deploy.signhify.online   → apps/deploy
-marketplace.signhify.online → apps/marketplace
-cloud.signhify.online    → apps/cloud
-os.signhify.online       → apps/os
+signhify.dpdns.org          → apps/studio
+ai.signhify.dpdns.org       → apps/ai
+deploy.signhify.dpdns.org   → apps/deploy
+marketplace.signhify.dpdns.org → apps/marketplace
+cloud.signhify.dpdns.org    → apps/cloud
+os.signhify.dpdns.org       → apps/os
 ```
 
 Vercel project per app, all in the same GitHub monorepo. Push to `main` auto-deploys all apps simultaneously via Turborepo.
@@ -1184,19 +1184,19 @@ Every app must include `<ProductNav />` (from packages/ui) in the header. This s
 
 ```
 [Signhify Logo]
-├── Studio (signhify.online)
-├── AI (ai.signhify.online)
-├── Deploy (deploy.signhify.online)
-├── Marketplace (marketplace.signhify.online)
-├── Cloud (cloud.signhify.online)
-└── OS (os.signhify.online) [Dashboard]
+├── Studio (signhify.dpdns.org)
+├── AI (ai.signhify.dpdns.org)
+├── Deploy (deploy.signhify.dpdns.org)
+├── Marketplace (marketplace.signhify.dpdns.org)
+├── Cloud (cloud.signhify.dpdns.org)
+└── OS (os.signhify.dpdns.org) [Dashboard]
 ```
 
 This makes the ecosystem feel unified even though it's 6 separate apps.
 
 ### Auth Strategy (Shared SSO)
 
-All 6 apps use the **same Supabase project** for auth. Users who sign up on Signhify AI are already signed in on Signhify OS. This is free SSO via shared JWT cookies on the `signhify.online` domain.
+All 6 apps use the **same Supabase project** for auth. Users who sign up on Signhify AI are already signed in on Signhify OS. This is free SSO via shared JWT cookies on the `signhify.dpdns.org` domain.
 
 ```javascript
 // packages/auth/index.ts
@@ -1246,7 +1246,7 @@ LinkedIn post (drafted below):
 >
 > At 21, running an MSME-registered AI engineering studio from Bihar:
 >
-> ✅ Signhify Studio (signhify.online) — Live agency
+> ✅ Signhify Studio (signhify.dpdns.org) — Live agency
 > ✅ Signhify AI — Prompt-to-product builder
 > ✅ Signhify Deploy — 1-click deployment
 > ✅ Signhify Marketplace — AI templates
@@ -1302,7 +1302,7 @@ Once all 6 are live, the July priority list:
 
 | Resource           | URL / Value                        |
 | ------------------ | ---------------------------------- |
-| Primary Domain     | signhify.online                    |
+| Primary Domain     | signhify.dpdns.org                    |
 | GitHub             | github.com/Warriorlegacy           |
 | Supabase Dashboard | supabase.com/dashboard             |
 | Vercel Dashboard   | vercel.com/dashboard               |

@@ -1,22 +1,77 @@
 # Signhify
 
-> AI engineering studio. Describe your idea — we design, engineer, automate and launch it end-to-end.
+> AI-powered product studio. Describe your idea — we design, engineer, automate and launch it end-to-end.
 
-Signhify is an AI-first product studio founded by Piyush Raj Singh. Registered MSME (Govt. of India). We ship SaaS, AI agents, CRMs, landing pages and growth systems for ambitious founders, and are building a broader AI product ecosystem (Studio → AI → Deploy → Marketplace → Cloud → OS) by 2030.
+## About
+
+Signhify is an AI-first product studio founded by Piyush Raj Singh. We are a registered MSME (Govt. of India). We ship SaaS platforms, AI agents, CRMs, landing pages, and growth systems for ambitious founders and enterprises. We are building a broader AI product ecosystem (Studio → AI → Deploy → Marketplace → Cloud → OS) scaling to 100K+ live apps.
+
+**Website**: https://signhify.dpdns.org
+**Contact**: Piyushrajsingh092@gmail.com
+**Founder**: Piyush Raj Singh
+**GitHub**: https://github.com/Warriorlegacy
+
+## Core Products & Services
+
+### Signhify AI Blueprint Generator
+- URL: https://signhify.dpdns.org/ai
+- Describe your product idea in plain English. Six AI agents generate a full execution plan: schema design, design tokens, code generation, test suites, and deployment setup.
+- Free to use. No sign-up required for basic prompts.
+
+### Signhify Marketplace
+- URL: https://signhify.dpdns.org/marketplace
+- Production-ready templates, AI agent workflows, component kits, and SaaS starters.
+- Creators can list and sell templates via Stripe checkout integration.
+
+### Signhify Cloud & Deployment
+- URL: https://signhify.dpdns.org/os
+- Zero-config deployment: Cloudflare Workers/Pages hosting, GitHub integration, automated DNS, secrets vault.
+- One-click deploy from AI-generated code to live production.
+
+### Custom Development Services
+- URL: https://signhify.dpdns.org/services
+- AI Automation, SaaS Development, Web Applications, CRM Systems, Performance Marketing, Brand Strategy.
+- Pricing: Sprint ($299), Studio ($799+), Platform (custom)
 
 ## Pages
 
-- [Home](/): Describe your idea, Signhify builds it.
-- [Projects](/projects): 14+ shipped products across SaaS, AI, EdTech and growth.
-- [Services](/services): AI automation, SaaS, web, CRM, performance marketing, brand.
-- [AI](/ai): Prompt-to-product preview. Six AI agents turn one sentence into a plan.
-- [Templates](/templates): Production-ready SaaS, AI and landing templates.
-- [Marketplace](/marketplace): Templates, AI agents, components and workflows.
-- [Pricing](/pricing): Sprint, Studio and Platform engagement models.
-- [Vision](/vision): Roadmap from studio (2026) to AI product ecosystem (2030).
-- [About](/about): Founder, mission and how Signhify operates.
-- [Contact](/contact): Start a project — six quick steps, 24-hour response.
+- [Home](https://signhify.dpdns.org/): Describe your idea, Signhify builds it. 22+ shipped projects showcase.
+- [Projects](https://signhify.dpdns.org/projects): 22+ shipped products across SaaS, AI, EdTech, Performance Marketing and growth.
+- [Services](https://signhify.dpdns.org/services): AI automation, SaaS, web, CRM, performance marketing, brand.
+- [AI](https://signhify.dpdns.org/ai): Prompt-to-product preview. Six AI agents turn one sentence into a detailed build plan.
+- [Templates](https://signhify.dpdns.org/templates): Production-ready SaaS, AI and landing page templates.
+- [Marketplace](https://signhify.dpdns.org/marketplace): Templates, AI agents, components and workflows for sale.
+- [Pricing](https://signhify.dpdns.org/pricing): Sprint, Studio and Platform engagement models.
+- [Vision](https://signhify.dpdns.org/vision): Roadmap from studio (2026) to AI product ecosystem (2030).
+- [OS](https://signhify.dpdns.org/os): Cloud dashboard, deployment, agent orchestration and workflow management.
+- [Builder](https://signhify.dpdns.org/builder): Full-stack product builder with AI agent pipeline.
+- [About](https://signhify.dpdns.org/about): Founder, mission and how Signhify operates.
+- [Contact](https://signhify.dpdns.org/contact): Start a project — six quick steps, 24-hour response.
+- [Book](https://signhify.dpdns.org/book): Schedule a consultation call.
+- [Roadmap](https://signhify.dpdns.org/roadmap): Public development roadmap and progress tracking.
 
-## Optional
+## Tech Stack
 
-- [Sprint](/sprint): Live June 2026 delivery checklist, built in public.
+- **Frontend**: TanStack Start, React 19, Vite, TailwindCSS 4, Framer Motion, Three.js
+- **Backend**: TanStack Server Functions, Node.js, Nitro
+- **Database & Auth**: Supabase (PostgreSQL, RLS, OAuth via Google/GitHub)
+- **AI**: Anthropic Claude 3.5 Sonnet, OpenAI GPT-4o, Custom AI Gateway
+- **Infrastructure**: Cloudflare Workers/Pages, GitHub Actions
+- **Payments**: Stripe (checkout, subscriptions, credit packs)
+
+## FAQ
+
+**Q: What is Signhify?**
+A: Signhify is an AI-powered product studio that turns ideas into production-ready software. Describe what you want in plain English, and our AI agent swarm designs, codes, tests, and deploys it.
+
+**Q: How much does Signhify cost?**
+A: Sprint plans start at $299 for rapid prototypes. Studio engagements start at $799 for full product builds. The AI Blueprint Generator is free to use.
+
+**Q: Who founded Signhify?**
+A: Signhify was founded by Piyush Raj Singh, an AI engineer and product builder based in India.
+
+**Q: What technologies does Signhify use?**
+A: React 19, TanStack Start, Supabase, Cloudflare, Stripe, and multiple AI models including Claude 3.5 Sonnet and GPT-4o.
+
+**Q: Can I sell templates on Signhify?**
+A: Yes. The Signhify Marketplace allows independent builders and creators to list and sell templates, components, and AI agent workflows.

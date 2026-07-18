@@ -31,9 +31,9 @@ export const Route = createFileRoute("/marketplace")({
         property: "og:description",
         content: "Templates, AI agents, components and workflows — one marketplace from Signhify.",
       },
-      { property: "og:url", content: "https://signhify.online/marketplace" },
+      { property: "og:url", content: "https://signhify.dpdns.org/marketplace" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/marketplace" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/marketplace" }],
   }),
   component: MarketplacePage,
 });

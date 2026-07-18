@@ -26,7 +26,7 @@ When previewing on Lovable, the publishable + URL pair is auto-injected.
 2. Import into Vercel as a TanStack Start project (auto-detected from `vite.config.ts`).
 3. Add all `SUPABASE_*` and `VITE_SUPABASE_*` vars in **Settings → Environment Variables**.
 4. Build command: `bun run build` · Output: `.output/public` (handled by Vite plugin).
-5. Stable production URL: `signhify.online` (via custom domain).
+5. Stable production URL: `signhify.dpdns.org` (via custom domain).
 
 ### Netlify
 
@@ -48,7 +48,7 @@ Supabase reachability, and whether the client fallback path is exercised.
 wire it into a GitHub Action or post-deploy hook before flipping DNS.
 
 ```bash
-bun scripts/check-deploy.mjs https://signhify.online
+bun scripts/check-deploy.mjs https://signhify.dpdns.org
 ```
 
 ## Future-ready hooks (already scaffolded)

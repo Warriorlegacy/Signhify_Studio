@@ -14,10 +14,10 @@ export const Route = createFileRoute("/app/")({
         content:
           "Manage your Signhify AI projects, runs, artifacts, deployments, domains, analytics, and secrets.",
       },
-      { property: "og:url", content: "https://signhify.online/app" },
+      { property: "og:url", content: "https://signhify.dpdns.org/app" },
       { property: "og:title", content: "Dashboard — Signhify" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/app" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/app" }],
   }),
   component: AppDashboard,
 });

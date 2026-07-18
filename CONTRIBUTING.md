@@ -75,7 +75,7 @@ The #1 way to break the sync is to edit the same file in Lovable and Codex at th
 
 ## 7. Roadmap
 
-The execution plan lives at [`public/signhify-roadmap.md`](public/signhify-roadmap.md) and is also served at [`/roadmap`](https://signhify.online/roadmap). Codex tasks should reference the relevant week/section so progress stays legible.
+The execution plan lives at [`public/signhify-roadmap.md`](public/signhify-roadmap.md) and is also served at [`/roadmap`](https://signhify.dpdns.org/roadmap). Codex tasks should reference the relevant week/section so progress stays legible.
 
 ---
 

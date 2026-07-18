@@ -10,9 +10,9 @@ export const Route = createFileRoute("/privacy")({
           "How Signhify collects, uses and protects your data across the studio site, contact wizard and Signhify AI waitlist.",
       },
       { property: "og:title", content: "Privacy Policy — Signhify" },
-      { property: "og:url", content: "https://signhify.online/privacy" },
+      { property: "og:url", content: "https://signhify.dpdns.org/privacy" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/privacy" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/privacy" }],
   }),
   component: PrivacyPage,
 });

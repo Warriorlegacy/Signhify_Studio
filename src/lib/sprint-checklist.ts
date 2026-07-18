@@ -23,7 +23,7 @@ export const sprintTracks: SprintTrack[] = [
     key: "studio",
     name: "Signhify Studio",
     window: "Week 1 · June 1–7",
-    subdomain: "signhify.online",
+    subdomain: "signhify.dpdns.org",
     summary: "The Phase 1 marketing site, portfolio of 14 projects, and lead capture.",
     items: [
       {
@@ -84,7 +84,7 @@ export const sprintTracks: SprintTrack[] = [
       },
       {
         id: "studio-publish",
-        title: "Publish signhify.online",
+        title: "Publish signhify.dpdns.org",
         detail: "Custom domain wired, SSL green, OG previews verified.",
         owner: "Piyush",
         status: "todo",
@@ -96,7 +96,7 @@ export const sprintTracks: SprintTrack[] = [
     key: "ai",
     name: "Signhify AI",
     window: "Week 2 · June 8–14",
-    subdomain: "ai.signhify.online",
+    subdomain: "ai.signhify.dpdns.org",
     summary: "Prompt → AI-generated product plan via Claude with streaming UI.",
     items: [
       {
@@ -133,7 +133,7 @@ export const sprintTracks: SprintTrack[] = [
       },
       {
         id: "ai-publish",
-        title: "Publish ai.signhify.online",
+        title: "Publish ai.signhify.dpdns.org",
         detail: "Subdomain routed, analytics on.",
         owner: "Piyush",
         status: "todo",
@@ -145,7 +145,7 @@ export const sprintTracks: SprintTrack[] = [
     key: "deploy",
     name: "Signhify Deploy",
     window: "Week 3 · June 15–17",
-    subdomain: "deploy.signhify.online",
+    subdomain: "deploy.signhify.dpdns.org",
     summary: "GitHub repo → 1-click Vercel deploy with status dashboard.",
     items: [
       {
@@ -178,7 +178,7 @@ export const sprintTracks: SprintTrack[] = [
     key: "marketplace",
     name: "Signhify Marketplace",
     window: "Week 3 · June 18–21",
-    subdomain: "marketplace.signhify.online",
+    subdomain: "marketplace.signhify.dpdns.org",
     summary: "Browse + download 10+ launch templates derived from the 14 projects.",
     items: [
       {
@@ -211,7 +211,7 @@ export const sprintTracks: SprintTrack[] = [
     key: "cloud",
     name: "Signhify Cloud",
     window: "Week 4 · June 22–28",
-    subdomain: "cloud.signhify.online",
+    subdomain: "cloud.signhify.dpdns.org",
     summary: "Supabase Management API wrapper: DB, storage, auth visible per project.",
     items: [
       {
@@ -232,7 +232,7 @@ export const sprintTracks: SprintTrack[] = [
       },
       {
         id: "cloud-publish",
-        title: "Publish cloud.signhify.online",
+        title: "Publish cloud.signhify.dpdns.org",
         detail: "Auth gate + analytics live.",
         owner: "Piyush",
         status: "todo",
@@ -244,7 +244,7 @@ export const sprintTracks: SprintTrack[] = [
     key: "os",
     name: "Signhify OS",
     window: "Week 4 · June 29–30",
-    subdomain: "os.signhify.online",
+    subdomain: "os.signhify.dpdns.org",
     summary: "Unified dashboard: CRM, Projects, AI shortcuts, full Signhify nav.",
     items: [
       {

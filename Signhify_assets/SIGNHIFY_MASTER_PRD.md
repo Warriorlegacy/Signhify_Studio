@@ -9,7 +9,7 @@
 **Version:** 3.0 (Consolidated Final)
 **Product Owner:** Piyush Raj Singh
 **Brand:** Signhify
-**Domain:** signhify.online
+**Domain:** signhify.dpdns.org
 **Current Site:** signhify.vercel.app
 **Stage:** Phase 1 Launch → AI Ecosystem Foundation
 **Last Updated:** June 2026
@@ -787,7 +787,7 @@ Sub-text: No commitment. Just clarity.
 
 Alternative contact:
   📱 WhatsApp: +91 [number]
-  📧 hello@signhify.online
+  📧 hello@signhify.dpdns.org
   🗓 Calendly: [link]
 ```
 
@@ -928,7 +928,7 @@ Confirmation:
 ### Project Structure
 
 ```
-signhify.online/
+signhify.dpdns.org/
 ├── app/
 │   ├── (marketing)/
 │   │   ├── page.tsx          ← Homepage
@@ -1105,7 +1105,7 @@ GET  /api/projects         ← Projects data (optional, if not using Sanity CDN)
 The `/book-call` multi-step form qualifies before booking. The data is:
 
 - Stored in Supabase (leads table)
-- Emailed to hello@signhify.online via Resend
+- Emailed to hello@signhify.dpdns.org via Resend
 - Triggers a WhatsApp notification to Piyush
 
 ### Lead Scoring (for future CRM)
@@ -1209,7 +1209,7 @@ Week 3:
   □ Add Google Analytics + Clarity
   □ Performance audit → optimize
   □ SEO audit (metadata, schema)
-  □ Launch on signhify.online
+  □ Launch on signhify.dpdns.org
 ```
 
 ### Phase 2: Content & Authority (Month 2)

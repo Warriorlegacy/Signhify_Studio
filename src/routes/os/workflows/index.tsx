@@ -14,10 +14,10 @@ export const Route = createFileRoute("/os/workflows/")({
         content:
           "Signhify OS - Orchestrate and manage agent workflows. Monitor progress, run and stop workflows.",
       },
-      { property: "og:url", content: "https://signhify.online/os/workflows" },
+      { property: "og:url", content: "https://signhify.dpdns.org/os/workflows" },
       { property: "og:title", content: "Workflows — Signhify OS" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/os/workflows" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/os/workflows" }],
   }),
   component: WorkflowListPage,
 });

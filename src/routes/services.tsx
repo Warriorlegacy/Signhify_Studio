@@ -18,9 +18,9 @@ export const Route = createFileRoute("/services")({
         property: "og:description",
         content: "Twelve capabilities, one team. End-to-end AI-first product execution.",
       },
-      { property: "og:url", content: "https://signhify.online/services" },
+      { property: "og:url", content: "https://signhify.dpdns.org/services" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/services" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/services" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -28,8 +28,8 @@ export const Route = createFileRoute("/services")({
           "@context": "https://schema.org",
           "@type": "Service",
           name: "Signhify — AI Engineering Studio Services",
-          provider: { "@type": "Organization", name: "Signhify", url: "https://signhify.online" },
-          url: "https://signhify.online/services",
+          provider: { "@type": "Organization", name: "Signhify", url: "https://signhify.dpdns.org" },
+          url: "https://signhify.dpdns.org/services",
           serviceType: [
             "AI automation",
             "SaaS development",

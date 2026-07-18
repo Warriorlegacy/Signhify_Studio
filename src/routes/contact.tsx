@@ -18,9 +18,9 @@ export const Route = createFileRoute("/contact")({
         property: "og:description",
         content: "Start a project with Signhify — AI engineering studio.",
       },
-      { property: "og:url", content: "https://signhify.online/contact" },
+      { property: "og:url", content: "https://signhify.dpdns.org/contact" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/contact" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/contact" }],
   }),
   component: ContactPage,
 });

@@ -16,10 +16,10 @@ export const Route = createFileRoute("/marketplace/success")({
         content:
           "Confirm your marketplace purchase and unlock the signed download link for your Signhify asset.",
       },
-      { property: "og:url", content: "https://signhify.online/marketplace/success" },
+      { property: "og:url", content: "https://signhify.dpdns.org/marketplace/success" },
       { property: "og:title", content: "Marketplace Purchase Success" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/marketplace/success" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/marketplace/success" }],
   }),
   component: SuccessPage,
 });

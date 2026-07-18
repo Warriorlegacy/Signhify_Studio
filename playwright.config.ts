@@ -11,7 +11,7 @@ import { defineConfig, devices } from "@playwright/test";
  *   bunx playwright test           # compare against baselines
  *   bunx playwright test -u        # update baselines after intentional changes
  *
- * Override the target URL with PLAYWRIGHT_BASE_URL=https://signhify.online
+ * Override the target URL with PLAYWRIGHT_BASE_URL=https://signhify.dpdns.org
  */
 const baseURL = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:8080";
 

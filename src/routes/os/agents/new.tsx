@@ -14,11 +14,11 @@ export const Route = createFileRoute("/os/agents/new")({
       },
       {
         property: "og:url",
-        content: "https://signhify.online/os/agents/new",
+        content: "https://signhify.dpdns.org/os/agents/new",
       },
       { property: "og:title", content: "New Agent — Signhify OS" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/os/agents/new" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/os/agents/new" }],
   }),
   component: NewAgentPage,
 });

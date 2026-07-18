@@ -7,12 +7,12 @@ export const Route = createFileRoute("/terms")({
       {
         name: "description",
         content:
-          "Terms governing the use of signhify.online, the Signhify studio engagement and the Signhify AI early-access program.",
+          "Terms governing the use of signhify.dpdns.org, the Signhify studio engagement and the Signhify AI early-access program.",
       },
       { property: "og:title", content: "Terms of Service — Signhify" },
-      { property: "og:url", content: "https://signhify.online/terms" },
+      { property: "og:url", content: "https://signhify.dpdns.org/terms" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/terms" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/terms" }],
   }),
   component: TermsPage,
 });
@@ -26,7 +26,7 @@ function TermsPage() {
 
       <h2>1. Acceptance</h2>
       <p>
-        By using <a href="https://signhify.online">signhify.online</a> or any Signhify product, you
+        By using <a href="https://signhify.dpdns.org">signhify.dpdns.org</a> or any Signhify product, you
         agree to these terms. If you do not agree, do not use the service.
       </p>
 

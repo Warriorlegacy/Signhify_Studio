@@ -14,10 +14,10 @@ function isAdmin(claims: any): boolean {
 
 const EXPECTED_TITLE = "Marketplace — Signhify";
 const EXPECTED_DESCRIPTION_TOKEN = "templates, AI agents, components";
-const EXPECTED_OG_URL = "https://signhify.online/marketplace";
+const EXPECTED_OG_URL = "https://signhify.dpdns.org/marketplace";
 
 const ALLOWED_ORIGINS = [
-  "https://signhify.online",
+  "https://signhify.dpdns.org",
   "https://id-preview--*.lovable.app",
   // Add other allowed domains as needed
 ];

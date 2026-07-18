@@ -36,10 +36,10 @@ export const Route = createFileRoute("/app/billing/")({
         content:
           "Manage your Signhify plan, credits, subscription, and billing history.",
       },
-      { property: "og:url", content: "https://signhify.online/app/billing" },
+      { property: "og:url", content: "https://signhify.dpdns.org/app/billing" },
       { property: "og:title", content: "Billing — Signhify" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/app/billing" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/app/billing" }],
   }),
   component: BillingPage,
 });

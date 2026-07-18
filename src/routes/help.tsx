@@ -16,10 +16,10 @@ export const Route = createFileRoute("/help")({
         content:
           "Search Signhify help articles for onboarding, AI Studio, marketplace, billing, and deployment guidance.",
       },
-      { property: "og:url", content: "https://signhify.online/help" },
+      { property: "og:url", content: "https://signhify.dpdns.org/help" },
       { property: "og:title", content: "Help — Signhify" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/help" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/help" }],
   }),
   component: HelpPage,
 });
@@ -34,10 +34,10 @@ function HelpPage() {
     <section className="pt-32 pb-24 px-6 min-h-screen">
       <div className="mx-auto max-w-4xl">
         <a
-          href="https://docs.signhify.online"
+          href="https://docs.signhify.dpdns.org"
           className="block rounded-2xl border border-primary/30 bg-primary/10 p-5 text-primary"
         >
-          Visit full docs at docs.signhify.online
+          Visit full docs at docs.signhify.dpdns.org
         </a>
         <h1 className="mt-8 font-display text-5xl font-black">Help Center</h1>
         <input

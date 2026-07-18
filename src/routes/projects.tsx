@@ -27,9 +27,9 @@ export const Route = createFileRoute("/projects")({
         property: "og:description",
         content: "Selected work from Signhify: SaaS, AI automation, CRMs, marketing systems.",
       },
-      { property: "og:url", content: "https://signhify.online/projects" },
+      { property: "og:url", content: "https://signhify.dpdns.org/projects" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/projects" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/projects" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -37,7 +37,7 @@ export const Route = createFileRoute("/projects")({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "Projects — Signhify",
-          url: "https://signhify.online/projects",
+          url: "https://signhify.dpdns.org/projects",
           description:
             "Selected work from Signhify across SaaS, AI automation, CRMs and marketing systems.",
         }),

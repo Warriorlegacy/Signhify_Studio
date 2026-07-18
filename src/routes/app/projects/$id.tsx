@@ -32,12 +32,12 @@ export const Route = createFileRoute("/app/projects/$id")({
       },
       {
         property: "og:url",
-        content: `https://signhify.online/app/projects/${loaderData?.id ?? ""}`,
+        content: `https://signhify.dpdns.org/app/projects/${loaderData?.id ?? ""}`,
       },
       { property: "og:title", content: "Project — Signhify" },
     ],
     links: [
-      { rel: "canonical", href: `https://signhify.online/app/projects/${loaderData?.id ?? ""}` },
+      { rel: "canonical", href: `https://signhify.dpdns.org/app/projects/${loaderData?.id ?? ""}` },
     ],
   }),
   component: ProjectPage,

@@ -424,7 +424,7 @@ function PublishPage() {
                 value={approverEmail}
                 onChange={(e) => setApproverEmail(e.target.value)}
                 className="mt-1 w-full rounded-md bg-surface border border-border px-3 py-2 text-sm"
-                placeholder="you@signhify.online"
+                placeholder="you@signhify.dpdns.org"
               />
             </label>
             <label className="block">

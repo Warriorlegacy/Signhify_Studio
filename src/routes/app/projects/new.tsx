@@ -15,10 +15,10 @@ export const Route = createFileRoute("/app/projects/new")({
         name: "description",
         content: "Create a new Signhify Cloud project with title and project brief.",
       },
-      { property: "og:url", content: "https://signhify.online/app/projects/new" },
+      { property: "og:url", content: "https://signhify.dpdns.org/app/projects/new" },
       { property: "og:title", content: "New Project — Signhify" },
     ],
-    links: [{ rel: "canonical", href: "https://signhify.online/app/projects/new" }],
+    links: [{ rel: "canonical", href: "https://signhify.dpdns.org/app/projects/new" }],
   }),
   component: NewProject,
 });
