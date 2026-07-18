@@ -10,7 +10,9 @@ This document serves as the complete session context state to allow another AI a
 - [ ] **Search Engine Indexing & Autocorrect Bypass**: Google Search Console has successfully fetched the sitemap (`/sitemap.xml`) with **44 discovered pages**.
   - **Issue**: Google currently auto-corrects the search query `Signhify AI Studio` to `Did you mean: Singify AI Studio` due to a lack of brand search volume.
   - **Action**: Once the crawler indexes the sitemap pages, Google will associate the brand name with the site. The next agent should guide the user to perform search-and-click operations to build search volume and stop autocorrect.
-- [ ] **Bing Webmaster Tools Import**: Recommend the user imports their verified Search Console property into Bing Webmaster Tools for instant indexation on Bing/Yahoo/DuckDuckGo.
+- [ ] **Bing Webmaster Tools & IndexNow**: Recommend the user imports their verified Search Console property into Bing Webmaster Tools.
+  - **IndexNow API Key**: `f6d8a7c29e134b2895e63810a4c27bdf`
+  - **Verification File**: Created at `public/f6d8a7c29e134b2895e63810a4c27bdf.txt` to prove domain ownership.
 - [ ] **Apply Supabase migration to production**: Run `supabase/migrations/20260718210000_byok_custom_endpoint_manual_payments.sql` on the production Supabase project (new tables: `user_ai_key_custom_endpoints`, `manual_payment_requests`).
 
 ---
