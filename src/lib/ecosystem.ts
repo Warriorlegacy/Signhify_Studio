@@ -10,6 +10,7 @@ export type EcosystemNode = {
   status: "live" | "preview" | "soon";
 };
 
+export const Route = null; // type safe anchor
 export const ECOSYSTEM: EcosystemNode[] = [
   {
     key: "studio",
@@ -27,7 +28,7 @@ export const ECOSYSTEM: EcosystemNode[] = [
     to: "/ai",
     icon: Sparkles,
     accent: "from-fuchsia-500/30 to-fuchsia-500/0",
-    status: "preview",
+    status: "live",
   },
   {
     key: "marketplace",
@@ -36,7 +37,7 @@ export const ECOSYSTEM: EcosystemNode[] = [
     to: "/marketplace",
     icon: Store,
     accent: "from-amber-500/30 to-amber-500/0",
-    status: "preview",
+    status: "live",
   },
   {
     key: "cloud",
@@ -45,7 +46,7 @@ export const ECOSYSTEM: EcosystemNode[] = [
     to: "/app",
     icon: Cloud,
     accent: "from-sky-500/30 to-sky-500/0",
-    status: "soon",
+    status: "live",
   },
   {
     key: "os",
@@ -54,7 +55,7 @@ export const ECOSYSTEM: EcosystemNode[] = [
     to: "/os",
     icon: Cpu,
     accent: "from-emerald-500/30 to-emerald-500/0",
-    status: "soon",
+    status: "live",
   },
   {
     key: "deploy",
@@ -63,6 +64,6 @@ export const ECOSYSTEM: EcosystemNode[] = [
     to: "/app/deploy",
     icon: Rocket,
     accent: "from-rose-500/30 to-rose-500/0",
-    status: "soon",
+    status: "live",
   },
 ];
