@@ -51,6 +51,7 @@ import { Route as OsWorkflowsNewRouteImport } from './routes/os/workflows/new'
 import { Route as OsAgentsNewRouteImport } from './routes/os/agents/new'
 import { Route as AppProjectsNewRouteImport } from './routes/app/projects/new'
 import { Route as AppProjectsIdRouteImport } from './routes/app/projects/$id'
+import { Route as ApiTelemetryEventRouteImport } from './routes/api/telemetry/event'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as ApiPublicAuthProviderRouteImport } from './routes/api/public/auth-provider'
@@ -268,6 +269,11 @@ const AppProjectsIdRoute = AppProjectsIdRouteImport.update({
   path: '/app/projects/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiTelemetryEventRoute = ApiTelemetryEventRouteImport.update({
+  id: '/api/telemetry/event',
+  path: '/api/telemetry/event',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   id: '/api/stripe/webhook',
   path: '/api/stripe/webhook',
@@ -336,6 +342,7 @@ export interface FileRoutesByFullPath {
   '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/telemetry/event': typeof ApiTelemetryEventRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
   '/os/agents/new': typeof OsAgentsNewRoute
@@ -385,6 +392,7 @@ export interface FileRoutesByTo {
   '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/telemetry/event': typeof ApiTelemetryEventRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
   '/os/agents/new': typeof OsAgentsNewRoute
@@ -436,6 +444,7 @@ export interface FileRoutesById {
   '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/telemetry/event': typeof ApiTelemetryEventRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
   '/os/agents/new': typeof OsAgentsNewRoute
@@ -488,6 +497,7 @@ export interface FileRouteTypes {
     | '/api/public/auth-provider'
     | '/api/public/health'
     | '/api/stripe/webhook'
+    | '/api/telemetry/event'
     | '/app/projects/$id'
     | '/app/projects/new'
     | '/os/agents/new'
@@ -537,6 +547,7 @@ export interface FileRouteTypes {
     | '/api/public/auth-provider'
     | '/api/public/health'
     | '/api/stripe/webhook'
+    | '/api/telemetry/event'
     | '/app/projects/$id'
     | '/app/projects/new'
     | '/os/agents/new'
@@ -587,6 +598,7 @@ export interface FileRouteTypes {
     | '/api/public/auth-provider'
     | '/api/public/health'
     | '/api/stripe/webhook'
+    | '/api/telemetry/event'
     | '/app/projects/$id'
     | '/app/projects/new'
     | '/os/agents/new'
@@ -631,6 +643,7 @@ export interface RootRouteChildren {
   ApiPublicAuthProviderRoute: typeof ApiPublicAuthProviderRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
+  ApiTelemetryEventRoute: typeof ApiTelemetryEventRoute
   AppProjectsIdRoute: typeof AppProjectsIdRouteWithChildren
   AppProjectsNewRoute: typeof AppProjectsNewRoute
   AppBillingIndexRoute: typeof AppBillingIndexRoute
@@ -935,6 +948,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProjectsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/telemetry/event': {
+      id: '/api/telemetry/event'
+      path: '/api/telemetry/event'
+      fullPath: '/api/telemetry/event'
+      preLoaderRoute: typeof ApiTelemetryEventRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/stripe/webhook': {
       id: '/api/stripe/webhook'
       path: '/api/stripe/webhook'
@@ -1082,6 +1102,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicAuthProviderRoute: ApiPublicAuthProviderRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
+  ApiTelemetryEventRoute: ApiTelemetryEventRoute,
   AppProjectsIdRoute: AppProjectsIdRouteWithChildren,
   AppProjectsNewRoute: AppProjectsNewRoute,
   AppBillingIndexRoute: AppBillingIndexRoute,
