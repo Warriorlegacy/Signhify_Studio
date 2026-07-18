@@ -15,6 +15,10 @@ import {
   CheckCircle2,
   AlertCircle,
   ShoppingCart,
+  Smartphone,
+  Landmark,
+  Globe,
+  MessageCircle,
 } from "lucide-react";
 import { requireAppAuth } from "@/lib/auth-guard.server";
 import { getUserCredits, createCheckoutSession } from "@/lib/monetization.functions";
@@ -262,6 +266,60 @@ function BillingPage() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Manual payment methods */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Pay With</CardTitle>
+                <CardDescription>Manual payment options — send confirmation on WhatsApp after transfer</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid sm:grid-cols-3 gap-3">
+                  <div className="rounded-xl border border-border bg-surface/40 p-4">
+                    <Smartphone className="w-5 h-5 text-blue-400 mb-2" />
+                    <div className="text-sm font-semibold">UPI</div>
+                    <div className="text-xs text-muted-foreground font-mono mt-1">6202442690@jio</div>
+                  </div>
+                  <div className="rounded-xl border border-border bg-surface/40 p-4">
+                    <Globe className="w-5 h-5 text-sky-400 mb-2" />
+                    <div className="text-sm font-semibold">PayPal</div>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      <a href="https://paypal.me/signhify" target="_blank" rel="noreferrer noopener" className="text-primary underline">
+                        paypal.me/signhify
+                      </a>
+                    </div>
+                  </div>
+                  <div className="rounded-xl border border-border bg-surface/40 p-4">
+                    <Landmark className="w-5 h-5 text-emerald-400 mb-2" />
+                    <div className="text-sm font-semibold">Bank Transfer</div>
+                    <div className="text-xs text-muted-foreground mt-1 font-mono leading-relaxed">
+                      A/C 000521712140642<br />
+                      Piyush Raj Singh<br />
+                      Jio Payments Bank<br />
+                      IFSC JIOP0000001
+                    </div>
+                  </div>
+                </div>
+                <div className="rounded-xl border border-border bg-surface/40 p-4 flex items-start gap-3">
+                  <MessageCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                  <div className="text-sm">
+                    <span className="font-semibold">WhatsApp confirmation</span>
+                    <p className="text-muted-foreground text-xs mt-0.5">
+                      After payment, send the screenshot to{" "}
+                      <a
+                        href="https://wa.me/916202442690"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="text-primary underline"
+                      >
+                        +91 620202442690
+                      </a>{" "}
+                      and we&rsquo;ll credit your account within 2 hours.
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>

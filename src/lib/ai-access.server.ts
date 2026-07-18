@@ -6,6 +6,7 @@ const PAID_PLANS = new Set(["studio", "scale", "pro"]);
 
 // Provider names accepted for BYOK. Must match names in robust-ai-service.
 export const BYOK_PROVIDERS = [
+  "OpenAI",
   "Groq",
   "Cerebras",
   "NVIDIA",
@@ -16,6 +17,7 @@ export const BYOK_PROVIDERS = [
   "Cohere",
   "xAI",
   "Anthropic",
+  "Custom",
 ] as const;
 export type BYOKProvider = (typeof BYOK_PROVIDERS)[number];
 

@@ -15,7 +15,9 @@ import {
   Copy,
   Zap,
   ShoppingCart,
+  Key,
 } from "lucide-react";
+import AiKeyQuickConfig from "@/components/ai/AiKeyQuickConfig";
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { generatePlan, savePlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
@@ -423,8 +425,13 @@ function AiPage() {
           starter build.
         </p>
 
+        {/* Inline BYOK config for free-tier users */}
+        <div className="mt-8">
+          <AiKeyQuickConfig />
+        </div>
+
         {/* Prompt box */}
-        <div className="mt-10 rounded-2xl border border-border bg-card/80 backdrop-blur p-2 shadow-[var(--shadow-card)]">
+        <div className="mt-6 rounded-2xl border border-border bg-card/80 backdrop-blur p-2 shadow-[var(--shadow-card)]">
           <div className="flex flex-col sm:flex-row gap-2">
             <input
               value={prompt}

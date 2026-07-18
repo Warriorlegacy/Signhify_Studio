@@ -85,11 +85,19 @@ export const saveMyAiKey = createServerFn({ method: "POST" })
     const obj = (input ?? {}) as Record<string, unknown>;
     const provider = assertProvider(obj.provider);
     const apiKey = typeof obj.apiKey === "string" ? obj.apiKey.trim() : "";
+    const apiEndpoint = obj.provider === "Custom" && typeof obj.apiEndpoint === "string"
+      ? obj.apiEndpoint.trim()
+      : "";
     if (apiKey.length < 10 || apiKey.length > 400) {
       throw new Error("API key must be between 10 and 400 characters.");
     }
+    if (provider === "Custom" && apiEndpoint) {
+      try { new URL(apiEndpoint); } catch {
+        throw new Error("Custom endpoint must be a valid URL (e.g. https://my-model.example.com/v1).");
+      }
+    }
     validateApiKeyShape(apiKey);
-    return { provider, apiKey };
+    return { provider, apiKey, apiEndpoint };
   })
   .handler(async ({ context, data }) => {
     const { supabase, userId } = context;
@@ -102,17 +110,16 @@ export const saveMyAiKey = createServerFn({ method: "POST" })
       auditLog("byok.encrypt_failed", { userId, provider: data.provider });
       throw new Error("Failed to encrypt key. Your key was not saved.");
     }
+    const record: Record<string, unknown> = {
+      user_id: userId,
+      provider: data.provider,
+      api_key_encrypted: encrypted,
+      updated_at: new Date().toISOString(),
+    };
+    if (data.apiEndpoint) record.api_endpoint = data.apiEndpoint;
     const { error } = await (supabase as any)
       .from("user_ai_keys")
-      .upsert(
-        {
-          user_id: userId,
-          provider: data.provider,
-          api_key_encrypted: encrypted,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "user_id,provider" },
-      );
+      .upsert(record, { onConflict: "user_id,provider" });
     if (error) {
       auditLog("byok.save_failed", { userId, provider: data.provider });
       throw new Error(error.message);

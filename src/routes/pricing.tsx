@@ -117,7 +117,7 @@ const FAQ = [
   },
   {
     q: "How do payments work?",
-    a: "Sprint: 100% upfront. Studio: 50% at start of each month, 50% on delivery. Platform: custom terms. We accept bank transfer, Razorpay, and Stripe.",
+    a: "Sprint: 100% upfront. Studio: 50% at start of each month, 50% on delivery. Platform: custom terms. We accept UPI (6202442690@jio), PayPal (paypal.me/signhify), and bank transfer (A/C 000521712140642, Piyush Raj Singh, Jio Payments Bank, IFSC JIOP0000001). Stripe and Razorpay also available. Send payment confirmation on WhatsApp (+91 620202442690) and we'll credit your account within 2 hours.",
   },
   {
     q: "Do you work with international clients?",

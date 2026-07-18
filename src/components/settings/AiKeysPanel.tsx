@@ -9,6 +9,7 @@ import {
 
 // Keep names in sync with BYOK_PROVIDERS in ai-access.server.ts.
 const PROVIDER_META: Record<string, { label: string; hint: string; docs: string }> = {
+  OpenAI: { label: "OpenAI", hint: "gpt-4o / o3", docs: "https://platform.openai.com/api-keys" },
   Groq: { label: "Groq", hint: "Fast Llama 3.3 70B", docs: "https://console.groq.com/keys" },
   Cerebras: { label: "Cerebras", hint: "Llama 3.3 70B", docs: "https://cloud.cerebras.ai/" },
   NVIDIA: { label: "NVIDIA NIM", hint: "Nemotron 49B", docs: "https://build.nvidia.com/" },
@@ -19,6 +20,7 @@ const PROVIDER_META: Record<string, { label: string; hint: string; docs: string 
   Cohere: { label: "Cohere", hint: "command-r-plus", docs: "https://dashboard.cohere.com/api-keys" },
   xAI: { label: "xAI Grok", hint: "grok-2-latest", docs: "https://console.x.ai/" },
   Anthropic: { label: "Anthropic Claude", hint: "claude-3.5-sonnet", docs: "https://console.anthropic.com/settings/keys" },
+  Custom: { label: "Custom Endpoint", hint: "Any OpenAI-compatible API", docs: "" },
 };
 
 type Row = { provider: string; configured: boolean; updatedAt: string | null };
@@ -29,6 +31,7 @@ export default function AiKeysPanel() {
   const remove = useServerFn(deleteMyAiKey);
   const [rows, setRows] = useState<Row[]>([]);
   const [inputs, setInputs] = useState<Record<string, string>>({});
+  const [endpoints, setEndpoints] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
 
@@ -52,8 +55,13 @@ export default function AiKeysPanel() {
     if (!apiKey) return;
     setBusy(provider);
     try {
-      await save({ data: { provider, apiKey } } as never);
+      const payload: Record<string, string> = { provider, apiKey };
+      if (provider === "Custom" && endpoints[provider]?.trim()) {
+        payload.apiEndpoint = endpoints[provider].trim();
+      }
+      await save({ data: payload } as never);
       setInputs((s) => ({ ...s, [provider]: "" }));
+      if (provider === "Custom") setEndpoints((s) => ({ ...s, [provider]: "" }));
       toast.success(`${PROVIDER_META[provider]?.label ?? provider} key saved`);
       await refresh();
     } catch (e) {
@@ -153,6 +161,23 @@ export default function AiKeysPanel() {
                     )}
                   </div>
                 </div>
+                {r.provider === "Custom" && (
+                  <div className="mt-2">
+                    <input
+                      type="url"
+                      autoComplete="off"
+                      placeholder="https://my-model.example.com/v1"
+                      value={endpoints[r.provider] ?? ""}
+                      onChange={(e) =>
+                        setEndpoints((s) => ({ ...s, [r.provider]: e.target.value }))
+                      }
+                      className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm font-mono"
+                    />
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      OpenAI-compatible endpoint URL (e.g. https://api.openai.com/v1)
+                    </p>
+                  </div>
+                )}
               </li>
             );
           })}

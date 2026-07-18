@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, Key } from "lucide-react";
 import logoAsset from "@/assets/signhify-logo.png.asset.json";
 import { EcosystemSwitcher } from "./EcosystemSwitcher";
+import AiKeyQuickConfig from "@/components/ai/AiKeyQuickConfig";
 
 const NAV = [
   { to: "/", label: "Studio" },
@@ -18,6 +19,7 @@ const NAV = [
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [keyOpen, setKeyOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -73,7 +75,25 @@ export function SiteHeader() {
           ))}
           <span aria-hidden className="mx-1 h-4 w-px bg-white/10" />
           <EcosystemSwitcher />
+          <button
+            onClick={() => setKeyOpen((v) => !v)}
+            className="relative ml-1 rounded-full p-1.5 text-muted-foreground hover:text-foreground hover:bg-surface/60 transition"
+            aria-label="AI Keys"
+          >
+            <Key size={14} />
+          </button>
         </nav>
+
+        {keyOpen && (
+          <div className="pointer-events-auto fixed inset-0 z-40" onClick={() => setKeyOpen(false)}>
+            <div
+              className="absolute top-[72px] left-1/2 -translate-x-1/2 w-full max-w-md mx-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <AiKeyQuickConfig />
+            </div>
+          </div>
+        )}
 
         {/* CTA pill */}
         <div className="pointer-events-auto hidden lg:flex items-center">
@@ -114,10 +134,16 @@ export function SiteHeader() {
                 )}
               </Link>
             ))}
+            <button
+              onClick={() => { setOpen(false); setKeyOpen((v) => !v); }}
+              className="mt-3 inline-flex items-center justify-center rounded-full border border-border bg-surface/60 px-4 py-3 text-sm font-semibold"
+            >
+              <Key size={14} className="mr-2" /> AI Keys
+            </button>
             <Link
               to="/contact"
               onClick={() => setOpen(false)}
-              className="mt-3 inline-flex items-center justify-center rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground"
+              className="mt-2 inline-flex items-center justify-center rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground"
             >
               Start a Project
             </Link>
