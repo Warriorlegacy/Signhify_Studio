@@ -459,8 +459,8 @@ function BuilderPage() {
   }
 
   function downloadSingle() {
-    if (!previewHtml || !project) return;
-    const blob = new Blob([previewHtml], { type: "text/html" });
+    if (!rawPreviewHtml || !project) return;
+    const blob = new Blob([rawPreviewHtml], { type: "text/html" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -489,11 +489,11 @@ function BuilderPage() {
   }
 
   function openInTab() {
-    if (!previewHtml) return;
+    if (!rawPreviewHtml) return;
     const w = window.open();
     if (w) {
       w.document.open();
-      w.document.write(previewHtml);
+      w.document.write(rawPreviewHtml);
       w.document.close();
     }
   }
