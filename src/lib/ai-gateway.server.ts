@@ -43,7 +43,7 @@ export async function generateAIResponseFor(
   if (access.mode === "managed") {
     return robustGenerateAIResponse(options);
   }
-  return robustAIService.generateAIResponseWithKeys(options, access.userKeys);
+  return robustAIService.generateAIResponseWithKeys(options, access.userKeys, access.customEndpoints);
 }
 
 export { robustAIService } from "./robust-ai-service";

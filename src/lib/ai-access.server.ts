@@ -23,7 +23,7 @@ export type BYOKProvider = (typeof BYOK_PROVIDERS)[number];
 
 export type AIAccess =
   | { mode: "managed" }
-  | { mode: "byok"; userKeys: Record<string, string> };
+  | { mode: "byok"; userKeys: Record<string, string>; customEndpoints: Record<string, string> };
 
 export class BYOKRequiredError extends Error {
   code = "BYOK_REQUIRED";
@@ -61,7 +61,7 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
   // Free plan → require BYOK. Read keys through the user-scoped client (RLS).
   const { data: keys } = await (ctx.supabase as any)
     .from("user_ai_keys")
-    .select("provider, api_key_encrypted");
+    .select("provider, api_key_encrypted, api_endpoint");
 
   const masterKey = process.env.SECRETS_MASTER_KEY;
   if (!masterKey || masterKey.length < 16) {
@@ -76,11 +76,15 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
   const { default: logger } = await import("./logger");
 
   const userKeys: Record<string, string> = {};
+  const customEndpoints: Record<string, string> = {};
   let decryptFailures = 0;
-  for (const k of (keys ?? []) as Array<{ provider: string; api_key_encrypted: string }>) {
+  for (const k of (keys ?? []) as Array<{ provider: string; api_key_encrypted: string; api_endpoint?: string }>) {
     if (!k?.api_key_encrypted) continue;
     try {
       userKeys[k.provider] = decryptAES256GCM(k.api_key_encrypted, masterKey);
+      if (k.provider === "Custom" && k.api_endpoint) {
+        customEndpoints[k.provider] = k.api_endpoint;
+      }
       logger.debug({ event: "byok.decrypt_ok", kind: "byok_audit", userId: ctx.userId, provider: k.provider });
     } catch {
       decryptFailures += 1;
@@ -96,6 +100,6 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
     }
     throw new BYOKRequiredError();
   }
-  return { mode: "byok", userKeys };
+  return { mode: "byok", userKeys, customEndpoints };
 }
 

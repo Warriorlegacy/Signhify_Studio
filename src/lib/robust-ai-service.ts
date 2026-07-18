@@ -399,6 +399,7 @@ class RobustAIService {
   async generateAIResponseWithKeys(
     options: AIGatewayOptions,
     userKeys: Record<string, string>,
+    customEndpoints?: Record<string, string>,
   ): Promise<{ content: string; providerUsed: string }> {
     // Build transient providers from the templates in initializeProviders,
     // but seeded with the user's keys and no shared cooldown state.
@@ -414,6 +415,20 @@ class RobustAIService {
       { name: "xAI", url: "https://api.x.ai/v1/chat/completions", model: "grok-2-latest", isAnthropic: false, priority: 9 },
       { name: "Anthropic", url: "https://api.anthropic.com/v1/messages", model: "claude-3-5-sonnet-20241022", isAnthropic: true, priority: 10 },
     ];
+
+    if (userKeys["Custom"] && customEndpoints?.["Custom"]) {
+      let customUrl = customEndpoints["Custom"].trim();
+      if (!customUrl.endsWith("/chat/completions")) {
+        customUrl = customUrl.replace(/\/$/, "") + "/chat/completions";
+      }
+      templates.push({
+        name: "Custom",
+        url: customUrl,
+        model: "custom-model",
+        isAnthropic: false,
+        priority: 0, // Highest priority since it is specifically configured by the user
+      });
+    }
 
     const providers: ProviderConfig[] = templates
       .filter((t) => !!userKeys[t.name])
