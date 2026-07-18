@@ -30,14 +30,14 @@ Signhify is an AI-first product studio founded by Piyush Raj Singh. We are a reg
 
 ### Custom Development Services
 - URL: https://signhify.dpdns.org/services
-- AI Automation, SaaS Development, Web Applications, CRM Systems, Performance Marketing, Brand Strategy.
+- AI Automation, SaaS Development, Web Applications, CRM Systems, Digital & Performance Marketing, Brand Strategy.
 - Pricing: Sprint ($299), Studio ($799+), Platform (custom)
 
 ## Pages
 
 - [Home](https://signhify.dpdns.org/): Describe your idea, Signhify builds it. 22+ shipped projects showcase.
-- [Projects](https://signhify.dpdns.org/projects): 22+ shipped products across SaaS, AI, EdTech, Performance Marketing and growth.
-- [Services](https://signhify.dpdns.org/services): AI automation, SaaS, web, CRM, performance marketing, brand.
+- [Projects](https://signhify.dpdns.org/projects): 22+ shipped products across SaaS, AI, EdTech, Digital & Performance Marketing, and growth.
+- [Services](https://signhify.dpdns.org/services): AI automation, SaaS, web, CRM, digital & performance marketing, brand.
 - [AI](https://signhify.dpdns.org/ai): Prompt-to-product preview. Six AI agents turn one sentence into a detailed build plan.
 - [Templates](https://signhify.dpdns.org/templates): Production-ready SaaS, AI and landing page templates.
 - [Marketplace](https://signhify.dpdns.org/marketplace): Templates, AI agents, components and workflows for sale.

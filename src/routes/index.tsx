@@ -16,12 +16,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Describe your idea. Signhify builds it. We design, engineer and ship AI-first SaaS, automation and growth systems end-to-end.",
+          "Describe your idea. Signhify builds it. We design, engineer, market and ship AI-first SaaS, automation, digital & performance marketing, and growth systems end-to-end.",
       },
       { property: "og:title", content: "Signhify — Describe your idea. We build it." },
       {
         property: "og:description",
-        content: "Describe your idea. Signhify builds it.",
+        content: "Describe your idea. Signhify builds and markets it.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/" },
     ],

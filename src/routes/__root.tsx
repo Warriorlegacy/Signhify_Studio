@@ -85,7 +85,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Signhify is an AI-powered product studio. Describe your idea — we design, engineer, automate, launch and scale it end-to-end. SaaS, AI agents, automation & growth systems.",
+          "Signhify is an AI-powered product studio. Describe your idea — we design, engineer, automate, market, launch and scale it end-to-end. SaaS, AI agents, automation, digital & performance marketing.",
       },
       { name: "author", content: "Signhify · Piyush Raj Singh" },
       { name: "theme-color", content: "#FF6B00" },
@@ -198,6 +198,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             "Web Application Development",
             "AI Agent Development",
             "Automation Systems",
+            "Digital & Performance Marketing",
           ],
           knowsAbout: [
             "Artificial Intelligence",

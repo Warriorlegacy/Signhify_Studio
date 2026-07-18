@@ -11,7 +11,7 @@ export const Route = createFileRoute("/services")({
       {
         name: "description",
         content:
-          "AI automation, SaaS development, web and product, CRM systems, performance marketing and brand — one studio, end-to-end.",
+          "AI automation, SaaS development, web and product, CRM systems, digital & performance marketing and brand — one studio, end-to-end.",
       },
       { property: "og:title", content: "Services — Signhify" },
       {
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/services")({
             "SaaS development",
             "Web and product design",
             "CRM systems",
-            "Performance marketing",
+            "Digital & Performance marketing",
             "Brand identity",
             "API engineering",
             "Cloud & DevOps",

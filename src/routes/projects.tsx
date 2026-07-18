@@ -59,7 +59,7 @@ function ProjectsPage() {
           </h1>
           <p className="mt-5 max-w-2xl text-muted-foreground text-lg">
             A snapshot of products designed, engineered and launched by Signhify across SaaS, AI,
-            EdTech, NGO and performance marketing.
+            EdTech, NGO and digital & performance marketing.
           </p>
         </div>
       </section>
