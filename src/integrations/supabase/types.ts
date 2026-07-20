@@ -252,6 +252,48 @@ export type Database = {
         }
         Relationships: []
       }
+      manual_payments: {
+        Row: {
+          amount: number
+          confirmed_at: string | null
+          created_at: string
+          currency: string
+          description: string | null
+          id: string
+          method: string
+          status: string
+          transaction_ref: string | null
+          user_id: string
+          whatsapp_sent: boolean
+        }
+        Insert: {
+          amount: number
+          confirmed_at?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          method: string
+          status?: string
+          transaction_ref?: string | null
+          user_id: string
+          whatsapp_sent?: boolean
+        }
+        Update: {
+          amount?: number
+          confirmed_at?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          method?: string
+          status?: string
+          transaction_ref?: string | null
+          user_id?: string
+          whatsapp_sent?: boolean
+        }
+        Relationships: []
+      }
       marketplace_listings: {
         Row: {
           asset_path: string | null
@@ -527,6 +569,7 @@ export type Database = {
       }
       user_ai_keys: {
         Row: {
+          api_endpoint: string | null
           api_key_encrypted: string
           created_at: string
           provider: string
@@ -534,6 +577,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          api_endpoint?: string | null
           api_key_encrypted: string
           created_at?: string
           provider: string
@@ -541,6 +585,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          api_endpoint?: string | null
           api_key_encrypted?: string
           created_at?: string
           provider?: string
