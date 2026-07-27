@@ -1,23 +1,44 @@
 import https from "node:https";
+import fs from "node:fs";
+import path from "node:path";
 
 const DOMAIN = "signhify.dpdns.org";
 const KEY = "f6d8a7c29e134b2895e63810a4c27bdf";
 const KEY_LOCATION = `https://${DOMAIN}/${KEY}.txt`;
 
-const URLS = [
-  `https://${DOMAIN}/`,
-  `https://${DOMAIN}/brand`,
-  `https://${DOMAIN}/insights`,
-  `https://${DOMAIN}/services`,
-  `https://${DOMAIN}/about`,
-  `https://${DOMAIN}/contact`,
-  `https://${DOMAIN}/pricing`,
-  `https://${DOMAIN}/projects`,
-  `https://${DOMAIN}/ai`,
-  `https://${DOMAIN}/marketplace`,
-  `https://${DOMAIN}/sprint`,
-  `https://${DOMAIN}/book`,
+const staticPaths = [
+  "/",
+  "/projects",
+  "/services",
+  "/ai",
+  "/marketplace",
+  "/marketplace/sell",
+  "/pricing",
+  "/templates",
+  "/vision",
+  "/roadmap",
+  "/about",
+  "/contact",
+  "/book",
+  "/sprint",
+  "/insights",
+  "/brand",
+  "/help",
+  "/privacy",
+  "/terms",
 ];
+
+// Extract project slugs from src/lib/projects.ts
+const projectsTsContent = fs.readFileSync(
+  path.resolve("src/lib/projects.ts"),
+  "utf-8"
+);
+const slugMatches = [...projectsTsContent.matchAll(/slug:\s*["']([^"']+)["']/g)];
+const projectSlugs = slugMatches.map((m) => m[1]);
+const projectPaths = projectSlugs.map((slug) => `/projects/${slug}`);
+
+const allPaths = Array.from(new Set([...staticPaths, ...projectPaths]));
+const URLS = allPaths.map((p) => `https://${DOMAIN}${p}`);
 
 const payload = JSON.stringify({
   host: DOMAIN,
@@ -26,7 +47,7 @@ const payload = JSON.stringify({
   urlList: URLS,
 });
 
-console.log("🚀 Pinging IndexNow endpoints for instant search engine indexing...");
+console.log(`🚀 Dispatching ${URLS.length} URLs to IndexNow for instant search engine indexing...`);
 
 const endpoints = [
   "api.indexnow.org",
@@ -47,7 +68,7 @@ endpoints.forEach((host) => {
       },
     },
     (res) => {
-      console.log(`[IndexNow] ${host} -> Status: ${res.statusCode}`);
+      console.log(`[IndexNow Batch] ${host} -> Status: ${res.statusCode} (Dispatched ${URLS.length} URLs)`);
     }
   );
 
