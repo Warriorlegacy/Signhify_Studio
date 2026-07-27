@@ -33,10 +33,17 @@ To access the cloud, OS, and deployment dashboard as an administrator:
    - **Fixed Global Canonical URL Conflict**: Removed static root canonical link from `src/routes/__root.tsx`. Configured explicit, unique canonical tags for every page route (`https://signhify.dpdns.org${path}`).
    - **Added Breadcrumbs & BreadcrumbList Schema**: Created `src/components/Breadcrumbs.tsx` with JSON-LD `BreadcrumbList` schema and responsive visual breadcrumbs across all subpages.
    - **Calibrated Page Title Lengths (50–60 Chars)**: Updated titles across all public routes (`/`, `/services`, `/projects`, `/pricing`, `/about`, `/contact`, `/ai`, `/marketplace`, `/help`, `/roadmap`, `/vision`, `/book`, `/sprint`, `/privacy`, `/terms`) to strictly 50–60 characters.
-   - **Rich JSON-LD Schemas & E-A-T Signals**: Added Govt. of India MSME ID (`UDYAM-UP-30-0081308`), Founder credentials (`Piyush Raj Singh`), email, phone, location, and social links to Organization and ProfessionalService schemas. Added `Service`, `CollectionPage`, `SoftwareApplication`, `FAQPage`, `AboutPage`, `ContactPage`, `OfferCatalog` schemas across routes.
+   - **Rich JSON-LD Schemas & E-A-T Signals**: Added Govt. of India MSME ID (`UDYAM-UP-30-0081308`), Founder credentials (`Piyush Raj Singh`), email, phone, location, and social links to Organization, ProfessionalService, LocalBusiness, and Person schemas. Added `Service`, `CollectionPage`, `SoftwareApplication`, `FAQPage`, `AboutPage`, `ContactPage`, `OfferCatalog` schemas across routes.
    - **Noindex Directives for Internal Tools**: Marked `/app/*`, `/os/*`, `/confirm`, `/publish`, `/builder` with `noindex, nofollow` meta tags.
    - **Dynamic Sitemap Cleanup**: Updated `src/routes/sitemap[.]xml.ts` to cleanly list all indexable public pages with lastmod and changefreq attributes.
    - **Internal Linking & Footer**: Added interlinks for all key landing pages in `src/components/SiteFooter.tsx`.
+2. **AI Engine Optimization (AEO) & AI SEO Playbook**:
+   - Transcribed 15-step AI SEO & AEO prompt strategies into `Signhify_assets/prompts/AI_SEO_AEO_PROMPTS_PLAYBOOK.md`.
+   - Created `/insights` route (`src/routes/insights.tsx`) featuring 12 indexable technical guides (AI SaaS MVP in 2 Weeks, Autonomous AI Agents, BYOK Encryption, AEO Guide, SaaS Costs, TanStack Start & Supabase Stack, etc.).
+   - Updated `public/robots.txt` with permissive rules for `GPTBot`, `OAI-SearchBot`, `ChatGPT-User`, `ClaudeBot`, `PerplexityBot`, and `Google-Extended`. Updated `public/llms.txt`.
+3. **Taste Skills & Emil Kowalski Motion Physics Overhaul**:
+   - Applied **Button-in-Button Trailing Icon** and magnetic hover physics (`active:scale-[0.98]`, spring curve `cubic-bezier(0.32, 0.72, 0, 1)`) to `SiteHeader.tsx`.
+   - Applied **Double-Bezel Concentric Card Architecture (Doppelrand)** to `ServicesSection.tsx` (`rounded-[1.75rem]` outer shell + `rounded-[calc(1.75rem-0.375rem)]` inner core).
 2. **Domain Migration**:
    - Replaced all 200+ instances of the old domain `signhify.online` with the permanent domain `signhify.dpdns.org` across all components, server functions, edge functions, configurations, and PRD documents.
 2. **SEO Foundation**:
