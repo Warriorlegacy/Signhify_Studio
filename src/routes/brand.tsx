@@ -1,5 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Sparkles, ArrowRight, ShieldCheck, CheckCircle2, Building2, MapPin, FileCode, Cpu } from "lucide-react";
+import {
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
+  CheckCircle2,
+  Building2,
+  MapPin,
+  FileCode,
+  Cpu,
+} from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/brand")({
@@ -53,17 +62,17 @@ function BrandEntityPage() {
   return (
     <div className="min-h-screen bg-background text-foreground py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <Breadcrumbs items={[{ label: "Brand", path: "/brand" }]} />
+        <Breadcrumbs items={[{ label: "Brand", to: "/brand" }]} />
 
         <div className="text-center my-12">
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono text-primary mb-4">
             <Sparkles size={13} /> Official Brand Entity & Disambiguation
           </span>
-          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-            Signhify AI Studio
-          </h1>
+          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Signhify AI Studio</h1>
           <p className="mt-4 text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Official entity verification for <strong>Signhify AI Studio</strong> (`https://signhify.dpdns.org`), the AI product studio & SaaS engineering platform founded by Piyush Raj Singh.
+            Official entity verification for <strong>Signhify AI Studio</strong>{" "}
+            (`https://signhify.dpdns.org`), the AI product studio & SaaS engineering platform
+            founded by Piyush Raj Singh.
           </p>
         </div>
 
@@ -73,12 +82,33 @@ function BrandEntityPage() {
               <Building2 size={20} className="text-primary" /> Corporate Entity Details
             </div>
             <ul className="space-y-2 text-xs text-muted-foreground leading-relaxed">
-              <li><strong>Brand Name:</strong> Signhify (Signhify AI Studio)</li>
-              <li><strong>Legal Reg:</strong> Govt. of India MSME (`UDYAM-UP-30-0081308`)</li>
-              <li><strong>Founder & Lead Engineer:</strong> Piyush Raj Singh</li>
-              <li><strong>Headquarters:</strong> Noida, Uttar Pradesh 201301, India</li>
-              <li><strong>Official Website:</strong> <a href="https://signhify.dpdns.org" className="text-primary underline">https://signhify.dpdns.org</a></li>
-              <li><strong>GitHub Repository:</strong> <a href="https://github.com/Warriorlegacy/Signhify_Studio" className="text-primary underline">Warriorlegacy/Signhify_Studio (Public)</a></li>
+              <li>
+                <strong>Brand Name:</strong> Signhify (Signhify AI Studio)
+              </li>
+              <li>
+                <strong>Legal Reg:</strong> Govt. of India MSME (`UDYAM-UP-30-0081308`)
+              </li>
+              <li>
+                <strong>Founder & Lead Engineer:</strong> Piyush Raj Singh
+              </li>
+              <li>
+                <strong>Headquarters:</strong> Noida, Uttar Pradesh 201301, India
+              </li>
+              <li>
+                <strong>Official Website:</strong>{" "}
+                <a href="https://signhify.dpdns.org" className="text-primary underline">
+                  https://signhify.dpdns.org
+                </a>
+              </li>
+              <li>
+                <strong>GitHub Repository:</strong>{" "}
+                <a
+                  href="https://github.com/Warriorlegacy/Signhify_Studio"
+                  className="text-primary underline"
+                >
+                  Warriorlegacy/Signhify_Studio (Public)
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -87,10 +117,19 @@ function BrandEntityPage() {
               <Cpu size={20} className="text-primary" /> Core Technical Offerings
             </div>
             <ul className="space-y-2 text-xs text-muted-foreground leading-relaxed">
-              <li><strong>2-Week SaaS Sprints:</strong> Full-stack MVP development ($299 / $799)</li>
-              <li><strong>BYOK Security Vault:</strong> AES-256 GCM client-side encryption</li>
-              <li><strong>AI Agent Swarm:</strong> 6 autonomous agents for auto-generating code & schemas</li>
-              <li><strong>Tech Stack:</strong> TanStack Start, React 19, Supabase, Cloudflare, Nitro</li>
+              <li>
+                <strong>2-Week SaaS Sprints:</strong> Full-stack MVP development ($299 / $799)
+              </li>
+              <li>
+                <strong>BYOK Security Vault:</strong> AES-256 GCM client-side encryption
+              </li>
+              <li>
+                <strong>AI Agent Swarm:</strong> 6 autonomous agents for auto-generating code &
+                schemas
+              </li>
+              <li>
+                <strong>Tech Stack:</strong> TanStack Start, React 19, Supabase, Cloudflare, Nitro
+              </li>
             </ul>
           </div>
         </div>
@@ -99,7 +138,13 @@ function BrandEntityPage() {
           <ShieldCheck className="mx-auto h-8 w-8 text-primary mb-3" />
           <h2 className="text-2xl font-bold">Search Disambiguation Notice</h2>
           <p className="mt-2 text-xs text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            <strong>Signhify AI Studio</strong> is an AI software engineering firm & product studio. It is distinct from music generation applications. For official engineering briefs, consult our live site at <a href="https://signhify.dpdns.org" className="text-primary underline">signhify.dpdns.org</a>.
+            <strong>Signhify AI Studio</strong> is an AI software engineering firm & product studio.
+            It is distinct from music generation applications. For official engineering briefs,
+            consult our live site at{" "}
+            <a href="https://signhify.dpdns.org" className="text-primary underline">
+              signhify.dpdns.org
+            </a>
+            .
           </p>
           <Link
             to="/contact"

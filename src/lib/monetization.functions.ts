@@ -116,12 +116,12 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         sessionParams.line_items = [{ price: priceId, quantity: 1 }];
         (sessionParams.metadata as Record<string, string>).plan = plan;
       } else {
-        sessionParams.line_items = [
-          { price: (data as { priceId: string }).priceId, quantity: 1 },
-        ];
-        (sessionParams.metadata as Record<string, string>).priceId = (
-          data as { priceId: string }
-        ).priceId;
+        const priceId = (data as { priceId: string }).priceId;
+        sessionParams.line_items = [{ price: priceId, quantity: 1 }];
+        const meta = sessionParams.metadata as Record<string, string>;
+        meta.type = "credit_pack";
+        meta.priceId = priceId;
+        meta.credits = "10";
       }
 
       const session = await stripe.checkout.sessions.create(sessionParams);

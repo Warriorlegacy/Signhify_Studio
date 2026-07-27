@@ -1,123 +1,109 @@
-# ⚡ Signhify AI Engineering Studio & SaaS Platform
+# ⚡ Signhify — AI Product Studio & SaaS Engineering Engine
 
 <div align="center">
 
-![Signhify Logo](https://signhify.dpdns.org/favicon.ico)
+![Signhify](https://signhify.dpdns.org/favicon.ico)
 
-### **Describe your idea. Signhify builds it.**
-**The AI-native product studio & full-stack SaaS engineering engine for ambitious founders.**
+**Describe your idea. Signhify builds it. Ship AI SaaS in 2 weeks.**
 
-[![Live Site](https://img.shields.io/badge/Live-signhify.dpdns.org-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://signhify.dpdns.org)
-[![Build Status](https://img.shields.io/badge/Build-Passing-2ea44f?style=for-the-badge&logo=github)](https://github.com/Warriorlegacy/Signhify_Studio)
-[![Govt MSME](https://img.shields.io/badge/MSME-UDYAM--UP--30--0081308-blue?style=for-the-badge)](https://signhify.dpdns.org/about)
-[![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
+[![Live Site](https://img.shields.io/badge/Live-signhify.dpdns.org-000?style=flat-square&logo=vercel)](https://signhify.dpdns.org)
+[![GitHub Stars](https://img.shields.io/github/stars/Warriorlegacy/Signhify_Studio?style=flat-square&logo=github)](https://github.com/Warriorlegacy/Signhify_Studio/stargazers)
+[![TanStack Start](https://img.shields.io/badge/TanStack%20Start-React%2019-ff4154?style=flat-square&logo=react)](https://tanstack.com/start)
+[![Supabase](https://img.shields.io/badge/Supabase-Postgres-3ecf8e?style=flat-square&logo=supabase)](https://supabase.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
+[![Vite](https://img.shields.io/badge/Vite%206-Nitro-646cff?style=flat-square&logo=vite)](https://vite.dev)
+[![Stripe](https://img.shields.io/badge/Stripe-Billing-008cdd?style=flat-square&logo=stripe)](https://stripe.com)
+[![Cloudflare](https://img.shields.io/badge/Cloudflare-Edge-f38020?style=flat-square&logo=cloudflare)](https://workers.cloudflare.com)
+[![Three.js](https://img.shields.io/badge/Three.js-WebGL-000?style=flat-square&logo=three.js)](https://threejs.org)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind%20CSS%204-v4-06b6d4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
+[![MSME](https://img.shields.io/badge/Govt%20MSME-UDYAM--UP--30--0081308-1e40af?style=flat-square)](https://udyamregistration.gov.in)
+[![License](https://img.shields.io/badge/License-MIT-a855f7?style=flat-square)](/LICENSE)
 
-[🌐 Visit Live Website](https://signhify.dpdns.org) • [⚡ Request Free AI Blueprint](https://signhify.dpdns.org/contact) • [📚 Read AEO Insights](https://signhify.dpdns.org/insights) • [🔑 BYOK Config](https://signhify.dpdns.org/ai)
+[🌐 Website](https://signhify.dpdns.org) · [📖 Insights](https://signhify.dpdns.org/insights) · [⚡ AI Blueprint](https://signhify.dpdns.org/ai) · [💰 Pricing](https://signhify.dpdns.org/pricing) · [📬 Contact](https://signhify.dpdns.org/contact)
 
 </div>
 
 ---
 
-## 🌟 Overview
+## For Whom
 
-**Signhify** is a full-stack AI Engineering Studio & SaaS Platform built to design, ship, and scale production-ready applications in **2-week sprints**. Founded by **Piyush Raj Singh** (Registered Govt. of India MSME: `UDYAM-UP-30-0081308`, Noida, UP), Signhify combines a swarm of 6 autonomous AI agents with full-stack TypeScript engineering to deliver 100% source code ownership from day one.
+- **Founders** who want a production-ready AI SaaS in weeks, not months
+- **Agencies** looking for a battle-tested full-stack AI platform to white-label
+- **Developers** exploring TanStack Start + Supabase + Stripe architecture
 
-- **⚡ 2-Week Sprint Guarantee**: Go from concept brief to live production web app with auth, database, billing, and AI pipelines.
-- **🛡️ BYOK (Bring Your Own Key) Vault**: Client-side AES-256 GCM encryption so users run models on their personal OpenAI / Anthropic / Custom LLM API keys safely.
-- **🚀 AI Blueprint Generator**: Turn single-sentence product prompts into interactive schemas, design tokens, test suites, and edge deployment configurations.
-- **🛒 Prompt & Agent Marketplace**: Monetize pre-built SaaS templates, component kits, and autonomous agent workflows with integrated Stripe Checkout.
+## What Makes Signhify Different
 
----
+| You get                                         | vs Typical Agency                   |
+| ----------------------------------------------- | ----------------------------------- |
+| Code on your GitHub day one                     | Proprietary platform lock-in        |
+| 2-week sprints, fixed price                     | Open-ended timeline, hourly billing |
+| BYOK AES-256 GCM encryption                     | API keys stored server-side         |
+| Multi-provider AI (OpenAI + Anthropic + custom) | Single-model dependency             |
+| Edge-deployed (Cloudflare Workers)              | Centralized VPS                     |
+| Govt-registered MSME (UDYAM-UP-30-0081308)      | Unregistered entity                 |
 
-## 🏗️ Technical Architecture & Stack
+## Stack
 
-Signhify is engineered on a zero-latency, edge-first SSR stack:
-
-| Layer | Technology | Purpose |
-| :--- | :--- | :--- |
-| **Frontend Core** | **React 19 + TanStack Start** | Full-stack SSR framework with file-based routing |
-| **Build & Bundle** | **Vite 6 + Nitro Engine** | Instant HMR & edge worker server bundle generation |
-| **Styling & Motion** | **TailwindCSS 4 + Framer Motion + Three.js** | Concetric Double-Bezel UI with spring physics |
-| **Database & Auth** | **Supabase (PostgreSQL + RLS)** | Multi-tenant user profiles, secrets vault, OAuth |
-| **AI Gateway** | **Claude 3.5 Sonnet + GPT-4o + Custom Endpoints** | Resilient multi-provider auto-fallback pipeline |
-| **Infrastructure** | **Cloudflare Workers / Pages** | Multi-region edge deployment with automated DNS |
-| **Monetization** | **Stripe Billing & Metering** | Subscriptions, credit packs, and seller marketplace payouts |
-
----
-
-## 💎 Engagement & Pricing Models
-
-We offer transparent, fixed-scope engineering engagement tiers:
-
-### 1. 🚀 Sprint ($299)
-- **Turnaround**: 5–7 Days
-- **Deliverables**: Production MVP, core UI, Supabase backend, responsive mobile layout, custom domain connection, 100% GitHub code transfer.
-
-### 2. ⚡ Studio ($799+)
-- **Turnaround**: 14 Days
-- **Deliverables**: Full SaaS platform, AI agent integrations, BYOK encryption vault, Stripe payment billing, admin analytics dashboard, 30 days post-launch support.
-
-### 3. 🏢 Platform (Custom)
-- **Turnaround**: Flexible Sprints
-- **Deliverables**: Dedicated multi-agent orchestration pipelines, custom enterprise LLM fine-tuning, SOC2 security audits, SLA guarantees.
-
----
-
-## 🚀 Quickstart & Local Development
-
-### Prerequisites
-- **Node.js**: `v20.0+` or `v22.0+`
-- **Package Manager**: `bun` or `npm`
-
-### Installation
-```bash
-# 1. Clone the repository
-git clone https://github.com/Warriorlegacy/Signhify_Studio.git
-cd Signhify_Studio
-
-# 2. Install dependencies
-bun install
-# or: npm install
-
-# 3. Configure environment variables
-cp .env.example .env.local
-
-# 4. Start local development server
-bun dev
-# or: npm run dev
+```
+React 19 + TanStack Start  →  Nitro SSR (edge)
+Supabase (Postgres + Auth + RLS + Realtime)
+Stripe (subscriptions + credit packs + marketplace)
+Cloudflare Workers / Pages  →  Global edge
+Tailwind CSS 4 + Framer Motion + Three.js
+OpenAI + Anthropic + Custom LLM endpoints
+AES-256 GCM client-side encryption (BYOK)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+## Local Setup
 
-### Production Build & Preview
 ```bash
-# Build production bundle
-npm run build
+git clone https://github.com/Warriorlegacy/Signhify_Studio.git
+cd Signhify_Studio
+cp .env.example .env.local
+npm install
+npm run dev
+```
 
-# Preview Nitro server build locally
+Open `http://localhost:3000`.
+
+## Architecture Highlights
+
+- **Server functions** (`createServerFn`) — AI calls and DB queries run server-side, no key exposure
+- **Row Level Security** — tenant isolation at the Postgres level
+- **BYOK vault** — user API keys encrypted in-browser before hitting our server
+- **SSE streaming** — AI responses streamed via Server-Sent Events through Nitro
+- **Credit-based billing** — deduct-before-call, refund-on-failure pattern
+
+## Production Build
+
+```bash
+npm run build
 npx vite preview
 ```
 
----
+## Insights
 
-## 🛡️ Trust & E-A-T Credentials
+Practical AI SaaS guides at [/insights](https://signhify.dpdns.org/insights):
 
-- **Government Registration**: Registered MSME under Government of India (`UDYAM-UP-30-0081308`).
-- **Headquarters**: Noida, Uttar Pradesh 201301, India.
-- **Founder & Lead AI Engineer**: Piyush Raj Singh.
-- **Direct Line**: +91-6202442690
-- **Support Email**: `Piyushrajsingh092@gmail.com`
-- **Social Media**: [LinkedIn](https://linkedin.com/in/piyushraj-singh) • [GitHub](https://github.com/Warriorlegacy)
+- How to Build an AI SaaS MVP in 2 Weeks
+- AEO Guide: Rank on ChatGPT, Perplexity & Google AI
+- BYOK Security Architecture for AI SaaS
+- Postgres pgvector vs Dedicated Vector Databases
+- And 8 more engineering playbooks
 
----
+## Trust
 
-## 📜 License
+- **Govt MSME**: UDYAM-UP-30-0081308 (Govt of India)
+- **Founder**: Piyush Raj Singh
+- **Location**: Noida, Uttar Pradesh, India
+- **Contact**: Piyushrajsingh092@gmail.com · +91-6202442690
 
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more information.
+## License
+
+MIT — see [LICENSE](LICENSE).
 
 <div align="center">
 
-**Built with ❤️ by Piyush Raj Singh at Signhify AI Studio**  
-*Empowering founders to build the future of AI SaaS.*
+Built by [Piyush Raj Singh](https://github.com/Warriorlegacy) · Signhify AI Studio
 
 </div>

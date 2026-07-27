@@ -197,7 +197,7 @@ function InsightsPage() {
   return (
     <div className="min-h-screen bg-background text-foreground py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <Breadcrumbs items={[{ label: "Insights", path: "/insights" }]} />
+        <Breadcrumbs items={[{ label: "Insights", to: "/insights" }]} />
 
         {/* Hero Section */}
         <div className="text-center max-w-3xl mx-auto my-12">
@@ -208,12 +208,16 @@ function InsightsPage() {
             Signhify Engineering Insights
           </h1>
           <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-            Practical architectural blueprints, AI engine optimization (AEO) playbooks, and full-stack SaaS engineering guides written by Founder Piyush Raj Singh.
+            Practical architectural blueprints, AI engine optimization (AEO) playbooks, and
+            full-stack SaaS engineering guides written by Founder Piyush Raj Singh.
           </p>
 
           {/* Search Bar */}
           <div className="mt-8 relative max-w-md mx-auto">
-            <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Search
+              size={18}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+            />
             <input
               type="text"
               placeholder="Search AI guides, BYOK, AEO, Supabase..."
@@ -261,9 +265,12 @@ function InsightsPage() {
                   </span>
                 </div>
 
-                <h2 className="text-lg font-bold text-foreground group-hover:text-primary transition line-clamp-2">
+                <Link
+                  to={`/insights/${art.id}`}
+                  className="text-lg font-bold text-foreground hover:text-primary transition line-clamp-2 no-underline"
+                >
                   {art.title}
-                </h2>
+                </Link>
 
                 <p className="mt-2 text-xs text-muted-foreground leading-relaxed line-clamp-3">
                   {art.summary}
@@ -277,7 +284,7 @@ function InsightsPage() {
                 </div>
 
                 <Link
-                  to="/contact"
+                  to={`/insights/${art.id}`}
                   className="inline-flex items-center gap-1 text-xs font-semibold text-primary group-hover:translate-x-0.5 transition"
                 >
                   Read Brief <ArrowRight size={13} />
@@ -290,9 +297,12 @@ function InsightsPage() {
         {/* CTA Card */}
         <div className="mt-16 text-center rounded-2xl border border-primary/30 bg-gradient-to-b from-primary/10 to-transparent p-8 sm:p-12 max-w-3xl mx-auto">
           <BookOpen className="mx-auto h-8 w-8 text-primary mb-3" />
-          <h2 className="text-2xl font-bold text-foreground">Need a Custom AI Blueprint for Your SaaS?</h2>
+          <h2 className="text-2xl font-bold text-foreground">
+            Need a Custom AI Blueprint for Your SaaS?
+          </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Get a tailored architecture diagram, tech stack recommendation, and fixed-price estimate within 24 hours.
+            Get a tailored architecture diagram, tech stack recommendation, and fixed-price estimate
+            within 24 hours.
           </p>
           <Link
             to="/contact"

@@ -265,6 +265,73 @@ function PricingPage() {
         </div>
       </section>
 
+      {/* Credit Packs */}
+      <section className="relative py-24 border-t border-border">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">AI credits</div>
+          <h2 className="font-display text-3xl sm:text-4xl font-bold max-w-2xl">
+            Self-serve AI credits — no call needed
+          </h2>
+          <p className="mt-3 text-muted-foreground text-base max-w-xl">
+            Used for AI prototype generation, landing page builds, and video creation. Credits never
+            expire.
+          </p>
+          <div className="mt-10 grid sm:grid-cols-3 gap-5">
+            {[
+              {
+                label: "Starter Pack",
+                credits: 10,
+                price: "$19",
+                desc: "Try a single AI prototype or landing page",
+              },
+              {
+                label: "Pro Pack",
+                credits: 50,
+                price: "$79",
+                desc: "For active founders iterating weekly",
+                featured: true,
+              },
+              {
+                label: "Ultra Pack",
+                credits: 200,
+                price: "$249",
+                desc: "Production-scale generation",
+              },
+            ].map((pack, i) => (
+              <div
+                key={pack.label}
+                className={`rounded-2xl border p-6 flex flex-col ${pack.featured ? "border-primary shadow-[var(--shadow-glow)] bg-card/80 backdrop-blur" : "border-border bg-card/60"}`}
+              >
+                {pack.featured && (
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-primary font-bold mb-2">
+                    Best value
+                  </div>
+                )}
+                <div className="font-display text-xl font-bold">{pack.label}</div>
+                <div className="mt-3 flex items-baseline gap-1">
+                  <span className="font-display text-3xl font-black text-gradient">
+                    {pack.price}
+                  </span>
+                  <span className="text-muted-foreground text-sm">/ {pack.credits} credits</span>
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground flex-1">{pack.desc}</p>
+                <Link
+                  to="/signup"
+                  className={`mt-5 group inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold transition ${
+                    pack.featured
+                      ? "bg-primary text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110"
+                      : "border border-border bg-surface/60 hover:border-primary/60"
+                  }`}
+                >
+                  Sign up & buy{" "}
+                  <ArrowRight size={16} className="group-hover:translate-x-0.5 transition" />
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Comparison table */}
       <section className="relative py-24 border-t border-border">
         <div className="mx-auto max-w-5xl px-6">

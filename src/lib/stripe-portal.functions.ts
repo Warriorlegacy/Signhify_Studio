@@ -12,31 +12,36 @@ export const createPortalSession = createServerFn({ method: "POST" })
         throw new Error("Missing STRIPE_SECRET_KEY.");
       }
       const { SITE_URL: site } = await import("@/lib/site-url");
-      const email = (context as any)?.claims?.email;
-      logger.info(`Fetching Stripe customer for email: ${email}`);
-      const customers = await fetch(
-        `https://api.stripe.com/v1/customers?email=${encodeURIComponent(email ?? "")}&limit=1`,
-        { headers: { authorization: `Bearer ${key}` } },
-      ).then((r) => r.json());
-      let customer = customers?.data?.[0]?.id;
-      if (!customer) {
-        logger.info(`No existing Stripe customer found for email: ${email}. Creating new one.`);
-        const body = new URLSearchParams();
-        if (email) body.set("email", email);
+      const { supabase, userId } = context;
+
+      const { data: profile } = await (supabase as any)
+        .from("profiles")
+        .select("stripe_customer_id")
+        .eq("id", userId)
+        .maybeSingle();
+
+      let customerId = profile?.stripe_customer_id;
+      if (!customerId) {
+        const { data: userRes } = await supabase.auth.getUser();
+        const email = userRes?.user?.email;
         const created = await fetch("https://api.stripe.com/v1/customers", {
           method: "POST",
           headers: {
             authorization: `Bearer ${key}`,
             "content-type": "application/x-www-form-urlencoded",
           },
-          body,
+          body: email ? new URLSearchParams({ email }) : undefined,
         }).then((r) => r.json());
-        customer = created.id;
-        logger.info(`Created new Stripe customer: ${customer}`);
+        customerId = created.id;
+        await (supabase as any)
+          .from("profiles")
+          .update({ stripe_customer_id: customerId } as any)
+          .eq("id", userId);
       }
+
       const body = new URLSearchParams();
-      body.set("customer", customer);
-      body.set("return_url", `${site}/app/settings`);
+      body.set("customer", customerId);
+      body.set("return_url", `${site}/app/billing`);
       const session = await fetch("https://api.stripe.com/v1/billing_portal/sessions", {
         method: "POST",
         headers: {
@@ -45,7 +50,8 @@ export const createPortalSession = createServerFn({ method: "POST" })
         },
         body,
       }).then((r) => r.json());
-      logger.info(`Created billing portal session for customer: ${customer}`);
+
+      logger.info(`Created billing portal session for customer: ${customerId}`);
       return { url: session.url as string };
     } catch (error) {
       logger.error(`Failed to create portal session: ${error}`);
