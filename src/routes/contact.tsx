@@ -428,11 +428,38 @@ function ContactPage() {
           </div>
         )}
 
-        <div className="mt-10 text-sm text-muted-foreground text-center">
-          Prefer email?{" "}
-          <a href="mailto:Piyushrajsingh092@gmail.com" className="text-primary hover:underline">
-            Piyushrajsingh092@gmail.com
-          </a>
+        {/* Local SEO & AI Voice Search FAQ Section */}
+        <div className="mt-20 border-t border-border/50 pt-12">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono text-primary mb-3">
+              <Sparkles size={12} /> Local SEO & Global AI Hub
+            </span>
+            <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+              Noida, Uttar Pradesh (India) & Global AI Operations
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Signhify AI Studio operates from Noida, Uttar Pradesh, India (MSME UDYAM-UP-30-0081308), serving founders across the US, UK, EU, and worldwide.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto text-left">
+            <div className="rounded-xl border border-border bg-surface/50 p-6 backdrop-blur">
+              <h3 className="text-base font-semibold text-foreground mb-2">📍 Headquarters & Location</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                <strong>Signhify AI Studio</strong><br />
+                Noida, Uttar Pradesh 201301, India<br />
+                <strong>Reg. No:</strong> UDYAM-UP-30-0081308 (Government of India MSME)<br />
+                <strong>Direct Line:</strong> +91-6202442690<br />
+                <strong>Email:</strong> Piyushrajsingh092@gmail.com
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-surface/50 p-6 backdrop-blur">
+              <h3 className="text-base font-semibold text-foreground mb-2">⚡ 24-Hour Estimate Guarantee</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Every brief submitted receives a direct technical review from Founder & Lead AI Engineer <strong>Piyush Raj Singh</strong> within 24 hours. Includes fixed-price quote, timeline, and architectural blueprint.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -79,6 +79,11 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link to="/insights" className="hover:text-foreground">
+                Insights & AEO Playbooks
+              </Link>
+            </li>
+            <li>
               <Link to="/help" className="hover:text-foreground">
                 Help Center
               </Link>
