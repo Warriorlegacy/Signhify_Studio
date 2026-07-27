@@ -29,7 +29,15 @@ To access the cloud, OS, and deployment dashboard as an administrator:
 
 ## ✅ 3. Completed Work in this Session
 
-1. **Domain Migration**:
+1. **Comprehensive SEO Overhaul & Google Indexing Fix**:
+   - **Fixed Global Canonical URL Conflict**: Removed static root canonical link from `src/routes/__root.tsx`. Configured explicit, unique canonical tags for every page route (`https://signhify.dpdns.org${path}`).
+   - **Added Breadcrumbs & BreadcrumbList Schema**: Created `src/components/Breadcrumbs.tsx` with JSON-LD `BreadcrumbList` schema and responsive visual breadcrumbs across all subpages.
+   - **Calibrated Page Title Lengths (50–60 Chars)**: Updated titles across all public routes (`/`, `/services`, `/projects`, `/pricing`, `/about`, `/contact`, `/ai`, `/marketplace`, `/help`, `/roadmap`, `/vision`, `/book`, `/sprint`, `/privacy`, `/terms`) to strictly 50–60 characters.
+   - **Rich JSON-LD Schemas & E-A-T Signals**: Added Govt. of India MSME ID (`UDYAM-UP-30-0081308`), Founder credentials (`Piyush Raj Singh`), email, phone, location, and social links to Organization and ProfessionalService schemas. Added `Service`, `CollectionPage`, `SoftwareApplication`, `FAQPage`, `AboutPage`, `ContactPage`, `OfferCatalog` schemas across routes.
+   - **Noindex Directives for Internal Tools**: Marked `/app/*`, `/os/*`, `/confirm`, `/publish`, `/builder` with `noindex, nofollow` meta tags.
+   - **Dynamic Sitemap Cleanup**: Updated `src/routes/sitemap[.]xml.ts` to cleanly list all indexable public pages with lastmod and changefreq attributes.
+   - **Internal Linking & Footer**: Added interlinks for all key landing pages in `src/components/SiteFooter.tsx`.
+2. **Domain Migration**:
    - Replaced all 200+ instances of the old domain `signhify.online` with the permanent domain `signhify.dpdns.org` across all components, server functions, edge functions, configurations, and PRD documents.
 2. **SEO Foundation**:
    - Configured `robots.txt`, `llms.txt`, and `manifest.json`.
