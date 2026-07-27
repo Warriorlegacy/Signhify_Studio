@@ -25,6 +25,14 @@ Allow: /
 Disallow: /app/
 Disallow: /api/
 
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /app/
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+
 User-agent: ClaudeBot
 Allow: /
 Disallow: /app/
