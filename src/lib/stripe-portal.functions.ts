@@ -11,7 +11,7 @@ export const createPortalSession = createServerFn({ method: "POST" })
         logger.error("Missing STRIPE_SECRET_KEY.");
         throw new Error("Missing STRIPE_SECRET_KEY.");
       }
-      const site = process.env.VITE_SITE_URL || "https://signhify.dpdns.org";
+      const { SITE_URL: site } = await import("@/lib/site-url");
       const email = (context as any)?.claims?.email;
       logger.info(`Fetching Stripe customer for email: ${email}`);
       const customers = await fetch(

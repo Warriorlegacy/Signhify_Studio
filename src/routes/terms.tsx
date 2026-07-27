@@ -1,15 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "Terms of Service — Signhify" },
+      { title: "Terms of Service & Engagement Agreement — Signhify Studio" },
       {
         name: "description",
         content:
           "Terms governing the use of signhify.dpdns.org, the Signhify studio engagement and the Signhify AI early-access program.",
       },
-      { property: "og:title", content: "Terms of Service — Signhify" },
+      { property: "og:title", content: "Terms of Service & Engagement Agreement — Signhify Studio" },
       { property: "og:url", content: "https://signhify.dpdns.org/terms" },
     ],
     links: [{ rel: "canonical", href: "https://signhify.dpdns.org/terms" }],
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/terms")({
 function TermsPage() {
   return (
     <article className="pt-32 pb-24 mx-auto max-w-3xl px-6 prose prose-invert prose-headings:font-display">
+      <Breadcrumbs items={[{ label: "Terms of Service", to: "/terms" }]} />
       <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Legal</div>
       <h1 className="font-display text-5xl font-black">Terms of Service</h1>
       <p className="text-muted-foreground">Last updated: June 5, 2026</p>

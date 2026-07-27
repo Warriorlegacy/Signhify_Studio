@@ -28,24 +28,46 @@ import { getUserCredits, createCheckoutSession } from "@/lib/monetization.functi
 import JSZip from "jszip";
 import { joinWaitlist } from "@/lib/waitlist.functions";
 import { useUser } from "@/hooks/useUser";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/ai")({
   head: () => ({
     meta: [
-      { title: "Signhify AI — Describe anything. We'll build it." },
+      { title: "AI Blueprint Generator & Technical Architecture — Signhify" },
       {
         name: "description",
         content:
-          "Prompt-to-product. Signhify AI turns a single sentence into a working plan, stack and starter build — powered by Claude.",
+          "Generate complete technical blueprints, DB schemas, system architecture, and code specs for your SaaS idea in seconds with Signhify AI.",
       },
-      { property: "og:title", content: "Signhify AI — Prompt to product" },
+      { property: "og:title", content: "AI Blueprint Generator & Technical Architecture — Signhify" },
       {
         property: "og:description",
-        content: "Describe anything. Signhify AI builds the plan, the stack and the starter app.",
+        content:
+          "Describe your product idea in plain English. Signhify AI generates execution plans, database schemas, and codebase specs.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/ai" },
     ],
     links: [{ rel: "canonical", href: "https://signhify.dpdns.org/ai" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: "Signhify AI Blueprint Generator",
+          url: "https://signhify.dpdns.org/ai",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web",
+          offers: {
+            "@type": "Offer",
+            price: "0",
+            priceCurrency: "USD",
+          },
+          description:
+            "Describe your product idea in plain English. Signhify AI generates a full execution plan with schema, design tokens, code, tests, and deployment setup.",
+        }),
+      },
+    ],
   }),
   component: AiPage,
 });
@@ -382,6 +404,7 @@ function AiPage() {
       <div className="absolute inset-0 bg-grid mask-fade-edges opacity-40 pointer-events-none" />
 
       <div className="relative mx-auto max-w-5xl px-6">
+        <Breadcrumbs items={[{ label: "AI Generator", to: "/ai" }]} />
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

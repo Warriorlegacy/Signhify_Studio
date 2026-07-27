@@ -39,13 +39,28 @@ export function SiteFooter() {
           <div className="text-sm font-semibold mb-4">Studio</div>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
+              <Link to="/services" className="hover:text-foreground">
+                Services
+              </Link>
+            </li>
+            <li>
+              <Link to="/pricing" className="hover:text-foreground">
+                Pricing
+              </Link>
+            </li>
+            <li>
               <Link to="/projects" className="hover:text-foreground">
                 Projects
               </Link>
             </li>
             <li>
-              <Link to="/services" className="hover:text-foreground">
-                Services
+              <Link to="/ai" className="hover:text-foreground">
+                AI Generator
+              </Link>
+            </li>
+            <li>
+              <Link to="/marketplace" className="hover:text-foreground">
+                Marketplace
               </Link>
             </li>
             <li>
@@ -61,6 +76,11 @@ export function SiteFooter() {
             <li>
               <Link to="/roadmap" className="hover:text-foreground">
                 Roadmap
+              </Link>
+            </li>
+            <li>
+              <Link to="/help" className="hover:text-foreground">
+                Help Center
               </Link>
             </li>
             <li>

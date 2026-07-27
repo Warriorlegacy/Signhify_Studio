@@ -3,6 +3,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { MARKET, MARKET_CATEGORIES } from "@/lib/marketplace";
 
 import { isAdminEmail } from "@/lib/admin";
+import { SITE_URL } from "@/lib/site-url";
 
 function isAdmin(claims: any): boolean {
   const email = String(claims?.email ?? "").toLowerCase();
@@ -11,10 +12,10 @@ function isAdmin(claims: any): boolean {
 
 const EXPECTED_TITLE = "Marketplace — Signhify";
 const EXPECTED_DESCRIPTION_TOKEN = "templates, AI agents, components";
-const EXPECTED_OG_URL = "https://signhify.dpdns.org/marketplace";
+const EXPECTED_OG_URL = `${SITE_URL}/marketplace`;
 
 const ALLOWED_ORIGINS = [
-  "https://signhify.dpdns.org",
+  SITE_URL,
   "https://id-preview--*.lovable.app",
   // Add other allowed domains as needed
 ];

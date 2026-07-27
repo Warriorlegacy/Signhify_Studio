@@ -2,25 +2,51 @@ import { createFileRoute } from "@tanstack/react-router";
 import { FounderSection } from "@/components/sections/FounderSection";
 import { CtaSection } from "@/components/sections/CtaSection";
 import { BadgeCheck, MapPin, Rocket } from "lucide-react";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — Signhify" },
+      { title: "About Signhify & Founder Piyush Raj Singh — AI Studio" },
       {
         name: "description",
         content:
-          "Signhify is an AI engineering studio founded by Piyush Raj Singh. Registered MSME, Govt. of India. Building the AI product ecosystem from India to the world.",
+          "Learn about Signhify, an AI product engineering studio founded by Piyush Raj Singh. Registered MSME, Govt. of India. Building software for global founders.",
       },
-      { property: "og:title", content: "About — Signhify" },
+      { property: "og:title", content: "About Signhify & Founder Piyush Raj Singh — AI Studio" },
       {
         property: "og:description",
         content:
-          "Founded by Piyush Raj Singh. AI-native studio, registered MSME, building in the open.",
+          "Founded by Piyush Raj Singh. AI-native studio, registered MSME (UDYAM-UP-30-0081308), building software for global founders.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/about" },
     ],
     links: [{ rel: "canonical", href: "https://signhify.dpdns.org/about" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          name: "About Signhify & Founder Piyush Raj Singh — AI Studio",
+          url: "https://signhify.dpdns.org/about",
+          mainEntity: {
+            "@type": "Person",
+            name: "Piyush Raj Singh",
+            jobTitle: "Founder & Lead AI Engineer",
+            worksFor: {
+              "@type": "Organization",
+              name: "Signhify",
+              identifier: "UDYAM-UP-30-0081308",
+            },
+            sameAs: [
+              "https://github.com/Warriorlegacy",
+              "https://linkedin.com/in/piyushraj-singh",
+            ],
+          },
+        }),
+      },
+    ],
   }),
   component: AboutPage,
 });
@@ -30,6 +56,7 @@ function AboutPage() {
     <>
       <section className="pt-36 pb-16">
         <div className="mx-auto max-w-5xl px-6">
+          <Breadcrumbs items={[{ label: "About", to: "/about" }]} />
           <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">About</div>
           <h1 className="font-display text-5xl sm:text-6xl font-black leading-[1.05]">
             A studio for the <span className="text-gradient">AI-native</span> era.

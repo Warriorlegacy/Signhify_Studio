@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { getPublicProjects } from "@/lib/projects-list.functions";
 import { CtaSection } from "@/components/sections/CtaSection";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/projects")({
   loader: async () => {
@@ -16,16 +17,17 @@ export const Route = createFileRoute("/projects")({
   },
   head: () => ({
     meta: [
-      { title: "Projects — Signhify" },
+      { title: "AI Built Projects & SaaS Product Portfolio — Signhify" },
       {
         name: "description",
         content:
-          "14+ shipped products across SaaS, AI automation, EdTech and growth — built and launched by Signhify.",
+          "Explore 14+ live SaaS platforms, AI automation systems, and growth software engineered and shipped globally by Signhify AI Product Studio.",
       },
-      { property: "og:title", content: "Projects — Signhify" },
+      { property: "og:title", content: "AI Built Projects & SaaS Product Portfolio — Signhify" },
       {
         property: "og:description",
-        content: "Selected work from Signhify: SaaS, AI automation, CRMs, marketing systems.",
+        content:
+          "Selected work from Signhify: live SaaS platforms, AI automation systems, CRMs, and marketing tech.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/projects" },
     ],
@@ -36,7 +38,7 @@ export const Route = createFileRoute("/projects")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
-          name: "Projects — Signhify",
+          name: "AI Built Projects & SaaS Product Portfolio — Signhify",
           url: "https://signhify.dpdns.org/projects",
           description:
             "Selected work from Signhify across SaaS, AI automation, CRMs and marketing systems.",
@@ -53,6 +55,7 @@ function ProjectsPage() {
     <>
       <section className="pt-36 pb-10">
         <div className="mx-auto max-w-7xl px-6">
+          <Breadcrumbs items={[{ label: "Projects", to: "/projects" }]} />
           <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">The work</div>
           <h1 className="font-display text-5xl sm:text-6xl font-black max-w-4xl">
             Shipped products. <span className="text-gradient">Real businesses.</span>

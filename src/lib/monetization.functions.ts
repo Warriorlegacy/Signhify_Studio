@@ -72,7 +72,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     try {
       const stripe = new Stripe(stripeKey);
       const isSubscription = "plan" in data;
-      const site = process.env.VITE_SITE_URL || "http://localhost:3000";
+      const { SITE_URL: site } = await import("@/lib/site-url");
 
       const sessionParams: Stripe.Checkout.SessionCreateParams = {
         mode: isSubscription ? "subscription" : "payment",

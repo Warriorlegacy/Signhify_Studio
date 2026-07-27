@@ -12,16 +12,17 @@ import { CtaSection } from "@/components/sections/CtaSection";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Signhify — Describe your idea. We build it." },
+      { title: "Signhify — AI Product Studio & Full Stack SaaS Engineering" },
       {
         name: "description",
         content:
-          "Describe your idea. Signhify builds it. We design, engineer, market and ship AI-first SaaS, automation, digital & performance marketing, and growth systems end-to-end.",
+          "Describe your idea — Signhify designs, engineers, markets, and ships AI-first SaaS apps, autonomous AI agents, and growth systems end-to-end.",
       },
-      { property: "og:title", content: "Signhify — Describe your idea. We build it." },
+      { property: "og:title", content: "Signhify — AI Product Studio & Full Stack SaaS Engineering" },
       {
         property: "og:description",
-        content: "Describe your idea. Signhify builds and markets it.",
+        content:
+          "Describe your idea — Signhify designs, engineers, markets, and ships AI-first SaaS apps, autonomous AI agents, and growth systems end-to-end.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/" },
     ],

@@ -8,6 +8,7 @@ import { createCheckoutSession } from "@/lib/stripe-checkout.functions";
 import { fetchMarketplaceListings } from "@/lib/marketplace-listings.functions";
 import { ThreeDCard } from "@/components/ui/ThreeDCard";
 import { toast } from "sonner";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/marketplace")({
   loader: async () => {
@@ -20,20 +21,34 @@ export const Route = createFileRoute("/marketplace")({
   },
   head: () => ({
     meta: [
-      { title: "Marketplace — Signhify" },
+      { title: "AI Agents & SaaS Prompt Marketplace — Signhify Studio" },
       {
         name: "description",
         content:
-          "Browse templates, AI agents, components and workflows shipped by Signhify and partner studios. Grab one free this week.",
+          "Discover, buy, and sell production-ready AI agent templates, automated workflows, and full-stack SaaS blueprints built by Signhify.",
       },
-      { property: "og:title", content: "Marketplace — Signhify" },
+      { property: "og:title", content: "AI Agents & SaaS Prompt Marketplace — Signhify Studio" },
       {
         property: "og:description",
-        content: "Templates, AI agents, components and workflows — one marketplace from Signhify.",
+        content:
+          "Browse templates, AI agents, UI components and workflows shipped by Signhify and partner engineering studios.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/marketplace" },
     ],
     links: [{ rel: "canonical", href: "https://signhify.dpdns.org/marketplace" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "OfferCatalog",
+          name: "Signhify AI Marketplace",
+          url: "https://signhify.dpdns.org/marketplace",
+          description:
+            "Production-ready AI agent templates, automated workflows, and full-stack SaaS blueprints.",
+        }),
+      },
+    ],
   }),
   component: MarketplacePage,
 });
@@ -58,6 +73,7 @@ function MarketplacePage() {
   return (
     <section className="relative pt-32 pb-24 min-h-screen">
       <div className="mx-auto max-w-7xl px-6">
+        <Breadcrumbs items={[{ label: "Marketplace", to: "/marketplace" }]} />
         <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">
           Marketplace · v0
         </div>

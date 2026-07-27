@@ -1,15 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy — Signhify" },
+      { title: "Privacy Policy & Data Security Standards — Signhify Studio" },
       {
         name: "description",
         content:
           "How Signhify collects, uses and protects your data across the studio site, contact wizard and Signhify AI waitlist.",
       },
-      { property: "og:title", content: "Privacy Policy — Signhify" },
+      { property: "og:title", content: "Privacy Policy & Data Security Standards — Signhify Studio" },
       { property: "og:url", content: "https://signhify.dpdns.org/privacy" },
     ],
     links: [{ rel: "canonical", href: "https://signhify.dpdns.org/privacy" }],
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/privacy")({
 function PrivacyPage() {
   return (
     <article className="pt-32 pb-24 mx-auto max-w-3xl px-6 prose prose-invert prose-headings:font-display">
+      <Breadcrumbs items={[{ label: "Privacy Policy", to: "/privacy" }]} />
       <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Legal</div>
       <h1 className="font-display text-5xl font-black">Privacy Policy</h1>
       <p className="text-muted-foreground">Last updated: June 5, 2026</p>

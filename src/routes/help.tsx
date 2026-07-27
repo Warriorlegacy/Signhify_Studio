@@ -7,19 +7,38 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+
 export const Route = createFileRoute("/help")({
   head: () => ({
     meta: [
-      { title: "Help — Signhify | AI Product Studio" },
+      { title: "Help Center & AI Development FAQs — Signhify Studio" },
       {
         name: "description",
         content:
-          "Search Signhify help articles for onboarding, AI Studio, marketplace, billing, and deployment guidance.",
+          "Find answers to common questions about working with Signhify AI Studio, sprint process, tech stack, code ownership, and support.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/help" },
-      { property: "og:title", content: "Help — Signhify" },
+      { property: "og:title", content: "Help Center & AI Development FAQs — Signhify Studio" },
     ],
     links: [{ rel: "canonical", href: "https://signhify.dpdns.org/help" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: articles.map((a) => ({
+            "@type": "Question",
+            name: a.title,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: `${a.excerpt} ${a.content}`,
+            },
+          })),
+        }),
+      },
+    ],
   }),
   component: HelpPage,
 });
@@ -33,6 +52,7 @@ function HelpPage() {
   return (
     <section className="pt-32 pb-24 px-6 min-h-screen">
       <div className="mx-auto max-w-4xl">
+        <Breadcrumbs items={[{ label: "Help Center", to: "/help" }]} />
         <a
           href="https://docs.signhify.dpdns.org"
           className="block rounded-2xl border border-primary/30 bg-primary/10 p-5 text-primary"

@@ -8,9 +8,11 @@ export const createManualPayment = createServerFn({ method: "POST" })
     const amount = typeof obj.amount === "number" && obj.amount > 0 ? obj.amount : NaN;
     const method = typeof obj.method === "string" && ["upi", "bank_transfer", "paypal"].includes(obj.method) ? obj.method : "";
     const description = typeof obj.description === "string" ? obj.description.trim() : "";
+    const transactionRef = typeof obj.transactionRef === "string" ? obj.transactionRef.trim() : "";
     if (isNaN(amount)) throw new Error("Amount must be a positive number.");
     if (!method) throw new Error("Payment method must be upi, bank_transfer, or paypal.");
-    return { amount, method, description };
+    if (!transactionRef) throw new Error("Transaction reference ID is required.");
+    return { amount, method, description, transactionRef };
   })
   .handler(async ({ context, data }) => {
     const { supabase, userId } = context;
@@ -20,6 +22,7 @@ export const createManualPayment = createServerFn({ method: "POST" })
       method: data.method,
       currency: "INR",
       description: data.description || null,
+      transaction_ref: data.transactionRef,
     });
     if (error) throw new Error(error.message);
     return { ok: true };

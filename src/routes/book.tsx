@@ -1,19 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CalendarClock, MessageCircle, Phone } from "lucide-react";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/book")({
   head: () => ({
     meta: [
-      { title: "Book a call — Signhify" },
+      { title: "Book an AI Engineering Call — Signhify Product Studio" },
       {
         name: "description",
         content:
-          "Pick a 30-minute slot with Piyush Raj Singh. We scope your idea, map the build, and decide if Signhify is the right team to ship it.",
+          "Pick a 30-minute discovery call slot with Piyush Raj Singh. Scope your SaaS idea, map the tech stack, and get an execution blueprint.",
       },
-      { property: "og:title", content: "Book a call — Signhify" },
+      { property: "og:title", content: "Book an AI Engineering Call — Signhify Product Studio" },
       {
         property: "og:description",
-        content: "30 minutes with the Signhify founder to scope your build.",
+        content: "30 minutes with the Signhify founder to scope your AI product build.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/book" },
     ],
@@ -30,6 +31,7 @@ function BookPage() {
   return (
     <section className="relative pt-32 pb-24 min-h-screen">
       <div className="mx-auto max-w-6xl px-6">
+        <Breadcrumbs items={[{ label: "Book Call", to: "/book" }]} />
         <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Book the studio</div>
         <h1 className="font-display text-5xl sm:text-6xl font-black max-w-3xl">
           30 minutes. <span className="text-gradient">A real plan.</span>

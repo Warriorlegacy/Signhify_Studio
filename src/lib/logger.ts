@@ -48,7 +48,7 @@ const handler: ProxyHandler<Logger> = {
     return (...args: unknown[]) => {
       const log = _logger[method] as (...a: unknown[]) => void;
       if (typeof log === "function") {
-        log(...args);
+        log.apply(_logger, args);
       }
     };
   },

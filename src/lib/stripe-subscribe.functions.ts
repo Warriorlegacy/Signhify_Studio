@@ -37,7 +37,7 @@ export const createSubscription = createServerFn({ method: "POST" })
       const { STRIPE_PRICE_IDS } = await import("./stripe-prices.server");
       const allowed = new Set(Object.values(STRIPE_PRICE_IDS));
       if (!allowed.has(data.priceId)) throw new Error("Unknown price.");
-      const site = process.env.VITE_SITE_URL || "https://signhify.dpdns.org";
+      const { SITE_URL: site } = await import("@/lib/site-url");
       const form = new URLSearchParams();
       form.set("mode", data.priceId.includes("credit") ? "payment" : "subscription");
       form.set("success_url", `${site}/app/settings?billing=success`);

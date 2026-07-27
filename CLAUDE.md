@@ -164,3 +164,13 @@ scripts/hermes.bat --research    # Run research agent
 2. **Execute** — Invoke the hermes-agent via one of the entry points above
 3. **Verify** — The agent's internal build/test loop ensures generated code works
 4. **Sync** — Apply changes to the project files and sync with GitHub to trigger Lovable deployment
+
+<!-- OPENWIKI:START -->
+
+## OpenWiki
+
+This repository uses OpenWiki for recurring code documentation. Start with `openwiki/quickstart.md`, then follow its links to architecture, workflows, domain concepts, operations, integrations, testing guidance, and source maps.
+
+The scheduled OpenWiki GitHub Actions workflow refreshes the repository wiki. Do not hand-edit generated OpenWiki pages unless explicitly asked; prefer updating source code/docs and letting OpenWiki regenerate.
+
+<!-- OPENWIKI:END -->

@@ -2,23 +2,24 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Download, FileText, ArrowRight, Code2, BookOpen } from "lucide-react";
 import { marked } from "marked";
 import guideMarkdown from "../../public/signhify-local-dev-guide.md?raw";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 const guideHtml = marked.parse(guideMarkdown, { async: false }) as string;
 
 export const Route = createFileRoute("/roadmap")({
   head: () => ({
     meta: [
-      { title: "Roadmap to 2026 — Signhify" },
+      { title: "Signhify Product Ecosystem Roadmap & Vision 2026" },
       {
         name: "description",
         content:
-          "The public, living plan for how Signhify becomes the first AI-native product studio operating system. Week-by-week shipping milestones.",
+          "Explore Signhify's living public product roadmap — building the first AI-native software studio operating system from Studio to OS and Cloud.",
       },
-      { property: "og:title", content: "Signhify — Roadmap to 2026" },
+      { property: "og:title", content: "Signhify Product Ecosystem Roadmap & Vision 2026" },
       {
         property: "og:description",
         content:
-          "Week-by-week shipping plan from the studio site to Signhify OS, Cloud and Deploy.",
+          "Week-by-week public shipping plan from the studio site to Signhify OS, Cloud, and Deploy.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/roadmap" },
     ],
@@ -121,7 +122,8 @@ const METRICS = [
 function RoadmapPage() {
   return (
     <article className="pt-32 pb-24">
-      <div className="mx-auto max-w-5xl px-6">
+      <div className="mx-auto max-w-7xl px-6">
+        <Breadcrumbs items={[{ label: "Roadmap", to: "/roadmap" }]} />
         <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">
           Public roadmap · Living document
         </div>

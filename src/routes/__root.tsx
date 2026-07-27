@@ -128,7 +128,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/manifest.json" },
-      { rel: "canonical", href: "https://signhify.dpdns.org" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://api.fontshare.com" },
       { rel: "preconnect", href: "https://supabase.co" },
@@ -145,22 +144,39 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "Organization",
           name: "Signhify",
+          legalName: "Signhify AI Engineering Studio",
+          identifier: "UDYAM-UP-30-0081308",
           url: "https://signhify.dpdns.org",
           logo: "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
           description:
-            "AI engineering studio building AI-first SaaS, automation and growth systems end-to-end.",
+            "Registered MSME AI engineering studio building AI-first SaaS, automation systems, and growth engines end-to-end.",
           founder: {
             "@type": "Person",
             name: "Piyush Raj Singh",
+            jobTitle: "Founder & Lead AI Engineer",
             email: "Piyushrajsingh092@gmail.com",
+            sameAs: [
+              "https://github.com/Warriorlegacy",
+              "https://linkedin.com/in/piyushraj-singh",
+            ],
+          },
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Noida",
+            addressRegion: "Uttar Pradesh",
+            addressCountry: "IN",
           },
           contactPoint: {
             "@type": "ContactPoint",
             email: "Piyushrajsingh092@gmail.com",
+            telephone: "+91-6202442690",
             contactType: "customer service",
             availableLanguage: ["English", "Hindi"],
           },
-          sameAs: ["https://github.com/Warriorlegacy"],
+          sameAs: [
+            "https://github.com/Warriorlegacy",
+            "https://linkedin.com/in/piyushraj-singh",
+          ],
         }),
       },
       {
@@ -188,7 +204,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           name: "Signhify AI Studio",
           url: "https://signhify.dpdns.org",
           description:
-            "AI-powered product studio that designs, engineers, and ships SaaS, AI agents, automation and growth systems end-to-end.",
+            "Registered MSME AI product studio that designs, engineers, and ships SaaS, AI agents, automation and growth systems end-to-end.",
           priceRange: "$$",
           founder: { "@type": "Person", name: "Piyush Raj Singh" },
           areaServed: "Worldwide",
@@ -210,24 +226,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             "Supabase",
             "Cloudflare",
           ],
-        }),
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          name: "Signhify AI Blueprint Generator",
-          url: "https://signhify.dpdns.org/ai",
-          applicationCategory: "DeveloperApplication",
-          operatingSystem: "Web",
-          offers: {
-            "@type": "Offer",
-            price: "0",
-            priceCurrency: "USD",
-          },
-          description:
-            "Describe your product idea in plain English. Signhify AI generates a full execution plan with schema, design tokens, code, tests, and deployment setup.",
         }),
       },
     ],

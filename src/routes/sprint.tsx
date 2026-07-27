@@ -1,20 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { sprintTracks, statusMeta, type SprintStatus } from "@/lib/sprint-checklist";
 import { CtaSection } from "@/components/sections/CtaSection";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/sprint")({
   head: () => ({
     meta: [
-      { title: "June 2026 Sprint — Signhify Delivery Checklist" },
+      { title: "Signhify Engineering Sprint & Public Delivery Checklist" },
       {
         name: "description",
         content:
-          "Live status of every Phase 1 / June 2026 sprint item across Studio, AI, Deploy, Marketplace, Cloud and OS — with owners and due dates.",
+          "Live progress checklist of Signhify's product delivery sprint across Studio, AI, Deploy, Marketplace, Cloud and OS — tracked in real time.",
       },
-      { property: "og:title", content: "Signhify · June 2026 Delivery Checklist" },
+      { property: "og:title", content: "Signhify Engineering Sprint & Public Delivery Checklist" },
       {
         property: "og:description",
-        content: "Built in public. 25 days. 6 products. Tracked item by item.",
+        content: "Built in public. Live tracking of Signhify AI Studio engineering sprint items.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/sprint" },
     ],
@@ -37,6 +38,7 @@ function SprintPage() {
     <>
       <section className="pt-36 pb-12">
         <div className="mx-auto max-w-7xl px-6">
+          <Breadcrumbs items={[{ label: "Sprint Checklist", to: "/sprint" }]} />
           <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">
             End-of-month delivery checklist
           </div>

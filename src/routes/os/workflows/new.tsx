@@ -1,8 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Activity, ArrowLeft, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { saveOSWorkflow } from "@/lib/os-state";
 
 export const Route = createFileRoute("/os/workflows/new")({
   head: () => ({
@@ -29,6 +30,7 @@ const TRIGGERS = ["webhook", "schedule", "manual"] as const;
 
 function NewWorkflowPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [schedule, setSchedule] = useState<string>(SCHEDULES[0]);
@@ -55,6 +57,14 @@ function NewWorkflowPage() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    saveOSWorkflow({
+      name,
+      description: description.trim() || undefined,
+      agents: selectedAgents.length || 1,
+    });
+    queryClient.invalidateQueries({ queryKey: ["os_workflows_list"] });
+    queryClient.invalidateQueries({ queryKey: ["os_workflows"] });
+    queryClient.invalidateQueries({ queryKey: ["os_logs_dashboard"] });
     navigate({ to: "/os/workflows" });
   }
 

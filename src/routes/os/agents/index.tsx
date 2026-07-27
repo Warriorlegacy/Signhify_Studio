@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Bot, Plus, Search, Power, PowerOff, Clock, CheckCircle2, ArrowLeft } from "lucide-react";
+import { Bot, Plus, Search, Power, PowerOff, Clock, CheckCircle2, ArrowLeft, Trash2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { getOSAgents, toggleOSAgentStatus, deleteOSAgent } from "@/lib/os-state";
 
 export const Route = createFileRoute("/os/agents/")({
   head: () => ({
@@ -24,60 +25,28 @@ export const Route = createFileRoute("/os/agents/")({
 
 function AgentListPage() {
   const [search, setSearch] = useState("");
+  const queryClient = useQueryClient();
 
   const { data: agents, isLoading } = useQuery({
     queryKey: ["os_agents_list"],
-    queryFn: async () => [
-      {
-        id: "agent-1",
-        name: "Research Agent",
-        status: "running",
-        lastActive: "30s ago",
-        tasksCompleted: 24,
-        model: "Claude Sonnet",
-      },
-      {
-        id: "agent-2",
-        name: "Code Agent",
-        status: "running",
-        lastActive: "15s ago",
-        tasksCompleted: 42,
-        model: "GPT-4o",
-      },
-      {
-        id: "agent-3",
-        name: "Design Agent",
-        status: "idle",
-        lastActive: "5m ago",
-        tasksCompleted: 18,
-        model: "Gemini Pro",
-      },
-      {
-        id: "agent-4",
-        name: "QA Agent",
-        status: "pending",
-        lastActive: "10m ago",
-        tasksCompleted: 31,
-        model: "DeepSeek V3",
-      },
-      {
-        id: "agent-5",
-        name: "Deploy Agent",
-        status: "error",
-        lastActive: "1h ago",
-        tasksCompleted: 7,
-        model: "Claude Sonnet",
-      },
-      {
-        id: "agent-6",
-        name: "Git Agent",
-        status: "idle",
-        lastActive: "2m ago",
-        tasksCompleted: 53,
-        model: "GPT-4o",
-      },
-    ],
+    queryFn: async () => getOSAgents(),
   });
+
+  const handleToggle = (id: string) => {
+    toggleOSAgentStatus(id);
+    queryClient.invalidateQueries({ queryKey: ["os_agents_list"] });
+    queryClient.invalidateQueries({ queryKey: ["os_agents"] });
+    queryClient.invalidateQueries({ queryKey: ["os_logs_dashboard"] });
+  };
+
+  const handleDelete = (id: string) => {
+    if (confirm("Are you sure you want to delete this agent?")) {
+      deleteOSAgent(id);
+      queryClient.invalidateQueries({ queryKey: ["os_agents_list"] });
+      queryClient.invalidateQueries({ queryKey: ["os_agents"] });
+      queryClient.invalidateQueries({ queryKey: ["os_logs_dashboard"] });
+    }
+  };
 
   const filtered = agents?.filter((a) => a.name.toLowerCase().includes(search.toLowerCase()));
 
@@ -209,9 +178,7 @@ function AgentListPage() {
                       {agent.status}
                     </span>
                     <button
-                      onClick={() => {
-                        // Mock toggle
-                      }}
+                      onClick={() => handleToggle(agent.id)}
                       className={cn(
                         "rounded-md border p-2 transition-colors",
                         agent.status === "running"
@@ -225,6 +192,13 @@ function AgentListPage() {
                       ) : (
                         <Power className="h-4 w-4" />
                       )}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(agent.id)}
+                      className="rounded-md border border-border p-2 hover:border-destructive hover:text-destructive transition-colors"
+                      title="Delete agent"
+                    >
+                      <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
                 </div>

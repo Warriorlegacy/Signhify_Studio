@@ -6,6 +6,9 @@ import { useServerFn } from "@tanstack/react-start";
 import { confirmWaitlistToken } from "@/lib/waitlist.functions";
 
 export const Route = createFileRoute("/confirm")({
+  head: () => ({
+    meta: [{ title: "Confirm Waitlist — Signhify" }, { name: "robots", content: "noindex, nofollow" }],
+  }),
   validateSearch: (search: Record<string, unknown>) => {
     return {
       token: typeof search.token === "string" ? search.token : undefined,

@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
-
-const BASE_URL = "https://signhify.dpdns.org";
+import { SITE_URL } from "@/lib/site-url";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
@@ -17,9 +16,6 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/marketplace", priority: "0.8", changefreq: "weekly" },
           { path: "/marketplace/sell", priority: "0.6", changefreq: "monthly" },
           { path: "/pricing", priority: "0.8", changefreq: "monthly" },
-          { path: "/os", priority: "0.8", changefreq: "weekly" },
-          { path: "/builder", priority: "0.8", changefreq: "weekly" },
-          { path: "/publish", priority: "0.7", changefreq: "weekly" },
           { path: "/templates", priority: "0.7", changefreq: "monthly" },
           { path: "/vision", priority: "0.7", changefreq: "monthly" },
           { path: "/roadmap", priority: "0.7", changefreq: "monthly" },
@@ -30,7 +26,6 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/help", priority: "0.6", changefreq: "monthly" },
           { path: "/privacy", priority: "0.3", changefreq: "yearly" },
           { path: "/terms", priority: "0.3", changefreq: "yearly" },
-          { path: "/login", priority: "0.3", changefreq: "monthly" },
           ...projects.map((p) => ({
             path: `/projects/${p.slug}`,
             priority: "0.6",
@@ -40,7 +35,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         const urls = entries
           .map(
             (e) =>
-              `  <url>\n    <loc>${BASE_URL}${e.path}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${e.changefreq}</changefreq>\n    <priority>${e.priority}</priority>\n  </url>`,
+              `  <url>\n    <loc>${SITE_URL}${e.path}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${e.changefreq}</changefreq>\n    <priority>${e.priority}</priority>\n  </url>`,
           )
           .join("\n");
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`;

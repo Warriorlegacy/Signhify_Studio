@@ -4,13 +4,13 @@ import { ComingSoonScene } from "@/components/ComingSoonScene";
 export const Route = createFileRoute("/templates")({
   head: () => ({
     meta: [
-      { title: "Templates — Signhify Marketplace" },
+      { title: "SaaS & AI Product Templates — Signhify Marketplace" },
       {
         name: "description",
         content:
-          "Production-ready templates for SaaS, AI products, landing pages and CRMs. Ships June 21, 2026 at marketplace.signhify.dpdns.org.",
+          "Browse production-ready templates for SaaS, AI products, landing pages, and CRMs. One-click deployable starter kits built by Signhify.",
       },
-      { property: "og:title", content: "Templates — Signhify" },
+      { property: "og:title", content: "SaaS & AI Product Templates — Signhify Marketplace" },
       {
         property: "og:description",
         content:

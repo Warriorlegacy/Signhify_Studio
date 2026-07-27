@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Activity, Plus, Search, Play, Square, ArrowLeft, Users } from "lucide-react";
+import { Activity, Plus, Search, Play, Square, ArrowLeft, Users, Trash2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { getOSWorkflows, toggleOSWorkflowStatus, deleteOSWorkflow } from "@/lib/os-state";
 
 export const Route = createFileRoute("/os/workflows/")({
   head: () => ({
@@ -24,60 +25,28 @@ export const Route = createFileRoute("/os/workflows/")({
 
 function WorkflowListPage() {
   const [search, setSearch] = useState("");
+  const queryClient = useQueryClient();
 
   const { data: workflows, isLoading } = useQuery({
     queryKey: ["os_workflows_list"],
-    queryFn: async () => [
-      {
-        id: "wf-1",
-        name: "Feature Development",
-        status: "active",
-        progress: 65,
-        agents: 3,
-        lastRun: "2m ago",
-      },
-      {
-        id: "wf-2",
-        name: "Bug Fix Sprint",
-        status: "completed",
-        progress: 100,
-        agents: 2,
-        lastRun: "1h ago",
-      },
-      {
-        id: "wf-3",
-        name: "Research Phase",
-        status: "queued",
-        progress: 0,
-        agents: 1,
-        lastRun: "—",
-      },
-      {
-        id: "wf-4",
-        name: "Code Review Pipeline",
-        status: "active",
-        progress: 42,
-        agents: 2,
-        lastRun: "5m ago",
-      },
-      {
-        id: "wf-5",
-        name: "Deploy to Production",
-        status: "failed",
-        progress: 88,
-        agents: 3,
-        lastRun: "30m ago",
-      },
-      {
-        id: "wf-6",
-        name: "Weekly Report Generation",
-        status: "completed",
-        progress: 100,
-        agents: 1,
-        lastRun: "2d ago",
-      },
-    ],
+    queryFn: async () => getOSWorkflows(),
   });
+
+  const handleToggle = (id: string) => {
+    toggleOSWorkflowStatus(id);
+    queryClient.invalidateQueries({ queryKey: ["os_workflows_list"] });
+    queryClient.invalidateQueries({ queryKey: ["os_workflows"] });
+    queryClient.invalidateQueries({ queryKey: ["os_logs_dashboard"] });
+  };
+
+  const handleDelete = (id: string) => {
+    if (confirm("Are you sure you want to delete this workflow?")) {
+      deleteOSWorkflow(id);
+      queryClient.invalidateQueries({ queryKey: ["os_workflows_list"] });
+      queryClient.invalidateQueries({ queryKey: ["os_workflows"] });
+      queryClient.invalidateQueries({ queryKey: ["os_logs_dashboard"] });
+    }
+  };
 
   const filtered = workflows?.filter((w) => w.name.toLowerCase().includes(search.toLowerCase()));
 
@@ -191,25 +160,28 @@ function WorkflowListPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    {workflow.status === "active" && (
-                      <button
-                        onClick={() => {
-                          /* mock stop */
-                        }}
-                        className="rounded-md border border-border p-2 hover:border-destructive hover:text-destructive transition-colors"
-                        title="Stop workflow"
-                      >
-                        <Square className="h-4 w-4" />
-                      </button>
-                    )}
                     <button
-                      onClick={() => {
-                        /* mock run */
-                      }}
-                      className="rounded-md border border-border p-2 hover:border-primary hover:text-primary transition-colors"
-                      title="Run workflow"
+                      onClick={() => handleToggle(workflow.id)}
+                      className={cn(
+                        "rounded-md border border-border p-2 transition-colors",
+                        workflow.status === "active"
+                          ? "hover:border-destructive hover:text-destructive"
+                          : "hover:border-primary hover:text-primary"
+                      )}
+                      title={workflow.status === "active" ? "Stop workflow" : "Start workflow"}
                     >
-                      <Play className="h-4 w-4" />
+                      {workflow.status === "active" ? (
+                        <Square className="h-4 w-4" />
+                      ) : (
+                        <Play className="h-4 w-4" />
+                      )}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(workflow.id)}
+                      className="rounded-md border border-border p-2 hover:border-destructive hover:text-destructive transition-colors"
+                      title="Delete workflow"
+                    >
+                      <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
                 </div>

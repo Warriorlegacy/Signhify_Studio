@@ -3,17 +3,18 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ArrowRight, ChevronDown, Shield, Code2, Zap } from "lucide-react";
 import { ThreeDCard } from "@/components/ui/ThreeDCard";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — Signhify" },
+      { title: "AI Product Studio Pricing & Development Plans — Signhify" },
       {
         name: "description",
         content:
-          "Engagement models for Signhify Studio: fixed-scope sprints, embedded engineering, and platform retainers.",
+          "Transparent pricing for AI product development. Choose 2-week fixed sprints, dedicated studio team retainers, or custom platform engineering.",
       },
-      { property: "og:title", content: "Pricing — Signhify" },
+      { property: "og:title", content: "AI Product Studio Pricing & Development Plans — Signhify" },
       {
         property: "og:description",
         content:
@@ -28,10 +29,25 @@ export const Route = createFileRoute("/pricing")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebPage",
-          name: "Pricing — Signhify",
+          name: "AI Product Studio Pricing & Development Plans — Signhify",
           url: "https://signhify.dpdns.org/pricing",
           description:
             "Sprint, Studio and Platform engagement models for AI-first product execution.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: FAQ.map((item) => ({
+            "@type": "Question",
+            name: item.q,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: item.a,
+            },
+          })),
         }),
       },
     ],
@@ -159,6 +175,7 @@ function PricingPage() {
         />
         <div className="absolute inset-0 bg-grid mask-fade-edges opacity-30 pointer-events-none" />
         <div className="relative mx-auto max-w-7xl px-6">
+          <Breadcrumbs items={[{ label: "Pricing", to: "/pricing" }]} />
           <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">
             Engagement models
           </div>

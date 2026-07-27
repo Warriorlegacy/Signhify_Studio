@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Cpu, Terminal, Bot, Code, GitBranch, Activity, Search } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { getOSAgents, getOSWorkflows, getOSLogs } from "@/lib/os-state";
 
 export const Route = createFileRoute("/os/")({
   head: () => ({
@@ -20,24 +21,30 @@ export const Route = createFileRoute("/os/")({
   component: OSDashboard,
 });
 
+const SOURCE_ICONS: Record<string, typeof Bot> = {
+  orchestrator: Terminal,
+  "code-gen": Code,
+  "git-agent": GitBranch,
+  "research-agent": Bot,
+  "design-agent": Bot,
+  "qa-agent": Bot,
+  "deploy-agent": Bot,
+};
+
 function OSDashboard() {
   const { data: agents, isLoading: agentsLoading } = useQuery({
     queryKey: ["os_agents"],
-    queryFn: async () => [
-      { id: "agent-1", name: "Research Agent", status: "idle", lastActive: "2m ago", tasksCompleted: 24 },
-      { id: "agent-2", name: "Code Agent", status: "running", lastActive: "30s ago", tasksCompleted: 42 },
-      { id: "agent-3", name: "Design Agent", status: "idle", lastActive: "5m ago", tasksCompleted: 18 },
-      { id: "agent-4", name: "QA Agent", status: "pending", lastActive: "10m ago", tasksCompleted: 31 },
-    ],
+    queryFn: async () => getOSAgents(),
   });
 
   const { data: workflows, isLoading: workflowsLoading } = useQuery({
     queryKey: ["os_workflows"],
-    queryFn: async () => [
-      { id: "wf-1", name: "Feature Development", status: "active", progress: 65, agents: 3 },
-      { id: "wf-2", name: "Bug Fix Sprint", status: "completed", progress: 100, agents: 2 },
-      { id: "wf-3", name: "Research Phase", status: "queued", progress: 0, agents: 1 },
-    ],
+    queryFn: async () => getOSWorkflows(),
+  });
+
+  const { data: logs, isLoading: logsLoading } = useQuery({
+    queryKey: ["os_logs_dashboard"],
+    queryFn: async () => getOSLogs(),
   });
 
   const { data: metrics, isLoading: metricsLoading } = useQuery({
@@ -52,7 +59,7 @@ function OSDashboard() {
     }),
   });
 
-  if (agentsLoading || workflowsLoading || metricsLoading) {
+  if (agentsLoading || workflowsLoading || metricsLoading || logsLoading) {
     return (
       <section className="pt-20 pb-24 px-6 min-h-screen bg-background">
         <div className="mx-auto max-w-7xl">
@@ -207,18 +214,22 @@ function OSDashboard() {
             </Link>
           </div>
           <div className="space-y-3">
-            <div className="flex items-center gap-2 text-xs">
-              <Bot className="h-4 w-4 text-primary" /> orchestrator: Started workflow "Feature Development"
-              <span className="ml-auto text-muted-foreground">2m ago</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs">
-              <Code className="h-4 w-4 text-primary" /> code-gen: Generated component "UserProfileCard"
-              <span className="ml-auto text-muted-foreground">5m ago</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs">
-              <GitBranch className="h-4 w-4 text-primary" /> git-agent: Committed changes to main branch
-              <span className="ml-auto text-muted-foreground">10m ago</span>
-            </div>
+            {logs?.slice(0, 5).map((log: any) => {
+              const Icon = SOURCE_ICONS[log.source] || Bot;
+              return (
+                <div key={log.id} className="flex items-center gap-2 text-xs">
+                  <Icon className="h-4 w-4 text-primary shrink-0" />
+                  <span className="font-mono text-muted-foreground shrink-0">[{log.source}]:</span>
+                  <span className="truncate">{log.message}</span>
+                  <span className="ml-auto text-muted-foreground text-[10px] shrink-0">
+                    {new Date(log.timestamp).toLocaleTimeString()}
+                  </span>
+                </div>
+              );
+            })}
+            {(!logs || logs.length === 0) && (
+              <p className="text-xs text-muted-foreground">No logs available.</p>
+            )}
           </div>
         </div>
       </div>

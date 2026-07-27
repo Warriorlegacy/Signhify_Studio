@@ -1,6 +1,49 @@
 import "./lib/error-capture";
 import logger from "./lib/logger";
 
+// Patch global Request prototype to allow assigning custom properties (like 'ip' in Cloudflare/Nitro environment)
+try {
+  if (typeof globalThis.Request !== "undefined" && !("ip" in globalThis.Request.prototype)) {
+    Object.defineProperty(globalThis.Request.prototype, "ip", {
+      get() {
+        return (this as any)._ip;
+      },
+      set(val) {
+        (this as any)._ip = val;
+      },
+      configurable: true,
+      enumerable: true,
+    });
+  }
+} catch (e) {
+  // Ignore
+}
+
+// Dynamically import and patch NodeRequest from srvx/node to allow setting 'ip' property locally
+import("srvx/node")
+  .then((srvx) => {
+    const NodeRequest = srvx.NodeRequest;
+    if (NodeRequest && NodeRequest.prototype) {
+      const descriptor = Object.getOwnPropertyDescriptor(NodeRequest.prototype, "ip");
+      if (descriptor && descriptor.get && !descriptor.set) {
+        Object.defineProperty(NodeRequest.prototype, "ip", {
+          get() {
+            return (this as any)._ip !== undefined ? (this as any)._ip : descriptor.get!.call(this);
+          },
+          set(val) {
+            (this as any)._ip = val;
+          },
+          configurable: true,
+          enumerable: true,
+        });
+      }
+    }
+  })
+  .catch(() => {
+    // Ignore if srvx/node is not available
+  });
+
+
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 

@@ -3,20 +3,22 @@ import { motion } from "framer-motion";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { ProcessSection } from "@/components/sections/ProcessSection";
 import { CtaSection } from "@/components/sections/CtaSection";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Services — Signhify" },
+      { title: "AI Engineering & SaaS Development Services — Signhify" },
       {
         name: "description",
         content:
-          "AI automation, SaaS development, web and product, CRM systems, digital & performance marketing and brand — one studio, end-to-end.",
+          "Explore Signhify's 12 AI & software engineering services: custom SaaS development, AI agent automation, cloud infrastructure, and growth engineering.",
       },
-      { property: "og:title", content: "Services — Signhify" },
+      { property: "og:title", content: "AI Engineering & SaaS Development Services — Signhify" },
       {
         property: "og:description",
-        content: "Twelve capabilities, one team. End-to-end AI-first product execution.",
+        content:
+          "Twelve engineering capabilities, one team. Custom SaaS development, AI agents, cloud systems, and growth engineering.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/services" },
     ],
@@ -27,7 +29,7 @@ export const Route = createFileRoute("/services")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Service",
-          name: "Signhify — AI Engineering Studio Services",
+          name: "Signhify AI Engineering Services",
           provider: { "@type": "Organization", name: "Signhify", url: "https://signhify.dpdns.org" },
           url: "https://signhify.dpdns.org/services",
           serviceType: [
@@ -70,6 +72,7 @@ function ServicesPage() {
         <div className="absolute inset-0 bg-grid mask-fade-edges opacity-25" aria-hidden />
 
         <div className="mx-auto max-w-7xl px-6 relative">
+          <Breadcrumbs items={[{ label: "Services", to: "/services" }]} />
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}

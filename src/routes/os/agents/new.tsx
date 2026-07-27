@@ -1,7 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Bot, ArrowLeft, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { saveOSAgent } from "@/lib/os-state";
 
 export const Route = createFileRoute("/os/agents/new")({
   head: () => ({
@@ -35,6 +37,7 @@ const TOOLS = [
 
 function NewAgentPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [model, setModel] = useState<string>(MODELS[0]);
@@ -50,7 +53,15 @@ function NewAgentPage() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // Mock creation — in real app this would call a server function
+    saveOSAgent({
+      name,
+      description: description.trim() || undefined,
+      model,
+      tools: selectedTools,
+    });
+    queryClient.invalidateQueries({ queryKey: ["os_agents_list"] });
+    queryClient.invalidateQueries({ queryKey: ["os_agents"] });
+    queryClient.invalidateQueries({ queryKey: ["os_logs_dashboard"] });
     navigate({ to: "/os/agents" });
   }
 

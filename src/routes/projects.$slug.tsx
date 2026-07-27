@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ExternalLink, Layers, Sparkles } from "lucide-react";
 import { getPublicProjectBySlug } from "@/lib/projects-list.functions";
 import { ThreeDDevicePreview } from "@/components/three/ThreeDDevicePreview";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: async ({ params }) => {
@@ -20,10 +21,11 @@ export const Route = createFileRoute("/projects/$slug")({
   head: ({ loaderData }) => {
     const p = loaderData?.project;
     if (!p) {
-      return { meta: [{ title: "Project — Signhify" }] };
+      return { meta: [{ title: "Project Case Study — Signhify AI Studio" }] };
     }
-    const title = `${p.name} — Signhify`;
-    const description = p.blurb;
+    const rawTitle = `${p.name} — AI Built Case Study | Signhify`;
+    const title = rawTitle.length >= 50 && rawTitle.length <= 60 ? rawTitle : `${p.name} — AI SaaS Case Study | Signhify Studio`;
+    const description = `${p.blurb} Built & shipped by Signhify AI Engineering Studio.`;
     const url = `https://signhify.dpdns.org/projects/${p.slug}`;
     return {
       meta: [
@@ -42,12 +44,14 @@ export const Route = createFileRoute("/projects/$slug")({
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "CreativeWork",
+            "@type": "SoftwareApplication",
             name: p.name,
             description: p.blurb,
             url,
-            creator: { "@type": "Organization", name: "Signhify" },
-            keywords: p.tags.join(", "),
+            applicationCategory: p.category || "BusinessApplication",
+            operatingSystem: "Web",
+            creator: { "@type": "Organization", name: "Signhify", url: "https://signhify.dpdns.org" },
+            keywords: p.tags ? p.tags.join(", ") : "AI, SaaS",
             ...(p.year ? { dateCreated: String(p.year) } : {}),
           }),
         },
@@ -76,6 +80,7 @@ function ProjectDetailPage() {
   return (
     <article className="pt-32 pb-24">
       <div className="mx-auto max-w-5xl px-6">
+        <Breadcrumbs items={[{ label: "Projects", to: "/projects" }, { label: p.name }]} />
         <Link
           to="/projects"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition"

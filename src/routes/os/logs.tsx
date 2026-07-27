@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useRef, useEffect } from "react";
+import { getOSLogs, clearOSLogs } from "@/lib/os-state";
 import {
   Bot,
   Code,
@@ -47,95 +48,11 @@ const SOURCE_ICONS: Record<string, typeof Bot> = {
 function LogsPage() {
   const [level, setLevel] = useState<string>("all");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const queryClient = useQueryClient();
 
   const { data: logs, isLoading } = useQuery({
     queryKey: ["os_logs"],
-    queryFn: async () => [
-      {
-        id: "log-1",
-        level: "info",
-        source: "orchestrator",
-        message: 'Started workflow "Feature Development"',
-        timestamp: "2026-07-01T13:17:00Z",
-      },
-      {
-        id: "log-2",
-        level: "info",
-        source: "code-gen",
-        message: 'Generated component "UserProfileCard"',
-        timestamp: "2026-07-01T13:15:00Z",
-      },
-      {
-        id: "log-3",
-        level: "info",
-        source: "git-agent",
-        message: "Committed changes to main branch",
-        timestamp: "2026-07-01T13:10:00Z",
-      },
-      {
-        id: "log-4",
-        level: "warn",
-        source: "orchestrator",
-        message: "Workflow queue approaching capacity (78%)",
-        timestamp: "2026-07-01T13:05:00Z",
-      },
-      {
-        id: "log-5",
-        level: "info",
-        source: "research-agent",
-        message: "Completed web research on topic 'RAG architectures'",
-        timestamp: "2026-07-01T12:55:00Z",
-      },
-      {
-        id: "log-6",
-        level: "error",
-        source: "deploy-agent",
-        message: "Deployment failed: connection timeout to registry",
-        timestamp: "2026-07-01T12:45:00Z",
-      },
-      {
-        id: "log-7",
-        level: "info",
-        source: "qa-agent",
-        message: "Test suite passed: 142/142 tests",
-        timestamp: "2026-07-01T12:30:00Z",
-      },
-      {
-        id: "log-8",
-        level: "warn",
-        source: "code-gen",
-        message: "Deprecated API usage detected in generated code",
-        timestamp: "2026-07-01T12:20:00Z",
-      },
-      {
-        id: "log-9",
-        level: "info",
-        source: "design-agent",
-        message: 'Generated design system: "Signhify UI v2"',
-        timestamp: "2026-07-01T12:10:00Z",
-      },
-      {
-        id: "log-10",
-        level: "error",
-        source: "orchestrator",
-        message: "Agent 'Design Agent' failed to respond within timeout",
-        timestamp: "2026-07-01T11:55:00Z",
-      },
-      {
-        id: "log-11",
-        level: "info",
-        source: "git-agent",
-        message: "Created branch 'feature/dark-mode'",
-        timestamp: "2026-07-01T11:40:00Z",
-      },
-      {
-        id: "log-12",
-        level: "info",
-        source: "orchestrator",
-        message: 'Workflow "Bug Fix Sprint" completed successfully',
-        timestamp: "2026-07-01T11:25:00Z",
-      },
-    ],
+    queryFn: async () => getOSLogs(),
   });
 
   const filtered = logs?.filter((log) => level === "all" || log.level === level) ?? [];
@@ -204,7 +121,9 @@ function LogsPage() {
           </div>
           <button
             onClick={() => {
-              /* mock clear */
+              clearOSLogs();
+              queryClient.invalidateQueries({ queryKey: ["os_logs"] });
+              queryClient.invalidateQueries({ queryKey: ["os_logs_dashboard"] });
             }}
             className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-4 py-2 text-sm hover:bg-surface transition-colors"
           >

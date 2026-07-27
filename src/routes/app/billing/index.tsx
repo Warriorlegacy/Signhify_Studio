@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
   Zap,
@@ -23,6 +23,8 @@ import {
 import { requireAppAuth } from "@/lib/auth-guard.server";
 import { getUserCredits, createCheckoutSession } from "@/lib/monetization.functions";
 import { createPortalSession } from "@/lib/stripe-portal.functions";
+import { createManualPayment, listMyManualPayments } from "@/lib/manual-payments.functions";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
@@ -78,7 +80,10 @@ function BillingPage() {
   const getCreditsFn = useServerFn(getUserCredits);
   const checkoutFn = useServerFn(createCheckoutSession);
   const portalFn = useServerFn(createPortalSession);
+  const createManualFn = useServerFn(createManualPayment);
+  const listManualFn = useServerFn(listMyManualPayments);
 
+  const qc = useQueryClient();
   const [credits, setCredits] = useState<{
     tier: string;
     creditsRemaining: number;
@@ -89,6 +94,53 @@ function BillingPage() {
   const [creditsLoading, setCreditsLoading] = useState(true);
   const [buying, setBuying] = useState<string | null>(null);
   const [portalLoading, setPortalLoading] = useState(false);
+
+  const [manualAmount, setManualAmount] = useState<string>("");
+  const [manualMethod, setManualMethod] = useState<"upi" | "bank_transfer" | "paypal">("upi");
+  const [manualRef, setManualRef] = useState<string>("");
+  const [manualNotes, setManualNotes] = useState<string>("");
+  const [manualSubmitting, setManualSubmitting] = useState(false);
+
+  const manualPaymentsQuery = useQuery({
+    queryKey: ["my_manual_payments"],
+    queryFn: async () => {
+      const res = await listManualFn({ data: undefined });
+      return res.payments;
+    },
+  });
+
+  const handleManualSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const amount = Number(manualAmount);
+    if (isNaN(amount) || amount <= 0) {
+      toast.error("Please enter a valid positive amount.");
+      return;
+    }
+    if (!manualRef.trim()) {
+      toast.error("Transaction reference ID is required.");
+      return;
+    }
+    setManualSubmitting(true);
+    try {
+      await createManualFn({
+        data: {
+          amount,
+          method: manualMethod,
+          description: manualNotes.trim() || undefined,
+          transactionRef: manualRef.trim(),
+        },
+      });
+      toast.success("Verification request submitted! We will credit your account soon.");
+      setManualAmount("");
+      setManualRef("");
+      setManualNotes("");
+      qc.invalidateQueries({ queryKey: ["my_manual_payments"] });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to submit request.");
+    } finally {
+      setManualSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     getCreditsFn()
@@ -273,54 +325,162 @@ function BillingPage() {
             {/* Manual payment methods */}
             <Card>
               <CardHeader>
-                <CardTitle>Pay With</CardTitle>
-                <CardDescription>Manual payment options — send confirmation on WhatsApp after transfer</CardDescription>
+                <CardTitle>Manual Payment Verification</CardTitle>
+                <CardDescription>Send payment first, then submit receipt details below for verification</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid sm:grid-cols-3 gap-3">
-                  <div className="rounded-xl border border-border bg-surface/40 p-4">
-                    <Smartphone className="w-5 h-5 text-blue-400 mb-2" />
-                    <div className="text-sm font-semibold">UPI</div>
-                    <div className="text-xs text-muted-foreground font-mono mt-1">6202442690@jio</div>
-                  </div>
-                  <div className="rounded-xl border border-border bg-surface/40 p-4">
-                    <Globe className="w-5 h-5 text-sky-400 mb-2" />
-                    <div className="text-sm font-semibold">PayPal</div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      <a href="https://paypal.me/signhify" target="_blank" rel="noreferrer noopener" className="text-primary underline">
-                        paypal.me/signhify
-                      </a>
+              <CardContent className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Left Column: Details */}
+                  <div className="space-y-4">
+                    <div className="grid sm:grid-cols-3 md:grid-cols-1 gap-3">
+                      <div className="rounded-xl border border-border bg-surface/40 p-4">
+                        <Smartphone className="w-5 h-5 text-blue-400 mb-2" />
+                        <div className="text-sm font-semibold">UPI</div>
+                        <div className="text-xs text-muted-foreground font-mono mt-1">6202442690@jio</div>
+                      </div>
+                      <div className="rounded-xl border border-border bg-surface/40 p-4">
+                        <Globe className="w-5 h-5 text-sky-400 mb-2" />
+                        <div className="text-sm font-semibold">PayPal</div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          <a href="https://paypal.me/signhify" target="_blank" rel="noreferrer noopener" className="text-primary underline">
+                            paypal.me/signhify
+                          </a>
+                        </div>
+                      </div>
+                      <div className="rounded-xl border border-border bg-surface/40 p-4">
+                        <Landmark className="w-5 h-5 text-emerald-400 mb-2" />
+                        <div className="text-sm font-semibold">Bank Transfer</div>
+                        <div className="text-xs text-muted-foreground mt-1 font-mono leading-relaxed">
+                          A/C 000521712140642<br />
+                          Piyush Raj Singh<br />
+                          Jio Payments Bank<br />
+                          IFSC JIOP0000001
+                        </div>
+                      </div>
+                    </div>
+                    <div className="rounded-xl border border-border bg-surface/40 p-4 flex items-start gap-3">
+                      <MessageCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                      <div className="text-sm">
+                        <span className="font-semibold">WhatsApp confirmation</span>
+                        <p className="text-muted-foreground text-xs mt-0.5">
+                          After payment, send the screenshot to{" "}
+                          <a
+                            href="https://wa.me/916202442690"
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className="text-primary underline"
+                          >
+                            +91 620202442690
+                          </a>{" "}
+                          and we&rsquo;ll credit your account within 2 hours.
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <div className="rounded-xl border border-border bg-surface/40 p-4">
-                    <Landmark className="w-5 h-5 text-emerald-400 mb-2" />
-                    <div className="text-sm font-semibold">Bank Transfer</div>
-                    <div className="text-xs text-muted-foreground mt-1 font-mono leading-relaxed">
-                      A/C 000521712140642<br />
-                      Piyush Raj Singh<br />
-                      Jio Payments Bank<br />
-                      IFSC JIOP0000001
+
+                  {/* Right Column: Verification Form */}
+                  <form onSubmit={handleManualSubmit} className="space-y-4 rounded-xl border border-border bg-surface/20 p-5 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-semibold text-sm mb-3">Verify Payment Receipt</h3>
+                      
+                      <div className="grid grid-cols-2 gap-3 mb-3">
+                        <div>
+                          <label className="block text-xs text-muted-foreground mb-1">Amount (INR)</label>
+                          <input
+                            type="number"
+                            required
+                            min="1"
+                            placeholder="e.g. 79"
+                            value={manualAmount}
+                            onChange={(e) => setManualAmount(e.target.value)}
+                            className="w-full rounded border border-border bg-background/50 px-3 py-1.5 text-xs outline-none focus:border-primary"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-muted-foreground mb-1">Method</label>
+                          <select
+                            value={manualMethod}
+                            onChange={(e) => setManualMethod(e.target.value as any)}
+                            className="w-full rounded border border-border bg-background/50 px-3 py-1.5 text-xs outline-none focus:border-primary"
+                          >
+                            <option value="upi">UPI</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="bank_transfer">Bank Transfer</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="mb-3">
+                        <label className="block text-xs text-muted-foreground mb-1">Transaction Ref / ID</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. UTR / Txn ID / Reference"
+                          value={manualRef}
+                          onChange={(e) => setManualRef(e.target.value)}
+                          className="w-full rounded border border-border bg-background/50 px-3 py-1.5 text-xs outline-none focus:border-primary"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs text-muted-foreground mb-1">Notes (Optional)</label>
+                        <textarea
+                          placeholder="Describe what you purchased (e.g., Pro Pack)"
+                          rows={2}
+                          value={manualNotes}
+                          onChange={(e) => setManualNotes(e.target.value)}
+                          className="w-full rounded border border-border bg-background/50 px-3 py-1.5 text-xs outline-none focus:border-primary resize-none"
+                        />
+                      </div>
+                    </div>
+
+                    <Button type="submit" disabled={manualSubmitting} className="w-full text-xs py-2 mt-4">
+                      {manualSubmitting ? <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" /> : null}
+                      Submit Verification Request
+                    </Button>
+                  </form>
+                </div>
+
+                {/* History Section inside Card */}
+                {manualPaymentsQuery.data && manualPaymentsQuery.data.length > 0 && (
+                  <div className="pt-4 border-t border-border">
+                    <h3 className="font-semibold text-sm mb-3">Your Offline Verification Requests</h3>
+                    <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                      {manualPaymentsQuery.data.map((p: any) => (
+                        <div key={p.id} className="flex items-center justify-between gap-4 p-3 rounded-lg border border-border/60 bg-surface/30 text-xs">
+                          <div>
+                            <div className="font-medium">
+                              {p.method === "upi" ? "UPI" : p.method === "paypal" ? "PayPal" : "Bank Transfer"} — ₹{p.amount}
+                            </div>
+                            <div className="text-[10px] text-muted-foreground font-mono mt-0.5">
+                              Ref: {p.transaction_ref}
+                            </div>
+                            {p.description && (
+                              <div className="text-[10px] text-muted-foreground mt-0.5">
+                                Note: {p.description}
+                              </div>
+                            )}
+                          </div>
+                          <div className="text-right shrink-0">
+                            <span className={cn(
+                              "px-2 py-0.5 rounded text-[10px] uppercase font-semibold",
+                              p.status === "confirmed" 
+                                ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
+                                : p.status === "expired"
+                                  ? "bg-red-500/10 text-red-400 border border-red-500/30"
+                                  : "bg-amber-500/10 text-amber-400 border border-amber-500/30"
+                            )}>
+                              {p.status}
+                            </span>
+                            <div className="text-[9px] text-muted-foreground mt-1">
+                              {new Date(p.created_at).toLocaleDateString()}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </div>
-                <div className="rounded-xl border border-border bg-surface/40 p-4 flex items-start gap-3">
-                  <MessageCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
-                  <div className="text-sm">
-                    <span className="font-semibold">WhatsApp confirmation</span>
-                    <p className="text-muted-foreground text-xs mt-0.5">
-                      After payment, send the screenshot to{" "}
-                      <a
-                        href="https://wa.me/916202442690"
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="text-primary underline"
-                      >
-                        +91 620202442690
-                      </a>{" "}
-                      and we&rsquo;ll credit your account within 2 hours.
-                    </p>
-                  </div>
-                </div>
+                )}
               </CardContent>
             </Card>
 

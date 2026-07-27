@@ -3,24 +3,44 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ArrowLeft, CheckCircle2, Mail, Sparkles, AlertCircle } from "lucide-react";
 import { leadSchema, emptyLead, type Lead } from "@/lib/leads-schema";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Start a Project — Signhify" },
+      { title: "Contact Signhify — Book AI Product Engineering Call" },
       {
         name: "description",
         content:
-          "Tell us about your idea. Six quick steps. Within 24 hours we come back with scope, stack and next steps.",
+          "Get in touch with Signhify AI Studio. Book a discovery call or request a project estimate for your AI agent, SaaS app, or automation workflow.",
       },
-      { property: "og:title", content: "Start a Project — Signhify" },
+      { property: "og:title", content: "Contact Signhify — Book AI Product Engineering Call" },
       {
         property: "og:description",
-        content: "Start a project with Signhify — AI engineering studio.",
+        content:
+          "Tell us about your idea. We come back within 24 hours with scope, tech stack, and fixed pricing estimate.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/contact" },
     ],
     links: [{ rel: "canonical", href: "https://signhify.dpdns.org/contact" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          name: "Contact Signhify — Book AI Product Engineering Call",
+          url: "https://signhify.dpdns.org/contact",
+          mainEntity: {
+            "@type": "ContactPoint",
+            email: "Piyushrajsingh092@gmail.com",
+            telephone: "+91-6202442690",
+            contactType: "customer service",
+            availableLanguage: ["English", "Hindi"],
+          },
+        }),
+      },
+    ],
   }),
   component: ContactPage,
 });
@@ -176,6 +196,7 @@ function ContactPage() {
       />
 
       <div className="relative mx-auto max-w-3xl px-6">
+        <Breadcrumbs items={[{ label: "Contact", to: "/contact" }]} />
         <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
           <Sparkles size={14} /> Start a project
         </div>
