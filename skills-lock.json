@@ -12,6 +12,56 @@
       "sourceType": "github",
       "skillPath": "skills/supabase-postgres-best-practices/SKILL.md",
       "computedHash": "768f9a7532780a72165f79c91d71a4bf82abd9ed31045238c2acb40322fc1d0a"
+    },
+    "claude-seo": {
+      "source": "AgriciDaniel/claude-seo",
+      "sourceType": "github",
+      "skillPath": "skills/seo/SKILL.md"
+    },
+    "marketingskills": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "SKILL.md"
+    },
+    "aaron-marketing-skills": {
+      "source": "aaron-he-zhu/aaron-marketing-skills",
+      "sourceType": "github",
+      "skillPath": "CLAUDE.md"
+    },
+    "ai-marketing-claude": {
+      "source": "zubair-trabzada/ai-marketing-claude",
+      "sourceType": "github",
+      "skillPath": "market/SKILL.md"
+    },
+    "claude-skills": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "CLAUDE.md"
+    },
+    "openclaudia-skills": {
+      "source": "OpenClaudia/openclaudia-skills",
+      "sourceType": "github",
+      "skillPath": "README.md"
+    },
+    "humanizer": {
+      "source": "blader/humanizer",
+      "sourceType": "github",
+      "skillPath": "SKILL.md"
+    },
+    "claude-skill-social-post": {
+      "source": "Hao0321/claude-skill-social-post",
+      "sourceType": "github",
+      "skillPath": "social-post/SKILL.md"
+    },
+    "taste-skill": {
+      "source": "Leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/taste-skill/SKILL.md"
+    },
+    "goose-skills": {
+      "source": "gooseworks-ai/goose-skills",
+      "sourceType": "github",
+      "skillPath": "README.md"
     }
   }
 }
