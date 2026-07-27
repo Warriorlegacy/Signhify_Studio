@@ -23,6 +23,7 @@ import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as OsRouteImport } from './routes/os'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ConfirmRouteImport } from './routes/confirm'
@@ -127,6 +128,11 @@ const MarketplaceRoute = MarketplaceRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HelpRoute = HelpRouteImport.update({
@@ -314,6 +320,7 @@ export interface FileRoutesByFullPath {
   '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
+  '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
   '/os': typeof OsRouteWithChildren
@@ -365,6 +372,7 @@ export interface FileRoutesByTo {
   '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
+  '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
   '/pricing': typeof PricingRoute
@@ -416,6 +424,7 @@ export interface FileRoutesById {
   '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
+  '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
   '/os': typeof OsRouteWithChildren
@@ -469,6 +478,7 @@ export interface FileRouteTypes {
     | '/confirm'
     | '/contact'
     | '/help'
+    | '/insights'
     | '/login'
     | '/marketplace'
     | '/os'
@@ -520,6 +530,7 @@ export interface FileRouteTypes {
     | '/confirm'
     | '/contact'
     | '/help'
+    | '/insights'
     | '/login'
     | '/marketplace'
     | '/pricing'
@@ -570,6 +581,7 @@ export interface FileRouteTypes {
     | '/confirm'
     | '/contact'
     | '/help'
+    | '/insights'
     | '/login'
     | '/marketplace'
     | '/os'
@@ -622,6 +634,7 @@ export interface RootRouteChildren {
   ConfirmRoute: typeof ConfirmRoute
   ContactRoute: typeof ContactRoute
   HelpRoute: typeof HelpRoute
+  InsightsRoute: typeof InsightsRoute
   LoginRoute: typeof LoginRoute
   MarketplaceRoute: typeof MarketplaceRouteWithChildren
   OsRoute: typeof OsRouteWithChildren
@@ -750,6 +763,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/help': {
@@ -1081,6 +1101,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConfirmRoute: ConfirmRoute,
   ContactRoute: ContactRoute,
   HelpRoute: HelpRoute,
+  InsightsRoute: InsightsRoute,
   LoginRoute: LoginRoute,
   MarketplaceRoute: MarketplaceRouteWithChildren,
   OsRoute: OsRouteWithChildren,
