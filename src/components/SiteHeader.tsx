@@ -95,14 +95,16 @@ export function SiteHeader() {
           </div>
         )}
 
-        {/* CTA pill */}
+        {/* CTA pill with Button-in-Button Trailing Icon & Magnetic Physics */}
         <div className="pointer-events-auto hidden lg:flex items-center">
           <Link
             to="/contact"
-            className="group inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[13px] font-semibold text-primary-foreground shadow-[0_0_24px_-4px_var(--primary-glow)] hover:shadow-[0_0_36px_-2px_var(--primary-glow)] hover:brightness-110 transition"
+            className="group inline-flex items-center gap-2.5 rounded-full bg-primary pl-5 pr-2 py-2 text-[13px] font-semibold text-primary-foreground shadow-[0_0_24px_-4px_var(--primary-glow)] hover:shadow-[0_0_36px_-2px_var(--primary-glow)] hover:brightness-110 active:scale-[0.98] transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
           >
-            Start a Project
-            <ArrowRight size={13} className="group-hover:translate-x-0.5 transition" />
+            <span>Start a Project</span>
+            <span className="w-6 h-6 rounded-full bg-black/20 flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+              <ArrowRight size={13} />
+            </span>
           </Link>
         </div>
 

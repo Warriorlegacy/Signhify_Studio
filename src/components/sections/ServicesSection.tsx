@@ -226,10 +226,11 @@ function ServiceCard({
       initial={{ opacity: 0, y: 24, filter: "blur(8px)", scale: 0.97 }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.6, delay: i * 0.05, ease: [0.32, 0.72, 0, 1] }}
+      className="group relative rounded-[1.75rem] p-1.5 bg-white/5 border border-white/10 backdrop-blur-xl hover:border-primary/40 transition-all duration-500 shadow-(--shadow-card)"
     >
       <ThreeDCard
-        className="group relative bg-card rounded-2xl border border-border hover:border-primary/50 transition-colors duration-300 overflow-hidden flex flex-col h-full shadow-(--shadow-card)"
+        className="relative bg-card rounded-[calc(1.75rem-0.375rem)] border border-white/5 overflow-hidden flex flex-col h-full"
       >
         {/* Service preview image */}
         <div
