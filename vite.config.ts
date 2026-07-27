@@ -13,11 +13,11 @@ export default defineConfig({
   vite: {
     build: {
       rollupOptions: {
-        external: ["pino", "pino-pretty", "os", "@sentry/node", "@sentry/tracing"],
+        external: ["pino", "pino-pretty", "os"],
       },
     },
     ssr: {
-      external: ["pino", "pino-pretty", "os", "@sentry/node", "@sentry/tracing"],
+      external: ["pino", "pino-pretty", "os"],
     },
   },
 });
