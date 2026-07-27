@@ -84,6 +84,11 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link to="/brand" className="hover:text-foreground">
+                Brand Entity
+              </Link>
+            </li>
+            <li>
               <Link to="/help" className="hover:text-foreground">
                 Help Center
               </Link>

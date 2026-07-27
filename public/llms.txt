@@ -46,6 +46,7 @@ Signhify is an AI-first product studio founded by Piyush Raj Singh. We are a reg
 - [OS](https://signhify.dpdns.org/os): Cloud dashboard, deployment, agent orchestration and workflow management.
 - [Builder](https://signhify.dpdns.org/builder): Full-stack product builder with AI agent pipeline.
 - [Insights](https://signhify.dpdns.org/insights): 12 AI engineering playbooks, AEO ranking guides, BYOK security architecture, and SaaS cost breakdowns.
+- [Brand Entity](https://signhify.dpdns.org/brand): Official corporate entity details, MSME registration (UDYAM-UP-30-0081308), and disambiguation.
 - [About](https://signhify.dpdns.org/about): Founder, mission and how Signhify operates.
 - [Contact](https://signhify.dpdns.org/contact): Start a project — six quick steps, 24-hour response.
 - [Book](https://signhify.dpdns.org/book): Schedule a consultation call.

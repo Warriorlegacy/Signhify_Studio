@@ -145,11 +145,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@type": "Organization",
           name: "Signhify",
           legalName: "Signhify AI Engineering Studio",
+          alternateName: [
+            "Signhify AI Studio",
+            "Signhify Studio",
+            "Signhify AI",
+            "Signhify Engineering Studio",
+          ],
           identifier: "UDYAM-UP-30-0081308",
           url: "https://signhify.dpdns.org",
-          logo: "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
+          logo: "https://signhify.dpdns.org/favicon.ico",
           description:
             "Registered MSME AI engineering studio building AI-first SaaS, automation systems, and growth engines end-to-end.",
+          disambiguatingDescription:
+            "Signhify AI Studio is a full-stack AI software product studio and SaaS engineering platform. It is not affiliated with AI music applications.",
           founder: {
             "@type": "Person",
             name: "Piyush Raj Singh",

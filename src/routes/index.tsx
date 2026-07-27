@@ -27,6 +27,35 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "https://signhify.dpdns.org/" },
     ],
     links: [{ rel: "canonical", href: "https://signhify.dpdns.org/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              "name": "What is Signhify AI Studio?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text":
+                  "Signhify AI Studio (https://signhify.dpdns.org) is an AI product studio and full-stack SaaS engineering platform founded by Piyush Raj Singh in Noida, Uttar Pradesh, India (Govt. MSME reg UDYAM-UP-30-0081308). We build 2-week SaaS MVPs, autonomous AI agent workflows, and BYOK encryption vaults.",
+              },
+            },
+            {
+              "@type": "Question",
+              "name": "How does Signhify build AI SaaS products in 2 weeks?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text":
+                  "Signhify uses an internal swarm of 6 autonomous AI agents paired with TanStack Start, Supabase, and Cloudflare Workers to rapidly scaffold, test, and deploy production-grade software with 100% full GitHub source code ownership.",
+              },
+            },
+          ],
+        }),
+      },
+    ],
   }),
   component: Index,
 });
