@@ -429,11 +429,11 @@ export interface FileRoutesByFullPath {
   '/os/': typeof OsIndexRoute
   '/scroll-studio/': typeof ScrollStudioIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
+  '/api/cron/revenue': typeof ApiCronRevenueRoute
   '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/telemetry/event': typeof ApiTelemetryEventRoute
-  '/api/cron/revenue': typeof ApiCronRevenueRoute
   '/app/marketplace/sell': typeof AppMarketplaceSellRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
@@ -492,11 +492,11 @@ export interface FileRoutesByTo {
   '/os': typeof OsIndexRoute
   '/scroll-studio': typeof ScrollStudioIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
+  '/api/cron/revenue': typeof ApiCronRevenueRoute
   '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/telemetry/event': typeof ApiTelemetryEventRoute
-  '/api/cron/revenue': typeof ApiCronRevenueRoute
   '/app/marketplace/sell': typeof AppMarketplaceSellRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
@@ -557,11 +557,11 @@ export interface FileRoutesById {
   '/os/': typeof OsIndexRoute
   '/scroll-studio/': typeof ScrollStudioIndexRoute
   '/ai/share/$id': typeof AiShareIdRoute
+  '/api/cron/revenue': typeof ApiCronRevenueRoute
   '/api/public/auth-provider': typeof ApiPublicAuthProviderRoute
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/telemetry/event': typeof ApiTelemetryEventRoute
-  '/api/cron/revenue': typeof ApiCronRevenueRoute
   '/app/marketplace/sell': typeof AppMarketplaceSellRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
@@ -623,11 +623,11 @@ export interface FileRouteTypes {
     | '/os/'
     | '/scroll-studio/'
     | '/ai/share/$id'
+    | '/api/cron/revenue'
     | '/api/public/auth-provider'
     | '/api/public/health'
     | '/api/stripe/webhook'
     | '/api/telemetry/event'
-    | '/api/cron/revenue'
     | '/app/marketplace/sell'
     | '/app/projects/$id'
     | '/app/projects/new'
@@ -686,6 +686,7 @@ export interface FileRouteTypes {
     | '/os'
     | '/scroll-studio'
     | '/ai/share/$id'
+    | '/api/cron/revenue'
     | '/api/public/auth-provider'
     | '/api/public/health'
     | '/api/stripe/webhook'
@@ -749,6 +750,7 @@ export interface FileRouteTypes {
     | '/os/'
     | '/scroll-studio/'
     | '/ai/share/$id'
+    | '/api/cron/revenue'
     | '/api/public/auth-provider'
     | '/api/public/health'
     | '/api/stripe/webhook'
@@ -805,6 +807,7 @@ export interface RootRouteChildren {
   StudioSpikeRoute: typeof StudioSpikeRoute
   AppIndexRoute: typeof AppIndexRoute
   ScrollStudioIndexRoute: typeof ScrollStudioIndexRoute
+  ApiCronRevenueRoute: typeof ApiCronRevenueRoute
   ApiPublicAuthProviderRoute: typeof ApiPublicAuthProviderRoute
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
@@ -1226,6 +1229,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicAuthProviderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/cron/revenue': {
+      id: '/api/cron/revenue'
+      path: '/api/cron/revenue'
+      fullPath: '/api/cron/revenue'
+      preLoaderRoute: typeof ApiCronRevenueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ai/share/$id': {
       id: '/ai/share/$id'
       path: '/share/$id'
@@ -1371,6 +1381,7 @@ const rootRouteChildren: RootRouteChildren = {
   StudioSpikeRoute: StudioSpikeRoute,
   AppIndexRoute: AppIndexRoute,
   ScrollStudioIndexRoute: ScrollStudioIndexRoute,
+  ApiCronRevenueRoute: ApiCronRevenueRoute,
   ApiPublicAuthProviderRoute: ApiPublicAuthProviderRoute,
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
