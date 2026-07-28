@@ -15,6 +15,7 @@ This document serves as the complete session context state to allow another AI a
   - **Verification File**: Created at `public/f6d8a7c29e134b2895e63810a4c27bdf.txt` to prove domain ownership.
   - **IndexNow Ping Executed**: 41 URLs dispatched to Bing, Yandex, IndexNow, and Seznam on 2026-07-28. All returned 200/202.
 - [x] **Apply Supabase migration to production**: Executed all 6 recent SQL migrations on live Supabase project `nqeuarvpkxupxeeuzuow` (`manual_payments`, `user_credits`, `add_credits` function, `creator_payouts`, `affiliates`, `outreach_campaigns`, `autonomous_revenue`).
+- [x] **GitHub Actions Workflows & Production SSR Build**: Resolved failing workflows across `keepalive`, `revenue-cron`, `openwiki-update`, and `ci`. Added `Route` export to `src/routes/api/cron/revenue.ts`. Production client/SSR build verified (0 errors).
 - [ ] **Execute directory listings**: Start with Clutch, GoodFirms, ProductHunt (highest ROI leads). See `scripts/directory-listing-guide.md`. Tracker created at `scripts/directory-listings.json` with 19 platforms ranked by lead quality.
 - [ ] **Start 30-day LinkedIn content calendar**: 2 posts/week from `scripts/linkedin-posts.json` (8 ready-to-post entries). Calendar spans Days 1-24.
 - [ ] **ProductHunt launch**: Follow 14-day pre-launch checklist in `scripts/producthunt-launch.md` — recommend timing for when 2-3 client testimonials exist. Target launch: 2026-08-15. Discount code: `PHLAUNCH20`.
