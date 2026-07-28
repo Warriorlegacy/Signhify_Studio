@@ -1,0 +1,16 @@
+name: Revenue Engine Cron
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  call-revenue-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call revenue cron
+        run: |
+          curl -X POST https://signhify.dpdns.org/api/cron/revenue \
+            -H "Content-Type: application/json" \
+            -d '{"secret":"${{ secrets.CRON_REVENUE_SECRET }}"}
