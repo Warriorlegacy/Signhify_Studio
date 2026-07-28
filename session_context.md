@@ -95,9 +95,14 @@ To access the cloud, OS, and deployment dashboard as an administrator:
 
 9. **Navigation Updates**:
    - SiteHeader: added "AI Studio" nav item → `/best-ai-engineering-studio`
-   - SiteFooter: added links to all new pages in "Studio" section
 
-10. **Git Push**: Committed and pushed all changes to `https://github.com/Warriorlegacy/Signhify_Studio.git` (98 files, 10,739 insertions)
+11. **Production Bug Fixes, CSP Hardening & Global Revenue Features (28 Jul 2026)**:
+    - **Fixed Route Crash (`Rocket is not defined`)**: Imported missing `Rocket` icon in `src/routes/best-ai-engineering-studio.tsx`.
+    - **CSP Header Overhaul (`src/server.ts`)**: Updated `CSP_HEADER` to permit Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`), Calendly (`calendly.com`, `assets.calendly.com`), Stripe (`js.stripe.com`), YouTube (`youtube.com`), Vimeo (`vimeo.com`), and Loom (`loom.com`) for frame-src, script-src, style-src, font-src, and connect-src.
+    - **TypeScript & Link Hardening**: Resolved search params (`redirect: "..."`) for `/login` links across `src/routes/builder.tsx` and `src/routes/pricing.tsx`. Safeguarded `loaderData` in `src/routes/insights.$slug.tsx`. Fixed Supabase query types in `telemetry.functions.ts` & `waitlist.functions.ts`.
+    - **Interactive Instant Sprint Scoper**: Engineered a 2-step scoper & micro-form inside `src/components/sections/CtaSection.tsx` connected to `submitLead` server function and Supabase `leads` table.
+    - **Dual Booking Engine (`src/routes/book.tsx`)**: Upgraded `/book` to support both direct Instant Booking Form (with direct WhatsApp confirmation) and Calendly iframe option.
+    - **Build & Git Verification**: Passed `npx tsc --noEmit` (0 errors) and `npm run build` (35s Nitro build). Committed (`943a06b`, `da5e17e`, `5c6b887`) and pushed to `https://github.com/Warriorlegacy/Signhify_Studio.git` (main branch).
 
 ---
 
