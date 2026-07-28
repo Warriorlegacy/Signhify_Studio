@@ -8,16 +8,16 @@ function toSupabase(env: "dev" | "prod" = "prod"): string {
   if (!url) throw new Error("Missing SUPABASE_URL");
   const key =
     env === "prod"
-      ? process.env.SUPABASE_SECRET_KEY
+      ? process.env.SUPABASE_SERVICE_ROLE_KEY
       : process.env.SUPABASE_PUBLISHABLE_KEY;
-  if (!key) throw new Error(`Missing SUPABASE_${env === "prod" ? "SECRET" : "PUBLISHABLE"}_KEY`);
+  if (!key) throw new Error(`Missing SUPABASE_${env === "prod" ? "SERVICE_ROLE" : "PUBLISHABLE"}_KEY`);
   return `${url.replace(/\/$/, "")}/functions/v1`;
 }
 
 async function callEdgeFunction(name: string, body: Record<string, unknown>) {
   const base = toSupabase("prod");
-  const serviceKey = process.env.SUPABASE_SECRET_KEY;
-  if (!serviceKey) throw new Error("Missing SUPABASE_SECRET_KEY");
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!serviceKey) throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY");
 
   const res = await fetch(`${base}/${name}`, {
     method: "POST",
