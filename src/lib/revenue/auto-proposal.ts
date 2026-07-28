@@ -11,7 +11,7 @@ type ProposalInput = {
   timeline: string;
   goals: string[];
   score: number;
-  tier: "hot" | "warm" | "cold";
+  tier: string;
 };
 
 function pickOffer(input: ProposalInput) {
@@ -78,6 +78,19 @@ function buildSummary(input: ProposalInput, offer: { offerType: string; priceCen
   return `${offer.title} proposal for ${input.name}${input.company ? ` at ${input.company}` : ""}.\n\nScope: ${input.scope}\nBudget band: ${input.budget}\nTimeline: ${offer.timelineDays} days\nPrice: ${price}\n\nGoals:\n${goals}\n\nNext step: confirm this scope and we'll kick off within 24 hours.`;
 }
 
+export function buildProposal(input: ProposalInput) {
+  const offer = pickOffer(input);
+  const summary = buildSummary(input, offer);
+  const milestones = buildMilestones(offer.offerType, offer.timelineDays);
+  return {
+    offerType: offer.offerType,
+    priceCents: offer.priceCents,
+    timelineDays: offer.timelineDays,
+    summary,
+    milestones,
+  };
+}
+
 export const generateProposal = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => {
     const obj = input as Record<string, unknown>;
@@ -100,36 +113,30 @@ export const generateProposal = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const offer = pickOffer(data);
-    const summary = buildSummary(data, offer);
-    const milestones = buildMilestones(offer.offerType, offer.timelineDays);
+    const proposal = buildProposal(data);
 
-    const { data: proposal, error } = await supabaseAdmin
+    const { data: created, error } = await (supabaseAdmin as any)
       .from("auto_proposals")
       .insert({
         lead_id: data.leadId,
-        offer_type: offer.offerType,
-        price_cents: offer.priceCents,
+        offer_type: proposal.offerType,
+        price_cents: proposal.priceCents,
         currency: "usd",
-        timeline_days: offer.timelineDays,
-        summary,
-        milestones,
+        timeline_days: proposal.timelineDays,
+        summary: proposal.summary,
+        milestones: proposal.milestones,
         status: "draft",
       })
       .select("id")
       .single();
 
-    if (error || !proposal) {
+    if (error || !created) {
       console.error("[auto-proposal] insert failed", error);
       throw new Error("Failed to generate proposal.");
     }
 
     return {
-      proposalId: proposal.id,
-      offerType: offer.offerType,
-      priceCents: offer.priceCents,
-      timelineDays: offer.timelineDays,
-      summary,
-      milestones,
+      proposalId: created.id,
+      ...proposal,
     };
   });

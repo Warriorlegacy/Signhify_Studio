@@ -20,7 +20,7 @@ export const upsertDirectoryListing = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin
+    const { error } = await (supabaseAdmin as any)
       .from("directory_listings")
       .upsert(
         {
@@ -44,7 +44,7 @@ export const upsertDirectoryListing = createServerFn({ method: "POST" })
 export const listDirectoryListings = createServerFn({ method: "GET" })
   .handler(async () => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await (supabaseAdmin as any)
       .from("directory_listings")
       .select("*")
       .order("priority", { ascending: true })
@@ -77,7 +77,7 @@ export const updateDirectoryListing = createServerFn({ method: "POST" })
     if (data.status === "submitted") patch.submitted_at = new Date().toISOString();
     if (data.status === "approved") patch.approved_at = new Date().toISOString();
 
-    const { error } = await supabaseAdmin
+    const { error } = await (supabaseAdmin as any)
       .from("directory_listings")
       .update(patch)
       .eq("id", data.id);

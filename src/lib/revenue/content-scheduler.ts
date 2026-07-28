@@ -26,7 +26,7 @@ export const scheduleContent = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("content_schedule").insert({
+    const { error } = await (supabaseAdmin as any).from("content_schedule").insert({
       title: data.title,
       body: data.body,
       platform: data.platform,
@@ -46,7 +46,7 @@ export const scheduleContent = createServerFn({ method: "POST" })
 export const listScheduledContent = createServerFn({ method: "GET" })
   .handler(async () => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await (supabaseAdmin as any)
       .from("content_schedule")
       .select("*")
       .in("status", ["scheduled", "published"])
@@ -76,7 +76,7 @@ export const markContentPublished = createServerFn({ method: "POST" })
     };
     if (data.postUrl) patch.post_url = data.postUrl;
 
-    const { error } = await supabaseAdmin
+    const { error } = await (supabaseAdmin as any)
       .from("content_schedule")
       .update(patch)
       .eq("id", data.id);

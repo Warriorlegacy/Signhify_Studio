@@ -118,7 +118,7 @@ export const scoreLead = createServerFn({ method: "POST" })
     const result = computeLeadScore(data);
 
     if (data.leadId) {
-      const { error } = await supabaseAdmin
+      const { error } = await (supabaseAdmin as any)
         .from("lead_scores")
         .upsert(
           {

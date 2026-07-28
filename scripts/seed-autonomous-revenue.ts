@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
 import fs from "node:fs";
 import path from "node:path";
@@ -10,6 +11,31 @@ const supabase = createClient(
 
 async function main() {
   const outreachDir = path.join(process.cwd(), "scripts", "generated-outreach");
+
+  const { data: campaigns, error: campError } = await supabase
+    .from("outreach_campaigns")
+    .select("id")
+    .eq("name", "Initial Outreach");
+
+  let campaignId = campaigns?.[0]?.id;
+  if (!campaignId && !campError) {
+    const { data: created, error: createError } = await supabase
+      .from("outreach_campaigns")
+      .insert({
+        name: "Initial Outreach",
+        channel: "email",
+        status: "active",
+        cadence_days: 3,
+        max_steps: 3,
+        metadata: { source: "seed-script" },
+      })
+      .select("id")
+      .single();
+
+    if (createError) console.error("Campaign insert failed:", createError.message);
+    else campaignId = created.id;
+  }
+
   const files = fs.readdirSync(outreachDir).filter((f) => f.endsWith(".txt") && !f.includes("summary"));
   const prospects = new Map<string, { cold?: string; followup?: string; partnership?: string }>();
 
@@ -36,7 +62,7 @@ async function main() {
     else if (variant === "followup") entry.followup = body;
     else entry.partnership = body;
 
-    const { error: sendError } = await supabase.from("outreach_sends").insert({
+    const sendPayload: Record<string, unknown> = {
       prospect_name: prospectName,
       prospect_email: "",
       company: baseName,
@@ -45,42 +71,12 @@ async function main() {
       body,
       status: "queued",
       scheduled_at: new Date(Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString(),
-    });
+    };
+    if (campaignId) sendPayload.campaign_id = campaignId;
+
+    const { error: sendError } = await supabase.from("outreach_sends").insert(sendPayload);
 
     if (sendError) console.error(`Failed to insert ${file}:`, sendError.message);
-  }
-
-  const { data: campaigns, error: campError } = await supabase
-    .from("outreach_campaigns")
-    .select("id")
-    .eq("name", "Initial Outreach");
-
-  let campaignId = campaigns?.[0]?.id;
-  if (!campaignId && !campError) {
-    const { data: created, error: createError } = await supabase
-      .from("outreach_campaigns")
-      .insert({
-        name: "Initial Outreach",
-        channel: "email",
-        status: "active",
-        cadence_days: 3,
-        max_steps: 3,
-        metadata: { source: "seed-script" },
-      })
-      .select("id")
-      .single();
-
-    if (createError) console.error("Campaign insert failed:", createError.message);
-    else campaignId = created.id;
-  }
-
-  if (campaignId) {
-    const { error: updateError } = await supabase
-      .from("outreach_sends")
-      .update({ campaign_id: campaignId })
-      .is("campaign_id", null);
-
-    if (updateError) console.error("Campaign link failed:", updateError.message);
   }
 
   const directoryJson = JSON.parse(

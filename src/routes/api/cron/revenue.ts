@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
-import { computeLeadScore } from "./lead-score";
-import { generateProposal } from "./auto-proposal";
+import { computeLeadScore } from "@/lib/revenue/lead-score";
+import { buildProposal } from "@/lib/revenue/auto-proposal";
 
 type RunResult = {
   step: string;
@@ -33,7 +33,7 @@ export const runRevenueCron = createServerFn({ method: "POST" })
     const now = new Date().toISOString();
 
     try {
-      const { data: pendingSends, error: sendError } = await supabaseAdmin
+      const { data: pendingSends, error: sendError } = await (supabaseAdmin as any)
         .from("outreach_sends")
         .select("*")
         .eq("status", "queued")
@@ -67,13 +67,13 @@ export const runRevenueCron = createServerFn({ method: "POST" })
           const json = await resendRes.json().catch(() => ({}));
           if (!resendRes.ok) {
             sendErrors.push(`${send.prospect_email}: ${json?.error ?? resendRes.status}`);
-            await supabaseAdmin
+            await (supabaseAdmin as any)
               .from("outreach_sends")
               .update({ status: "failed", error: json?.error ?? String(resendRes.status) })
               .eq("id", send.id);
           } else {
             const providerMessageId = (json as { id?: string })?.id ?? null;
-            await supabaseAdmin
+            await (supabaseAdmin as any)
               .from("outreach_sends")
               .update({
                 status: "sent",
@@ -83,7 +83,7 @@ export const runRevenueCron = createServerFn({ method: "POST" })
               })
               .eq("id", send.id);
 
-            await supabaseAdmin.from("outreach_events").insert({
+            await (supabaseAdmin as any).from("outreach_events").insert({
               send_id: send.id,
               type: "sent",
               payload: { provider: "resend", messageId: providerMessageId },
@@ -93,7 +93,7 @@ export const runRevenueCron = createServerFn({ method: "POST" })
         } catch (err) {
           const msg = err instanceof Error ? err.message : "unknown";
           sendErrors.push(`${send.prospect_email}: ${msg}`);
-          await supabaseAdmin
+          await (supabaseAdmin as any)
             .from("outreach_sends")
             .update({ status: "failed", error: msg })
             .eq("id", send.id);
@@ -102,7 +102,7 @@ export const runRevenueCron = createServerFn({ method: "POST" })
 
       results.push({ step: "outreach", processed: sentCount, errors: sendErrors });
 
-      const { data: allLeads, error: leadError } = await supabaseAdmin
+      const { data: allLeads, error: leadError } = await (supabaseAdmin as any)
         .from("leads")
         .select("*");
 
@@ -120,7 +120,7 @@ export const runRevenueCron = createServerFn({ method: "POST" })
             company: lead.company ?? undefined,
           });
 
-          await supabaseAdmin
+          await (supabaseAdmin as any)
             .from("lead_scores")
             .upsert(
               {
@@ -137,7 +137,7 @@ export const runRevenueCron = createServerFn({ method: "POST" })
 
           if (score.tier === "hot" || score.tier === "warm") {
             try {
-              const proposal = await generateProposal({
+              const proposal = buildProposal({
                 leadId: lead.id,
                 name: lead.name,
                 email: lead.email,
@@ -169,7 +169,7 @@ export const runRevenueCron = createServerFn({ method: "POST" })
                 },
               );
 
-              await supabaseAdmin
+              await (supabaseAdmin as any)
                 .from("auto_proposals")
                 .update({ status: "sent", sent_at: now })
                 .eq("lead_id", lead.id)

@@ -64,7 +64,7 @@ export const sendOutreachEmail = createServerFn({ method: "POST" })
     const result = await callEdgeFunction("send-outreach-email", payload);
 
     if (data.sendId) {
-      await supabaseAdmin
+      await (supabaseAdmin as any)
         .from("outreach_sends")
         .update({
           status: "sent",
@@ -74,7 +74,7 @@ export const sendOutreachEmail = createServerFn({ method: "POST" })
         })
         .eq("id", data.sendId);
 
-      await supabaseAdmin.from("outreach_events").insert({
+      await (supabaseAdmin as any).from("outreach_events").insert({
         send_id: data.sendId,
         type: "sent",
         payload: { provider: "resend", result },
