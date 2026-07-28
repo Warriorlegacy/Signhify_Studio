@@ -83,7 +83,7 @@ export const Route = createFileRoute("/insights/$slug")({
 });
 
 function ArticlePage() {
-  const article = Route.useLoaderData();
+  const article: ArticleData = Route.useLoaderData();
 
   return (
     <div className="min-h-screen bg-background text-foreground py-16 px-4 sm:px-6 lg:px-8">
