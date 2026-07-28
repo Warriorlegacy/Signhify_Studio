@@ -16,6 +16,7 @@ This document serves as the complete session context state to allow another AI a
   - **IndexNow Ping Executed**: 41 URLs dispatched to Bing, Yandex, IndexNow, and Seznam on 2026-07-28. All returned 200/202.
 - [x] **Apply Supabase migration to production**: Executed all 6 recent SQL migrations on live Supabase project `nqeuarvpkxupxeeuzuow` (`manual_payments`, `user_credits`, `add_credits` function, `creator_payouts`, `affiliates`, `outreach_campaigns`, `autonomous_revenue`).
 - [x] **GitHub Actions Workflows & Production SSR Build**: Resolved failing workflows across `keepalive`, `revenue-cron`, `openwiki-update`, and `ci`. Added `Route` export to `src/routes/api/cron/revenue.ts`. Production client/SSR build verified (0 errors).
+- [x] **`/api/cron/revenue` endpoint deployed and live**: Endpoint now returns 200 and executes outreach + lead_scoring steps. Initial failure was a TanStack Start server-function metadata issue; resolved by inlining the handler in the route file. Current blocker is missing `RESEND_API_KEY` in Lovable Cloud env.
 - [ ] **Execute directory listings**: Start with Clutch, GoodFirms, ProductHunt (highest ROI leads). See `scripts/directory-listing-guide.md`. Tracker created at `scripts/directory-listings.json` with 19 platforms ranked by lead quality.
 - [ ] **Start 30-day LinkedIn content calendar**: 2 posts/week from `scripts/linkedin-posts.json` (8 ready-to-post entries). Calendar spans Days 1-24.
 - [ ] **ProductHunt launch**: Follow 14-day pre-launch checklist in `scripts/producthunt-launch.md` — recommend timing for when 2-3 client testimonials exist. Target launch: 2026-08-15. Discount code: `PHLAUNCH20`.
@@ -166,6 +167,7 @@ To access the cloud, OS, and deployment dashboard as an administrator:
    - `sendOutreachEmail` server function — sends email via Resend edge function
    - Logs sent events to `outreach_events`
    - Links to `outreach_sends` for tracking
+   - **Fixed 29 Jul 2026**: Changed env var references from `SUPABASE_SECRET_KEY` to `SUPABASE_SERVICE_ROLE_KEY` to match Lovable Cloud's actual env var names
 
 4. **Lead Scoring (`src/lib/revenue/lead-score.ts`)**:
    - `computeLeadScore(input)` — deterministic scoring based on budget, timeline, goals, scope, company
@@ -191,10 +193,15 @@ To access the cloud, OS, and deployment dashboard as an administrator:
 
 8. **Cron Runner (`src/routes/api/cron/revenue.ts`)**:
    - `POST /api/cron/revenue` — authenticated via `CRON_REVENUE_SECRET`
+   - **Status**: Live and returning 200 as of 2026-07-29
    - Processes queued outreach sends (up to 50 per run)
    - Scores new leads and generates proposals for hot/warm leads
    - Sends proposal emails automatically
    - Returns structured results with processed counts and errors
+   - **Deployment notes**:
+     - Route registered in `src/routeTree.gen.ts`
+     - Handler inlined in route file to avoid TanStack Start server-function metadata resolution issues
+     - `src/lib/revenue/cron.server.ts` was created then removed after inlining
 
 9. **Seed Script (`scripts/seed-autonomous-revenue.ts`)**:
    - Seeds 24 outreach emails from `scripts/generated-outreach/`
@@ -203,9 +210,22 @@ To access the cloud, OS, and deployment dashboard as an administrator:
    - Creates "Initial Outreach" campaign and links all sends
 
 10. **Build Verification**:
-    - `npm run build` passed (33.83s Nitro build)
+    - `npm run build` passed (28.11s Nitro build)
     - TypeScript errors only in pre-existing `insights.$slug.tsx` file
     - All new files compile cleanly with `as any` Supabase casts
+
+11. **Deployment Fixes (29 Jul 2026)**:
+    - Initial `/api/cron/revenue` returned 404: fixed by registering route in `src/routeTree.gen.ts`
+    - Then returned 500 with `Server function info not found`: fixed by removing `createServerFn` and inlining handler directly in route `server.handlers.POST`
+    - Minimal route test returned 200, confirming framework issue resolved
+    - Full logic restored after framework fix
+    - Env var name mismatch fixed: `SUPABASE_SECRET_KEY` → `SUPABASE_SERVICE_ROLE_KEY` in `src/lib/revenue/outreach.ts`
+
+12. **Current Env Requirements for `/api/cron/revenue`**:
+    - `CRON_REVENUE_SECRET` — cron authentication (set in `.env` and GitHub repo secrets)
+    - `SUPABASE_URL` — Supabase project URL
+    - `SUPABASE_SERVICE_ROLE_KEY` — service role key for admin DB access
+    - `RESEND_API_KEY` — **currently missing in Lovable Cloud**; endpoint returns 200 but outreach step fails with "Missing RESEND_API_KEY"
 
 ---
 
@@ -258,6 +278,8 @@ To access the cloud, OS, and deployment dashboard as an administrator:
 - **Tables**: 8 tables created with RLS policies
 - **Edge Function**: `send-outreach-email` deployed to Supabase
 - **Seed Data**: 24 outreach sends, 19 directory listings, 8 LinkedIn posts loaded
-- **Cron Endpoint**: `/api/cron/revenue` ready for external cron trigger
-- **Env Required**: `CRON_REVENUE_SECRET` must be set for cron authentication
-- **Next Step**: Configure external cron (cron-job.org) to call `/api/cron/revenue` every 15 minutes
+- **Cron Endpoint**: `/api/cron/revenue` **live and returning 200** as of 2026-07-29
+- **Env Required**: `CRON_REVENUE_SECRET` set in `.env` and GitHub repo secrets
+- **Env Required**: `SUPABASE_SERVICE_ROLE_KEY` required in Lovable Cloud for outreach/lead_scoring
+- **Env Required**: `RESEND_API_KEY` **still missing in Lovable Cloud** — outreach step currently errors with "Missing RESEND_API_KEY"
+- **Next Step**: Add `RESEND_API_KEY` to Lovable Cloud environment variables, then verify `/api/cron/revenue` returns real `processed` counts instead of env errors
