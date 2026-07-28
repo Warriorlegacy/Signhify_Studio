@@ -9,22 +9,26 @@ export const Route = createFileRoute("/insights/$slug")({
     if (!article) throw notFound();
     return article;
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData.title} — Signhify Engineering Insights` },
-      { name: "description", content: loaderData.summary },
-      { property: "og:title", content: loaderData.title },
-      { property: "og:description", content: loaderData.summary },
-      { property: "og:type", content: "article" },
-      { property: "og:url", content: `https://signhify.dpdns.org/insights/${loaderData.id}` },
-      { property: "article:published_time", content: loaderData.date },
-      { property: "article:author", content: loaderData.author },
-      { property: "article:tag", content: loaderData.tags.join(",") },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: loaderData.title },
-      { name: "twitter:description", content: loaderData.summary },
-    ],
-    links: [{ rel: "canonical", href: `https://signhify.dpdns.org/insights/${loaderData.id}` }],
+  head: ({ loaderData }) => {
+    if (!loaderData) {
+      return { meta: [{ title: "Engineering Insights — Signhify" }] };
+    }
+    return {
+      meta: [
+        { title: `${loaderData.title} — Signhify Engineering Insights` },
+        { name: "description", content: loaderData.summary },
+        { property: "og:title", content: loaderData.title },
+        { property: "og:description", content: loaderData.summary },
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: `https://signhify.dpdns.org/insights/${loaderData.id}` },
+        { property: "article:published_time", content: loaderData.date },
+        { property: "article:author", content: loaderData.author },
+        { property: "article:tag", content: loaderData.tags.join(",") },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: loaderData.title },
+        { name: "twitter:description", content: loaderData.summary },
+      ],
+      links: [{ rel: "canonical", href: `https://signhify.dpdns.org/insights/${loaderData.id}` }],
     scripts: [
       {
         type: "application/ld+json",
@@ -73,7 +77,8 @@ export const Route = createFileRoute("/insights/$slug")({
         }),
       },
     ],
-  }),
+    };
+  },
   component: ArticlePage,
 });
 

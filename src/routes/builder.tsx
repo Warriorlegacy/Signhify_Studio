@@ -15,6 +15,7 @@ import {
   Layers,
   FileCode,
 } from "lucide-react";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
 export const Route = createFileRoute("/builder")({
   head: ({ params }) => ({
@@ -519,6 +520,7 @@ function BuilderPage() {
         <p className="text-sm text-muted-foreground">Sign in to continue.</p>
         <Link
           to="/login"
+          search={{ redirect: "/builder" }}
           className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
         >
           Sign in

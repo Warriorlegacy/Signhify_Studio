@@ -17,6 +17,7 @@ import {
   Network,
   Star,
   Sparkles,
+  Rocket,
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 

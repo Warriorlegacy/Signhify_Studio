@@ -320,7 +320,8 @@ function PricingPage() {
                 </div>
                 <p className="mt-2 text-sm text-muted-foreground flex-1">{pack.desc}</p>
                 <Link
-                  to="/signup"
+                  to="/login"
+                  search={{ redirect: "/app/billing" }}
                   className={`mt-5 group inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold transition ${
                     pack.featured
                       ? "bg-primary text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110"

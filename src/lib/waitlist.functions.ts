@@ -66,7 +66,7 @@ export const confirmWaitlistToken = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     // Fetch all unconfirmed waitlist entries
-    const { data: entries, error: fetchError } = await supabaseAdmin
+    const { data: entries, error: fetchError } = await (supabaseAdmin as any)
       .from("waitlist")
       .select("id, email")
       .eq("confirmed", false);
@@ -95,7 +95,7 @@ export const confirmWaitlistToken = createServerFn({ method: "POST" })
     }
 
     // Update confirmed status
-    const { error: updateError } = await supabaseAdmin
+    const { error: updateError } = await (supabaseAdmin as any)
       .from("waitlist")
       .update({
         confirmed: true,

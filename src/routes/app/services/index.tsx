@@ -131,7 +131,7 @@ function ServicesDashboard() {
             {quickLinks.map((link) => (
               <Link
                 key={link.label}
-                to={link.to}
+                to={link.to as any}
                 className="rounded-2xl border border-border bg-card p-5 flex items-center justify-between hover:bg-surface/50 transition-colors"
               >
                 <div className="flex items-center gap-3">

@@ -28,7 +28,7 @@ export const logTelemetryError = createServerFn({ method: "POST" })
       throw new Error("Unauthorized or project not found.");
     }
 
-    const { error: insertError } = await supabaseAdmin.from("run_errors").insert({
+    const { error: insertError } = await (supabaseAdmin as any).from("run_errors").insert({
       project_id: data.projectId,
       exception_message: data.exceptionMessage,
       stack_trace: data.stackTrace || null,

@@ -329,7 +329,7 @@ function InsightsPage() {
                 </div>
 
                 <Link
-                  to={`/insights/${art.id}`}
+                  to={`/insights/${art.id}` as any}
                   className="text-lg font-bold text-foreground hover:text-primary transition line-clamp-2 no-underline"
                 >
                   {art.title}
@@ -347,7 +347,7 @@ function InsightsPage() {
                 </div>
 
                 <Link
-                  to={`/insights/${art.id}`}
+                  to={`/insights/${art.id}` as any}
                   className="inline-flex items-center gap-1 text-xs font-semibold text-primary group-hover:translate-x-0.5 transition"
                 >
                   Read Brief <ArrowRight size={13} />

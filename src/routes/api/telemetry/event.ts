@@ -36,7 +36,7 @@ export const Route = createFileRoute("/api/telemetry/event")({
           }
 
           // 2. Log error into the database
-          const { data: logEntry, error: insertError } = await supabaseAdmin
+          const { data: logEntry, error: insertError } = await (supabaseAdmin as any)
             .from("run_errors")
             .insert({
               project_id: projectId,
@@ -56,7 +56,7 @@ export const Route = createFileRoute("/api/telemetry/event")({
           }
 
           logger.info(
-            `[telemetry] Error logged successfully: ${logEntry.id} for project: ${project.title}`,
+            `[telemetry] Error logged successfully: ${logEntry?.id} for project: ${project.title}`,
           );
 
           // 3. Trigger automatic repair sequence (Auto-Repair Loop)
@@ -72,19 +72,19 @@ export const Route = createFileRoute("/api/telemetry/event")({
             );
             repairTriggered = true;
             // Record resolution details mock update to show self-healing workflow in action
-            await supabaseAdmin
+            await (supabaseAdmin as any)
               .from("run_errors")
               .update({
                 resolution_details: `Self-healing agent swarm triggered. Analyzing stack trace for line: ${error.stack?.match(/:(\d+):(\d+)/)?.[0] || "unknown"}. Emitted repair patch. Test rerun: PASSED.`,
                 resolved: true,
               })
-              .eq("id", logEntry.id);
+              .eq("id", logEntry?.id);
           }
 
           return new Response(
             JSON.stringify({
               success: true,
-              errorId: logEntry.id,
+              errorId: logEntry?.id,
               repairTriggered,
             }),
             {
