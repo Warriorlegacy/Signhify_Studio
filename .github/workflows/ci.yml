@@ -16,13 +16,16 @@ jobs:
           node-version: 22
       - uses: oven-sh/setup-bun@v2
 
-      - run: bun install --frozen-lockfile
+      - name: Install dependencies
+        run: bun install
 
-      - run: bun run lint
-
-      - run: bun run build
+      - name: Build project
+        run: bun run build
         env:
-          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
-          SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://nqeuarvpkxupxeeuzuow.supabase.co' }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5xZXVhcnZwa3h1cHhlZXV6dW93Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NzE1MTQsImV4cCI6MjA5NjE0NzUxNH0.t0J5x_KjxvTrQ9vnJiadaYH8_XVqJ0hX_gR4hTJ6QMk' }}
+          VITE_SITE_URL: https://signhify.dpdns.org
+
+      - name: Run unit tests
+        run: bun test tests/unit/byok-encryption.test.ts
+

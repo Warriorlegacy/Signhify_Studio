@@ -3,8 +3,13 @@ on:
   schedule:
     - cron: "0 0 */3 * *"
   workflow_dispatch:
+
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - run: curl -sf -o /dev/null "https://nqeuarvpkxupxeeuzuow.supabase.co/rest/v1/" -H "apikey: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}" && echo "alive"
+      - name: Ping Supabase REST endpoint
+        run: |
+          API_KEY="${{ secrets.SUPABASE_PUBLISHABLE_KEY || secrets.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5xZXVhcnZwa3h1cHhlZXV6dW93Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NzE1MTQsImV4cCI6MjA5NjE0NzUxNH0.t0J5x_KjxvTrQ9vnJiadaYH8_XVqJ0hX_gR4hTJ6QMk' }}"
+          curl -sf -o /dev/null "https://nqeuarvpkxupxeeuzuow.supabase.co/rest/v1/" -H "apikey: $API_KEY" && echo "Supabase ping successful"
+

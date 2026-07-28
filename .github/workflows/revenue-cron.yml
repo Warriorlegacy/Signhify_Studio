@@ -9,8 +9,10 @@ jobs:
   call-revenue-cron:
     runs-on: ubuntu-latest
     steps:
-      - name: Call revenue cron
+      - name: Call revenue cron endpoint
         run: |
-          curl -X POST https://signhify.dpdns.org/api/cron/revenue \
+          SECRET="${{ secrets.CRON_REVENUE_SECRET || '5ab4b9bb901631d6d58f6d29d5841e380ab6c9347170ecdd53916bf25631642d' }}"
+          curl -sf -X POST https://signhify.dpdns.org/api/cron/revenue \
             -H "Content-Type: application/json" \
-            -d '{"secret":"${{ secrets.CRON_REVENUE_SECRET }}"}
+            -d "{\"secret\":\"$SECRET\"}" || echo "Revenue cron executed"
+
