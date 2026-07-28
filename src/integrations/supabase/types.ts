@@ -14,6 +14,89 @@ export type Database = {
   }
   public: {
     Tables: {
+      affiliate_referrals: {
+        Row: {
+          affiliate_id: string
+          commission_cents: number
+          created_at: string
+          id: string
+          paid_at: string | null
+          referred_user_id: string | null
+          status: string
+          stripe_session_id: string | null
+        }
+        Insert: {
+          affiliate_id: string
+          commission_cents?: number
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          referred_user_id?: string | null
+          status?: string
+          stripe_session_id?: string | null
+        }
+        Update: {
+          affiliate_id?: string
+          commission_cents?: number
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          referred_user_id?: string | null
+          status?: string
+          stripe_session_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_referrals_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliates: {
+        Row: {
+          bank_details: Json | null
+          code: string
+          commission_rate: number
+          created_at: string
+          id: string
+          paypal_email: string | null
+          referrals: number
+          total_earned_cents: number
+          total_paid_cents: number
+          upi_id: string | null
+          user_id: string
+        }
+        Insert: {
+          bank_details?: Json | null
+          code: string
+          commission_rate?: number
+          created_at?: string
+          id?: string
+          paypal_email?: string | null
+          referrals?: number
+          total_earned_cents?: number
+          total_paid_cents?: number
+          upi_id?: string | null
+          user_id: string
+        }
+        Update: {
+          bank_details?: Json | null
+          code?: string
+          commission_rate?: number
+          created_at?: string
+          id?: string
+          paypal_email?: string | null
+          referrals?: number
+          total_earned_cents?: number
+          total_paid_cents?: number
+          upi_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_sessions: {
         Row: {
           created_at: string
@@ -232,6 +315,53 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      creator_payouts: {
+        Row: {
+          commission_cents: number
+          created_at: string
+          creator_id: string
+          gross_amount_cents: number
+          id: string
+          listing_id: string | null
+          net_amount_cents: number
+          paid_at: string | null
+          status: string
+          stripe_session_id: string | null
+        }
+        Insert: {
+          commission_cents: number
+          created_at?: string
+          creator_id: string
+          gross_amount_cents: number
+          id?: string
+          listing_id?: string | null
+          net_amount_cents: number
+          paid_at?: string | null
+          status?: string
+          stripe_session_id?: string | null
+        }
+        Update: {
+          commission_cents?: number
+          created_at?: string
+          creator_id?: string
+          gross_amount_cents?: number
+          id?: string
+          listing_id?: string | null
+          net_amount_cents?: number
+          paid_at?: string | null
+          status?: string
+          stripe_session_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "creator_payouts_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_listings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       creator_waitlist: {
         Row: {
@@ -489,10 +619,12 @@ export type Database = {
           creator_id: string | null
           description: string | null
           id: string
+          is_active: boolean | null
           preview_url: string | null
           price_cents: number | null
           search_vector: unknown
           slug: string
+          stripe_connect_account_id: string | null
           title: string
         }
         Insert: {
@@ -502,10 +634,12 @@ export type Database = {
           creator_id?: string | null
           description?: string | null
           id?: string
+          is_active?: boolean | null
           preview_url?: string | null
           price_cents?: number | null
           search_vector?: unknown
           slug: string
+          stripe_connect_account_id?: string | null
           title: string
         }
         Update: {
@@ -515,10 +649,12 @@ export type Database = {
           creator_id?: string | null
           description?: string | null
           id?: string
+          is_active?: boolean | null
           preview_url?: string | null
           price_cents?: number | null
           search_vector?: unknown
           slug?: string
+          stripe_connect_account_id?: string | null
           title?: string
         }
         Relationships: []
@@ -714,6 +850,8 @@ export type Database = {
           deleted_at: string | null
           display_name: string | null
           id: string
+          stripe_connect_account_id: string | null
+          stripe_connect_onboarding_complete: boolean | null
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
           subscription_current_period_end: string | null
@@ -726,6 +864,8 @@ export type Database = {
           deleted_at?: string | null
           display_name?: string | null
           id: string
+          stripe_connect_account_id?: string | null
+          stripe_connect_onboarding_complete?: boolean | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           subscription_current_period_end?: string | null
@@ -738,6 +878,8 @@ export type Database = {
           deleted_at?: string | null
           display_name?: string | null
           id?: string
+          stripe_connect_account_id?: string | null
+          stripe_connect_onboarding_complete?: boolean | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           subscription_current_period_end?: string | null
@@ -975,6 +1117,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_credits: {
+        Row: {
+          created_at: string
+          credits_remaining: number
+          id: string
+          max_credits: number
+          projects_count: number
+          tier: string
+          updated_at: string
+          user_id: string
+          videos_generated: number
+        }
+        Insert: {
+          created_at?: string
+          credits_remaining?: number
+          id?: string
+          max_credits?: number
+          projects_count?: number
+          tier?: string
+          updated_at?: string
+          user_id: string
+          videos_generated?: number
+        }
+        Update: {
+          created_at?: string
+          credits_remaining?: number
+          id?: string
+          max_credits?: number
+          projects_count?: number
+          tier?: string
+          updated_at?: string
+          user_id?: string
+          videos_generated?: number
+        }
+        Relationships: []
+      }
       user_projects: {
         Row: {
           conversation_history: Json | null
@@ -1129,7 +1307,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      add_credits: {
+        Args: { p_amount: number; p_user_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
