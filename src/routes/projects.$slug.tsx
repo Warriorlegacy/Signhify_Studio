@@ -24,7 +24,10 @@ export const Route = createFileRoute("/projects/$slug")({
       return { meta: [{ title: "Project Case Study — Signhify AI Studio" }] };
     }
     const rawTitle = `${p.name} — AI Built Case Study | Signhify`;
-    const title = rawTitle.length >= 50 && rawTitle.length <= 60 ? rawTitle : `${p.name} — AI SaaS Case Study | Signhify Studio`;
+    const title =
+      rawTitle.length >= 50 && rawTitle.length <= 60
+        ? rawTitle
+        : `${p.name} — AI SaaS Case Study | Signhify Studio`;
     const description = `${p.blurb} Built & shipped by Signhify AI Engineering Studio.`;
     const url = `https://signhify.dpdns.org/projects/${p.slug}`;
     return {
@@ -50,7 +53,11 @@ export const Route = createFileRoute("/projects/$slug")({
             url,
             applicationCategory: p.category || "BusinessApplication",
             operatingSystem: "Web",
-            creator: { "@type": "Organization", name: "Signhify", url: "https://signhify.dpdns.org" },
+            creator: {
+              "@type": "Organization",
+              name: "Signhify",
+              url: "https://signhify.dpdns.org",
+            },
             keywords: p.tags ? p.tags.join(", ") : "AI, SaaS",
             ...(p.year ? { dateCreated: String(p.year) } : {}),
           }),
@@ -150,9 +157,7 @@ function ProjectDetailPage() {
 
         {p.gallery && p.gallery.length > 0 && (
           <div className="mt-16">
-            <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-4">
-              Gallery
-            </div>
+            <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-4">Gallery</div>
             <div className="grid gap-4 sm:grid-cols-2">
               {p.gallery.map((src: string, i: number) => (
                 <div

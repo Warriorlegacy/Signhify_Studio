@@ -1,0 +1,18 @@
+# Signhify AI Studio — Funding Configuration
+# Supported funding channels to support open-source AI tooling development.
+
+github: [Warriorlegacy]
+patreon: # Replace with your Patreon username (e.g., signhify)
+open_collective: # Replace with your Open Collective username (e.g., signhify)
+ko_fi: # Replace with your Ko-fi username (e.g., signhify)
+tidelift: # Replace if applicable
+community_bridge: # Replace if applicable
+liberapay: # Replace if applicable
+issuehunt: # Replace if applicable
+lfx_crowdfunding: # Replace if applicable
+polar: # Replace if applicable
+
+custom:
+  - https://www.buymeacoffee.com/warriorlegacy
+  - https://paypal.me/piyushrajsingh
+  - https://signhify.dpdns.org/contact

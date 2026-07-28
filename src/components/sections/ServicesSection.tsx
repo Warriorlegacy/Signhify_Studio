@@ -123,23 +123,17 @@ export function ServicesSection() {
       aria-labelledby="services-heading"
     >
       {/* Depth background — parallax ember orbs */}
-      <motion.div
-        style={{ y: bgY }}
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-      >
+      <motion.div style={{ y: bgY }} aria-hidden className="absolute inset-0 pointer-events-none">
         <div
           className="absolute left-[-5%] top-[10%] w-[40vw] h-[40vw] rounded-full blur-3xl opacity-25"
           style={{
-            background:
-              "radial-gradient(circle, oklch(0.72 0.21 45 / 0.5), transparent 70%)",
+            background: "radial-gradient(circle, oklch(0.72 0.21 45 / 0.5), transparent 70%)",
           }}
         />
         <div
           className="absolute right-[-5%] bottom-[5%] w-[30vw] h-[30vw] rounded-full blur-3xl opacity-20"
           style={{
-            background:
-              "radial-gradient(circle, oklch(0.78 0.16 70 / 0.4), transparent 70%)",
+            background: "radial-gradient(circle, oklch(0.78 0.16 70 / 0.4), transparent 70%)",
           }}
         />
       </motion.div>
@@ -166,8 +160,7 @@ export function ServicesSection() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="font-display text-4xl sm:text-5xl font-bold max-w-2xl"
             >
-              One studio.{" "}
-              <span className="text-gradient">End-to-end</span> execution.
+              One studio. <span className="text-gradient">End-to-end</span> execution.
             </motion.h2>
           </div>
           <motion.div
@@ -229,9 +222,7 @@ function ServiceCard({
       transition={{ duration: 0.6, delay: i * 0.05, ease: [0.32, 0.72, 0, 1] }}
       className="group relative rounded-[1.75rem] p-1.5 bg-white/5 border border-white/10 backdrop-blur-xl hover:border-primary/40 transition-all duration-500 shadow-(--shadow-card)"
     >
-      <ThreeDCard
-        className="relative bg-card rounded-[calc(1.75rem-0.375rem)] border border-white/5 overflow-hidden flex flex-col h-full"
-      >
+      <ThreeDCard className="relative bg-card rounded-[calc(1.75rem-0.375rem)] border border-white/5 overflow-hidden flex flex-col h-full">
         {/* Service preview image */}
         <div
           className={`relative overflow-hidden ${large ? "aspect-video" : "aspect-16/10"} w-full shrink-0`}

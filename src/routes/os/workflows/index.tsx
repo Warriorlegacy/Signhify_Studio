@@ -166,7 +166,7 @@ function WorkflowListPage() {
                         "rounded-md border border-border p-2 transition-colors",
                         workflow.status === "active"
                           ? "hover:border-destructive hover:text-destructive"
-                          : "hover:border-primary hover:text-primary"
+                          : "hover:border-primary hover:text-primary",
                       )}
                       title={workflow.status === "active" ? "Stop workflow" : "Start workflow"}
                     >

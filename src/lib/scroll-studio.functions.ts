@@ -16,7 +16,9 @@ export const scrollStudioChat = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { projectId, message } = data;
     const { supabase, userId, claims } = context as {
-      supabase: any; userId: string; claims?: { email?: string | null };
+      supabase: any;
+      userId: string;
+      claims?: { email?: string | null };
     };
     const email = claims?.email ?? null;
 
@@ -74,9 +76,7 @@ Always output high-quality, production-ready, beautiful designs.`;
       }
       console.error("[scrollStudioChat] AI Gateway Error:", e);
       return {
-        message:
-          "All available AI models are currently overloaded. Please try again later.",
+        message: "All available AI models are currently overloaded. Please try again later.",
       };
     }
   });
-

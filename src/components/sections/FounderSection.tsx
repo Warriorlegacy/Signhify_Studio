@@ -108,9 +108,8 @@ export function FounderSection() {
           transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           className="text-center font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight max-w-4xl mx-auto"
         >
-          Built by{" "}
-          <span className="text-gradient">Piyush Raj Singh</span>
-          {" "}— engineer, founder, AI native.
+          Built by <span className="text-gradient">Piyush Raj Singh</span> — engineer, founder, AI
+          native.
         </motion.h2>
 
         {/* Quote card */}
@@ -128,7 +127,8 @@ export function FounderSection() {
               style={{
                 background:
                   "linear-gradient(135deg, oklch(0.72 0.21 45 / 0.5), transparent 40%, oklch(0.78 0.16 70 / 0.3))",
-                maskImage: "linear-gradient(black, black) content-box, linear-gradient(black, black)",
+                maskImage:
+                  "linear-gradient(black, black) content-box, linear-gradient(black, black)",
                 WebkitMaskComposite: "xor",
                 maskComposite: "exclude",
                 padding: 1,
@@ -136,9 +136,9 @@ export function FounderSection() {
               aria-hidden
             />
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              "14+ shipped products across SaaS, AI automation, EdTech and NGO platforms. Signhify is
-              the studio I always wanted to hire — one that treats software like a film: scripted,
-              designed and shipped with conviction."
+              "14+ shipped products across SaaS, AI automation, EdTech and NGO platforms. Signhify
+              is the studio I always wanted to hire — one that treats software like a film:
+              scripted, designed and shipped with conviction."
             </p>
             <div className="mt-5 flex items-center justify-center gap-3">
               <div className="h-px w-8 bg-primary/60" />

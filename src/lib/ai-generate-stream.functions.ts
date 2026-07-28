@@ -6,7 +6,9 @@ export const getGeneratePlanStreamConfig = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { supabase, userId, claims } = context as {
-      supabase: any; userId: string; claims?: { email?: string | null };
+      supabase: any;
+      userId: string;
+      claims?: { email?: string | null };
     };
     // Gate the streaming path with the same BYOK check as the non-stream one.
     // Throws BYOKRequiredError for free users without any key configured.

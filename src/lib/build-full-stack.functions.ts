@@ -16,12 +16,13 @@ export const buildFullStackApp = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { prompt, planText } = data;
     const { supabase, userId, claims } = context as {
-      supabase: any; userId: string; claims?: { email?: string | null };
+      supabase: any;
+      userId: string;
+      claims?: { email?: string | null };
     };
     // Gate before doing any AI work: free users must BYOK, paid/admin proceed.
     // BYOKRequiredError bubbles up to the client with an actionable message.
     await resolveAIAccess({ supabase, userId, email: claims?.email ?? null });
-
 
     // We'll generate the file tree step by step
     const zip = new JSZip();

@@ -1,4 +1,7 @@
-import { generateAIResponse as robustGenerateAIResponse, robustAIService } from "./robust-ai-service";
+import {
+  generateAIResponse as robustGenerateAIResponse,
+  robustAIService,
+} from "./robust-ai-service";
 import { resolveAIAccess, type AICtx } from "./ai-access.server";
 
 export type Message = {
@@ -43,7 +46,11 @@ export async function generateAIResponseFor(
   if (access.mode === "managed") {
     return robustGenerateAIResponse(options);
   }
-  return robustAIService.generateAIResponseWithKeys(options, access.userKeys, access.customEndpoints);
+  return robustAIService.generateAIResponseWithKeys(
+    options,
+    access.userKeys,
+    access.customEndpoints,
+  );
 }
 
 export { robustAIService } from "./robust-ai-service";

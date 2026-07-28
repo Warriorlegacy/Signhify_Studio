@@ -196,8 +196,7 @@ function MarketCard({ item }: { item: MarketItem }) {
             : "Sign in to complete your purchase.",
           action: {
             label: "Sign in",
-            onClick: () =>
-              navigate({ to: "/login", search: { redirect: "/marketplace" } as any }),
+            onClick: () => navigate({ to: "/login", search: { redirect: "/marketplace" } as any }),
           },
         });
         return;
@@ -211,7 +210,9 @@ function MarketCard({ item }: { item: MarketItem }) {
       }
     } catch (e) {
       console.error("[marketplace] checkout failed:", e);
-      toast.error(isFree ? "Download failed. Please try again." : "Checkout failed. Please try again.");
+      toast.error(
+        isFree ? "Download failed. Please try again." : "Checkout failed. Please try again.",
+      );
     }
   };
 

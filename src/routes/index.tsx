@@ -12,17 +12,20 @@ import { CtaSection } from "@/components/sections/CtaSection";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Signhify — AI Product Studio & Full Stack SaaS Engineering" },
+      { title: "Signhify — Best AI Engineering Studio & Vibe-Coding Platform" },
       {
         name: "description",
         content:
-          "Describe your idea — Signhify designs, engineers, markets, and ships AI-first SaaS apps, autonomous AI agents, and growth systems end-to-end.",
+          "Signhify — the best AI engineering studio and vibe-coding platform. We design, engineer, market, and ship AI-first SaaS, autonomous agents, and growth systems end-to-end. Top digital marketing studio for AI-native brands.",
       },
-      { property: "og:title", content: "Signhify — AI Product Studio & Full Stack SaaS Engineering" },
+      {
+        property: "og:title",
+        content: "Signhify — Best AI Engineering Studio & Vibe-Coding Platform",
+      },
       {
         property: "og:description",
         content:
-          "Describe your idea — Signhify designs, engineers, markets, and ships AI-first SaaS apps, autonomous AI agents, and growth systems end-to-end.",
+          "Signhify — the best AI engineering studio and vibe-coding platform. We design, engineer, market, and ship AI-first SaaS, autonomous agents, and growth systems end-to-end. Top digital marketing studio for AI-native brands.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/" },
     ],
@@ -32,24 +35,22 @@ export const Route = createFileRoute("/")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "FAQPage",
+          "@type": "QAPage",
           mainEntity: [
             {
               "@type": "Question",
-              "name": "What is Signhify AI Studio?",
-              "acceptedAnswer": {
+              name: "What is Signhify AI Studio?",
+              acceptedAnswer: {
                 "@type": "Answer",
-                "text":
-                  "Signhify AI Studio (https://signhify.dpdns.org) is an AI product studio and full-stack SaaS engineering platform founded by Piyush Raj Singh in Noida, Uttar Pradesh, India (Govt. MSME reg UDYAM-UP-30-0081308). We build 2-week SaaS MVPs, autonomous AI agent workflows, and BYOK encryption vaults.",
+                text: "Signhify AI Studio (https://signhify.dpdns.org) is an AI product studio and full-stack SaaS engineering platform founded by Piyush Raj Singh in Noida, Uttar Pradesh, India (Govt. MSME reg UDYAM-UP-30-0081308). We build 2-week SaaS MVPs, autonomous AI agent workflows, and BYOK encryption vaults.",
               },
             },
             {
               "@type": "Question",
-              "name": "How does Signhify build AI SaaS products in 2 weeks?",
-              "acceptedAnswer": {
+              name: "How does Signhify build AI SaaS products in 2 weeks?",
+              acceptedAnswer: {
                 "@type": "Answer",
-                "text":
-                  "Signhify uses an internal swarm of 6 autonomous AI agents paired with TanStack Start, Supabase, and Cloudflare Workers to rapidly scaffold, test, and deploy production-grade software with 100% full GitHub source code ownership.",
+                text: "Signhify uses an internal swarm of 6 autonomous AI agents paired with TanStack Start, Supabase, and Cloudflare Workers to rapidly scaffold, test, and deploy production-grade software with 100% full GitHub source code ownership.",
               },
             },
           ],

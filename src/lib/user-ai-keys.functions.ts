@@ -34,10 +34,7 @@ function validateApiKeyShape(apiKey: string): void {
   }
 }
 
-function auditLog(
-  event: string,
-  fields: Record<string, unknown>,
-): void {
+function auditLog(event: string, fields: Record<string, unknown>): void {
   // Never include api_key material. Provider name + userId is enough for audit.
   try {
     logger.info({ event, kind: "byok_audit", ...fields });
@@ -85,15 +82,20 @@ export const saveMyAiKey = createServerFn({ method: "POST" })
     const obj = (input ?? {}) as Record<string, unknown>;
     const provider = assertProvider(obj.provider);
     const apiKey = typeof obj.apiKey === "string" ? obj.apiKey.trim() : "";
-    const apiEndpoint = obj.provider === "Custom" && typeof obj.apiEndpoint === "string"
-      ? obj.apiEndpoint.trim()
-      : "";
+    const apiEndpoint =
+      obj.provider === "Custom" && typeof obj.apiEndpoint === "string"
+        ? obj.apiEndpoint.trim()
+        : "";
     if (apiKey.length < 10 || apiKey.length > 400) {
       throw new Error("API key must be between 10 and 400 characters.");
     }
     if (provider === "Custom" && apiEndpoint) {
-      try { new URL(apiEndpoint); } catch {
-        throw new Error("Custom endpoint must be a valid URL (e.g. https://my-model.example.com/v1).");
+      try {
+        new URL(apiEndpoint);
+      } catch {
+        throw new Error(
+          "Custom endpoint must be a valid URL (e.g. https://my-model.example.com/v1).",
+        );
       }
     }
     validateApiKeyShape(apiKey);

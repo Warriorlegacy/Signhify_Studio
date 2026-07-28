@@ -20,10 +20,11 @@ This document serves as the complete session context state to allow another AI a
 ## 🔑 2. Admin Infrastructure Access
 
 To access the cloud, OS, and deployment dashboard as an administrator:
-* **Admin Login URL**: `https://signhify.dpdns.org/login`
-* **Admin Email**: `piyushrajsingh092@gmail.com` (or `rajpiyush092@gmail.com`)
-* **Secure Generated Password**: `SignhifyOS_SecureAdminPass2026!`
-* **Auth mechanism**: Centralized check in `src/lib/admin.ts` (`isAdminEmail` helper) which is called by both client routers and server middleware (`publish-checks.functions.ts`).
+
+- **Admin Login URL**: `https://signhify.dpdns.org/login`
+- **Admin Email**: `piyushrajsingh092@gmail.com` (or `rajpiyush092@gmail.com`)
+- **Secure Generated Password**: `SignhifyOS_SecureAdminPass2026!`
+- **Auth mechanism**: Centralized check in `src/lib/admin.ts` (`isAdminEmail` helper) which is called by both client routers and server middleware (`publish-checks.functions.ts`).
 
 ---
 
@@ -44,45 +45,45 @@ To access the cloud, OS, and deployment dashboard as an administrator:
 3. **Taste Skills & Emil Kowalski Motion Physics Overhaul**:
    - Applied **Button-in-Button Trailing Icon** and magnetic hover physics (`active:scale-[0.98]`, spring curve `cubic-bezier(0.32, 0.72, 0, 1)`) to `SiteHeader.tsx`.
    - Applied **Double-Bezel Concentric Card Architecture (Doppelrand)** to `ServicesSection.tsx` (`rounded-[1.75rem]` outer shell + `rounded-[calc(1.75rem-0.375rem)]` inner core).
-2. **Domain Migration**:
+4. **Domain Migration**:
    - Replaced all 200+ instances of the old domain `signhify.online` with the permanent domain `signhify.dpdns.org` across all components, server functions, edge functions, configurations, and PRD documents.
-2. **SEO Foundation**:
+5. **SEO Foundation**:
    - Configured `robots.txt`, `llms.txt`, and `manifest.json`.
    - Setup comprehensive meta tags and 4 JSON-LD structured schemas (Organization, WebSite, ProfessionalService, SoftwareApplication) in `src/routes/__root.tsx`.
    - Setup dynamic sitemap generation in `src/routes/sitemap[.]xml.ts`.
-3. **Core Services Alignment**:
+6. **Core Services Alignment**:
    - Updated descriptions and service lists to explicitly include **Digital & Performance Marketing** as a core offering.
    - Generated a high-quality service image (`digital-marketing.png`) and storefront photo mockup (`signhify_storefront.png`) using stable diffusion.
-4. **Git Repository Push**:
+7. **Git Repository Push**:
    - Committed and pushed all updates to main branch at `https://github.com/Warriorlegacy/Signhify_Studio.git`.
    - Verified compilation locally via `npm run build` (clean client & SSR bundles built in ~2 mins).
-5. **Infrastructure & Deployment Hardening**:
+8. **Infrastructure & Deployment Hardening**:
    - **Centralized SITE_URL**: Created `src/lib/site-url.ts` as single source of truth (`process.env.VITE_SITE_URL || process.env.SITE_URL || "https://signhify.dpdns.org"`). All 5 server functions (monetization, stripe-checkout, stripe-portal, stripe-subscribe, publish-checks) and sitemap now import from this shared module instead of having 3+ different hardcoded fallbacks.
    - **Created `.env.example`**: Documents all 20+ environment variables (Supabase, Stripe, Cloudflare, Secrets, AI) with descriptions — no more grep-only discovery.
    - **GitHub Actions CI** (`.github/workflows/ci.yml`): Runs `bun install → lint → build` on push/PR to main.
    - **Cleaned up Sentry dead config**: Removed unused `@sentry/node` / `@sentry/tracing` from Vite externals (packages were never imported — only a 4-line stub `console.error` existed).
    - Verified build passes cleanly after all changes.
-6. **BYOK Quick Config (🔑 header button)**:
+9. **BYOK Quick Config (🔑 header button)**:
    - Built `src/components/ai/AiKeyQuickConfig.tsx` — inline dropdown in site header for selecting AI provider and entering API key on any page.
    - Updated `SiteHeader.tsx` to render the 🔑 button next to the existing AI link.
    - No page navigation needed to switch keys.
-7. **AiKeysPanel — OpenAI + Custom Endpoints**:
-   - Added OpenAI provider to `src/components/settings/AiKeysPanel.tsx`.
-   - Added Custom Endpoint provider (arbitrary base URL + key) for self-hosted/alternative LLM backends.
-   - Enabled custom provider in `BYOK_PROVIDERS` list (`src/lib/ai-access.server.ts`).
-8. **api_endpoint field**:
-   - `src/lib/user-ai-keys.functions.ts`: added `api_endpoint` column + server logic so custom endpoints persist per user.
-9. **Manual Payments**:
-   - Created `src/lib/manual-payments.functions.ts` — server functions for creating/approving/denying manual payment requests (offline billing, wire transfers, custom invoicing).
-   - Added manual payment route to `src/routes/app/billing/index.tsx` (status display + request upgrade banner).
-   - Added manual payment FAQ section to `src/routes/pricing.tsx`.
-10. **Supabase Migration**:
+10. **AiKeysPanel — OpenAI + Custom Endpoints**:
+    - Added OpenAI provider to `src/components/settings/AiKeysPanel.tsx`.
+    - Added Custom Endpoint provider (arbitrary base URL + key) for self-hosted/alternative LLM backends.
+    - Enabled custom provider in `BYOK_PROVIDERS` list (`src/lib/ai-access.server.ts`).
+11. **api_endpoint field**:
+    - `src/lib/user-ai-keys.functions.ts`: added `api_endpoint` column + server logic so custom endpoints persist per user.
+12. **Manual Payments**:
+    - Created `src/lib/manual-payments.functions.ts` — server functions for creating/approving/denying manual payment requests (offline billing, wire transfers, custom invoicing).
+    - Added manual payment route to `src/routes/app/billing/index.tsx` (status display + request upgrade banner).
+    - Added manual payment FAQ section to `src/routes/pricing.tsx`.
+13. **Supabase Migration**:
     - `supabase/migrations/20260718210000_byok_custom_endpoint_manual_payments.sql`: Creates `user_ai_key_custom_endpoints` and `manual_payment_requests` tables.
-11. **Prisma Init**:
+14. **Prisma Init**:
     - `prisma/schema.prisma` + `prisma.config.ts`: initial Prisma ORM schema, ready for future data layer migration.
-12. **Keepalive Workflow**:
+15. **Keepalive Workflow**:
     - `.github/workflows/keepalive.yml`: weekly cron to prevent GitHub Actions from going dormant on free org.
-13. **Verified Google OAuth Authentication**:
+16. **Verified Google OAuth Authentication**:
     - Configured and saved the correct `https://signhify.dpdns.org` Site URL and allowed redirect URIs in the Supabase Authentication dashboard.
     - Successfully verified that the "Continue with Google" flow correctly authenticates the admin account (`piyushrajsingh092@gmail.com`) and redirects them to the live `/app/deploy` dashboard.
 
@@ -90,13 +91,13 @@ To access the cloud, OS, and deployment dashboard as an administrator:
 
 ## 🛠️ 4. Technical Architecture Reference
 
-* **Framework**: TanStack Start (Vite + React + SSR).
-* **Router**: TanStack Router (file-based routing in `src/routes/`).
-* **Database & Auth**: Supabase (database migrations in `supabase/migrations/`).
-* **Admin Verification**: centralized in `src/lib/admin.ts`.
-* **Site URL**: centralized in `src/lib/site-url.ts` (used by all server functions).
-* **CI/CD**: GitHub Actions at `.github/workflows/ci.yml` (lint + build on push/PR).
-* **Important Paths**:
+- **Framework**: TanStack Start (Vite + React + SSR).
+- **Router**: TanStack Router (file-based routing in `src/routes/`).
+- **Database & Auth**: Supabase (database migrations in `supabase/migrations/`).
+- **Admin Verification**: centralized in `src/lib/admin.ts`.
+- **Site URL**: centralized in `src/lib/site-url.ts` (used by all server functions).
+- **CI/CD**: GitHub Actions at `.github/workflows/ci.yml` (lint + build on push/PR).
+- **Important Paths**:
   - Main Layout: `src/routes/__root.tsx`
   - Sitemap handler: `src/routes/sitemap[.]xml.ts`
   - Asset Mockups: `public/images/`

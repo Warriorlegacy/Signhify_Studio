@@ -1,11 +1,14 @@
 # Signhify — robots.txt
 # https://signhify.dpdns.org
+# GEO-optimized: all AI crawlers allowed on all public pages
 
+# Default — allow everything public
 User-agent: *
 Allow: /
 Disallow: /app/
 Disallow: /api/
 Disallow: /confirm
+Disallow: /admin
 
 # Google
 User-agent: Googlebot
@@ -19,7 +22,7 @@ Allow: /
 Disallow: /app/
 Disallow: /api/
 
-# AI Crawlers — Allowed for AI search visibility
+# AI Training & Search Crawlers — FULL access for GEO visibility
 User-agent: GPTBot
 Allow: /
 Disallow: /app/
@@ -38,12 +41,18 @@ Allow: /
 Disallow: /app/
 Disallow: /api/
 
+User-agent: Claude-Web
+Allow: /
+
 User-agent: PerplexityBot
 Allow: /
 Disallow: /app/
 Disallow: /api/
 
 User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
 Allow: /
 
 User-agent: Bytespider
@@ -56,8 +65,29 @@ Allow: /
 Disallow: /app/
 Disallow: /api/
 
+User-agent: Amazonbot
+Allow: /
+Disallow: /app/
+Disallow: /api/
+
+User-agent: FacebookBot
+Allow: /
+Disallow: /app/
+Disallow: /api/
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# AI search discovery files
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /ai-directory.json
+Allow: /.well-known/
+
 # Sitemaps
 Sitemap: https://signhify.dpdns.org/sitemap.xml
 
-# AI-readable site description
-# See https://signhify.dpdns.org/llms.txt
+# AI-readable context
+# llms.txt:  https://signhify.dpdns.org/llms.txt
+# llms-full: https://signhify.dpdns.org/llms-full.txt
+# AI dir:    https://signhify.dpdns.org/ai-directory.json

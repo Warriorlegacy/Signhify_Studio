@@ -1,7 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Bot, Plus, Search, Power, PowerOff, Clock, CheckCircle2, ArrowLeft, Trash2 } from "lucide-react";
+import {
+  Bot,
+  Plus,
+  Search,
+  Power,
+  PowerOff,
+  Clock,
+  CheckCircle2,
+  ArrowLeft,
+  Trash2,
+} from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { getOSAgents, toggleOSAgentStatus, deleteOSAgent } from "@/lib/os-state";

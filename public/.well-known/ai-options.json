@@ -1,0 +1,37 @@
+{
+  "@context": "https://signhify.dpdns.org/.well-known/ai-options",
+  "source": "https://signhify.dpdns.org",
+  "lastUpdated": "2026-07-28",
+  "aiContext": {
+    "llmsTxt": "https://signhify.dpdns.org/llms.txt",
+    "llmsFull": "https://signhify.dpdns.org/llms-full.txt",
+    "aiDirectory": "https://signhify.dpdns.org/ai-directory.json",
+    "sitemap": "https://signhify.dpdns.org/sitemap.xml"
+  },
+  "crawlRules": {
+    "preferredCrawlRate": "standard",
+    "maxPageDepth": 5,
+    "allowedPaths": [
+      "/",
+      "/ai",
+      "/about",
+      "/brand",
+      "/projects",
+      "/services",
+      "/pricing",
+      "/templates",
+      "/marketplace",
+      "/insights",
+      "/vision",
+      "/os",
+      "/builder",
+      "/book",
+      "/contact",
+      "/roadmap",
+      "/llms.txt",
+      "/llms-full.txt",
+      "/ai-directory.json"
+    ]
+  },
+  "description": "Signhify is a registered MSME (UDYAM-UP-30-0081308) AI engineering studio. It offers AI-powered software development using a 6-agent autonomous swarm, delivering production-ready SaaS in 2-week sprints at fixed prices starting from $299."
+}

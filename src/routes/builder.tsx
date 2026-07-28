@@ -163,7 +163,12 @@ function BuilderPage() {
   const [rightTab, setRightTab] = useState<"preview" | "code">("preview");
   const scrollRef = useRef<HTMLDivElement>(null);
   const [presence, setPresence] = useState<any[]>([]); // For tracking other users' presence
-  const [inspectedElement, setInspectedElement] = useState<{ tagName: string; id: string; className: string; innerText: string } | null>(null);
+  const [inspectedElement, setInspectedElement] = useState<{
+    tagName: string;
+    id: string;
+    className: string;
+    innerText: string;
+  } | null>(null);
   const [inspectorPrompt, setInspectorPrompt] = useState("");
 
   useEffect(() => {
@@ -283,7 +288,8 @@ function BuilderPage() {
   const lastVersion = project?.versions.at(-1) || null;
   const currentHtml = lastVersion?.mode === "single" ? lastVersion.html || "" : "";
   const currentFiles = lastVersion?.mode === "multi" ? lastVersion.files || [] : [];
-  const rawPreviewHtml = lastVersion?.mode === "multi" ? assembleMultiHtml(currentFiles) : currentHtml;
+  const rawPreviewHtml =
+    lastVersion?.mode === "multi" ? assembleMultiHtml(currentFiles) : currentHtml;
   const previewHtml = injectInspector(rawPreviewHtml);
 
   // Pick a default selected file when switching to a multi project
@@ -802,23 +808,37 @@ function BuilderPage() {
         )}
       </section>
 
-      <Sheet open={!!inspectedElement} onOpenChange={(open) => { if (!open) setInspectedElement(null); }}>
+      <Sheet
+        open={!!inspectedElement}
+        onOpenChange={(open) => {
+          if (!open) setInspectedElement(null);
+        }}
+      >
         <SheetContent className="bg-card border-l border-white/10 text-white w-full sm:max-w-md">
           <SheetHeader>
             <SheetTitle className="text-white flex items-center gap-2">
               <Sparkles className="text-primary h-5 w-5" /> Inspect Element
             </SheetTitle>
             <SheetDescription className="text-white/60">
-              Hold Ctrl and hover over preview elements, then click to select. Describe changes to apply to it.
+              Hold Ctrl and hover over preview elements, then click to select. Describe changes to
+              apply to it.
             </SheetDescription>
           </SheetHeader>
           {inspectedElement && (
             <div className="mt-6 space-y-6">
               <div className="rounded-xl border border-white/15 bg-white/5 p-4 space-y-2 font-mono text-xs">
                 <div>
-                  <span className="text-primary font-bold">Element:</span> &lt;{inspectedElement.tagName}
-                  {inspectedElement.id && <span className="text-amber-400"> id=&quot;{inspectedElement.id}&quot;</span>}
-                  {inspectedElement.className && <span className="text-blue-400"> class=&quot;{inspectedElement.className}&quot;</span>}
+                  <span className="text-primary font-bold">Element:</span> &lt;
+                  {inspectedElement.tagName}
+                  {inspectedElement.id && (
+                    <span className="text-amber-400"> id=&quot;{inspectedElement.id}&quot;</span>
+                  )}
+                  {inspectedElement.className && (
+                    <span className="text-blue-400">
+                      {" "}
+                      class=&quot;{inspectedElement.className}&quot;
+                    </span>
+                  )}
                   &gt;
                 </div>
                 {inspectedElement.innerText && (
@@ -829,7 +849,9 @@ function BuilderPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-white/80">Describe changes to apply to this element</label>
+                <label className="text-xs font-semibold text-white/80">
+                  Describe changes to apply to this element
+                </label>
                 <textarea
                   value={inspectorPrompt}
                   onChange={(e) => setInspectorPrompt(e.target.value)}

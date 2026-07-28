@@ -42,7 +42,9 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
             const isLast = idx === allItems.length - 1;
             return (
               <li key={idx} className="flex items-center gap-1.5">
-                {idx > 0 && <ChevronRight size={12} className="text-muted-foreground/60 shrink-0" />}
+                {idx > 0 && (
+                  <ChevronRight size={12} className="text-muted-foreground/60 shrink-0" />
+                )}
                 {isLast || !item.to ? (
                   <span className="font-medium text-foreground tracking-wide truncate max-w-[200px]">
                     {item.label}

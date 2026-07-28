@@ -39,7 +39,9 @@ export const getUserPurchases = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { userId, supabase } = context;
     const { data } = await (supabase.from as any)("marketplace_purchases")
-      .select(`id, listing_id, purchased_at, stripe_session_id, listing:marketplace_listings(${LISTING_COLS})`)
+      .select(
+        `id, listing_id, purchased_at, stripe_session_id, listing:marketplace_listings(${LISTING_COLS})`,
+      )
       .eq("user_id", userId)
       .order("purchased_at", { ascending: false });
     return (data ?? []) as any[];

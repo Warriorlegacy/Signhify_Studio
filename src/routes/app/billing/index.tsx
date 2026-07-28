@@ -39,8 +39,7 @@ export const Route = createFileRoute("/app/billing/")({
       { title: "Billing — Signhify" },
       {
         name: "description",
-        content:
-          "Manage your Signhify plan, credits, subscription, and billing history.",
+        content: "Manage your Signhify plan, credits, subscription, and billing history.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/app/billing" },
       { property: "og:title", content: "Billing — Signhify" },
@@ -71,9 +70,21 @@ const CREDIT_PACKS = [
 ];
 
 const MOCK_PURCHASES = [
-  { id: "1", date: "2026-06-28", description: "Pro Pack — 50 credits", amount: 79, status: "completed" },
+  {
+    id: "1",
+    date: "2026-06-28",
+    description: "Pro Pack — 50 credits",
+    amount: 79,
+    status: "completed",
+  },
   { id: "2", date: "2026-06-15", description: "Studio Monthly", amount: 49, status: "completed" },
-  { id: "3", date: "2026-05-01", description: "Starter Pack — 10 credits", amount: 19, status: "completed" },
+  {
+    id: "3",
+    date: "2026-05-01",
+    description: "Starter Pack — 10 credits",
+    amount: 19,
+    status: "completed",
+  },
 ];
 
 function BillingPage() {
@@ -151,7 +162,9 @@ function BillingPage() {
   const usageQuery = useQuery({
     queryKey: ["ai_usage_month"],
     queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) return { apiCalls: 0, storageBytes: 0 };
       const start = new Date();
       start.setDate(1);
@@ -261,14 +274,20 @@ function BillingPage() {
                       <div className="space-y-2">
                         <Progress value={creditPercent} className="h-2" />
                         <div className="flex justify-between text-xs text-muted-foreground">
-                          <span>Used: {credits ? credits.maxCredits - credits.creditsRemaining : 0}</span>
+                          <span>
+                            Used: {credits ? credits.maxCredits - credits.creditsRemaining : 0}
+                          </span>
                           <span>Remaining: {credits?.creditsRemaining ?? 0}</span>
                         </div>
                       </div>
                     )}
                     {tier === "free" && (
                       <Button
-                        onClick={() => checkoutFn({ data: { plan: "pro" } }).then((r) => r.url && window.open(r.url, "_blank"))}
+                        onClick={() =>
+                          checkoutFn({ data: { plan: "pro" } }).then(
+                            (r) => r.url && window.open(r.url, "_blank"),
+                          )
+                        }
                         className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0"
                       >
                         <Sparkles className="w-4 h-4 mr-2" />
@@ -326,7 +345,9 @@ function BillingPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Manual Payment Verification</CardTitle>
-                <CardDescription>Send payment first, then submit receipt details below for verification</CardDescription>
+                <CardDescription>
+                  Send payment first, then submit receipt details below for verification
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
@@ -336,13 +357,20 @@ function BillingPage() {
                       <div className="rounded-xl border border-border bg-surface/40 p-4">
                         <Smartphone className="w-5 h-5 text-blue-400 mb-2" />
                         <div className="text-sm font-semibold">UPI</div>
-                        <div className="text-xs text-muted-foreground font-mono mt-1">6202442690@jio</div>
+                        <div className="text-xs text-muted-foreground font-mono mt-1">
+                          6202442690@jio
+                        </div>
                       </div>
                       <div className="rounded-xl border border-border bg-surface/40 p-4">
                         <Globe className="w-5 h-5 text-sky-400 mb-2" />
                         <div className="text-sm font-semibold">PayPal</div>
                         <div className="text-xs text-muted-foreground mt-1">
-                          <a href="https://paypal.me/signhify" target="_blank" rel="noreferrer noopener" className="text-primary underline">
+                          <a
+                            href="https://paypal.me/signhify"
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className="text-primary underline"
+                          >
                             paypal.me/signhify
                           </a>
                         </div>
@@ -351,9 +379,12 @@ function BillingPage() {
                         <Landmark className="w-5 h-5 text-emerald-400 mb-2" />
                         <div className="text-sm font-semibold">Bank Transfer</div>
                         <div className="text-xs text-muted-foreground mt-1 font-mono leading-relaxed">
-                          A/C 000521712140642<br />
-                          Piyush Raj Singh<br />
-                          Jio Payments Bank<br />
+                          A/C 000521712140642
+                          <br />
+                          Piyush Raj Singh
+                          <br />
+                          Jio Payments Bank
+                          <br />
                           IFSC JIOP0000001
                         </div>
                       </div>
@@ -379,13 +410,18 @@ function BillingPage() {
                   </div>
 
                   {/* Right Column: Verification Form */}
-                  <form onSubmit={handleManualSubmit} className="space-y-4 rounded-xl border border-border bg-surface/20 p-5 flex flex-col justify-between">
+                  <form
+                    onSubmit={handleManualSubmit}
+                    className="space-y-4 rounded-xl border border-border bg-surface/20 p-5 flex flex-col justify-between"
+                  >
                     <div>
                       <h3 className="font-semibold text-sm mb-3">Verify Payment Receipt</h3>
-                      
+
                       <div className="grid grid-cols-2 gap-3 mb-3">
                         <div>
-                          <label className="block text-xs text-muted-foreground mb-1">Amount (INR)</label>
+                          <label className="block text-xs text-muted-foreground mb-1">
+                            Amount (INR)
+                          </label>
                           <input
                             type="number"
                             required
@@ -411,7 +447,9 @@ function BillingPage() {
                       </div>
 
                       <div className="mb-3">
-                        <label className="block text-xs text-muted-foreground mb-1">Transaction Ref / ID</label>
+                        <label className="block text-xs text-muted-foreground mb-1">
+                          Transaction Ref / ID
+                        </label>
                         <input
                           type="text"
                           required
@@ -423,7 +461,9 @@ function BillingPage() {
                       </div>
 
                       <div>
-                        <label className="block text-xs text-muted-foreground mb-1">Notes (Optional)</label>
+                        <label className="block text-xs text-muted-foreground mb-1">
+                          Notes (Optional)
+                        </label>
                         <textarea
                           placeholder="Describe what you purchased (e.g., Pro Pack)"
                           rows={2}
@@ -434,8 +474,14 @@ function BillingPage() {
                       </div>
                     </div>
 
-                    <Button type="submit" disabled={manualSubmitting} className="w-full text-xs py-2 mt-4">
-                      {manualSubmitting ? <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" /> : null}
+                    <Button
+                      type="submit"
+                      disabled={manualSubmitting}
+                      className="w-full text-xs py-2 mt-4"
+                    >
+                      {manualSubmitting ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />
+                      ) : null}
                       Submit Verification Request
                     </Button>
                   </form>
@@ -444,13 +490,23 @@ function BillingPage() {
                 {/* History Section inside Card */}
                 {manualPaymentsQuery.data && manualPaymentsQuery.data.length > 0 && (
                   <div className="pt-4 border-t border-border">
-                    <h3 className="font-semibold text-sm mb-3">Your Offline Verification Requests</h3>
+                    <h3 className="font-semibold text-sm mb-3">
+                      Your Offline Verification Requests
+                    </h3>
                     <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
                       {manualPaymentsQuery.data.map((p: any) => (
-                        <div key={p.id} className="flex items-center justify-between gap-4 p-3 rounded-lg border border-border/60 bg-surface/30 text-xs">
+                        <div
+                          key={p.id}
+                          className="flex items-center justify-between gap-4 p-3 rounded-lg border border-border/60 bg-surface/30 text-xs"
+                        >
                           <div>
                             <div className="font-medium">
-                              {p.method === "upi" ? "UPI" : p.method === "paypal" ? "PayPal" : "Bank Transfer"} — ₹{p.amount}
+                              {p.method === "upi"
+                                ? "UPI"
+                                : p.method === "paypal"
+                                  ? "PayPal"
+                                  : "Bank Transfer"}{" "}
+                              — ₹{p.amount}
                             </div>
                             <div className="text-[10px] text-muted-foreground font-mono mt-0.5">
                               Ref: {p.transaction_ref}
@@ -462,14 +518,16 @@ function BillingPage() {
                             )}
                           </div>
                           <div className="text-right shrink-0">
-                            <span className={cn(
-                              "px-2 py-0.5 rounded text-[10px] uppercase font-semibold",
-                              p.status === "confirmed" 
-                                ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
-                                : p.status === "expired"
-                                  ? "bg-red-500/10 text-red-400 border border-red-500/30"
-                                  : "bg-amber-500/10 text-amber-400 border border-amber-500/30"
-                            )}>
+                            <span
+                              className={cn(
+                                "px-2 py-0.5 rounded text-[10px] uppercase font-semibold",
+                                p.status === "confirmed"
+                                  ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
+                                  : p.status === "expired"
+                                    ? "bg-red-500/10 text-red-400 border border-red-500/30"
+                                    : "bg-amber-500/10 text-amber-400 border border-amber-500/30",
+                              )}
+                            >
                               {p.status}
                             </span>
                             <div className="text-[9px] text-muted-foreground mt-1">
@@ -501,7 +559,7 @@ function BillingPage() {
                         {usageQuery.isLoading ? (
                           <Skeleton className="h-7 w-12 inline-block" />
                         ) : (
-                          usageQuery.data?.apiCalls ?? 0
+                          (usageQuery.data?.apiCalls ?? 0)
                         )}
                       </div>
                       <div className="text-xs text-muted-foreground">API calls this month</div>

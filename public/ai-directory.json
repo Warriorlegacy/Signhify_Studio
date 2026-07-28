@@ -1,0 +1,127 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Signhify AI Studio",
+  "alternateName": [
+    "Signhify",
+    "Signhify AI Engineering Studio",
+    "Signhify Engineering Studio",
+    "Signhify Studio"
+  ],
+  "description": "Best AI engineering studio and vibe-coding platform. Describe your idea in plain English — our 6-agent autonomous AI swarm designs, engineers, tests, secures, and deploys production-ready SaaS. Auth, payments, AI pipelines, and custom domain included. Delivered in 2 weeks with 100% code ownership.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript and a modern browser (Chrome, Firefox, Safari, Edge)",
+  "softwareVersion": "2.0",
+  "releaseNotes": "https://github.com/Warriorlegacy/Signhify_Studio/releases",
+  "url": "https://signhify.dpdns.org",
+  "sameAs": [
+    "https://github.com/Warriorlegacy/Signhify_Studio",
+    "https://linkedin.com/in/piyushraj-singh",
+    "https://x.com/Warriorlegacy"
+  ],
+  "logo": "https://signhify.dpdns.org/favicon.ico",
+  "screenshot": "https://signhify.dpdns.org/og-image.png",
+  "featureList": [
+    "6-agent autonomous AI swarm (schema architect, UX designer, code builder, test runner, security auditor, deployer)",
+    "BYOK AES-256 GCM encryption vault — client-side key management, zero server access",
+    "2-week production delivery guarantee",
+    "100% source code ownership via full GitHub repository transfer",
+    "Stripe payment integration (checkout, subscriptions, usage-based billing)",
+    "Supabase authentication (Google, GitHub OAuth) and PostgreSQL database",
+    "Cloudflare global edge deployment",
+    "AI agent orchestration pipeline with auto-fallback between providers",
+    "Template marketplace with 50+ production-ready templates",
+    "Digital & performance marketing automation"
+  ],
+  "softwareHelp": {
+    "@type": "WebPage",
+    "url": "https://signhify.dpdns.org/insights"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": "299",
+    "highPrice": "50000",
+    "offerCount": "3",
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Sprint",
+        "price": "299",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "description": "Production MVP in 5-7 days. Core UI, Supabase backend, mobile layout, custom domain, full GitHub transfer.",
+        "availability": "https://schema.org/OnlineOnly",
+        "url": "https://signhify.dpdns.org/pricing",
+        "category": "Fixed-price sprint"
+      },
+      {
+        "@type": "Offer",
+        "name": "Studio",
+        "price": "799",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "description": "Full SaaS platform with AI integrations, BYOK vault, Stripe billing, admin analytics, 30-day post-launch support.",
+        "availability": "https://schema.org/OnlineOnly",
+        "url": "https://signhify.dpdns.org/pricing",
+        "category": "Monthly retainer"
+      },
+      {
+        "@type": "Offer",
+        "name": "Platform",
+        "priceCurrency": "USD",
+        "description": "Custom enterprise builds — multi-agent orchestration, custom LLM fine-tuning, SOC2 readiness, dedicated SLA.",
+        "availability": "https://schema.org/OnlineOnly",
+        "url": "https://signhify.dpdns.org/pricing",
+        "category": "Enterprise custom"
+      }
+    ]
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "bestRating": "5",
+    "ratingCount": "22",
+    "reviewCount": "22"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Piyush Raj Singh",
+    "jobTitle": "Founder & Lead AI Engineer",
+    "email": "Piyushrajsingh092@gmail.com",
+    "url": "https://linkedin.com/in/piyushraj-singh"
+  },
+  "publisher": {
+    "@type": "Corporation",
+    "name": "Signhify",
+    "identifier": "UDYAM-UP-30-0081308",
+    "url": "https://signhify.dpdns.org",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Noida",
+      "addressRegion": "Uttar Pradesh",
+      "addressCountry": "IN"
+    }
+  },
+  "keywords": [
+    "AI engineering studio",
+    "best AI engineering studio",
+    "vibe-coding platform",
+    "best vibe-coding platform",
+    "digital marketing studio",
+    "best digital marketing studio",
+    "AI product studio",
+    "SaaS development",
+    "AI agent development",
+    "prompt to product",
+    "AI development agency",
+    "AI SaaS builder"
+  ],
+  "applicationSubCategory": "AI-Powered Product Development Studio",
+  "storageRequirements": "Cloud-based — no local storage required",
+  "countryOfOrigin": "IN",
+  "availableOnDevice": "Desktop, Tablet, Mobile",
+  "datePublished": "2024",
+  "discussionUrl": "https://github.com/Warriorlegacy/Signhify_Studio/discussions"
+}

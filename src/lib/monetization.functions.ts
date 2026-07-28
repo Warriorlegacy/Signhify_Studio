@@ -121,7 +121,12 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         const meta = sessionParams.metadata as Record<string, string>;
         meta.type = "credit_pack";
         meta.priceId = priceId;
-        meta.credits = "10";
+        const CREDIT_PACK_MAP: Record<string, number> = {
+          [STRIPE_PRICE_IDS.creditPack]: 10,
+          ["price_test_signhify_credit_pack_50"]: 50,
+          ["price_test_signhify_credit_pack_200"]: 200,
+        };
+        meta.credits = String(CREDIT_PACK_MAP[priceId] ?? 10);
       }
 
       const session = await stripe.checkout.sessions.create(sessionParams);

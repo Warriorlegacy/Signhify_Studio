@@ -37,7 +37,7 @@ timeline
 
 **Focus**: Transitions from a static portfolio to an interactive AI playground where users get real build specs.
 
-* **Milestones**:
+- **Milestones**:
   - [x] **AI Blueprint Generator (`/ai`)**: Allow users to type prompts and get a detailed Claude-generated execution plan.
   - [x] **Six-Agent Pipeline UI**: Animate the compilation process (Schema Design, Design Tokens, Code Gen, Test Suite, Deploy Setup) in real-time.
   - [x] **Supabase Auth Integration**: OAuth brokers (Google, GitHub) + email sign-in.
@@ -94,7 +94,7 @@ create policy "Users can view and create their own runs" on app.runs
 
 **Focus**: Empowers developers to sell code/templates and helps founders download starting blocks.
 
-* **Milestones**:
+- **Milestones**:
   - [x] **Template Store (`/marketplace`)**: Listings for templates, agents, and component kits.
   - [x] **Signed URL Asset Delivery**: Secure delivery of build packages stored in Supabase buckets.
   - [x] **Stripe Checkout**: Seamless payment gateways for premium templates.
@@ -156,7 +156,7 @@ create policy "Creators can manage their own templates" on app.templates for all
 
 **Focus**: Zero-config deployment and automated cloud infrastructure management.
 
-* **Milestones**:
+- **Milestones**:
   - [x] **Cloudflare Workers & Pages Integration**: Instantly host static frontends and serverless backends.
   - [x] **GitHub Integration**: Exports projects directly to secure GitHub repositories.
   - [x] **Automated DNS & Domain Wizard**: Dynamic CNAME generation and custom domain routing.
@@ -203,7 +203,7 @@ create table app.projects (
 
 **Focus**: Upgrading AI agents from passive code builders to active maintenance swarms.
 
-* **Milestones**:
+- **Milestones**:
   - [x] **Telemetry & Error Tracking**: Caught frontend console errors and server exceptions with `public.run_errors` schema.
   - [x] **Auto-Repair Loops**: Log errors to server database function `logTelemetryError`.
   - [x] **Ctrl-Click Element Inspector**: Visual element selection inside the workspace builder preview.
@@ -245,7 +245,7 @@ create table app.run_errors (
 
 **Focus**: Decoupled, globally distributed agent swarm network scaling to hundreds of thousands of active deploys.
 
-* **Milestones**:
+- **Milestones**:
   - [x] **Swarm Coordination UI**: Real-time team presence tracking inside the builder workspace.
   - [x] **Decentralized Ledger Schema**: SEC-compliant `public.publish_audit` log tracking release gates, approvals, and commits.
   - [x] **Stablecoin & Credit Settlement**: Built-in Stripe credit packs purchase integrations and billing manager.

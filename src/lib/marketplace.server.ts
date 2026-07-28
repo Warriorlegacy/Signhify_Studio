@@ -25,9 +25,7 @@ function getPublicClient() {
     process.env.SUPABASE_ANON_KEY ??
     process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
   if (!url || !anonKey) {
-    throw new Error(
-      "Missing Supabase public env vars (SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY).",
-    );
+    throw new Error("Missing Supabase public env vars (SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY).");
   }
   return createClient<Database>(url, anonKey, {
     auth: { storage: undefined, persistSession: false, autoRefreshToken: false },

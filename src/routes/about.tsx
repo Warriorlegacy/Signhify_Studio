@@ -39,10 +39,7 @@ export const Route = createFileRoute("/about")({
               name: "Signhify",
               identifier: "UDYAM-UP-30-0081308",
             },
-            sameAs: [
-              "https://github.com/Warriorlegacy",
-              "https://linkedin.com/in/piyushraj-singh",
-            ],
+            sameAs: ["https://github.com/Warriorlegacy", "https://linkedin.com/in/piyushraj-singh"],
           },
         }),
       },

@@ -8,11 +8,11 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "AI Engineering & SaaS Development Services — Signhify" },
+      { title: "AI Engineering & Digital Marketing Services — Best AI Engineering Studio | Signhify" },
       {
         name: "description",
         content:
-          "Explore Signhify's 12 AI & software engineering services: custom SaaS development, AI agent automation, cloud infrastructure, and growth engineering.",
+          "The best AI engineering studio and digital marketing studio for AI-native brands. 12 engineering capabilities: SaaS, AI agents, vibe coding, automation, cloud infrastructure, and growth marketing.",
       },
       { property: "og:title", content: "AI Engineering & SaaS Development Services — Signhify" },
       {
@@ -28,26 +28,31 @@ export const Route = createFileRoute("/services")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "Service",
+          "@type": "ItemList",
           name: "Signhify AI Engineering Services",
-          provider: { "@type": "Organization", name: "Signhify", url: "https://signhify.dpdns.org" },
-          url: "https://signhify.dpdns.org/services",
-          serviceType: [
-            "AI automation",
-            "SaaS development",
-            "Web and product design",
-            "CRM systems",
-            "Digital & Performance marketing",
-            "Brand identity",
-            "API engineering",
-            "Cloud & DevOps",
-            "Data & Analytics",
-            "Mobile app development",
-            "Security & compliance",
-            "AI & LLM integrations",
-          ],
           description:
             "End-to-end AI-first product execution: design, engineering, automation and launch.",
+          url: "https://signhify.dpdns.org/services",
+          numberOfItems: 12,
+          itemListElement: [
+            { "@type": "Service", name: "AI Automation", position: 1 },
+            { "@type": "Service", name: "SaaS Development", position: 2 },
+            { "@type": "Service", name: "Web and Product Design", position: 3 },
+            { "@type": "Service", name: "CRM Systems", position: 4 },
+            { "@type": "Service", name: "Digital & Performance Marketing", position: 5 },
+            { "@type": "Service", name: "Brand Identity", position: 6 },
+            { "@type": "Service", name: "API Engineering", position: 7 },
+            { "@type": "Service", name: "Cloud & DevOps", position: 8 },
+            { "@type": "Service", name: "Data & Analytics", position: 9 },
+            { "@type": "Service", name: "Mobile App Development", position: 10 },
+            { "@type": "Service", name: "Security & Compliance", position: 11 },
+            { "@type": "Service", name: "AI & LLM Integrations", position: 12 },
+          ],
+          provider: {
+            "@type": "Organization",
+            name: "Signhify",
+            url: "https://signhify.dpdns.org",
+          },
         }),
       },
     ],
@@ -88,8 +93,7 @@ function ServicesPage() {
             transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             className="font-display text-5xl sm:text-6xl lg:text-7xl font-black max-w-4xl leading-none"
           >
-            One studio.{" "}
-            <span className="text-gradient">End-to-end</span> execution.
+            One studio. <span className="text-gradient">End-to-end</span> execution.
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 10 }}

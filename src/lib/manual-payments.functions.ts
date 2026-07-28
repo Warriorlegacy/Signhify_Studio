@@ -6,7 +6,10 @@ export const createManualPayment = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
     const amount = typeof obj.amount === "number" && obj.amount > 0 ? obj.amount : NaN;
-    const method = typeof obj.method === "string" && ["upi", "bank_transfer", "paypal"].includes(obj.method) ? obj.method : "";
+    const method =
+      typeof obj.method === "string" && ["upi", "bank_transfer", "paypal"].includes(obj.method)
+        ? obj.method
+        : "";
     const description = typeof obj.description === "string" ? obj.description.trim() : "";
     const transactionRef = typeof obj.transactionRef === "string" ? obj.transactionRef.trim() : "";
     if (isNaN(amount)) throw new Error("Amount must be a positive number.");

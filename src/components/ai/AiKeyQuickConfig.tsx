@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { Key, Check, Loader2, ExternalLink, X } from "lucide-react";
-import {
-  listMyAiKeys,
-  saveMyAiKey,
-  deleteMyAiKey,
-} from "@/lib/user-ai-keys.functions";
+import { listMyAiKeys, saveMyAiKey, deleteMyAiKey } from "@/lib/user-ai-keys.functions";
 import { BYOK_PROVIDERS } from "@/lib/ai-access.server";
 
 const PROVIDER_META: Record<string, { label: string; docs: string }> = {
@@ -39,12 +35,21 @@ export default function AiKeyQuickConfig() {
   async function refresh() {
     try {
       const r = await list({ data: undefined } as never);
-      setConfigured(r.providers.filter((p: { configured: boolean }) => p.configured).map((p: { provider: string }) => p.provider));
-    } catch { /* ignore */ }
-    finally { setLoading(false); }
+      setConfigured(
+        r.providers
+          .filter((p: { configured: boolean }) => p.configured)
+          .map((p: { provider: string }) => p.provider),
+      );
+    } catch {
+      /* ignore */
+    } finally {
+      setLoading(false);
+    }
   }
 
-  useEffect(() => { refresh(); }, []);
+  useEffect(() => {
+    refresh();
+  }, []);
 
   async function handleSave() {
     if (!selected || !apiKey.trim()) return;
@@ -90,7 +95,10 @@ export default function AiKeyQuickConfig() {
           {configured.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {configured.map((p) => (
-                <span key={p} className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-3 py-1 text-xs text-emerald-400">
+                <span
+                  key={p}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-3 py-1 text-xs text-emerald-400"
+                >
                   <Check size={10} />
                   {PROVIDER_META[p]?.label ?? p}
                   <button onClick={() => handleRemove(p)} className="hover:text-red-400 ml-0.5">
@@ -121,7 +129,9 @@ export default function AiKeyQuickConfig() {
           ) : (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium">{PROVIDER_META[selected]?.label ?? selected}</span>
+                <span className="text-xs font-medium">
+                  {PROVIDER_META[selected]?.label ?? selected}
+                </span>
                 {selected !== "Custom" && (
                   <a
                     href={PROVIDER_META[selected]?.docs}
@@ -160,7 +170,11 @@ export default function AiKeyQuickConfig() {
                   {saving ? <Loader2 size={12} className="animate-spin" /> : "Save key"}
                 </button>
                 <button
-                  onClick={() => { setSelected(""); setApiKey(""); setCustomEndpoint(""); }}
+                  onClick={() => {
+                    setSelected("");
+                    setApiKey("");
+                    setCustomEndpoint("");
+                  }}
                   className="rounded-md border border-border bg-surface px-4 py-2 text-xs"
                 >
                   Cancel

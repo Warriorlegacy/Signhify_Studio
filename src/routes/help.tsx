@@ -20,6 +20,11 @@ export const Route = createFileRoute("/help")({
       },
       { property: "og:url", content: "https://signhify.dpdns.org/help" },
       { property: "og:title", content: "Help Center & AI Development FAQs — Signhify Studio" },
+      {
+        property: "og:description",
+        content:
+          "Find answers to common questions about working with Signhify AI Studio, sprint process, tech stack, code ownership, and support.",
+      },
     ],
     links: [{ rel: "canonical", href: "https://signhify.dpdns.org/help" }],
     scripts: [

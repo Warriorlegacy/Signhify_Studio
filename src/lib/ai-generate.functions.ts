@@ -3,7 +3,6 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { generateAIResponseFor } from "./ai-gateway.server";
 import { BYOKRequiredError } from "./ai-access.server";
 
-
 type GenerateInput = { prompt: string };
 
 type PlanSection = { title: string; bullets: string[] };
@@ -78,7 +77,6 @@ export const generatePlan = createServerFn({ method: "POST" })
       return generateLocalMockPlan(data.prompt);
     }
   });
-
 
 function generateLocalMockPlan(prompt: string): GeneratedPlan {
   const p = prompt.toLowerCase();

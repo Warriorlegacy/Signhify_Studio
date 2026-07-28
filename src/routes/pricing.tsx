@@ -39,7 +39,7 @@ export const Route = createFileRoute("/pricing")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "FAQPage",
+          "@type": "QAPage",
           mainEntity: FAQ.map((item) => ({
             "@type": "Question",
             name: item.q,
@@ -138,6 +138,10 @@ const FAQ = [
   {
     q: "Do you work with international clients?",
     a: "Yes. We're remote-first and work across time zones. Most of our Studio clients are in India, the US, and the UK. We communicate async via Loom, Slack, and WhatsApp.",
+  },
+  {
+    q: "Why pay Signhify instead of using AI tools directly?",
+    a: "AI tools generate code, but they don't architect systems, set up auth, integrate payments, deploy to production, or handle security. Signhify delivers a production-ready SaaS — with authentication, database, Stripe billing, CI/CD, and custom domain — in 2 weeks. You get a shipping partner, not a code generator.",
   },
 ];
 

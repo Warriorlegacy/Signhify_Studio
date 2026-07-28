@@ -11,7 +11,7 @@ export const Route = createFileRoute("/insights")({
       {
         name: "description",
         content:
-          "Explore 12 technical guides on AI SaaS development, autonomous agents, BYOK encryption, TanStack Start architecture, and AEO optimization by Signhify.",
+          "Explore 17 technical guides on AI SaaS development, autonomous agents, BYOK encryption, TanStack Start architecture, and AEO optimization by Signhify.",
       },
       { property: "og:title", content: "AI Engineering Insights & SaaS Development — Signhify" },
       {
@@ -177,13 +177,76 @@ const ARTICLES = [
     date: "April 2026",
     tags: ["Cloudflare", "Edge Workers", "DevOps"],
   },
+  {
+    id: "ai-saas-mvp-cost-2026",
+    title: "How Much Does It Cost to Build an AI SaaS MVP in 2026? Full Breakdown",
+    summary:
+      "Transparent cost estimates for AI SaaS MVP development — from a 2-week fixed sprint to full production platforms with pricing anchored by Signhify's engineering sprints.",
+    category: "Pricing & Strategy",
+    readTime: "6 min read",
+    author: "Piyush Raj Singh",
+    date: "July 2026",
+    tags: ["MVP", "Pricing", "SaaS Costs", "Sprint"],
+  },
+  {
+    id: "ai-agent-development-startups",
+    title: "AI Agent Development Services for Startups: 2026 Guide",
+    summary:
+      "How startups can leverage custom AI agent development — from customer support automation to multi-agent pipelines — without hiring an in-house AI team.",
+    category: "AI Agents",
+    readTime: "7 min read",
+    author: "Piyush Raj Singh",
+    date: "July 2026",
+    tags: ["AI Agents", "Startups", "Automation", "Development"],
+  },
+  {
+    id: "tanstack-start-vs-nextjs-ai-saas",
+    title: "TanStack Start vs Next.js for AI SaaS: Which Framework Wins in 2026?",
+    summary:
+      "A technical comparison of TanStack Start and Next.js for AI SaaS development — server functions, streaming, bundle size, and developer experience.",
+    category: "Full Stack",
+    readTime: "7 min read",
+    author: "Piyush Raj Singh",
+    date: "July 2026",
+    tags: ["TanStack Start", "Next.js", "SSR", "AI SaaS"],
+  },
+  {
+    id: "byok-encryption-implementation-guide",
+    title: "BYOK Encryption Implementation Guide for AI Applications",
+    summary:
+      "Step-by-step guide to implementing Bring Your Own Key (BYOK) encryption for AI SaaS — AES-256-GCM, zero-knowledge architecture, and production patterns.",
+    category: "Security",
+    readTime: "6 min read",
+    author: "Piyush Raj Singh",
+    date: "July 2026",
+    tags: ["BYOK", "Encryption", "Security", "Enterprise"],
+  },
+  {
+    id: "ai-product-development-timeline",
+    title: "From Idea to Revenue: AI Product Development Timeline in 2026",
+    summary:
+      "How to go from concept to paying customers in weeks — a realistic timeline for AI SaaS development with Signhify's 2-week sprint guarantee.",
+    category: "Architecture",
+    readTime: "6 min read",
+    author: "Piyush Raj Singh",
+    date: "July 2026",
+    tags: ["MVP", "Timeline", "Sprint", "Development"],
+  },
 ];
 
 function InsightsPage() {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
 
-  const categories = ["All", "Architecture", "AI Agents", "Security", "SEO & AEO", "Full Stack"];
+  const categories = [
+    "All",
+    "Architecture",
+    "AI Agents",
+    "Security",
+    "SEO & AEO",
+    "Full Stack",
+    "Pricing & Strategy",
+  ];
 
   const filtered = ARTICLES.filter((a) => {
     const matchesCat = activeCategory === "All" || a.category === activeCategory;

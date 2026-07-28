@@ -1,8 +1,40 @@
 # Contributing to Signhify
 
+**🎉 First time here?** Welcome! Signhify is open-source (MIT) and we love contributions — code, docs, bug reports, feature ideas, and community help.
+
 This repo is connected to **Lovable** via two-way GitHub sync. Lovable is the primary editor and the deploy surface; Codex Cloud / local IDE / direct GitHub commits all work, but they have to play nicely with Lovable's automation.
 
 Read this file before opening a PR or letting an agent (Codex, Claude, Cursor, etc.) commit to `main`.
+
+---
+
+## 🆕 First-Time Contributors
+
+Looking for a place to start?
+
+- **Issues labeled `good-first-issue`**: Filter the [issue tracker](https://github.com/Warriorlegacy/Signhify_Studio/issues) for these — they're scoped, documented, and perfect for a first PR.
+- **Issues labeled `hacktoberfest`**: October? These are sized for Hacktoberfest eligibility.
+- **Issues labeled `docs`**: Documentation improvements are always welcome and a great intro to the codebase.
+- **Join the conversation**: See something unclear? Open a Discussion or comment on an issue.
+
+**Not sure where to start?** Drop a message on the issue you're interested in — maintainers respond within 24 hours.
+
+> **💡 Quick tip**: Before writing code, check `src/lib/` and `src/routes/` for existing patterns. We value consistency over cleverness.
+
+---
+
+## 🧭 Table of Contents
+
+1. [Sync model](#1-sync-model) — understand Lovable ↔ GitHub two-way sync
+2. [Do not edit these files](#2-do-not-edit-these-files-by-hand) — generated/load-bearing files
+3. [Migrations](#3-migrations) — Supabase migration rules
+4. [Server boundaries](#4-server-boundaries-tanstack-start) — TanStack Start server/client rules
+5. [Routes](#5-routes) — file-based routing conventions
+6. [Parallel editing](#6-parallel-editing) — avoiding sync conflicts
+7. [Roadmap](#7-roadmap) — execution plan reference
+8. [Pre-Publish confirmation checklist](#8-pre-publish-confirmation-checklist)
+9. [Code of conduct](#9-code-of-conduct)
+10. [Community](#10-community)
 
 ---
 
@@ -123,3 +155,35 @@ If either surface flags a regression, fix it before publishing.
 - [ ] `main` on GitHub matches what Lovable's preview is showing (commit hash).
 
 Once **all boxes are ticked**: open Lovable → **Publish**. Don't deploy from GitHub Actions.
+
+---
+
+## 9. Code of Conduct
+
+Be respectful, inclusive, and constructive. We follow the [Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct/) — harassment or discrimination of any kind will not be tolerated.
+
+---
+
+## 10. Community
+
+| Channel | Link |
+| :--- | :--- |
+| **GitHub Issues** | [Report bugs & request features](https://github.com/Warriorlegacy/Signhify_Studio/issues) |
+| **GitHub Discussions** | [Ask questions & share builds](https://github.com/Warriorlegacy/Signhify_Studio/discussions) |
+| **X/Twitter** | [@Warriorlegacy](https://x.com/Warriorlegacy) |
+| **Website** | [signhify.dpdns.org](https://signhify.dpdns.org) |
+| **Contact** | Piyushrajsingh092@gmail.com |
+
+---
+
+## 🙌 Thank You
+
+Every issue filed, every PR submitted, and every star helps more indie hackers discover faster MVPs. You're building the future of AI SaaS with us.
+
+---
+
+<div align="center">
+
+**Built with ❤️ by Piyush Raj Singh at Signhify AI Studio**
+
+</div>

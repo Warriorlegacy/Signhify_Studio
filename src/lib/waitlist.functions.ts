@@ -110,4 +110,3 @@ export const confirmWaitlistToken = createServerFn({ method: "POST" })
 
     return { email: matchEntry.email };
   });
-

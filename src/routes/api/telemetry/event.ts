@@ -55,15 +55,21 @@ export const Route = createFileRoute("/api/telemetry/event")({
             });
           }
 
-          logger.info(`[telemetry] Error logged successfully: ${logEntry.id} for project: ${project.title}`);
+          logger.info(
+            `[telemetry] Error logged successfully: ${logEntry.id} for project: ${project.title}`,
+          );
 
           // 3. Trigger automatic repair sequence (Auto-Repair Loop)
           // In builder mode/test runs, we simulate the auto-repair loop initiating.
-          const isTestRun = error.message.toLowerCase().includes("test") || error.stack?.toLowerCase().includes("test");
+          const isTestRun =
+            error.message.toLowerCase().includes("test") ||
+            error.stack?.toLowerCase().includes("test");
           let repairTriggered = false;
 
           if (isTestRun) {
-            logger.info(`[telemetry] Test failure detected. Triggering self-healing repair loop...`);
+            logger.info(
+              `[telemetry] Test failure detected. Triggering self-healing repair loop...`,
+            );
             repairTriggered = true;
             // Record resolution details mock update to show self-healing workflow in action
             await supabaseAdmin
@@ -84,7 +90,7 @@ export const Route = createFileRoute("/api/telemetry/event")({
             {
               status: 200,
               headers: { "content-type": "application/json" },
-            }
+            },
           );
         } catch (err) {
           logger.error(`[telemetry] Telemetry collector error: ${err}`);

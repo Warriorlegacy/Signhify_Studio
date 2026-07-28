@@ -54,8 +54,7 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
   const plan = String(prof?.subscription_plan ?? "free").toLowerCase();
   const status = String(prof?.subscription_status ?? "").toLowerCase();
   const paid =
-    PAID_PLANS.has(plan) &&
-    (status === "" || status === "active" || status === "trialing");
+    PAID_PLANS.has(plan) && (status === "" || status === "active" || status === "trialing");
   if (paid) return { mode: "managed" };
 
   // Free plan → require BYOK. Read keys through the user-scoped client (RLS).
@@ -78,18 +77,32 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
   const userKeys: Record<string, string> = {};
   const customEndpoints: Record<string, string> = {};
   let decryptFailures = 0;
-  for (const k of (keys ?? []) as Array<{ provider: string; api_key_encrypted: string; api_endpoint?: string }>) {
+  for (const k of (keys ?? []) as Array<{
+    provider: string;
+    api_key_encrypted: string;
+    api_endpoint?: string;
+  }>) {
     if (!k?.api_key_encrypted) continue;
     try {
       userKeys[k.provider] = decryptAES256GCM(k.api_key_encrypted, masterKey);
       if (k.provider === "Custom" && k.api_endpoint) {
         customEndpoints[k.provider] = k.api_endpoint;
       }
-      logger.debug({ event: "byok.decrypt_ok", kind: "byok_audit", userId: ctx.userId, provider: k.provider });
+      logger.debug({
+        event: "byok.decrypt_ok",
+        kind: "byok_audit",
+        userId: ctx.userId,
+        provider: k.provider,
+      });
     } catch {
       decryptFailures += 1;
       // Never log key material — only provider + userId.
-      logger.warn({ event: "byok.decrypt_failed", kind: "byok_audit", userId: ctx.userId, provider: k.provider });
+      logger.warn({
+        event: "byok.decrypt_failed",
+        kind: "byok_audit",
+        userId: ctx.userId,
+        provider: k.provider,
+      });
     }
   }
   if (Object.keys(userKeys).length === 0) {
@@ -102,4 +115,3 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
   }
   return { mode: "byok", userKeys, customEndpoints };
 }
-

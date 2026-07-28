@@ -28,14 +28,12 @@ export const logTelemetryError = createServerFn({ method: "POST" })
       throw new Error("Unauthorized or project not found.");
     }
 
-    const { error: insertError } = await supabaseAdmin
-      .from("run_errors")
-      .insert({
-        project_id: data.projectId,
-        exception_message: data.exceptionMessage,
-        stack_trace: data.stackTrace || null,
-        resolved: false,
-      });
+    const { error: insertError } = await supabaseAdmin.from("run_errors").insert({
+      project_id: data.projectId,
+      exception_message: data.exceptionMessage,
+      stack_trace: data.stackTrace || null,
+      resolved: false,
+    });
 
     if (insertError) {
       console.error("[logTelemetryError] failed:", insertError);

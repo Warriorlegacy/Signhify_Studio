@@ -31,7 +31,8 @@ export async function rateLimitMiddleware(
 
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!supabaseUrl || !serviceKey) throw new Error("Missing Supabase credentials for rate limiting");
+  if (!supabaseUrl || !serviceKey)
+    throw new Error("Missing Supabase credentials for rate limiting");
 
   const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
 
@@ -51,7 +52,9 @@ export async function rateLimitMiddleware(
 
   const count = existing?.count ?? 0;
   if (count >= limit) {
-    throw new Error(`Rate limit exceeded (${limit} requests per ${windowSeconds}s). Try again later.`);
+    throw new Error(
+      `Rate limit exceeded (${limit} requests per ${windowSeconds}s). Try again later.`,
+    );
   }
 
   const { error: updateError } = await supabase

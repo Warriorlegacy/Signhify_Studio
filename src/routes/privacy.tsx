@@ -10,7 +10,15 @@ export const Route = createFileRoute("/privacy")({
         content:
           "How Signhify collects, uses and protects your data across the studio site, contact wizard and Signhify AI waitlist.",
       },
-      { property: "og:title", content: "Privacy Policy & Data Security Standards — Signhify Studio" },
+      {
+        property: "og:title",
+        content: "Privacy Policy & Data Security Standards — Signhify Studio",
+      },
+      {
+        property: "og:description",
+        content:
+          "How Signhify collects, uses and protects your data across the studio site, contact wizard and Signhify AI waitlist.",
+      },
       { property: "og:url", content: "https://signhify.dpdns.org/privacy" },
     ],
     links: [{ rel: "canonical", href: "https://signhify.dpdns.org/privacy" }],
@@ -64,8 +72,8 @@ function PrivacyPage() {
 
       <h2>5. Your rights</h2>
       <p>
-        Email <a href="mailto:Piyushrajsingh092@gmail.com">Piyushrajsingh092@gmail.com</a> to access, correct or
-        delete your data. We will respond within 7 days.
+        Email <a href="mailto:Piyushrajsingh092@gmail.com">Piyushrajsingh092@gmail.com</a> to
+        access, correct or delete your data. We will respond within 7 days.
       </p>
 
       <h2>6. Cookies</h2>

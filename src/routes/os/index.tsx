@@ -65,7 +65,9 @@ function OSDashboard() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-8">
             <div className="text-xs uppercase tracking-[0.25em] text-primary mb-2">Signhify OS</div>
-            <h1 className="font-display text-3xl font-bold text-gradient">Agent Orchestration Runtime</h1>
+            <h1 className="font-display text-3xl font-bold text-gradient">
+              Agent Orchestration Runtime
+            </h1>
           </div>
           <div className="grid gap-6">
             {[1, 2, 3, 4].map((i) => (
@@ -82,7 +84,9 @@ function OSDashboard() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-8">
           <div className="text-xs uppercase tracking-[0.25em] text-primary mb-2">Signhify OS</div>
-          <h1 className="font-display text-3xl font-bold text-gradient">Agent Orchestration Runtime</h1>
+          <h1 className="font-display text-3xl font-bold text-gradient">
+            Agent Orchestration Runtime
+          </h1>
           <p className="mt-4 text-lg text-muted-foreground">
             Monitor and manage AI agents, workflows, and system performance in real-time.
           </p>
@@ -122,7 +126,10 @@ function OSDashboard() {
         <div className="mb-10">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-xl font-bold">Agent Status</h2>
-            <Link to="/os/agents" className="rounded-md border border-border bg-surface/60 px-4 py-2 text-sm">
+            <Link
+              to="/os/agents"
+              className="rounded-md border border-border bg-surface/60 px-4 py-2 text-sm"
+            >
               View all agents
             </Link>
           </div>
@@ -148,7 +155,9 @@ function OSDashboard() {
                       <p className="text-xs text-muted-foreground">{agent.status}</p>
                     </div>
                   </div>
-                  <div className="text-xs text-muted-foreground">{agent.tasksCompleted} tasks completed</div>
+                  <div className="text-xs text-muted-foreground">
+                    {agent.tasksCompleted} tasks completed
+                  </div>
                 </div>
                 <div className="text-xs">Last active: {agent.lastActive}</div>
               </div>
@@ -159,7 +168,10 @@ function OSDashboard() {
         <div className="mb-10">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-xl font-bold">Workflow Orchestration</h2>
-            <Link to="/os/workflows" className="rounded-md border border-border bg-surface/60 px-4 py-2 text-sm">
+            <Link
+              to="/os/workflows"
+              className="rounded-md border border-border bg-surface/60 px-4 py-2 text-sm"
+            >
               View all workflows
             </Link>
           </div>
@@ -171,7 +183,10 @@ function OSDashboard() {
                   {workflow.agents} agents • {workflow.progress}%
                 </p>
                 <div className="w-full bg-muted/50 h-2.5 rounded-full overflow-hidden">
-                  <div className="h-full bg-primary transition-all duration-500" style={{ width: `${workflow.progress}%` }} />
+                  <div
+                    className="h-full bg-primary transition-all duration-500"
+                    style={{ width: `${workflow.progress}%` }}
+                  />
                 </div>
                 <div className="mt-2 text-xs">{workflow.status}</div>
               </div>
@@ -182,21 +197,30 @@ function OSDashboard() {
         <div className="mb-10">
           <h2 className="font-display text-xl font-bold mb-4">Quick Actions</h2>
           <div className="grid lg:grid-cols-3 gap-4">
-            <Link to="/os/agents/new" className="group flex flex-col items-center justify-center rounded-xl border border-border bg-card p-8 hover:border-primary hover:bg-primary/5 transition-all">
+            <Link
+              to="/os/agents/new"
+              className="group flex flex-col items-center justify-center rounded-xl border border-border bg-card p-8 hover:border-primary hover:bg-primary/5 transition-all"
+            >
               <Bot className="h-8 w-8 text-primary mb-3" />
               <div className="text-center">
                 <div className="font-display text-lg font-bold mb-2">New Agent</div>
                 <p className="text-sm text-muted-foreground">Create a custom AI agent</p>
               </div>
             </Link>
-            <Link to="/os/workflows/new" className="group flex flex-col items-center justify-center rounded-xl border border-border bg-card p-8 hover:border-primary hover:bg-primary/5 transition-all">
+            <Link
+              to="/os/workflows/new"
+              className="group flex flex-col items-center justify-center rounded-xl border border-border bg-card p-8 hover:border-primary hover:bg-primary/5 transition-all"
+            >
               <Activity className="h-8 w-8 text-primary mb-3" />
               <div className="text-center">
                 <div className="font-display text-lg font-bold mb-2">New Workflow</div>
                 <p className="text-sm text-muted-foreground">Design an orchestration workflow</p>
               </div>
             </Link>
-            <Link to="/os/marketplace" className="group flex flex-col items-center justify-center rounded-xl border border-border bg-card p-8 hover:border-primary hover:bg-primary/5 transition-all">
+            <Link
+              to="/os/marketplace"
+              className="group flex flex-col items-center justify-center rounded-xl border border-border bg-card p-8 hover:border-primary hover:bg-primary/5 transition-all"
+            >
               <Search className="h-8 w-8 text-primary mb-3" />
               <div className="text-center">
                 <div className="font-display text-lg font-bold mb-2">Agent Marketplace</div>
@@ -209,7 +233,10 @@ function OSDashboard() {
         <div className="rounded-xl border bg-card p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-xl font-bold">System Logs</h2>
-            <Link to="/os/logs" className="rounded-md border border-border bg-surface/60 px-4 py-2 text-sm">
+            <Link
+              to="/os/logs"
+              className="rounded-md border border-border bg-surface/60 px-4 py-2 text-sm"
+            >
               View all logs
             </Link>
           </div>

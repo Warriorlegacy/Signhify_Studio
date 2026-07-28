@@ -14,6 +14,7 @@ const NAV = [
   { to: "/app/deploy", label: "Deploy" },
   { to: "/app", label: "Cloud" },
   { to: "/os", label: "OS" },
+  { to: "/best-ai-engineering-studio", label: "AI Studio" },
 ] as const;
 
 export function SiteHeader() {
@@ -137,7 +138,10 @@ export function SiteHeader() {
               </Link>
             ))}
             <button
-              onClick={() => { setOpen(false); setKeyOpen((v) => !v); }}
+              onClick={() => {
+                setOpen(false);
+                setKeyOpen((v) => !v);
+              }}
               className="mt-3 inline-flex items-center justify-center rounded-full border border-border bg-surface/60 px-4 py-3 text-sm font-semibold"
             >
               <Key size={14} className="mr-2" /> AI Keys

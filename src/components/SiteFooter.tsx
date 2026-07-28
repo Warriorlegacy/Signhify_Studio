@@ -94,6 +94,31 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link to="/best-ai-engineering-studio" className="hover:text-foreground">
+                AI Engineering Studio
+              </Link>
+            </li>
+            <li>
+              <Link to="/best-vibe-coding-platform" className="hover:text-foreground">
+                Vibe-Coding Platform
+              </Link>
+            </li>
+            <li>
+              <Link to="/best-digital-marketing-studio" className="hover:text-foreground">
+                Digital Marketing Studio
+              </Link>
+            </li>
+            <li>
+              <Link to="/saas-mvp" className="hover:text-foreground">
+                SaaS MVP Development
+              </Link>
+            </li>
+            <li>
+              <Link to="/free-consultation" className="hover:text-foreground">
+                Free Consultation
+              </Link>
+            </li>
+            <li>
               <Link to="/book" className="hover:text-foreground">
                 Book a call
               </Link>

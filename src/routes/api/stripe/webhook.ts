@@ -85,7 +85,9 @@ async function handleCheckoutCompleted(event: any) {
     if (error) {
       logger.error(`[stripe/webhook] Failed to record marketplace purchase: ${error.message}`);
     } else {
-      logger.info(`[stripe/webhook] Marketplace purchase recorded: listing=${listingId} user=${userId}`);
+      logger.info(
+        `[stripe/webhook] Marketplace purchase recorded: listing=${listingId} user=${userId}`,
+      );
     }
   }
 
@@ -123,7 +125,9 @@ async function handleSubscriptionCreated(event: any) {
     .single();
 
   if (lookupError || !profile) {
-    logger.error(`[stripe/webhook] No profile found for customer ${customerId}: ${lookupError?.message}`);
+    logger.error(
+      `[stripe/webhook] No profile found for customer ${customerId}: ${lookupError?.message}`,
+    );
     return;
   }
 
@@ -133,14 +137,18 @@ async function handleSubscriptionCreated(event: any) {
       subscription_plan: plan,
       subscription_status: subscription.status,
       stripe_subscription_id: subscription.id,
-      subscription_current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+      subscription_current_period_end: new Date(
+        subscription.current_period_end * 1000,
+      ).toISOString(),
     })
     .eq("id", profile.id);
 
   if (error) {
     logger.error(`[stripe/webhook] Failed to provision subscription: ${error.message}`);
   } else {
-    logger.info(`[stripe/webhook] Subscription provisioned: user=${profile.id} plan=${plan} status=${subscription.status}`);
+    logger.info(
+      `[stripe/webhook] Subscription provisioned: user=${profile.id} plan=${plan} status=${subscription.status}`,
+    );
   }
 }
 
@@ -168,14 +176,18 @@ async function handleSubscriptionUpdated(event: any) {
     .update({
       subscription_plan: plan,
       subscription_status: subscription.status,
-      subscription_current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+      subscription_current_period_end: new Date(
+        subscription.current_period_end * 1000,
+      ).toISOString(),
     })
     .eq("id", profile.id);
 
   if (error) {
     logger.error(`[stripe/webhook] Failed to update subscription: ${error.message}`);
   } else {
-    logger.info(`[stripe/webhook] Subscription updated: user=${profile.id} plan=${plan} status=${subscription.status}`);
+    logger.info(
+      `[stripe/webhook] Subscription updated: user=${profile.id} plan=${plan} status=${subscription.status}`,
+    );
   }
 }
 

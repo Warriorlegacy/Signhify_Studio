@@ -80,8 +80,8 @@ export function EcosystemSection() {
           One studio. Six products. Built for the AI-native era.
         </h2>
         <p className="mt-5 max-w-2xl text-muted-foreground">
-          From cinematic studio sites to autonomous agent runtimes — every product is
-          accessible from your dashboard.
+          From cinematic studio sites to autonomous agent runtimes — every product is accessible
+          from your dashboard.
         </p>
 
         <div className="mt-14 relative">
@@ -117,10 +117,14 @@ export function EcosystemSection() {
                       </div>
                       <div>
                         <div className="flex items-center gap-3">
-                          <span className={`font-display text-lg font-semibold group-hover:text-primary transition`}>
+                          <span
+                            className={`font-display text-lg font-semibold group-hover:text-primary transition`}
+                          >
                             {l.name}
                           </span>
-                          <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border ${cfg.badgeClass}`}>
+                          <span
+                            className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border ${cfg.badgeClass}`}
+                          >
                             {cfg.label}
                           </span>
                         </div>
@@ -129,7 +133,10 @@ export function EcosystemSection() {
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-xs text-muted-foreground">{l.year}</span>
-                      <ArrowRight size={14} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition" />
+                      <ArrowRight
+                        size={14}
+                        className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition"
+                      />
                     </div>
                   </Link>
                 </motion.div>

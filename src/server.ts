@@ -43,7 +43,6 @@ import("srvx/node")
     // Ignore if srvx/node is not available
   });
 
-
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 

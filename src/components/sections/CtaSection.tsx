@@ -21,7 +21,10 @@ export function CtaSection() {
       <EmberParticles count={20} />
 
       {/* Animated border pulse ring */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden>
+      <div
+        className="absolute inset-0 flex items-center justify-center pointer-events-none"
+        aria-hidden
+      >
         <motion.div
           animate={{ scale: [1, 1.15, 1], opacity: [0.12, 0.25, 0.12] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -61,8 +64,7 @@ export function CtaSection() {
           transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           className="font-display text-4xl sm:text-6xl font-black leading-[1.05]"
         >
-          Your idea,{" "}
-          <span className="text-gradient">Signhified.</span>
+          Your idea, <span className="text-gradient">Signhified.</span>
         </motion.h2>
 
         <motion.p

@@ -403,17 +403,83 @@ class RobustAIService {
   ): Promise<{ content: string; providerUsed: string }> {
     // Build transient providers from the templates in initializeProviders,
     // but seeded with the user's keys and no shared cooldown state.
-    const templates: Array<Omit<ProviderConfig, "apiKey" | "enabled" | "failureCount" | "lastFailureTime" | "cooldownPeriod">> = [
-      { name: "Groq", url: "https://api.groq.com/openai/v1/chat/completions", model: "llama-3.3-70b-versatile", isAnthropic: false, priority: 1 },
-      { name: "Cerebras", url: "https://api.cerebras.ai/v1/chat/completions", model: "llama-3.3-70b", isAnthropic: false, priority: 2 },
-      { name: "NVIDIA", url: "https://integrate.api.nvidia.com/v1/chat/completions", model: "nvidia/llama-3.3-nemotron-super-49b-v1", isAnthropic: false, priority: 3 },
-      { name: "OpenRouter", url: "https://openrouter.ai/api/v1/chat/completions", model: "deepseek/deepseek-chat-v3.1:free", headers: { "HTTP-Referer": "https://signhify.lovable.app", "X-Title": "Signhify" }, isAnthropic: false, priority: 4 },
-      { name: "Gemini", url: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", model: "gemini-2.0-flash", isAnthropic: false, priority: 5 },
-      { name: "Ollama", url: "https://ollama.com/v1/chat/completions", model: "gpt-oss:120b", isAnthropic: false, priority: 6 },
-      { name: "Mistral", url: "https://api.mistral.ai/v1/chat/completions", model: "mistral-small-latest", isAnthropic: false, priority: 7 },
-      { name: "Cohere", url: "https://api.cohere.ai/compatibility/v1/chat/completions", model: "command-r-plus", isAnthropic: false, priority: 8 },
-      { name: "xAI", url: "https://api.x.ai/v1/chat/completions", model: "grok-2-latest", isAnthropic: false, priority: 9 },
-      { name: "Anthropic", url: "https://api.anthropic.com/v1/messages", model: "claude-3-5-sonnet-20241022", isAnthropic: true, priority: 10 },
+    const templates: Array<
+      Omit<
+        ProviderConfig,
+        "apiKey" | "enabled" | "failureCount" | "lastFailureTime" | "cooldownPeriod"
+      >
+    > = [
+      {
+        name: "Groq",
+        url: "https://api.groq.com/openai/v1/chat/completions",
+        model: "llama-3.3-70b-versatile",
+        isAnthropic: false,
+        priority: 1,
+      },
+      {
+        name: "Cerebras",
+        url: "https://api.cerebras.ai/v1/chat/completions",
+        model: "llama-3.3-70b",
+        isAnthropic: false,
+        priority: 2,
+      },
+      {
+        name: "NVIDIA",
+        url: "https://integrate.api.nvidia.com/v1/chat/completions",
+        model: "nvidia/llama-3.3-nemotron-super-49b-v1",
+        isAnthropic: false,
+        priority: 3,
+      },
+      {
+        name: "OpenRouter",
+        url: "https://openrouter.ai/api/v1/chat/completions",
+        model: "deepseek/deepseek-chat-v3.1:free",
+        headers: { "HTTP-Referer": "https://signhify.lovable.app", "X-Title": "Signhify" },
+        isAnthropic: false,
+        priority: 4,
+      },
+      {
+        name: "Gemini",
+        url: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+        model: "gemini-2.0-flash",
+        isAnthropic: false,
+        priority: 5,
+      },
+      {
+        name: "Ollama",
+        url: "https://ollama.com/v1/chat/completions",
+        model: "gpt-oss:120b",
+        isAnthropic: false,
+        priority: 6,
+      },
+      {
+        name: "Mistral",
+        url: "https://api.mistral.ai/v1/chat/completions",
+        model: "mistral-small-latest",
+        isAnthropic: false,
+        priority: 7,
+      },
+      {
+        name: "Cohere",
+        url: "https://api.cohere.ai/compatibility/v1/chat/completions",
+        model: "command-r-plus",
+        isAnthropic: false,
+        priority: 8,
+      },
+      {
+        name: "xAI",
+        url: "https://api.x.ai/v1/chat/completions",
+        model: "grok-2-latest",
+        isAnthropic: false,
+        priority: 9,
+      },
+      {
+        name: "Anthropic",
+        url: "https://api.anthropic.com/v1/messages",
+        model: "claude-3-5-sonnet-20241022",
+        isAnthropic: true,
+        priority: 10,
+      },
     ];
 
     if (userKeys["Custom"] && customEndpoints?.["Custom"]) {

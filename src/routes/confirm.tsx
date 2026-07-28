@@ -7,7 +7,10 @@ import { confirmWaitlistToken } from "@/lib/waitlist.functions";
 
 export const Route = createFileRoute("/confirm")({
   head: () => ({
-    meta: [{ title: "Confirm Waitlist — Signhify" }, { name: "robots", content: "noindex, nofollow" }],
+    meta: [
+      { title: "Confirm Waitlist — Signhify" },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
   }),
   validateSearch: (search: Record<string, unknown>) => {
     return {
@@ -56,7 +59,10 @@ function ConfirmPage() {
         style={{ background: "var(--gradient-ember)" }}
         aria-hidden
       />
-      <div className="absolute inset-0 bg-grid mask-fade-edges opacity-30 pointer-events-none" aria-hidden />
+      <div
+        className="absolute inset-0 bg-grid mask-fade-edges opacity-30 pointer-events-none"
+        aria-hidden
+      />
 
       <div className="relative w-full max-w-md px-6">
         <AnimatePresence mode="wait">
@@ -90,9 +96,12 @@ function ConfirmPage() {
               <div className="relative h-14 w-14 flex items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400 mb-6 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
                 <CheckCircle2 size={32} />
               </div>
-              <h2 className="font-display text-2xl font-black tracking-tight">Early Access Confirmed!</h2>
+              <h2 className="font-display text-2xl font-black tracking-tight">
+                Early Access Confirmed!
+              </h2>
               <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                Your email <span className="text-foreground font-medium">{email}</span> is verified. We&rsquo;ll notify you the moment the OS deployment engine opens.
+                Your email <span className="text-foreground font-medium">{email}</span> is verified.
+                We&rsquo;ll notify you the moment the OS deployment engine opens.
               </p>
 
               <div className="mt-8 w-full flex flex-col gap-3">
@@ -123,7 +132,9 @@ function ConfirmPage() {
               <div className="relative h-14 w-14 flex items-center justify-center rounded-full bg-destructive/10 text-destructive mb-6">
                 <AlertCircle size={32} />
               </div>
-              <h2 className="font-display text-2xl font-bold tracking-tight text-destructive-foreground">Verification Failed</h2>
+              <h2 className="font-display text-2xl font-bold tracking-tight text-destructive-foreground">
+                Verification Failed
+              </h2>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
                 {errorMessage || "The verification link is invalid or has expired."}
               </p>

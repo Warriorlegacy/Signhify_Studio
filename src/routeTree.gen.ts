@@ -15,6 +15,7 @@ import { Route as TemplatesRouteImport } from './routes/templates'
 import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SaasMvpRouteImport } from './routes/saas-mvp'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as PublishRouteImport } from './routes/publish'
 import { Route as ProjectsRouteImport } from './routes/projects'
@@ -25,10 +26,15 @@ import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as HelpRouteImport } from './routes/help'
+import { Route as FreeConsultationRouteImport } from './routes/free-consultation'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ConfirmRouteImport } from './routes/confirm'
 import { Route as BuilderRouteImport } from './routes/builder'
+import { Route as BrandRouteImport } from './routes/brand'
 import { Route as BookRouteImport } from './routes/book'
+import { Route as BestVibeCodingPlatformRouteImport } from './routes/best-vibe-coding-platform'
+import { Route as BestDigitalMarketingStudioRouteImport } from './routes/best-digital-marketing-studio'
+import { Route as BestAiEngineeringStudioRouteImport } from './routes/best-ai-engineering-studio'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -41,6 +47,7 @@ import { Route as OsMarketplaceRouteImport } from './routes/os/marketplace'
 import { Route as OsLogsRouteImport } from './routes/os/logs'
 import { Route as MarketplaceSuccessRouteImport } from './routes/marketplace.success'
 import { Route as MarketplaceSellRouteImport } from './routes/marketplace.sell'
+import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as AppSettingsRouteImport } from './routes/app/settings'
 import { Route as OsWorkflowsIndexRouteImport } from './routes/os/workflows/index'
 import { Route as OsAgentsIndexRouteImport } from './routes/os/agents/index'
@@ -88,6 +95,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SaasMvpRoute = SaasMvpRouteImport.update({
+  id: '/saas-mvp',
+  path: '/saas-mvp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RoadmapRoute = RoadmapRouteImport.update({
@@ -140,6 +152,11 @@ const HelpRoute = HelpRouteImport.update({
   path: '/help',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FreeConsultationRoute = FreeConsultationRouteImport.update({
+  id: '/free-consultation',
+  path: '/free-consultation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -155,9 +172,30 @@ const BuilderRoute = BuilderRouteImport.update({
   path: '/builder',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrandRoute = BrandRouteImport.update({
+  id: '/brand',
+  path: '/brand',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BookRoute = BookRouteImport.update({
   id: '/book',
   path: '/book',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BestVibeCodingPlatformRoute = BestVibeCodingPlatformRouteImport.update({
+  id: '/best-vibe-coding-platform',
+  path: '/best-vibe-coding-platform',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BestDigitalMarketingStudioRoute =
+  BestDigitalMarketingStudioRouteImport.update({
+    id: '/best-digital-marketing-studio',
+    path: '/best-digital-marketing-studio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const BestAiEngineeringStudioRoute = BestAiEngineeringStudioRouteImport.update({
+  id: '/best-ai-engineering-studio',
+  path: '/best-ai-engineering-studio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AiRoute = AiRouteImport.update({
@@ -219,6 +257,11 @@ const MarketplaceSellRoute = MarketplaceSellRouteImport.update({
   id: '/sell',
   path: '/sell',
   getParentRoute: () => MarketplaceRoute,
+} as any)
+const InsightsSlugRoute = InsightsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => InsightsRoute,
 } as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/app/settings',
@@ -315,12 +358,17 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai': typeof AiRouteWithChildren
+  '/best-ai-engineering-studio': typeof BestAiEngineeringStudioRoute
+  '/best-digital-marketing-studio': typeof BestDigitalMarketingStudioRoute
+  '/best-vibe-coding-platform': typeof BestVibeCodingPlatformRoute
   '/book': typeof BookRoute
+  '/brand': typeof BrandRoute
   '/builder': typeof BuilderRoute
   '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
+  '/free-consultation': typeof FreeConsultationRoute
   '/help': typeof HelpRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
   '/os': typeof OsRouteWithChildren
@@ -329,6 +377,7 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRouteWithChildren
   '/publish': typeof PublishRoute
   '/roadmap': typeof RoadmapRoute
+  '/saas-mvp': typeof SaasMvpRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sprint': typeof SprintRoute
@@ -336,6 +385,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/vision': typeof VisionRoute
   '/app/settings': typeof AppSettingsRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
   '/os/logs': typeof OsLogsRoute
@@ -367,12 +417,17 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai': typeof AiRouteWithChildren
+  '/best-ai-engineering-studio': typeof BestAiEngineeringStudioRoute
+  '/best-digital-marketing-studio': typeof BestDigitalMarketingStudioRoute
+  '/best-vibe-coding-platform': typeof BestVibeCodingPlatformRoute
   '/book': typeof BookRoute
+  '/brand': typeof BrandRoute
   '/builder': typeof BuilderRoute
   '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
+  '/free-consultation': typeof FreeConsultationRoute
   '/help': typeof HelpRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
   '/pricing': typeof PricingRoute
@@ -380,6 +435,7 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRouteWithChildren
   '/publish': typeof PublishRoute
   '/roadmap': typeof RoadmapRoute
+  '/saas-mvp': typeof SaasMvpRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sprint': typeof SprintRoute
@@ -387,6 +443,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/vision': typeof VisionRoute
   '/app/settings': typeof AppSettingsRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
   '/os/logs': typeof OsLogsRoute
@@ -419,12 +476,17 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai': typeof AiRouteWithChildren
+  '/best-ai-engineering-studio': typeof BestAiEngineeringStudioRoute
+  '/best-digital-marketing-studio': typeof BestDigitalMarketingStudioRoute
+  '/best-vibe-coding-platform': typeof BestVibeCodingPlatformRoute
   '/book': typeof BookRoute
+  '/brand': typeof BrandRoute
   '/builder': typeof BuilderRoute
   '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
+  '/free-consultation': typeof FreeConsultationRoute
   '/help': typeof HelpRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
   '/os': typeof OsRouteWithChildren
@@ -433,6 +495,7 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRouteWithChildren
   '/publish': typeof PublishRoute
   '/roadmap': typeof RoadmapRoute
+  '/saas-mvp': typeof SaasMvpRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sprint': typeof SprintRoute
@@ -440,6 +503,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/vision': typeof VisionRoute
   '/app/settings': typeof AppSettingsRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
   '/os/logs': typeof OsLogsRoute
@@ -473,10 +537,15 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai'
+    | '/best-ai-engineering-studio'
+    | '/best-digital-marketing-studio'
+    | '/best-vibe-coding-platform'
     | '/book'
+    | '/brand'
     | '/builder'
     | '/confirm'
     | '/contact'
+    | '/free-consultation'
     | '/help'
     | '/insights'
     | '/login'
@@ -487,6 +556,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/publish'
     | '/roadmap'
+    | '/saas-mvp'
     | '/services'
     | '/sitemap.xml'
     | '/sprint'
@@ -494,6 +564,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/vision'
     | '/app/settings'
+    | '/insights/$slug'
     | '/marketplace/sell'
     | '/marketplace/success'
     | '/os/logs'
@@ -525,10 +596,15 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai'
+    | '/best-ai-engineering-studio'
+    | '/best-digital-marketing-studio'
+    | '/best-vibe-coding-platform'
     | '/book'
+    | '/brand'
     | '/builder'
     | '/confirm'
     | '/contact'
+    | '/free-consultation'
     | '/help'
     | '/insights'
     | '/login'
@@ -538,6 +614,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/publish'
     | '/roadmap'
+    | '/saas-mvp'
     | '/services'
     | '/sitemap.xml'
     | '/sprint'
@@ -545,6 +622,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/vision'
     | '/app/settings'
+    | '/insights/$slug'
     | '/marketplace/sell'
     | '/marketplace/success'
     | '/os/logs'
@@ -576,10 +654,15 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai'
+    | '/best-ai-engineering-studio'
+    | '/best-digital-marketing-studio'
+    | '/best-vibe-coding-platform'
     | '/book'
+    | '/brand'
     | '/builder'
     | '/confirm'
     | '/contact'
+    | '/free-consultation'
     | '/help'
     | '/insights'
     | '/login'
@@ -590,6 +673,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/publish'
     | '/roadmap'
+    | '/saas-mvp'
     | '/services'
     | '/sitemap.xml'
     | '/sprint'
@@ -597,6 +681,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/vision'
     | '/app/settings'
+    | '/insights/$slug'
     | '/marketplace/sell'
     | '/marketplace/success'
     | '/os/logs'
@@ -629,12 +714,17 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AiRoute: typeof AiRouteWithChildren
+  BestAiEngineeringStudioRoute: typeof BestAiEngineeringStudioRoute
+  BestDigitalMarketingStudioRoute: typeof BestDigitalMarketingStudioRoute
+  BestVibeCodingPlatformRoute: typeof BestVibeCodingPlatformRoute
   BookRoute: typeof BookRoute
+  BrandRoute: typeof BrandRoute
   BuilderRoute: typeof BuilderRoute
   ConfirmRoute: typeof ConfirmRoute
   ContactRoute: typeof ContactRoute
+  FreeConsultationRoute: typeof FreeConsultationRoute
   HelpRoute: typeof HelpRoute
-  InsightsRoute: typeof InsightsRoute
+  InsightsRoute: typeof InsightsRouteWithChildren
   LoginRoute: typeof LoginRoute
   MarketplaceRoute: typeof MarketplaceRouteWithChildren
   OsRoute: typeof OsRouteWithChildren
@@ -643,6 +733,7 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRouteWithChildren
   PublishRoute: typeof PublishRoute
   RoadmapRoute: typeof RoadmapRoute
+  SaasMvpRoute: typeof SaasMvpRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SprintRoute: typeof SprintRoute
@@ -707,6 +798,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/saas-mvp': {
+      id: '/saas-mvp'
+      path: '/saas-mvp'
+      fullPath: '/saas-mvp'
+      preLoaderRoute: typeof SaasMvpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/roadmap': {
@@ -779,6 +877,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HelpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/free-consultation': {
+      id: '/free-consultation'
+      path: '/free-consultation'
+      fullPath: '/free-consultation'
+      preLoaderRoute: typeof FreeConsultationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -800,11 +905,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brand': {
+      id: '/brand'
+      path: '/brand'
+      fullPath: '/brand'
+      preLoaderRoute: typeof BrandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/book': {
       id: '/book'
       path: '/book'
       fullPath: '/book'
       preLoaderRoute: typeof BookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/best-vibe-coding-platform': {
+      id: '/best-vibe-coding-platform'
+      path: '/best-vibe-coding-platform'
+      fullPath: '/best-vibe-coding-platform'
+      preLoaderRoute: typeof BestVibeCodingPlatformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/best-digital-marketing-studio': {
+      id: '/best-digital-marketing-studio'
+      path: '/best-digital-marketing-studio'
+      fullPath: '/best-digital-marketing-studio'
+      preLoaderRoute: typeof BestDigitalMarketingStudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/best-ai-engineering-studio': {
+      id: '/best-ai-engineering-studio'
+      path: '/best-ai-engineering-studio'
+      fullPath: '/best-ai-engineering-studio'
+      preLoaderRoute: typeof BestAiEngineeringStudioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ai': {
@@ -890,6 +1023,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/marketplace/sell'
       preLoaderRoute: typeof MarketplaceSellRouteImport
       parentRoute: typeof MarketplaceRoute
+    }
+    '/insights/$slug': {
+      id: '/insights/$slug'
+      path: '/$slug'
+      fullPath: '/insights/$slug'
+      preLoaderRoute: typeof InsightsSlugRouteImport
+      parentRoute: typeof InsightsRoute
     }
     '/app/settings': {
       id: '/app/settings'
@@ -1030,6 +1170,18 @@ const AiRouteChildren: AiRouteChildren = {
 
 const AiRouteWithChildren = AiRoute._addFileChildren(AiRouteChildren)
 
+interface InsightsRouteChildren {
+  InsightsSlugRoute: typeof InsightsSlugRoute
+}
+
+const InsightsRouteChildren: InsightsRouteChildren = {
+  InsightsSlugRoute: InsightsSlugRoute,
+}
+
+const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
+  InsightsRouteChildren,
+)
+
 interface MarketplaceRouteChildren {
   MarketplaceSellRoute: typeof MarketplaceSellRoute
   MarketplaceSuccessRoute: typeof MarketplaceSuccessRoute
@@ -1096,12 +1248,17 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AiRoute: AiRouteWithChildren,
+  BestAiEngineeringStudioRoute: BestAiEngineeringStudioRoute,
+  BestDigitalMarketingStudioRoute: BestDigitalMarketingStudioRoute,
+  BestVibeCodingPlatformRoute: BestVibeCodingPlatformRoute,
   BookRoute: BookRoute,
+  BrandRoute: BrandRoute,
   BuilderRoute: BuilderRoute,
   ConfirmRoute: ConfirmRoute,
   ContactRoute: ContactRoute,
+  FreeConsultationRoute: FreeConsultationRoute,
   HelpRoute: HelpRoute,
-  InsightsRoute: InsightsRoute,
+  InsightsRoute: InsightsRouteWithChildren,
   LoginRoute: LoginRoute,
   MarketplaceRoute: MarketplaceRouteWithChildren,
   OsRoute: OsRouteWithChildren,
@@ -1110,6 +1267,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRouteWithChildren,
   PublishRoute: PublishRoute,
   RoadmapRoute: RoadmapRoute,
+  SaasMvpRoute: SaasMvpRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SprintRoute: SprintRoute,
@@ -1134,3 +1292,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
