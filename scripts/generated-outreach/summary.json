@@ -1,0 +1,152 @@
+{
+  "generated": 24,
+  "prospects": 8,
+  "templates": 3,
+  "files": [
+    {
+      "prospect": "Alex",
+      "company": "TechStart",
+      "type": "cold",
+      "filename": "techstart-cold.txt"
+    },
+    {
+      "prospect": "Alex",
+      "company": "TechStart",
+      "type": "followup",
+      "filename": "techstart-followup.txt"
+    },
+    {
+      "prospect": "Alex",
+      "company": "TechStart",
+      "type": "partnership",
+      "filename": "techstart-partnership.txt"
+    },
+    {
+      "prospect": "Sarah",
+      "company": "NextGen SaaS",
+      "type": "cold",
+      "filename": "nextgen-saas-cold.txt"
+    },
+    {
+      "prospect": "Sarah",
+      "company": "NextGen SaaS",
+      "type": "followup",
+      "filename": "nextgen-saas-followup.txt"
+    },
+    {
+      "prospect": "Sarah",
+      "company": "NextGen SaaS",
+      "type": "partnership",
+      "filename": "nextgen-saas-partnership.txt"
+    },
+    {
+      "prospect": "Mike",
+      "company": "DataFlow",
+      "type": "cold",
+      "filename": "dataflow-cold.txt"
+    },
+    {
+      "prospect": "Mike",
+      "company": "DataFlow",
+      "type": "followup",
+      "filename": "dataflow-followup.txt"
+    },
+    {
+      "prospect": "Mike",
+      "company": "DataFlow",
+      "type": "partnership",
+      "filename": "dataflow-partnership.txt"
+    },
+    {
+      "prospect": "Priya",
+      "company": "CloudKit",
+      "type": "cold",
+      "filename": "cloudkit-cold.txt"
+    },
+    {
+      "prospect": "Priya",
+      "company": "CloudKit",
+      "type": "followup",
+      "filename": "cloudkit-followup.txt"
+    },
+    {
+      "prospect": "Priya",
+      "company": "CloudKit",
+      "type": "partnership",
+      "filename": "cloudkit-partnership.txt"
+    },
+    {
+      "prospect": "James",
+      "company": "ScaleUp",
+      "type": "cold",
+      "filename": "scaleup-cold.txt"
+    },
+    {
+      "prospect": "James",
+      "company": "ScaleUp",
+      "type": "followup",
+      "filename": "scaleup-followup.txt"
+    },
+    {
+      "prospect": "James",
+      "company": "ScaleUp",
+      "type": "partnership",
+      "filename": "scaleup-partnership.txt"
+    },
+    {
+      "prospect": "Emma",
+      "company": "LaunchPad",
+      "type": "cold",
+      "filename": "launchpad-cold.txt"
+    },
+    {
+      "prospect": "Emma",
+      "company": "LaunchPad",
+      "type": "followup",
+      "filename": "launchpad-followup.txt"
+    },
+    {
+      "prospect": "Emma",
+      "company": "LaunchPad",
+      "type": "partnership",
+      "filename": "launchpad-partnership.txt"
+    },
+    {
+      "prospect": "Raj",
+      "company": "CodeBase",
+      "type": "cold",
+      "filename": "codebase-cold.txt"
+    },
+    {
+      "prospect": "Raj",
+      "company": "CodeBase",
+      "type": "followup",
+      "filename": "codebase-followup.txt"
+    },
+    {
+      "prospect": "Raj",
+      "company": "CodeBase",
+      "type": "partnership",
+      "filename": "codebase-partnership.txt"
+    },
+    {
+      "prospect": "Lisa",
+      "company": "GrowthHub",
+      "type": "cold",
+      "filename": "growthhub-cold.txt"
+    },
+    {
+      "prospect": "Lisa",
+      "company": "GrowthHub",
+      "type": "followup",
+      "filename": "growthhub-followup.txt"
+    },
+    {
+      "prospect": "Lisa",
+      "company": "GrowthHub",
+      "type": "partnership",
+      "filename": "growthhub-partnership.txt"
+    }
+  ],
+  "generated_at": "2026-07-28T11:35:48.100Z"
+}

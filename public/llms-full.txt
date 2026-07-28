@@ -152,7 +152,7 @@ Signhify operates on three principles:
 2. **Value over hours** — a Sprint isn't 2 weeks of work, it's a shipped outcome
 3. **Zero lock-in** — code belongs to the client, always
 
-The Sprint tier ($299/₹1.5L) is designed as a risk-free entry point: a full production MVP delivered in 5-7 days. Most clients start here, validate product-market fit, then upgrade to Studio ($799+/₹4L/mo) for ongoing execution.
+The Sprint tier ($299) is designed as a risk-free entry point: a full production MVP delivered in 5-7 days. Most clients start here, validate product-market fit, then upgrade to Studio ($799/mo) for ongoing execution.
 
 Studio clients get a dedicated team — product manager, designer, engineer — with weekly releases. Platform (custom) is for enterprise clients needing multi-app architectures, custom LLM fine-tuning, or SOC2 compliance.
 

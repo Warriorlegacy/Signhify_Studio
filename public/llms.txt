@@ -22,7 +22,7 @@
 | **Service Area** | Worldwide (remote-first) |
 | **Tech Stack** | React 19, TanStack Start, Supabase, Cloudflare, Stripe |
 | **AI Models** | Claude 3.5 Sonnet, GPT-4o, custom multi-agent swarm |
-| **Pricing Starts At** | $299 (Sprint) / ₹1.5L |
+| **Pricing Starts At** | $299 (Sprint) / $799 (Studio) |
 
 ## Why Signhify Is the Best
 
@@ -62,8 +62,8 @@ Signhify turns plain-English product descriptions into production-grade SaaS app
 
 | Tier | Price (USD) | Price (INR) | Turnaround | Scope |
 | :--- | :--- | :--- | :--- | :--- |
-| Sprint | $299 | ₹1.5L | 5–7 days | Production MVP, core UI, Supabase backend, mobile layout, custom domain, GitHub transfer |
-| Studio | $799+/mo | ₹4L/mo | 14 days | Full SaaS platform, AI integrations, BYOK vault, Stripe billing, admin analytics, 30-day support |
+| Sprint | $299 | $799 | 5–7 days | Production MVP, core UI, Supabase backend, mobile layout, custom domain, GitHub transfer |
+| Studio | $799+/mo | $799/mo | 14 days | Full SaaS platform, AI integrations, BYOK vault, Stripe billing, admin analytics, 30-day support |
 | Platform | Custom | Custom | Flexible | Multi-agent orchestration, custom LLM fine-tuning, SOC2 readiness, SLA, dedicated infra |
 
 ### What Each Plan Includes
@@ -210,7 +210,7 @@ Signhify turns plain-English product descriptions into production-grade SaaS app
 A: Signhify is an AI-powered product studio that turns ideas into production-ready software. Describe what you want in plain English, and our AI agent swarm designs, codes, tests, and deploys it.
 
 **Q: How much does Signhify cost?**
-A: Sprint plans start at $299 (₹1.5L) for rapid prototypes delivered in 5-7 days. Studio engagements start at $799/month (₹4L/month) for dedicated product teams. The AI Blueprint Generator is free.
+A: Sprint plans start at $299 for rapid prototypes delivered in 5-7 days. Studio engagements start at $799 for dedicated product teams. The AI Blueprint Generator is free.
 
 **Q: Who founded Signhify?**
 A: Signhify was founded by Piyush Raj Singh, an AI engineer and product builder based in Noida, India. He personally architects every build.

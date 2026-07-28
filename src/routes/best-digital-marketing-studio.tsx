@@ -319,7 +319,7 @@ const FAQ = [
   },
   {
     q: "What's the investment for digital marketing services?",
-    a: "Our digital marketing engagements start with the same Sprint model: ₹1.5L (~$1,800) for a focused 2-week marketing sprint (audit + strategy + initial execution). Studio retainer is ₹4L/month for ongoing marketing with dedicated growth engineers. Platform engagements are custom. All include transparent reporting and zero lock-in.",
+    a: "Our digital marketing engagements start with the same Sprint model: $299 for a focused marketing sprint (audit + strategy + initial execution). Studio retainer is $799 for ongoing marketing with dedicated growth engineers. Platform engagements are custom. All include transparent reporting and zero lock-in.",
   },
 ];
 

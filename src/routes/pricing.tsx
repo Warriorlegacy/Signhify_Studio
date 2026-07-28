@@ -59,8 +59,8 @@ const TIERS = [
   {
     name: "Sprint",
     tag: "Fixed scope",
-    price: "₹1.5L",
-    period: "/ 2-week sprint",
+    price: "$299",
+    period: "/ 5–7 day sprint",
     desc: "One focused outcome. Landing page, MVP slice, or critical feature — designed, built and deployed.",
     features: [
       "Design + build + deploy",
@@ -77,9 +77,9 @@ const TIERS = [
   {
     name: "Studio",
     tag: "Most chosen",
-    price: "₹4L",
-    period: "/ month",
-    desc: "Embedded product team. End-to-end execution from idea to revenue, on a monthly cadence.",
+    price: "$799",
+    period: "/ 14 days",
+    desc: "Embedded product team. End-to-end execution from idea to revenue, on a fixed timeline.",
     features: [
       "Dedicated product + design + engineering",
       "Weekly releases on your domain",
@@ -117,7 +117,7 @@ const TIERS = [
 const FAQ = [
   {
     q: "What's included in a Sprint?",
-    a: "A Sprint is a 2-week engagement focused on one deliverable — a landing page, MVP feature, or product slice. You get design, engineering, deployment, and one revision round. Code is on your GitHub from day one.",
+    a: "A Sprint is a 5–7 day engagement focused on one deliverable — a landing page, MVP feature, or product slice. You get design, engineering, deployment, and one revision round. Code is on your GitHub from day one.",
   },
   {
     q: "Can I switch from Sprint to Studio mid-project?",
@@ -133,7 +133,7 @@ const FAQ = [
   },
   {
     q: "How do payments work?",
-    a: "Sprint: 100% upfront. Studio: 50% at start of each month, 50% on delivery. Platform: custom terms. We accept UPI (6202442690@jio), PayPal (paypal.me/signhify), and bank transfer (A/C 000521712140642, Piyush Raj Singh, Jio Payments Bank, IFSC JIOP0000001). Stripe and Razorpay also available. Send payment confirmation on WhatsApp (+91 620202442690) and we'll credit your account within 2 hours.",
+    a: "Sprint ($299): 100% upfront. Studio ($799): 50% at kickoff, 50% on delivery. Platform: custom terms. We accept UPI (6202442690@jio), PayPal (paypal.me/signhify), and bank transfer (A/C 000521712140642, Piyush Raj Singh, Jio Payments Bank, IFSC JIOP0000001). Stripe and Razorpay also available. Send payment confirmation on WhatsApp (+91 620202442690) and we'll credit your account within 2 hours.",
   },
   {
     q: "Do you work with international clients?",

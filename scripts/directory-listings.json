@@ -1,0 +1,184 @@
+{
+  "directories": [
+    {
+      "rank": 1,
+      "name": "Clutch",
+      "url": "https://clutch.co/profile/signhify-ai-studio",
+      "status": "pending",
+      "priority": "high",
+      "requires_reviews": true,
+      "notes": "Need 3-5 verified client reviews before applying"
+    },
+    {
+      "rank": 2,
+      "name": "GoodFirms",
+      "url": "https://www.goodfirms.co/company/signhify-ai-studio",
+      "status": "pending",
+      "priority": "high",
+      "requires_reviews": true,
+      "notes": "Cross-post reviews from Clutch"
+    },
+    {
+      "rank": 3,
+      "name": "DesignRush",
+      "url": "https://www.designrush.com/agency/profile/signhify-ai-studio",
+      "status": "pending",
+      "priority": "high",
+      "requires_reviews": false,
+      "notes": "Submit 3 portfolio projects"
+    },
+    {
+      "rank": 4,
+      "name": "ProductHunt",
+      "url": "https://www.producthunt.com/products/signhify-ai-studio",
+      "status": "pending",
+      "priority": "high",
+      "requires_reviews": false,
+      "launch_date": "2026-08-15",
+      "notes": "Launch after 3-5 client testimonials"
+    },
+    {
+      "rank": 5,
+      "name": "Upwork",
+      "url": "https://www.upwork.com/agency/signhify-ai-studio",
+      "status": "pending",
+      "priority": "high",
+      "requires_reviews": false,
+      "notes": "Start with $299 Sprint to build reviews"
+    },
+    {
+      "rank": 6,
+      "name": "Google Business Profile",
+      "url": "https://business.google.com",
+      "status": "waiting_verification",
+      "priority": "high",
+      "requires_reviews": false,
+      "notes": "Postcard verification in progress"
+    },
+    {
+      "rank": 7,
+      "name": "Crunchbase",
+      "url": "https://www.crunchbase.com/organization/signhify-ai-studio",
+      "status": "pending",
+      "priority": "medium",
+      "requires_reviews": false,
+      "notes": "Claim listing"
+    },
+    {
+      "rank": 8,
+      "name": "AngelList / Wellfound",
+      "url": "https://angel.co/company/signhify-ai-studio",
+      "status": "pending",
+      "priority": "medium",
+      "requires_reviews": false,
+      "notes": "Connect LinkedIn for verification"
+    },
+    {
+      "rank": 9,
+      "name": "G2",
+      "url": "https://www.g2.com/products/signhify-ai-studio",
+      "status": "pending",
+      "priority": "medium",
+      "requires_reviews": true,
+      "notes": "Ask clients to leave reviews after project completion"
+    },
+    {
+      "rank": 10,
+      "name": "Behance",
+      "url": "https://www.behance.net/signhify",
+      "status": "pending",
+      "priority": "medium",
+      "requires_reviews": false,
+      "notes": "Create visual portfolio projects"
+    },
+    {
+      "rank": 11,
+      "name": "Dribbble",
+      "url": "https://dribbble.com/signhify",
+      "status": "pending",
+      "priority": "medium",
+      "requires_reviews": false,
+      "notes": "Apply with best UI work"
+    },
+    {
+      "rank": 12,
+      "name": "Trustpilot",
+      "url": "https://www.trustpilot.com/review/signhify.dpdns.org",
+      "status": "pending",
+      "priority": "medium",
+      "requires_reviews": true,
+      "notes": "Ask every client for review"
+    },
+    {
+      "rank": 13,
+      "name": "Sortlist",
+      "url": "https://www.sortlist.com/agency/signhify-ai-studio",
+      "status": "pending",
+      "priority": "low",
+      "requires_reviews": false,
+      "notes": "Complete profile to 100% for Verified badge"
+    },
+    {
+      "rank": 14,
+      "name": "Bark",
+      "url": "https://www.bark.com/en/in/signhify-ai-studio",
+      "status": "pending",
+      "priority": "low",
+      "requires_reviews": false,
+      "notes": "Respond within 2 hours for best conversion"
+    },
+    {
+      "rank": 15,
+      "name": "Manifest",
+      "url": "https://themanifest.com/company/signhify-ai-studio",
+      "status": "pending",
+      "priority": "low",
+      "requires_reviews": false,
+      "notes": "Cross-post Clutch reviews"
+    },
+    {
+      "rank": 16,
+      "name": "ITFirms",
+      "url": "https://itfirms.co/company/signhify-ai-studio",
+      "status": "pending",
+      "priority": "low",
+      "requires_reviews": false,
+      "notes": "Easy listing, every backlink helps"
+    },
+    {
+      "rank": 17,
+      "name": "Extract",
+      "url": "https://extract.co/company/signhify-ai-studio",
+      "status": "pending",
+      "priority": "low",
+      "requires_reviews": false,
+      "notes": "Good for niche queries"
+    },
+    {
+      "rank": 18,
+      "name": "VisualObjects",
+      "url": "https://visualobjects.com/company/signhify-ai-studio",
+      "status": "pending",
+      "priority": "low",
+      "requires_reviews": false,
+      "notes": "Cross-publishes to other sites"
+    },
+    {
+      "rank": 19,
+      "name": "TopDevelopers",
+      "url": "https://www.topdevelopers.co/company/signhify-ai-studio",
+      "status": "pending",
+      "priority": "low",
+      "requires_reviews": false,
+      "notes": "Harder approval, requires detailed portfolio"
+    }
+  ],
+  "review_targets": {
+    "clutch": 5,
+    "goodfirms": 5,
+    "g2": 3,
+    "trustpilot": 5,
+    "total_needed": 18
+  },
+  "generated_at": "2026-07-28T17:00:00+05:30"
+}

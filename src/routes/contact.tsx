@@ -61,7 +61,7 @@ const SCOPES = [
   "Migration / platform move",
   "Just exploring",
 ];
-const BUDGETS = ["< ₹1L", "₹1L – ₹5L", "₹5L – ₹15L", "₹15L – ₹40L", "₹40L+", "Not sure yet"];
+const BUDGETS = ["< $500", "$500 – $2,000", "$2,000 – $5,000", "$5,000 – $15,000", "$15,000+", "Not sure yet"];
 const TIMELINES = ["This week", "2–4 weeks", "1–3 months", "3–6 months", "Exploring"];
 const GOAL_OPTIONS = [
   "Generate leads",

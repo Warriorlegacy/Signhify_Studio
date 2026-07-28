@@ -1,0 +1,25 @@
+To: mike@dataflow.io
+Subject: DataFlow — 2-week AI SaaS build slot just opened
+
+Hi Mike,
+
+Saw DataFlow's recent work on Twitter/X. Looks like you're shipping fast.
+
+Quick question — are you actively exploring AI features or a product build right now?
+
+Most founders burn 3-6 months and $15k+ piecing together dev agencies. Not great.
+
+At Signhify, we ship production-ready AI SaaS apps in 2-week fixed sprints. Full source code to your GitHub, BYOK encryption, Stripe billing, Supabase backend — the whole stack.
+
+→ Sprint ($299): MVP in 5-7 days
+→ Studio ($799+): Full platform in 14 days
+
+Live demo & portfolio: https://signhify.dpdns.org
+
+Open to a 10-min blueprint call this week? I can show you the exact stack for AI agent automation workflow.
+
+Best,
+Piyush Raj Singh
+Founder & Lead AI Engineer, Signhify AI Studio
+Govt. MSME: UDYAM-UP-30-0081308
+WhatsApp: +91-6202442690

@@ -57,10 +57,10 @@ export const Route = createFileRoute("/saas-mvp")({
 
 const PRICING = {
   label: "MVP Sprint",
-  price: "₹1.5L",
-  usd: "~$1,800",
+  price: "$299",
+  usd: "$299",
   period: "one-time",
-  desc: "Everything you need to go from idea to deployed AI SaaS in 14 days.",
+  desc: "Everything you need to go from idea to deployed AI SaaS in 5–7 days.",
 };
 
 const WHATS_INCLUDED = [

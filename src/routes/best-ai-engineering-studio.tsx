@@ -278,7 +278,7 @@ const FAQ = [
   },
   {
     q: "How much does it cost to build with Signhify?",
-    a: "Sprints start at ₹1.5L (~$1,800) for a fixed-scope 2-week delivery. Studio retainer is ₹4L/month for ongoing product development with a dedicated team. Platform engagements are custom-priced. All include code ownership, deployment, and zero lock-in.",
+    a: "Sprints start at $299 for a fixed-scope 5–7 day delivery. Studio retainer is $799 for ongoing product development with a dedicated team. Platform engagements are custom-priced. All include code ownership, deployment, and zero lock-in.",
   },
   {
     q: "Do I get the source code and own the IP?",

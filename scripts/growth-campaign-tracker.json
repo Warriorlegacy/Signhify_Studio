@@ -1,0 +1,77 @@
+{
+  "campaigns": [
+    {
+      "id": "outreach-founders-001",
+      "name": "Cold Outreach — SaaS Founders (Week 1)",
+      "status": "ready",
+      "target_count": 50,
+      "platforms": ["LinkedIn", "Twitter/X", "IndieHackers", "Email"],
+      "template_ref": "scripts/outreach-email-templates.md",
+      "schedule": {
+        "start_date": "2026-07-29",
+        "emails_per_day": 5,
+        "linkedin_posts_per_week": 2,
+        "twitter_posts_per_week": 5
+      },
+      "prospects": [
+        { "name": "Founder Name", "company": "Company", "platform": "LinkedIn", "email": "founder@company.com", "status": "pending" }
+      ]
+    },
+    {
+      "id": "directory-listings-001",
+      "name": "Directory Listings (Phase 1)",
+      "status": "ready",
+      "platforms": ["Clutch", "GoodFirms", "DesignRush"],
+      "schedule": {
+        "start_date": "2026-07-29",
+        "completion_target": "2026-08-05"
+      }
+    },
+    {
+      "id": "producthunt-launch-001",
+      "name": "ProductHunt Launch",
+      "status": "pending",
+      "launch_date": "2026-08-15",
+      "discount_code": "PHLAUNCH20",
+      "prep_checklist": [
+        "Record 30s demo GIF",
+        "Update README with demo",
+        "Get 3-5 beta users signed up",
+        "Prepare first comment",
+        "Schedule social posts for launch day"
+      ]
+    },
+    {
+      "id": "linkedin-content-001",
+      "name": "LinkedIn Content Calendar (30 days)",
+      "status": "ready",
+      "posts": [
+        { "day": 1, "topic": "Founder Origin Story", "status": "draft" },
+        { "day": 3, "topic": "6-Agent Pipeline Deep-Dive", "status": "draft" },
+        { "day": 8, "topic": "Client Case Study", "status": "draft" },
+        { "day": 10, "topic": "BYOK Enterprise Trend", "status": "draft" },
+        { "day": 15, "topic": "Sales Without Sales Team", "status": "draft" },
+        { "day": 17, "topic": "Agency vs Sprint Comparison", "status": "draft" },
+        { "day": 22, "topic": "TanStack Start vs Next.js", "status": "draft" },
+        { "day": 24, "topic": "Month in Review", "status": "draft" }
+      ]
+    }
+  ],
+  "revenue_targets": {
+    "month_1": { "target_usd": 5000, "sources": ["credit_packs", "sprint_engagements"] },
+    "month_3": { "target_usd": 25000, "sources": ["sprint_engagements", "studio_engagements", "marketplace"] },
+    "month_6": { "target_usd": 100000, "sources": ["studio_retainers", "enterprise_platform", "marketplace_commission"] },
+    "month_12": { "target_usd": 1000000, "sources": ["all_channels"] }
+  },
+  "kpis": {
+    "website_visits": 0,
+    "ai_generator_uses": 0,
+    "contact_form_submissions": 0,
+    "discovery_calls_booked": 0,
+    "sprint_deals_closed": 0,
+    "studio_deals_closed": 0,
+    "credit_packs_sold": 0,
+    "linkedin_followers": 0,
+    "github_stars": 0
+  }
+}

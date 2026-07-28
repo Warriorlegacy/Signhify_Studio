@@ -65,7 +65,7 @@ Stripe Checkout sessions created server-side with \`client_reference_id\` set to
 
 Sentry for error tracking, custom domain setup, and a 3-page marketing site (home, pricing, contact). Total cost: ~$50/month infra + $20/month AI API costs for development.
 
-**Bottom line:** A focused 2-week sprint costs ₹1.5L ($1,800) at Signhify — including design, engineering, and deployment. Most founders recoup this in their first 5 customer conversions.`,
+**Bottom line:** A focused 5–7 day sprint costs $299 at Signhify — including design, engineering, and deployment. Most founders recoup this in their first 5 customer conversions.`,
   },
 
   "autonomous-ai-agents-2026": {
@@ -221,13 +221,13 @@ Track citation share using tools like Perplexity's publisher dashboard and manua
 
 Transparency matters. Here's what actual AI development projects cost at Signhify and across the industry.
 
-### Sprint-Based Engagement (₹1.5L / ~$1,800 per 2-week sprint)
+### Sprint-Based Engagement ($299 / 5–7 days)
 
 Best for: Landing pages, single-feature MVPs, AI chatbot integration, API wrapper builds.
 
 Includes: Design, engineering, deployment to your domain, one revision round. Code on your GitHub from day one.
 
-### Studio Retainer (₹4L / ~$4,800 per month)
+### Studio Retainer ($799 / 14 days)
 
 Best for: Full SaaS products, multi-agent systems, ongoing product iteration.
 
@@ -617,7 +617,7 @@ Each agent writes its state (current step, collected data, decisions) to a Supab
 
 Building an AI SaaS MVP in 2026 costs less than most founders expect — if you know where to spend and where to save. Here's the real breakdown after shipping 20+ AI products at [Signhify](https://signhify.dpdns.org).
 
-### The Entry Point: Fixed-Price Sprint (₹1.5L / ~$1,800)
+### The Entry Point: Fixed-Price Sprint ($299)
 
 A focused 2-week sprint delivers one production-ready feature, landing page, or AI integration. This is the fastest path from idea to deployed code — used by 80% of first-time founders we work with.
 
@@ -627,7 +627,7 @@ Includes:
 - **Async daily updates** via Loom
 - **One revision round**
 
-### Full MVP: Studio Retainer (₹4L / ~$4,800 per month)
+### Full MVP: Studio Retainer ($799 / 14 days)
 
 For a complete multi-feature SaaS with auth, payments, AI integrations, and multi-tenant architecture, the Studio retainer gives you a dedicated product team.
 
@@ -648,9 +648,9 @@ Includes:
 
 | Budget | Best Approach | Timeline |
 |---|---|---|
-| Under ₹1.5L | Single Sprint for one feature | 2 weeks |
-| ₹1.5L - ₹4L | Two Sprints for MVP core | 4 weeks |
-| ₹4L+ | Studio retainer for full product | Monthly |
+| Under $299 | Single Sprint for one feature | 5–7 days |
+| $299 - $799 | Two Sprints for MVP core | 2–4 weeks |
+| $799+ | Studio retainer for full product | 14 days+ |
 
 See our [complete pricing breakdown](https://signhify.dpdns.org/pricing) and [full list of services](https://signhify.dpdns.org/services).
 
@@ -701,8 +701,8 @@ Our approach at [Signhify](https://signhify.dpdns.org/services) pairs determinis
 
 ### Typical Agent Project Costs
 
-- Single-function agent (triage bot, form filler): ₹1.5L ($1,800) — one Sprint
-- Multi-agent pipeline (research + enrich + route): ₹4L+ ($4,800+) — Studio retainer
+- Single-function agent (triage bot, form filler): $299 — one Sprint
+- Multi-agent pipeline (research + enrich + route): $799+ — Studio retainer
 
 Explore our [AI agent development services](https://signhify.dpdns.org/services) and [pricing models](https://signhify.dpdns.org/pricing).
 

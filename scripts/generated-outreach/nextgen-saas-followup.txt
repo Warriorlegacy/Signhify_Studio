@@ -1,0 +1,19 @@
+To: sarah@nextgensaas.com
+Subject: Re: NextGen SaaS — 2-week AI SaaS build slot
+
+Hi Sarah,
+
+Following up — I put together a recommended architecture for NextGen SaaS's space:
+
+→ Frontend: TanStack Start + React 19 (zero-latency SSR)
+→ AI Layer: Claude 3.5 Sonnet / GPT-4o with auto-fallback + BYOK key vault
+→ Backend: Supabase PostgreSQL + Edge Functions + Row-Level Security
+→ Deployment: Cloudflare Workers (edge, multi-region)
+→ Billing: Stripe Checkout + webhook-driven metering
+
+Here's our free AI Blueprint Generator — describe your product in one sentence and it outputs the full plan: https://signhify.dpdns.org/ai
+
+Want me to run a custom blueprint for NextGen SaaS's exact idea? Takes 5 minutes.
+
+Best,
+Piyush
