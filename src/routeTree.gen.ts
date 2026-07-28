@@ -67,6 +67,7 @@ import { Route as ApiTelemetryEventRouteImport } from './routes/api/telemetry/ev
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as ApiPublicAuthProviderRouteImport } from './routes/api/public/auth-provider'
+import { Route as ApiCronRevenueRouteImport } from './routes/api/cron/revenue'
 import { Route as AiShareIdRouteImport } from './routes/ai.share.$id'
 import { Route as AppProjectsIdAnalyticsRouteImport } from './routes/app/projects/$id.analytics'
 import { Route as AppProjectsIdRunsRunIdRouteImport } from './routes/app/projects/$id/runs/$runId'
@@ -362,6 +363,11 @@ const ApiPublicAuthProviderRoute = ApiPublicAuthProviderRouteImport.update({
   path: '/api/public/auth-provider',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCronRevenueRoute = ApiCronRevenueRouteImport.update({
+  id: '/api/cron/revenue',
+  path: '/api/cron/revenue',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AiShareIdRoute = AiShareIdRouteImport.update({
   id: '/share/$id',
   path: '/share/$id',
@@ -427,6 +433,7 @@ export interface FileRoutesByFullPath {
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/telemetry/event': typeof ApiTelemetryEventRoute
+  '/api/cron/revenue': typeof ApiCronRevenueRoute
   '/app/marketplace/sell': typeof AppMarketplaceSellRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
@@ -489,6 +496,7 @@ export interface FileRoutesByTo {
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/telemetry/event': typeof ApiTelemetryEventRoute
+  '/api/cron/revenue': typeof ApiCronRevenueRoute
   '/app/marketplace/sell': typeof AppMarketplaceSellRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
@@ -553,6 +561,7 @@ export interface FileRoutesById {
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/telemetry/event': typeof ApiTelemetryEventRoute
+  '/api/cron/revenue': typeof ApiCronRevenueRoute
   '/app/marketplace/sell': typeof AppMarketplaceSellRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
@@ -618,6 +627,7 @@ export interface FileRouteTypes {
     | '/api/public/health'
     | '/api/stripe/webhook'
     | '/api/telemetry/event'
+    | '/api/cron/revenue'
     | '/app/marketplace/sell'
     | '/app/projects/$id'
     | '/app/projects/new'
@@ -1376,3 +1386,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
