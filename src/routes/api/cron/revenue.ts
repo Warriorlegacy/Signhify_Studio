@@ -12,6 +12,7 @@ export const Route = createFileRoute("/api/cron/revenue")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        const startedAt = Date.now();
         try {
           const body = (await request.json().catch(() => ({}))) as { secret?: string };
           const secret = body?.secret || "";
