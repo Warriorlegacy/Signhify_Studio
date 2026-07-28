@@ -24,6 +24,7 @@ GRANT ALL ON public.manual_payments TO service_role;
 
 ALTER TABLE public.manual_payments ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users manage own manual payments" ON public.manual_payments;
 CREATE POLICY "Users manage own manual payments"
   ON public.manual_payments
   FOR ALL

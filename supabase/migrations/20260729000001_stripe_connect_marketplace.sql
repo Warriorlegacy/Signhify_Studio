@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS public.creator_payouts (
 ALTER TABLE public.creator_payouts ENABLE ROW LEVEL SECURITY;
 
 -- Creator can see their own payouts
+DROP POLICY IF EXISTS "creator_payouts_own_select" ON public.creator_payouts;
 CREATE POLICY "creator_payouts_own_select"
   ON public.creator_payouts FOR SELECT
   USING (creator_id = auth.uid());
