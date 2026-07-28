@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { MarqueeStack } from "@/components/sections/MarqueeStack";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
@@ -65,6 +66,20 @@ function Index() {
   return (
     <>
       <HeroSection />
+      <section className="relative py-16 text-center border-b border-border">
+        <div className="mx-auto max-w-2xl px-6">
+          <p className="text-sm text-muted-foreground mb-4">
+            Start with 2 free AI credits — no credit card, no lock-in.
+          </p>
+          <Link
+            to="/signup"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 text-base font-bold text-primary-foreground shadow-[0_0_60px_-8px_var(--primary-glow)] hover:brightness-110 transition"
+          >
+            Start Building Free — No Credit Card
+            <ArrowRight size={18} />
+          </Link>
+        </div>
+      </section>
       <MarqueeStack />
       <ProjectsSection limit={6} />
       <ServicesSection />

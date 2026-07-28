@@ -123,6 +123,11 @@ export function SiteFooter() {
                 Book a call
               </Link>
             </li>
+            <li>
+              <Link to="/affiliate" className="hover:text-foreground">
+                Affiliate Program
+              </Link>
+            </li>
           </ul>
         </div>
 

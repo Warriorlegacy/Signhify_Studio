@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowUpRight, Download, Search, Sparkles } from "lucide-react";
+import { ArrowUpRight, Download, Search, Sparkles, Store, User } from "lucide-react";
 import { MARKET, MARKET_CATEGORIES, type MarketItem } from "@/lib/marketplace";
 import { downloadAsset } from "@/lib/marketplace-download.functions";
 import { createCheckoutSession } from "@/lib/stripe-checkout.functions";
@@ -140,25 +140,25 @@ function MarketplacePage() {
           )}
         </div>
 
-        {/* Creator stub */}
+        {/* Creator CTA */}
         <div className="mt-16 rounded-3xl border border-border bg-surface/50 p-8 lg:p-12 grid lg:grid-cols-[1fr_auto] gap-6 items-center">
           <div>
             <div className="text-[10px] uppercase tracking-[0.22em] text-primary mb-2">
-              Creator console · coming Week 3
+              Creator console · live
             </div>
             <h2 className="font-display text-2xl sm:text-3xl font-bold">
-              Have a template that ships product? List it.
+              Sell your templates, agents, and workflows.
             </h2>
             <p className="mt-2 text-muted-foreground max-w-2xl text-sm">
-              Stripe Connect payouts, signed download URLs, version history and a public author
-              page. Submit interest and we&rsquo;ll onboard you.
+              Stripe Connect payouts — you earn 85% on every sale. List your work and start earning
+              in minutes.
             </p>
           </div>
           <Link
             to="/marketplace/sell"
             className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
           >
-            Apply as creator <ArrowUpRight size={14} />
+            Start selling <ArrowUpRight size={14} />
           </Link>
         </div>
       </div>
@@ -236,11 +236,18 @@ function MarketCard({ item }: { item: MarketItem }) {
         <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-background/80 backdrop-blur border border-white/15 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-foreground">
           {item.category}
         </div>
-        {item.badge && (
-          <div className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-emerald-500/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-50">
-            {item.badge}
-          </div>
-        )}
+        <div className="absolute top-3 right-3 flex flex-col gap-1 items-end">
+          {item.badge && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-50">
+              {item.badge}
+            </span>
+          )}
+          {item.id && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary/90 px-2 py-0.5 text-[10px] font-medium text-primary-foreground">
+              <Store size={10} /> By creator
+            </span>
+          )}
+        </div>
       </div>
       <div className="p-5 flex flex-col flex-1">
         <div className="flex items-baseline justify-between gap-3">

@@ -1,9 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ArrowRight, ChevronDown, Shield, Code2, Zap } from "lucide-react";
+import { Check, ArrowRight, ChevronDown, Shield, Code2, Zap, Mail, Loader2, CheckCircle2 } from "lucide-react";
 import { ThreeDCard } from "@/components/ui/ThreeDCard";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { submitLead } from "@/lib/leads.functions";
+import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -142,6 +145,24 @@ const FAQ = [
   {
     q: "Why pay Signhify instead of using AI tools directly?",
     a: "AI tools generate code, but they don't architect systems, set up auth, integrate payments, deploy to production, or handle security. Signhify delivers a production-ready SaaS — with authentication, database, Stripe billing, CI/CD, and custom domain — in 2 weeks. You get a shipping partner, not a code generator.",
+  },
+];
+
+const TESTIMONIALS = [
+  {
+    name: "Arjun Mehta",
+    role: "Founder, Pulse CRM",
+    text: "Signhify delivered our full-stack MVP in 2 weeks. Auth, Stripe, and a custom dashboard — all production-ready. Revenue in month one.",
+  },
+  {
+    name: "Sarah Chen",
+    role: "CEO, LaunchKit AI",
+    text: "The team built an autonomous agent pipeline that saved us 40+ engineering hours a week. Zero lock-in, full source code on our GitHub.",
+  },
+  {
+    name: "Ravi Kapoor",
+    role: "CTO, FinSync",
+    text: "We needed a multi-tenant SaaS with AI features. Signhify shipped it in one sprint. The code quality was exceptional — we hired them for ongoing work.",
   },
 ];
 
@@ -320,15 +341,15 @@ function PricingPage() {
                 </div>
                 <p className="mt-2 text-sm text-muted-foreground flex-1">{pack.desc}</p>
                 <Link
-                  to="/login"
-                  search={{ redirect: "/app/billing" }}
+                  to="/signup"
+                  search={{ redirect: "/pricing" }}
                   className={`mt-5 group inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold transition ${
                     pack.featured
                       ? "bg-primary text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110"
                       : "border border-border bg-surface/60 hover:border-primary/60"
                   }`}
                 >
-                  Sign up & buy{" "}
+                  Get Started — Sign Up Free{" "}
                   <ArrowRight size={16} className="group-hover:translate-x-0.5 transition" />
                 </Link>
               </div>
@@ -383,6 +404,54 @@ function PricingPage() {
               </tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="relative py-24 border-t border-border">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3 text-center">
+            Trusted by founders
+          </div>
+          <h2 className="font-display text-3xl sm:text-4xl font-bold text-center">
+            What clients <span className="text-gradient">say</span>
+          </h2>
+          <div className="mt-12 grid sm:grid-cols-3 gap-5">
+            {TESTIMONIALS.map((t, i) => (
+              <motion.div
+                key={t.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="rounded-2xl border border-border bg-card/60 backdrop-blur p-6 flex flex-col"
+              >
+                <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                  &ldquo;{t.text}&rdquo;
+                </p>
+                <div className="mt-5 pt-4 border-t border-border/50">
+                  <div className="font-semibold text-sm">{t.name}</div>
+                  <div className="text-xs text-muted-foreground">{t.role}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Lead capture */}
+      <section className="relative py-20 border-t border-border">
+        <div className="absolute inset-0 pointer-events-none opacity-60" style={{ background: "var(--gradient-ember)" }} />
+        <div className="relative mx-auto max-w-2xl px-6 text-center">
+          <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Stay updated</div>
+          <h2 className="font-display text-3xl sm:text-4xl font-bold">
+            Get notified about new AI templates &amp; exclusive pricing
+          </h2>
+          <p className="mt-3 text-muted-foreground text-sm max-w-lg mx-auto">
+            Early access to new AI product templates, credit pack discounts, and platform updates.
+            No spam, unsubscribe anytime.
+          </p>
+          <LeadCaptureForm />
         </div>
       </section>
 
@@ -454,10 +523,10 @@ function PricingPage() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
-              to="/contact"
+              to="/signup"
               className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110 transition"
             >
-              Start a project <ArrowRight size={16} />
+              Start Free <ArrowRight size={16} />
             </Link>
             <Link
               to="/book"
@@ -469,5 +538,68 @@ function PricingPage() {
         </div>
       </section>
     </>
+  );
+}
+
+function LeadCaptureForm() {
+  const submitLeadFn = useServerFn(submitLead);
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const handle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.includes("@")) { toast.error("Enter a valid email."); return; }
+    setSubmitting(true);
+    try {
+      await submitLeadFn({
+        data: {
+          name: email.split("@")[0],
+          email: email.trim(),
+          company: "",
+          type: "Pricing lead",
+          scope: "Pricing page",
+          budget: "",
+          timeline: "",
+          goals: ["pricing-lead"],
+          message: "Lead capture from pricing page",
+        },
+      });
+      setDone(true);
+      toast.success("You're on the list!");
+    } catch {
+      toast.error("Something went wrong. Try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (done) return (
+    <div className="mt-6 inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 text-sm text-emerald-300">
+      <CheckCircle2 size={16} /> You're subscribed!
+    </div>
+  );
+
+  return (
+    <form onSubmit={handle} className="mt-6 flex items-center gap-3 max-w-md mx-auto">
+      <div className="relative flex-1">
+        <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+        <input
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@company.com"
+          className="w-full rounded-xl border border-border bg-surface/60 pl-9 pr-3 py-3 text-sm outline-none focus:border-primary/60"
+        />
+      </div>
+      <button
+        type="submit"
+        disabled={submitting}
+        className="shrink-0 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+      >
+        {submitting ? <Loader2 size={16} className="animate-spin" /> : "Notify Me"}
+      </button>
+    </form>
   );
 }

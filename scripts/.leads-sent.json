@@ -1,0 +1,23 @@
+[
+    {
+        "prospect":  "Draftly",
+        "company":  "Draftly",
+        "channel":  "email",
+        "date":  "2026-07-28",
+        "touch":  1
+    },
+    {
+        "prospect":  "KickbacksAI",
+        "company":  "KickbacksAI",
+        "channel":  "email",
+        "date":  "2026-07-28",
+        "touch":  1
+    },
+    {
+        "prospect":  "YC S26 batch",
+        "company":  "YC S26 batch",
+        "channel":  "email",
+        "date":  "2026-07-28",
+        "touch":  1
+    }
+]

@@ -9,182 +9,96 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as VisionRouteImport } from './routes/vision'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as TemplatesRouteImport } from './routes/templates'
-import { Route as SprintRouteImport } from './routes/sprint'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ServicesRouteImport } from './routes/services'
-import { Route as SaasMvpRouteImport } from './routes/saas-mvp'
-import { Route as RoadmapRouteImport } from './routes/roadmap'
-import { Route as PublishRouteImport } from './routes/publish'
-import { Route as ProjectsRouteImport } from './routes/projects'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as OsRouteImport } from './routes/os'
-import { Route as MarketplaceRouteImport } from './routes/marketplace'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as InsightsRouteImport } from './routes/insights'
-import { Route as HelpRouteImport } from './routes/help'
-import { Route as FreeConsultationRouteImport } from './routes/free-consultation'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as ConfirmRouteImport } from './routes/confirm'
-import { Route as BuilderRouteImport } from './routes/builder'
-import { Route as BrandRouteImport } from './routes/brand'
-import { Route as BookRouteImport } from './routes/book'
-import { Route as BestVibeCodingPlatformRouteImport } from './routes/best-vibe-coding-platform'
-import { Route as BestDigitalMarketingStudioRouteImport } from './routes/best-digital-marketing-studio'
-import { Route as BestAiEngineeringStudioRouteImport } from './routes/best-ai-engineering-studio'
-import { Route as AiRouteImport } from './routes/ai'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ScrollStudioIndexRouteImport } from './routes/scroll-studio/index'
-import { Route as OsIndexRouteImport } from './routes/os/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AffiliateRouteImport } from './routes/affiliate'
+import { Route as AiRouteImport } from './routes/ai'
+import { Route as AiMvpBuilderRouteImport } from './routes/ai-mvp-builder'
+import { Route as BestAiEngineeringStudioRouteImport } from './routes/best-ai-engineering-studio'
+import { Route as BestDigitalMarketingStudioRouteImport } from './routes/best-digital-marketing-studio'
+import { Route as BestVibeCodingPlatformRouteImport } from './routes/best-vibe-coding-platform'
+import { Route as BookRouteImport } from './routes/book'
+import { Route as BrandRouteImport } from './routes/brand'
+import { Route as BuilderRouteImport } from './routes/builder'
+import { Route as ConfirmRouteImport } from './routes/confirm'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FreeConsultationRouteImport } from './routes/free-consultation'
+import { Route as HelpRouteImport } from './routes/help'
+import { Route as InsightsRouteImport } from './routes/insights'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as MarketplaceRouteImport } from './routes/marketplace'
+import { Route as OsRouteImport } from './routes/os'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as PublishRouteImport } from './routes/publish'
+import { Route as RoadmapRouteImport } from './routes/roadmap'
+import { Route as SaasMvpRouteImport } from './routes/saas-mvp'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SprintRouteImport } from './routes/sprint'
+import { Route as TemplatesRouteImport } from './routes/templates'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as VisionRouteImport } from './routes/vision'
 import { Route as AppIndexRouteImport } from './routes/app/index'
-import { Route as StudioSpikeRouteImport } from './routes/studio.spike'
-import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
-import { Route as OsMarketplaceRouteImport } from './routes/os/marketplace'
-import { Route as OsLogsRouteImport } from './routes/os/logs'
-import { Route as MarketplaceSuccessRouteImport } from './routes/marketplace.success'
-import { Route as MarketplaceSellRouteImport } from './routes/marketplace.sell'
-import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as AppSettingsRouteImport } from './routes/app/settings'
-import { Route as OsWorkflowsIndexRouteImport } from './routes/os/workflows/index'
-import { Route as OsAgentsIndexRouteImport } from './routes/os/agents/index'
-import { Route as AppServicesIndexRouteImport } from './routes/app/services/index'
-import { Route as AppMarketplaceIndexRouteImport } from './routes/app/marketplace/index'
-import { Route as AppDeployIndexRouteImport } from './routes/app/deploy/index'
-import { Route as AppBillingIndexRouteImport } from './routes/app/billing/index'
-import { Route as OsWorkflowsNewRouteImport } from './routes/os/workflows/new'
-import { Route as OsAgentsNewRouteImport } from './routes/os/agents/new'
-import { Route as AppProjectsNewRouteImport } from './routes/app/projects/new'
-import { Route as AppProjectsIdRouteImport } from './routes/app/projects/$id'
-import { Route as ApiTelemetryEventRouteImport } from './routes/api/telemetry/event'
-import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
-import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
-import { Route as ApiPublicAuthProviderRouteImport } from './routes/api/public/auth-provider'
+import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
+import { Route as MarketplaceSellRouteImport } from './routes/marketplace.sell'
+import { Route as MarketplaceSuccessRouteImport } from './routes/marketplace.success'
+import { Route as OsIndexRouteImport } from './routes/os/index'
+import { Route as OsLogsRouteImport } from './routes/os/logs'
+import { Route as OsMarketplaceRouteImport } from './routes/os/marketplace'
+import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
+import { Route as ScrollStudioIndexRouteImport } from './routes/scroll-studio/index'
+import { Route as StudioSpikeRouteImport } from './routes/studio.spike'
 import { Route as AiShareIdRouteImport } from './routes/ai.share.$id'
+import { Route as ApiPublicAuthProviderRouteImport } from './routes/api/public/auth-provider'
+import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
+import { Route as ApiTelemetryEventRouteImport } from './routes/api/telemetry/event'
+import { Route as AppBillingIndexRouteImport } from './routes/app/billing/index'
+import { Route as AppDeployIndexRouteImport } from './routes/app/deploy/index'
+import { Route as AppMarketplaceIndexRouteImport } from './routes/app/marketplace/index'
+import { Route as AppMarketplaceSellRouteImport } from './routes/app/marketplace/sell'
+import { Route as AppProjectsIdRouteImport } from './routes/app/projects/$id'
+import { Route as AppProjectsNewRouteImport } from './routes/app/projects/new'
+import { Route as AppServicesIndexRouteImport } from './routes/app/services/index'
+import { Route as OsAgentsIndexRouteImport } from './routes/os/agents/index'
+import { Route as OsAgentsNewRouteImport } from './routes/os/agents/new'
+import { Route as OsWorkflowsIndexRouteImport } from './routes/os/workflows/index'
+import { Route as OsWorkflowsNewRouteImport } from './routes/os/workflows/new'
 import { Route as AppProjectsIdAnalyticsRouteImport } from './routes/app/projects/$id.analytics'
 import { Route as AppProjectsIdRunsRunIdRouteImport } from './routes/app/projects/$id/runs/$runId'
 
-const VisionRoute = VisionRouteImport.update({
-  id: '/vision',
-  path: '/vision',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TemplatesRoute = TemplatesRouteImport.update({
-  id: '/templates',
-  path: '/templates',
+const AffiliateRoute = AffiliateRouteImport.update({
+  id: '/affiliate',
+  path: '/affiliate',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SprintRoute = SprintRouteImport.update({
-  id: '/sprint',
-  path: '/sprint',
+const AiRoute = AiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
+const AiMvpBuilderRoute = AiMvpBuilderRouteImport.update({
+  id: '/ai-mvp-builder',
+  path: '/ai-mvp-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SaasMvpRoute = SaasMvpRouteImport.update({
-  id: '/saas-mvp',
-  path: '/saas-mvp',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RoadmapRoute = RoadmapRouteImport.update({
-  id: '/roadmap',
-  path: '/roadmap',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PublishRoute = PublishRouteImport.update({
-  id: '/publish',
-  path: '/publish',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProjectsRoute = ProjectsRouteImport.update({
-  id: '/projects',
-  path: '/projects',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OsRoute = OsRouteImport.update({
-  id: '/os',
-  path: '/os',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MarketplaceRoute = MarketplaceRouteImport.update({
-  id: '/marketplace',
-  path: '/marketplace',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InsightsRoute = InsightsRouteImport.update({
-  id: '/insights',
-  path: '/insights',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HelpRoute = HelpRouteImport.update({
-  id: '/help',
-  path: '/help',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FreeConsultationRoute = FreeConsultationRouteImport.update({
-  id: '/free-consultation',
-  path: '/free-consultation',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConfirmRoute = ConfirmRouteImport.update({
-  id: '/confirm',
-  path: '/confirm',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BuilderRoute = BuilderRouteImport.update({
-  id: '/builder',
-  path: '/builder',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BrandRoute = BrandRouteImport.update({
-  id: '/brand',
-  path: '/brand',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BookRoute = BookRouteImport.update({
-  id: '/book',
-  path: '/book',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BestVibeCodingPlatformRoute = BestVibeCodingPlatformRouteImport.update({
-  id: '/best-vibe-coding-platform',
-  path: '/best-vibe-coding-platform',
+const BestAiEngineeringStudioRoute = BestAiEngineeringStudioRouteImport.update({
+  id: '/best-ai-engineering-studio',
+  path: '/best-ai-engineering-studio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BestDigitalMarketingStudioRoute =
@@ -193,54 +107,159 @@ const BestDigitalMarketingStudioRoute =
     path: '/best-digital-marketing-studio',
     getParentRoute: () => rootRouteImport,
   } as any)
-const BestAiEngineeringStudioRoute = BestAiEngineeringStudioRouteImport.update({
-  id: '/best-ai-engineering-studio',
-  path: '/best-ai-engineering-studio',
+const BestVibeCodingPlatformRoute = BestVibeCodingPlatformRouteImport.update({
+  id: '/best-vibe-coding-platform',
+  path: '/best-vibe-coding-platform',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AiRoute = AiRouteImport.update({
-  id: '/ai',
-  path: '/ai',
+const BookRoute = BookRouteImport.update({
+  id: '/book',
+  path: '/book',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const BrandRoute = BrandRouteImport.update({
+  id: '/brand',
+  path: '/brand',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const BuilderRoute = BuilderRouteImport.update({
+  id: '/builder',
+  path: '/builder',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ScrollStudioIndexRoute = ScrollStudioIndexRouteImport.update({
-  id: '/scroll-studio/',
-  path: '/scroll-studio/',
+const ConfirmRoute = ConfirmRouteImport.update({
+  id: '/confirm',
+  path: '/confirm',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OsIndexRoute = OsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => OsRoute,
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FreeConsultationRoute = FreeConsultationRouteImport.update({
+  id: '/free-consultation',
+  path: '/free-consultation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketplaceRoute = MarketplaceRouteImport.update({
+  id: '/marketplace',
+  path: '/marketplace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OsRoute = OsRouteImport.update({
+  id: '/os',
+  path: '/os',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublishRoute = PublishRouteImport.update({
+  id: '/publish',
+  path: '/publish',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoadmapRoute = RoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SaasMvpRoute = SaasMvpRouteImport.update({
+  id: '/saas-mvp',
+  path: '/saas-mvp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SprintRoute = SprintRouteImport.update({
+  id: '/sprint',
+  path: '/sprint',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TemplatesRoute = TemplatesRouteImport.update({
+  id: '/templates',
+  path: '/templates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VisionRoute = VisionRouteImport.update({
+  id: '/vision',
+  path: '/vision',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/app/',
   path: '/app/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StudioSpikeRoute = StudioSpikeRouteImport.update({
-  id: '/studio/spike',
-  path: '/studio/spike',
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/app/settings',
+  path: '/app/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
+const InsightsSlugRoute = InsightsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
-  getParentRoute: () => ProjectsRoute,
+  getParentRoute: () => InsightsRoute,
 } as any)
-const OsMarketplaceRoute = OsMarketplaceRouteImport.update({
-  id: '/marketplace',
-  path: '/marketplace',
+const MarketplaceSellRoute = MarketplaceSellRouteImport.update({
+  id: '/sell',
+  path: '/sell',
+  getParentRoute: () => MarketplaceRoute,
+} as any)
+const MarketplaceSuccessRoute = MarketplaceSuccessRouteImport.update({
+  id: '/success',
+  path: '/success',
+  getParentRoute: () => MarketplaceRoute,
+} as any)
+const OsIndexRoute = OsIndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => OsRoute,
 } as any)
 const OsLogsRoute = OsLogsRouteImport.update({
@@ -248,84 +267,34 @@ const OsLogsRoute = OsLogsRouteImport.update({
   path: '/logs',
   getParentRoute: () => OsRoute,
 } as any)
-const MarketplaceSuccessRoute = MarketplaceSuccessRouteImport.update({
-  id: '/success',
-  path: '/success',
-  getParentRoute: () => MarketplaceRoute,
+const OsMarketplaceRoute = OsMarketplaceRouteImport.update({
+  id: '/marketplace',
+  path: '/marketplace',
+  getParentRoute: () => OsRoute,
 } as any)
-const MarketplaceSellRoute = MarketplaceSellRouteImport.update({
-  id: '/sell',
-  path: '/sell',
-  getParentRoute: () => MarketplaceRoute,
-} as any)
-const InsightsSlugRoute = InsightsSlugRouteImport.update({
+const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
-  getParentRoute: () => InsightsRoute,
+  getParentRoute: () => ProjectsRoute,
 } as any)
-const AppSettingsRoute = AppSettingsRouteImport.update({
-  id: '/app/settings',
-  path: '/app/settings',
+const ScrollStudioIndexRoute = ScrollStudioIndexRouteImport.update({
+  id: '/scroll-studio/',
+  path: '/scroll-studio/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OsWorkflowsIndexRoute = OsWorkflowsIndexRouteImport.update({
-  id: '/workflows/',
-  path: '/workflows/',
-  getParentRoute: () => OsRoute,
-} as any)
-const OsAgentsIndexRoute = OsAgentsIndexRouteImport.update({
-  id: '/agents/',
-  path: '/agents/',
-  getParentRoute: () => OsRoute,
-} as any)
-const AppServicesIndexRoute = AppServicesIndexRouteImport.update({
-  id: '/app/services/',
-  path: '/app/services/',
+const StudioSpikeRoute = StudioSpikeRouteImport.update({
+  id: '/studio/spike',
+  path: '/studio/spike',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppMarketplaceIndexRoute = AppMarketplaceIndexRouteImport.update({
-  id: '/app/marketplace/',
-  path: '/app/marketplace/',
-  getParentRoute: () => rootRouteImport,
+const AiShareIdRoute = AiShareIdRouteImport.update({
+  id: '/share/$id',
+  path: '/share/$id',
+  getParentRoute: () => AiRoute,
 } as any)
-const AppDeployIndexRoute = AppDeployIndexRouteImport.update({
-  id: '/app/deploy/',
-  path: '/app/deploy/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppBillingIndexRoute = AppBillingIndexRouteImport.update({
-  id: '/app/billing/',
-  path: '/app/billing/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OsWorkflowsNewRoute = OsWorkflowsNewRouteImport.update({
-  id: '/workflows/new',
-  path: '/workflows/new',
-  getParentRoute: () => OsRoute,
-} as any)
-const OsAgentsNewRoute = OsAgentsNewRouteImport.update({
-  id: '/agents/new',
-  path: '/agents/new',
-  getParentRoute: () => OsRoute,
-} as any)
-const AppProjectsNewRoute = AppProjectsNewRouteImport.update({
-  id: '/app/projects/new',
-  path: '/app/projects/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppProjectsIdRoute = AppProjectsIdRouteImport.update({
-  id: '/app/projects/$id',
-  path: '/app/projects/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiTelemetryEventRoute = ApiTelemetryEventRouteImport.update({
-  id: '/api/telemetry/event',
-  path: '/api/telemetry/event',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
-  id: '/api/stripe/webhook',
-  path: '/api/stripe/webhook',
+const ApiPublicAuthProviderRoute = ApiPublicAuthProviderRouteImport.update({
+  id: '/api/public/auth-provider',
+  path: '/api/public/auth-provider',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
@@ -333,15 +302,70 @@ const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
   path: '/api/public/health',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicAuthProviderRoute = ApiPublicAuthProviderRouteImport.update({
-  id: '/api/public/auth-provider',
-  path: '/api/public/auth-provider',
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/api/stripe/webhook',
+  path: '/api/stripe/webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AiShareIdRoute = AiShareIdRouteImport.update({
-  id: '/share/$id',
-  path: '/share/$id',
-  getParentRoute: () => AiRoute,
+const ApiTelemetryEventRoute = ApiTelemetryEventRouteImport.update({
+  id: '/api/telemetry/event',
+  path: '/api/telemetry/event',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppBillingIndexRoute = AppBillingIndexRouteImport.update({
+  id: '/app/billing/',
+  path: '/app/billing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppDeployIndexRoute = AppDeployIndexRouteImport.update({
+  id: '/app/deploy/',
+  path: '/app/deploy/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppMarketplaceIndexRoute = AppMarketplaceIndexRouteImport.update({
+  id: '/app/marketplace/',
+  path: '/app/marketplace/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppMarketplaceSellRoute = AppMarketplaceSellRouteImport.update({
+  id: '/app/marketplace/sell',
+  path: '/app/marketplace/sell',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppProjectsIdRoute = AppProjectsIdRouteImport.update({
+  id: '/app/projects/$id',
+  path: '/app/projects/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppProjectsNewRoute = AppProjectsNewRouteImport.update({
+  id: '/app/projects/new',
+  path: '/app/projects/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppServicesIndexRoute = AppServicesIndexRouteImport.update({
+  id: '/app/services/',
+  path: '/app/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OsAgentsIndexRoute = OsAgentsIndexRouteImport.update({
+  id: '/agents/',
+  path: '/agents/',
+  getParentRoute: () => OsRoute,
+} as any)
+const OsAgentsNewRoute = OsAgentsNewRouteImport.update({
+  id: '/agents/new',
+  path: '/agents/new',
+  getParentRoute: () => OsRoute,
+} as any)
+const OsWorkflowsIndexRoute = OsWorkflowsIndexRouteImport.update({
+  id: '/workflows/',
+  path: '/workflows/',
+  getParentRoute: () => OsRoute,
+} as any)
+const OsWorkflowsNewRoute = OsWorkflowsNewRouteImport.update({
+  id: '/workflows/new',
+  path: '/workflows/new',
+  getParentRoute: () => OsRoute,
 } as any)
 const AppProjectsIdAnalyticsRoute = AppProjectsIdAnalyticsRouteImport.update({
   id: '/analytics',
@@ -357,7 +381,9 @@ const AppProjectsIdRunsRunIdRoute = AppProjectsIdRunsRunIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/affiliate': typeof AffiliateRoute
   '/ai': typeof AiRouteWithChildren
+  '/ai-mvp-builder': typeof AiMvpBuilderRoute
   '/best-ai-engineering-studio': typeof BestAiEngineeringStudioRoute
   '/best-digital-marketing-studio': typeof BestDigitalMarketingStudioRoute
   '/best-vibe-coding-platform': typeof BestVibeCodingPlatformRoute
@@ -379,6 +405,7 @@ export interface FileRoutesByFullPath {
   '/roadmap': typeof RoadmapRoute
   '/saas-mvp': typeof SaasMvpRoute
   '/services': typeof ServicesRoute
+  '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sprint': typeof SprintRoute
   '/templates': typeof TemplatesRoute
@@ -400,6 +427,7 @@ export interface FileRoutesByFullPath {
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/telemetry/event': typeof ApiTelemetryEventRoute
+  '/app/marketplace/sell': typeof AppMarketplaceSellRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
   '/os/agents/new': typeof OsAgentsNewRoute
@@ -416,7 +444,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/affiliate': typeof AffiliateRoute
   '/ai': typeof AiRouteWithChildren
+  '/ai-mvp-builder': typeof AiMvpBuilderRoute
   '/best-ai-engineering-studio': typeof BestAiEngineeringStudioRoute
   '/best-digital-marketing-studio': typeof BestDigitalMarketingStudioRoute
   '/best-vibe-coding-platform': typeof BestVibeCodingPlatformRoute
@@ -437,6 +467,7 @@ export interface FileRoutesByTo {
   '/roadmap': typeof RoadmapRoute
   '/saas-mvp': typeof SaasMvpRoute
   '/services': typeof ServicesRoute
+  '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sprint': typeof SprintRoute
   '/templates': typeof TemplatesRoute
@@ -458,6 +489,7 @@ export interface FileRoutesByTo {
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/telemetry/event': typeof ApiTelemetryEventRoute
+  '/app/marketplace/sell': typeof AppMarketplaceSellRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
   '/os/agents/new': typeof OsAgentsNewRoute
@@ -475,7 +507,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/affiliate': typeof AffiliateRoute
   '/ai': typeof AiRouteWithChildren
+  '/ai-mvp-builder': typeof AiMvpBuilderRoute
   '/best-ai-engineering-studio': typeof BestAiEngineeringStudioRoute
   '/best-digital-marketing-studio': typeof BestDigitalMarketingStudioRoute
   '/best-vibe-coding-platform': typeof BestVibeCodingPlatformRoute
@@ -497,6 +531,7 @@ export interface FileRoutesById {
   '/roadmap': typeof RoadmapRoute
   '/saas-mvp': typeof SaasMvpRoute
   '/services': typeof ServicesRoute
+  '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sprint': typeof SprintRoute
   '/templates': typeof TemplatesRoute
@@ -518,6 +553,7 @@ export interface FileRoutesById {
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/telemetry/event': typeof ApiTelemetryEventRoute
+  '/app/marketplace/sell': typeof AppMarketplaceSellRoute
   '/app/projects/$id': typeof AppProjectsIdRouteWithChildren
   '/app/projects/new': typeof AppProjectsNewRoute
   '/os/agents/new': typeof OsAgentsNewRoute
@@ -536,7 +572,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/affiliate'
     | '/ai'
+    | '/ai-mvp-builder'
     | '/best-ai-engineering-studio'
     | '/best-digital-marketing-studio'
     | '/best-vibe-coding-platform'
@@ -558,6 +596,7 @@ export interface FileRouteTypes {
     | '/roadmap'
     | '/saas-mvp'
     | '/services'
+    | '/signup'
     | '/sitemap.xml'
     | '/sprint'
     | '/templates'
@@ -579,6 +618,7 @@ export interface FileRouteTypes {
     | '/api/public/health'
     | '/api/stripe/webhook'
     | '/api/telemetry/event'
+    | '/app/marketplace/sell'
     | '/app/projects/$id'
     | '/app/projects/new'
     | '/os/agents/new'
@@ -595,7 +635,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/affiliate'
     | '/ai'
+    | '/ai-mvp-builder'
     | '/best-ai-engineering-studio'
     | '/best-digital-marketing-studio'
     | '/best-vibe-coding-platform'
@@ -616,6 +658,7 @@ export interface FileRouteTypes {
     | '/roadmap'
     | '/saas-mvp'
     | '/services'
+    | '/signup'
     | '/sitemap.xml'
     | '/sprint'
     | '/templates'
@@ -637,6 +680,7 @@ export interface FileRouteTypes {
     | '/api/public/health'
     | '/api/stripe/webhook'
     | '/api/telemetry/event'
+    | '/app/marketplace/sell'
     | '/app/projects/$id'
     | '/app/projects/new'
     | '/os/agents/new'
@@ -653,7 +697,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/affiliate'
     | '/ai'
+    | '/ai-mvp-builder'
     | '/best-ai-engineering-studio'
     | '/best-digital-marketing-studio'
     | '/best-vibe-coding-platform'
@@ -675,6 +721,7 @@ export interface FileRouteTypes {
     | '/roadmap'
     | '/saas-mvp'
     | '/services'
+    | '/signup'
     | '/sitemap.xml'
     | '/sprint'
     | '/templates'
@@ -696,6 +743,7 @@ export interface FileRouteTypes {
     | '/api/public/health'
     | '/api/stripe/webhook'
     | '/api/telemetry/event'
+    | '/app/marketplace/sell'
     | '/app/projects/$id'
     | '/app/projects/new'
     | '/os/agents/new'
@@ -713,7 +761,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AffiliateRoute: typeof AffiliateRoute
   AiRoute: typeof AiRouteWithChildren
+  AiMvpBuilderRoute: typeof AiMvpBuilderRoute
   BestAiEngineeringStudioRoute: typeof BestAiEngineeringStudioRoute
   BestDigitalMarketingStudioRoute: typeof BestDigitalMarketingStudioRoute
   BestVibeCodingPlatformRoute: typeof BestVibeCodingPlatformRoute
@@ -735,6 +785,7 @@ export interface RootRouteChildren {
   RoadmapRoute: typeof RoadmapRoute
   SaasMvpRoute: typeof SaasMvpRoute
   ServicesRoute: typeof ServicesRoute
+  SignupRoute: typeof SignupRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SprintRoute: typeof SprintRoute
   TemplatesRoute: typeof TemplatesRoute
@@ -748,6 +799,7 @@ export interface RootRouteChildren {
   ApiPublicHealthRoute: typeof ApiPublicHealthRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   ApiTelemetryEventRoute: typeof ApiTelemetryEventRoute
+  AppMarketplaceSellRoute: typeof AppMarketplaceSellRoute
   AppProjectsIdRoute: typeof AppProjectsIdRouteWithChildren
   AppProjectsNewRoute: typeof AppProjectsNewRoute
   AppBillingIndexRoute: typeof AppBillingIndexRoute
@@ -758,193 +810,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/vision': {
-      id: '/vision'
-      path: '/vision'
-      fullPath: '/vision'
-      preLoaderRoute: typeof VisionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/templates': {
-      id: '/templates'
-      path: '/templates'
-      fullPath: '/templates'
-      preLoaderRoute: typeof TemplatesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sprint': {
-      id: '/sprint'
-      path: '/sprint'
-      fullPath: '/sprint'
-      preLoaderRoute: typeof SprintRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/saas-mvp': {
-      id: '/saas-mvp'
-      path: '/saas-mvp'
-      fullPath: '/saas-mvp'
-      preLoaderRoute: typeof SaasMvpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/roadmap': {
-      id: '/roadmap'
-      path: '/roadmap'
-      fullPath: '/roadmap'
-      preLoaderRoute: typeof RoadmapRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/publish': {
-      id: '/publish'
-      path: '/publish'
-      fullPath: '/publish'
-      preLoaderRoute: typeof PublishRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects': {
-      id: '/projects'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof ProjectsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/os': {
-      id: '/os'
-      path: '/os'
-      fullPath: '/os'
-      preLoaderRoute: typeof OsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/marketplace': {
-      id: '/marketplace'
-      path: '/marketplace'
-      fullPath: '/marketplace'
-      preLoaderRoute: typeof MarketplaceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/insights': {
-      id: '/insights'
-      path: '/insights'
-      fullPath: '/insights'
-      preLoaderRoute: typeof InsightsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/help': {
-      id: '/help'
-      path: '/help'
-      fullPath: '/help'
-      preLoaderRoute: typeof HelpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/free-consultation': {
-      id: '/free-consultation'
-      path: '/free-consultation'
-      fullPath: '/free-consultation'
-      preLoaderRoute: typeof FreeConsultationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/confirm': {
-      id: '/confirm'
-      path: '/confirm'
-      fullPath: '/confirm'
-      preLoaderRoute: typeof ConfirmRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/builder': {
-      id: '/builder'
-      path: '/builder'
-      fullPath: '/builder'
-      preLoaderRoute: typeof BuilderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/brand': {
-      id: '/brand'
-      path: '/brand'
-      fullPath: '/brand'
-      preLoaderRoute: typeof BrandRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/book': {
-      id: '/book'
-      path: '/book'
-      fullPath: '/book'
-      preLoaderRoute: typeof BookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/best-vibe-coding-platform': {
-      id: '/best-vibe-coding-platform'
-      path: '/best-vibe-coding-platform'
-      fullPath: '/best-vibe-coding-platform'
-      preLoaderRoute: typeof BestVibeCodingPlatformRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/best-digital-marketing-studio': {
-      id: '/best-digital-marketing-studio'
-      path: '/best-digital-marketing-studio'
-      fullPath: '/best-digital-marketing-studio'
-      preLoaderRoute: typeof BestDigitalMarketingStudioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/best-ai-engineering-studio': {
-      id: '/best-ai-engineering-studio'
-      path: '/best-ai-engineering-studio'
-      fullPath: '/best-ai-engineering-studio'
-      preLoaderRoute: typeof BestAiEngineeringStudioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ai': {
-      id: '/ai'
-      path: '/ai'
-      fullPath: '/ai'
-      preLoaderRoute: typeof AiRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -954,26 +824,215 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/affiliate': {
+      id: '/affiliate'
+      path: '/affiliate'
+      fullPath: '/affiliate'
+      preLoaderRoute: typeof AffiliateRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/scroll-studio/': {
-      id: '/scroll-studio/'
-      path: '/scroll-studio'
-      fullPath: '/scroll-studio/'
-      preLoaderRoute: typeof ScrollStudioIndexRouteImport
+    '/ai': {
+      id: '/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof AiRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/os/': {
-      id: '/os/'
-      path: '/'
-      fullPath: '/os/'
-      preLoaderRoute: typeof OsIndexRouteImport
-      parentRoute: typeof OsRoute
+    '/ai-mvp-builder': {
+      id: '/ai-mvp-builder'
+      path: '/ai-mvp-builder'
+      fullPath: '/ai-mvp-builder'
+      preLoaderRoute: typeof AiMvpBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/best-ai-engineering-studio': {
+      id: '/best-ai-engineering-studio'
+      path: '/best-ai-engineering-studio'
+      fullPath: '/best-ai-engineering-studio'
+      preLoaderRoute: typeof BestAiEngineeringStudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/best-digital-marketing-studio': {
+      id: '/best-digital-marketing-studio'
+      path: '/best-digital-marketing-studio'
+      fullPath: '/best-digital-marketing-studio'
+      preLoaderRoute: typeof BestDigitalMarketingStudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/best-vibe-coding-platform': {
+      id: '/best-vibe-coding-platform'
+      path: '/best-vibe-coding-platform'
+      fullPath: '/best-vibe-coding-platform'
+      preLoaderRoute: typeof BestVibeCodingPlatformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book': {
+      id: '/book'
+      path: '/book'
+      fullPath: '/book'
+      preLoaderRoute: typeof BookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/brand': {
+      id: '/brand'
+      path: '/brand'
+      fullPath: '/brand'
+      preLoaderRoute: typeof BrandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/builder': {
+      id: '/builder'
+      path: '/builder'
+      fullPath: '/builder'
+      preLoaderRoute: typeof BuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirm': {
+      id: '/confirm'
+      path: '/confirm'
+      fullPath: '/confirm'
+      preLoaderRoute: typeof ConfirmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/free-consultation': {
+      id: '/free-consultation'
+      path: '/free-consultation'
+      fullPath: '/free-consultation'
+      preLoaderRoute: typeof FreeConsultationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace': {
+      id: '/marketplace'
+      path: '/marketplace'
+      fullPath: '/marketplace'
+      preLoaderRoute: typeof MarketplaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/os': {
+      id: '/os'
+      path: '/os'
+      fullPath: '/os'
+      preLoaderRoute: typeof OsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publish': {
+      id: '/publish'
+      path: '/publish'
+      fullPath: '/publish'
+      preLoaderRoute: typeof PublishRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roadmap': {
+      id: '/roadmap'
+      path: '/roadmap'
+      fullPath: '/roadmap'
+      preLoaderRoute: typeof RoadmapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/saas-mvp': {
+      id: '/saas-mvp'
+      path: '/saas-mvp'
+      fullPath: '/saas-mvp'
+      preLoaderRoute: typeof SaasMvpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sprint': {
+      id: '/sprint'
+      path: '/sprint'
+      fullPath: '/sprint'
+      preLoaderRoute: typeof SprintRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/templates': {
+      id: '/templates'
+      path: '/templates'
+      fullPath: '/templates'
+      preLoaderRoute: typeof TemplatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vision': {
+      id: '/vision'
+      path: '/vision'
+      fullPath: '/vision'
+      preLoaderRoute: typeof VisionRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/app/': {
       id: '/app/'
@@ -982,25 +1041,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/studio/spike': {
-      id: '/studio/spike'
-      path: '/studio/spike'
-      fullPath: '/studio/spike'
-      preLoaderRoute: typeof StudioSpikeRouteImport
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/app/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/projects/$slug': {
-      id: '/projects/$slug'
+    '/insights/$slug': {
+      id: '/insights/$slug'
       path: '/$slug'
-      fullPath: '/projects/$slug'
-      preLoaderRoute: typeof ProjectsSlugRouteImport
-      parentRoute: typeof ProjectsRoute
+      fullPath: '/insights/$slug'
+      preLoaderRoute: typeof InsightsSlugRouteImport
+      parentRoute: typeof InsightsRoute
     }
-    '/os/marketplace': {
-      id: '/os/marketplace'
-      path: '/marketplace'
-      fullPath: '/os/marketplace'
-      preLoaderRoute: typeof OsMarketplaceRouteImport
+    '/marketplace/sell': {
+      id: '/marketplace/sell'
+      path: '/sell'
+      fullPath: '/marketplace/sell'
+      preLoaderRoute: typeof MarketplaceSellRouteImport
+      parentRoute: typeof MarketplaceRoute
+    }
+    '/marketplace/success': {
+      id: '/marketplace/success'
+      path: '/success'
+      fullPath: '/marketplace/success'
+      preLoaderRoute: typeof MarketplaceSuccessRouteImport
+      parentRoute: typeof MarketplaceRoute
+    }
+    '/os/': {
+      id: '/os/'
+      path: '/'
+      fullPath: '/os/'
+      preLoaderRoute: typeof OsIndexRouteImport
       parentRoute: typeof OsRoute
     }
     '/os/logs': {
@@ -1010,116 +1083,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OsLogsRouteImport
       parentRoute: typeof OsRoute
     }
-    '/marketplace/success': {
-      id: '/marketplace/success'
-      path: '/success'
-      fullPath: '/marketplace/success'
-      preLoaderRoute: typeof MarketplaceSuccessRouteImport
-      parentRoute: typeof MarketplaceRoute
+    '/os/marketplace': {
+      id: '/os/marketplace'
+      path: '/marketplace'
+      fullPath: '/os/marketplace'
+      preLoaderRoute: typeof OsMarketplaceRouteImport
+      parentRoute: typeof OsRoute
     }
-    '/marketplace/sell': {
-      id: '/marketplace/sell'
-      path: '/sell'
-      fullPath: '/marketplace/sell'
-      preLoaderRoute: typeof MarketplaceSellRouteImport
-      parentRoute: typeof MarketplaceRoute
-    }
-    '/insights/$slug': {
-      id: '/insights/$slug'
+    '/projects/$slug': {
+      id: '/projects/$slug'
       path: '/$slug'
-      fullPath: '/insights/$slug'
-      preLoaderRoute: typeof InsightsSlugRouteImport
-      parentRoute: typeof InsightsRoute
+      fullPath: '/projects/$slug'
+      preLoaderRoute: typeof ProjectsSlugRouteImport
+      parentRoute: typeof ProjectsRoute
     }
-    '/app/settings': {
-      id: '/app/settings'
-      path: '/app/settings'
-      fullPath: '/app/settings'
-      preLoaderRoute: typeof AppSettingsRouteImport
+    '/scroll-studio/': {
+      id: '/scroll-studio/'
+      path: '/scroll-studio'
+      fullPath: '/scroll-studio/'
+      preLoaderRoute: typeof ScrollStudioIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/os/workflows/': {
-      id: '/os/workflows/'
-      path: '/workflows'
-      fullPath: '/os/workflows/'
-      preLoaderRoute: typeof OsWorkflowsIndexRouteImport
-      parentRoute: typeof OsRoute
-    }
-    '/os/agents/': {
-      id: '/os/agents/'
-      path: '/agents'
-      fullPath: '/os/agents/'
-      preLoaderRoute: typeof OsAgentsIndexRouteImport
-      parentRoute: typeof OsRoute
-    }
-    '/app/services/': {
-      id: '/app/services/'
-      path: '/app/services'
-      fullPath: '/app/services/'
-      preLoaderRoute: typeof AppServicesIndexRouteImport
+    '/studio/spike': {
+      id: '/studio/spike'
+      path: '/studio/spike'
+      fullPath: '/studio/spike'
+      preLoaderRoute: typeof StudioSpikeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/marketplace/': {
-      id: '/app/marketplace/'
-      path: '/app/marketplace'
-      fullPath: '/app/marketplace/'
-      preLoaderRoute: typeof AppMarketplaceIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/ai/share/$id': {
+      id: '/ai/share/$id'
+      path: '/share/$id'
+      fullPath: '/ai/share/$id'
+      preLoaderRoute: typeof AiShareIdRouteImport
+      parentRoute: typeof AiRoute
     }
-    '/app/deploy/': {
-      id: '/app/deploy/'
-      path: '/app/deploy'
-      fullPath: '/app/deploy/'
-      preLoaderRoute: typeof AppDeployIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/app/billing/': {
-      id: '/app/billing/'
-      path: '/app/billing'
-      fullPath: '/app/billing/'
-      preLoaderRoute: typeof AppBillingIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/os/workflows/new': {
-      id: '/os/workflows/new'
-      path: '/workflows/new'
-      fullPath: '/os/workflows/new'
-      preLoaderRoute: typeof OsWorkflowsNewRouteImport
-      parentRoute: typeof OsRoute
-    }
-    '/os/agents/new': {
-      id: '/os/agents/new'
-      path: '/agents/new'
-      fullPath: '/os/agents/new'
-      preLoaderRoute: typeof OsAgentsNewRouteImport
-      parentRoute: typeof OsRoute
-    }
-    '/app/projects/new': {
-      id: '/app/projects/new'
-      path: '/app/projects/new'
-      fullPath: '/app/projects/new'
-      preLoaderRoute: typeof AppProjectsNewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/app/projects/$id': {
-      id: '/app/projects/$id'
-      path: '/app/projects/$id'
-      fullPath: '/app/projects/$id'
-      preLoaderRoute: typeof AppProjectsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/telemetry/event': {
-      id: '/api/telemetry/event'
-      path: '/api/telemetry/event'
-      fullPath: '/api/telemetry/event'
-      preLoaderRoute: typeof ApiTelemetryEventRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/stripe/webhook': {
-      id: '/api/stripe/webhook'
-      path: '/api/stripe/webhook'
-      fullPath: '/api/stripe/webhook'
-      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+    '/api/public/auth-provider': {
+      id: '/api/public/auth-provider'
+      path: '/api/public/auth-provider'
+      fullPath: '/api/public/auth-provider'
+      preLoaderRoute: typeof ApiPublicAuthProviderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/health': {
@@ -1129,19 +1132,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/auth-provider': {
-      id: '/api/public/auth-provider'
-      path: '/api/public/auth-provider'
-      fullPath: '/api/public/auth-provider'
-      preLoaderRoute: typeof ApiPublicAuthProviderRouteImport
+    '/api/stripe/webhook': {
+      id: '/api/stripe/webhook'
+      path: '/api/stripe/webhook'
+      fullPath: '/api/stripe/webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/ai/share/$id': {
-      id: '/ai/share/$id'
-      path: '/share/$id'
-      fullPath: '/ai/share/$id'
-      preLoaderRoute: typeof AiShareIdRouteImport
-      parentRoute: typeof AiRoute
+    '/api/telemetry/event': {
+      id: '/api/telemetry/event'
+      path: '/api/telemetry/event'
+      fullPath: '/api/telemetry/event'
+      preLoaderRoute: typeof ApiTelemetryEventRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/billing/': {
+      id: '/app/billing/'
+      path: '/app/billing'
+      fullPath: '/app/billing/'
+      preLoaderRoute: typeof AppBillingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/deploy/': {
+      id: '/app/deploy/'
+      path: '/app/deploy'
+      fullPath: '/app/deploy/'
+      preLoaderRoute: typeof AppDeployIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/marketplace/': {
+      id: '/app/marketplace/'
+      path: '/app/marketplace'
+      fullPath: '/app/marketplace/'
+      preLoaderRoute: typeof AppMarketplaceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/marketplace/sell': {
+      id: '/app/marketplace/sell'
+      path: '/app/marketplace/sell'
+      fullPath: '/app/marketplace/sell'
+      preLoaderRoute: typeof AppMarketplaceSellRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/projects/$id': {
+      id: '/app/projects/$id'
+      path: '/app/projects/$id'
+      fullPath: '/app/projects/$id'
+      preLoaderRoute: typeof AppProjectsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/projects/new': {
+      id: '/app/projects/new'
+      path: '/app/projects/new'
+      fullPath: '/app/projects/new'
+      preLoaderRoute: typeof AppProjectsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/services/': {
+      id: '/app/services/'
+      path: '/app/services'
+      fullPath: '/app/services/'
+      preLoaderRoute: typeof AppServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/os/agents/': {
+      id: '/os/agents/'
+      path: '/agents'
+      fullPath: '/os/agents/'
+      preLoaderRoute: typeof OsAgentsIndexRouteImport
+      parentRoute: typeof OsRoute
+    }
+    '/os/agents/new': {
+      id: '/os/agents/new'
+      path: '/agents/new'
+      fullPath: '/os/agents/new'
+      preLoaderRoute: typeof OsAgentsNewRouteImport
+      parentRoute: typeof OsRoute
+    }
+    '/os/workflows/': {
+      id: '/os/workflows/'
+      path: '/workflows'
+      fullPath: '/os/workflows/'
+      preLoaderRoute: typeof OsWorkflowsIndexRouteImport
+      parentRoute: typeof OsRoute
+    }
+    '/os/workflows/new': {
+      id: '/os/workflows/new'
+      path: '/workflows/new'
+      fullPath: '/os/workflows/new'
+      preLoaderRoute: typeof OsWorkflowsNewRouteImport
+      parentRoute: typeof OsRoute
     }
     '/app/projects/$id/analytics': {
       id: '/app/projects/$id/analytics'
@@ -1247,7 +1327,9 @@ const AppProjectsIdRouteWithChildren = AppProjectsIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AffiliateRoute: AffiliateRoute,
   AiRoute: AiRouteWithChildren,
+  AiMvpBuilderRoute: AiMvpBuilderRoute,
   BestAiEngineeringStudioRoute: BestAiEngineeringStudioRoute,
   BestDigitalMarketingStudioRoute: BestDigitalMarketingStudioRoute,
   BestVibeCodingPlatformRoute: BestVibeCodingPlatformRoute,
@@ -1269,6 +1351,7 @@ const rootRouteChildren: RootRouteChildren = {
   RoadmapRoute: RoadmapRoute,
   SaasMvpRoute: SaasMvpRoute,
   ServicesRoute: ServicesRoute,
+  SignupRoute: SignupRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SprintRoute: SprintRoute,
   TemplatesRoute: TemplatesRoute,
@@ -1282,6 +1365,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicHealthRoute: ApiPublicHealthRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   ApiTelemetryEventRoute: ApiTelemetryEventRoute,
+  AppMarketplaceSellRoute: AppMarketplaceSellRoute,
   AppProjectsIdRoute: AppProjectsIdRouteWithChildren,
   AppProjectsNewRoute: AppProjectsNewRoute,
   AppBillingIndexRoute: AppBillingIndexRoute,
@@ -1292,13 +1376,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

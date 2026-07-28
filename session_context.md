@@ -13,12 +13,14 @@ This document serves as the complete session context state to allow another AI a
 - [ ] **Bing Webmaster Tools & IndexNow**: Recommend the user imports their verified Search Console property into Bing Webmaster Tools.
   - **IndexNow API Key**: `f6d8a7c29e134b2895e63810a4c27bdf`
   - **Verification File**: Created at `public/f6d8a7c29e134b2895e63810a4c27bdf.txt` to prove domain ownership.
+  - **IndexNow Ping Executed**: 41 URLs dispatched to Bing, Yandex, IndexNow, and Seznam on 2026-07-28. All returned 200/202.
 - [ ] **Apply Supabase migration to production**: Run `supabase/migrations/20260718210000_byok_custom_endpoint_manual_payments.sql` on the production Supabase project (new tables: `user_ai_key_custom_endpoints`, `manual_payment_requests`).
-- [ ] **Execute directory listings**: Start with Clutch, GoodFirms, ProductHunt (highest ROI leads). See `scripts/directory-listing-guide.md`.
-- [ ] **Start 30-day LinkedIn content calendar**: 2 posts/week from `scripts/linkedin-content-calendar.md`.
-- [ ] **ProductHunt launch**: Follow 14-day pre-launch checklist in `scripts/producthunt-launch.md` — recommend timing for when 2-3 client testimonials exist.
+- [ ] **Execute directory listings**: Start with Clutch, GoodFirms, ProductHunt (highest ROI leads). See `scripts/directory-listing-guide.md`. Tracker created at `scripts/directory-listings.json` with 19 platforms ranked by lead quality.
+- [ ] **Start 30-day LinkedIn content calendar**: 2 posts/week from `scripts/linkedin-posts.json` (8 ready-to-post entries). Calendar spans Days 1-24.
+- [ ] **ProductHunt launch**: Follow 14-day pre-launch checklist in `scripts/producthunt-launch.md` — recommend timing for when 2-3 client testimonials exist. Target launch: 2026-08-15. Discount code: `PHLAUNCH20`.
 - [ ] **Add GitHub topics**: Run the `gh repo edit` command from `scripts/github-optimization.md` to add 20 recommended topics.
 - [ ] **Record 30s demo GIF** and update README with it.
+- [ ] **Send outreach emails**: 24 personalized emails generated in `scripts/generated-outreach/` for 8 prospects. Send 5/day using the cold/followup/partnership templates.
 
 ---
 
@@ -96,13 +98,52 @@ To access the cloud, OS, and deployment dashboard as an administrator:
 9. **Navigation Updates**:
    - SiteHeader: added "AI Studio" nav item → `/best-ai-engineering-studio`
 
-11. **Production Bug Fixes, CSP Hardening & Global Revenue Features (28 Jul 2026)**:
+10. **Production Bug Fixes, CSP Hardening & Global Revenue Features (28 Jul 2026)**:
     - **Fixed Route Crash (`Rocket is not defined`)**: Imported missing `Rocket` icon in `src/routes/best-ai-engineering-studio.tsx`.
     - **CSP Header Overhaul (`src/server.ts`)**: Updated `CSP_HEADER` to permit Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`), Calendly (`calendly.com`, `assets.calendly.com`), Stripe (`js.stripe.com`), YouTube (`youtube.com`), Vimeo (`vimeo.com`), and Loom (`loom.com`) for frame-src, script-src, style-src, font-src, and connect-src.
     - **TypeScript & Link Hardening**: Resolved search params (`redirect: "..."`) for `/login` links across `src/routes/builder.tsx` and `src/routes/pricing.tsx`. Safeguarded `loaderData` in `src/routes/insights.$slug.tsx`. Fixed Supabase query types in `telemetry.functions.ts` & `waitlist.functions.ts`.
     - **Interactive Instant Sprint Scoper**: Engineered a 2-step scoper & micro-form inside `src/components/sections/CtaSection.tsx` connected to `submitLead` server function and Supabase `leads` table.
     - **Dual Booking Engine (`src/routes/book.tsx`)**: Upgraded `/book` to support both direct Instant Booking Form (with direct WhatsApp confirmation) and Calendly iframe option.
     - **Build & Git Verification**: Passed `npx tsc --noEmit` (0 errors) and `npm run build` (35s Nitro build). Committed (`943a06b`, `da5e17e`, `5c6b887`) and pushed to `https://github.com/Warriorlegacy/Signhify_Studio.git` (main branch).
+
+### Pricing Alignment & Revenue Growth Execution (28 Jul 2026)
+
+1. **Critical Pricing Fix — USD Alignment**:
+   - Updated `src/routes/pricing.tsx` from ₹1.5L / ₹4L to **$299 Sprint** / **$799 Studio**
+   - Updated `src/routes/contact.tsx` budget options from INR to USD (`< $500` → `$15,000+`)
+   - Updated `src/routes/saas-mvp.tsx` pricing constant to `$299` and delivery timeline to `5–7 days`
+   - Updated 3 SEO landing pages (`best-ai-engineering-studio`, `best-vibe-coding-platform`, `best-digital-marketing-studio`) FAQ pricing copy
+   - Updated `src/lib/insights.data.ts` all pricing references and budget table
+   - Updated `public/llms.txt` and `public/llms-full.txt` pricing table and FAQ answers
+   - Updated pricing FAQ in `src/routes/pricing.tsx` to include explicit `$299` / `$799` labels
+
+2. **IndexNow Instant Indexing**:
+   - Executed `scripts/ping-indexnow.mjs` — dispatched **41 URLs** to Bing, Yandex, IndexNow, and Seznam
+   - All endpoints returned success: `api.indexnow.org` 200, `www.bing.com` 200, `search.seznam.cz` 200, `yandex.com` 202
+
+3. **Outreach Infrastructure**:
+   - Created `scripts/generate-outreach.mjs` — generates 24 personalized emails (8 prospects × 3 templates: cold, followup, partnership)
+   - Created `scripts/generated-outreach/` — 24 ready-to-send `.txt` files with personalized subject lines and body copy
+   - Created `scripts/growth-campaign-tracker.json` — campaign orchestration with 4 campaigns and revenue targets: $5K (M1) → $25K (M3) → $100K (M6) → $1M (M12)
+
+4. **Directory Listings Tracker**:
+   - Created `scripts/directory-listings.json` — 19 platforms ranked by lead quality
+   - Top priorities: Clutch (#1), GoodFirms (#2), DesignRush (#3), ProductHunt (#4), Upwork (#5)
+   - Review targets documented: 18 total reviews needed across Clutch, GoodFirms, G2, Trustpilot
+
+5. **LinkedIn Content Calendar**:
+   - Created `scripts/linkedin-posts.json` — 8 ready-to-post entries for Days 1-24
+   - Topics: Founder origin story, 6-agent pipeline deep-dive, client case study, BYOK enterprise trend, sales without sales team, agency vs sprint comparison, TanStack Start vs Next.js, month in review
+   - Schedule: 2 posts/week on Tuesday & Thursday, 8:00-9:00 AM IST
+
+6. **Revenue Growth Documentation**:
+   - Created `REVENUE_GROWTH_EXECUTION.md` — complete 12-month revenue roadmap with KPIs, weekly targets, and critical success factors
+   - Revenue targets: $5K (Month 1) → $25K (Month 3) → $100K (Month 6) → $1M (Month 12)
+
+7. **Git Push**:
+   - Committed as `2747533` on `main` branch
+   - Pushed to `https://github.com/Warriorlegacy/Signhify_Studio.git`
+   - 39 files changed, 1307 insertions(+), 29 deletions(-)
 
 ---
 
@@ -126,3 +167,25 @@ To access the cloud, OS, and deployment dashboard as an administrator:
   - Outreach Scripts: `scripts/` (calendars, guides, templates)
   - GEO Files: `public/llms.txt`, `public/llms-full.txt`, `public/ai-directory.json`, `public/.well-known/`
   - Landing Pages: `src/routes/best-ai-engineering-studio.tsx`, `src/routes/best-vibe-coding-platform.tsx`, `src/routes/best-digital-marketing-studio.tsx`, `src/routes/free-consultation.tsx`, `src/routes/saas-mvp.tsx`
+  - Growth Assets: `REVENUE_GROWTH_EXECUTION.md`, `scripts/growth-campaign-tracker.json`, `scripts/directory-listings.json`, `scripts/linkedin-posts.json`, `scripts/generated-outreach/`
+
+---
+
+## 📊 5. Current Revenue State & KPIs
+
+- **Pricing**: $299 Sprint / $799 Studio / Custom Platform
+- **Credit Packs**: $19 (10 credits), $79 (50 credits), $249 (200 credits) — Stripe checkout live
+- **Manual Payments**: UPI, PayPal, bank transfer — verification form live in `/app/billing`
+- **IndexNow**: 41 URLs indexed on Bing, Yandex, Seznam, IndexNow
+- **Directory Listings**: 19 platforms tracked, 0 submitted yet
+- **Outreach**: 24 personalized emails ready to send
+- **LinkedIn**: 8 posts ready to publish
+- **ProductHunt**: Launch prep pending, target 2026-08-15
+
+### Revenue Targets
+| Month | Target | Primary Sources |
+|-------|--------|-----------------|
+| Month 1 | $5,000 | Credit packs, 1-2 Sprint deals |
+| Month 3 | $25,000 | Sprint/Studio deals, marketplace sales |
+| Month 6 | $100,000 | Studio retainers, enterprise platform, marketplace commission |
+| Month 12 | $1,000,000 | All channels scaled |

@@ -89,6 +89,31 @@ async function handleCheckoutCompleted(event: any) {
         `[stripe/webhook] Marketplace purchase recorded: listing=${listingId} user=${userId}`,
       );
     }
+
+    // Marketplace payout: if this was a creator sale, record the commission
+    const creatorId = session.metadata?.creator_id;
+    const connectAccountId = session.metadata?.connect_account_id;
+    if (creatorId && connectAccountId) {
+      const grossCents = session.amount_total ?? session.amount_subtotal ?? 0;
+      const commissionCents = parseInt(session.metadata?.commission_cents || "0", 10);
+      const netCents = parseInt(session.metadata?.net_cents || "0", 10);
+
+      const { error: payoutErr } = await supabaseAdmin.from("creator_payouts").insert({
+        creator_id: creatorId,
+        listing_id: listingId,
+        stripe_session_id: session.id,
+        gross_amount_cents: grossCents,
+        commission_cents: commissionCents,
+        net_amount_cents: netCents || grossCents - commissionCents,
+        status: "pending",
+      });
+
+      if (payoutErr) {
+        logger.error(`[stripe/webhook] Failed to record payout: ${payoutErr.message}`);
+      } else {
+        logger.info(`[stripe/webhook] Payout recorded: creator=${creatorId} net=${netCents}`);
+      }
+    }
   }
 
   // Credit pack purchase

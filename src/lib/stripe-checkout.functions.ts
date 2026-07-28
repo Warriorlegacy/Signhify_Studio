@@ -1,32 +1,15 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import Stripe from "stripe";
 import logger from "./logger";
 
-async function stripeFetch(path: string, body?: URLSearchParams, method = "POST") {
+function getStripe(): Stripe {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) {
     logger.error("Missing STRIPE_SECRET_KEY.");
     throw new Error("Missing STRIPE_SECRET_KEY.");
   }
-  try {
-    const res = await fetch(`https://api.stripe.com/v1${path}`, {
-      method,
-      headers: {
-        Authorization: `Bearer ${key}`,
-        ...(body ? { "content-type": "application/x-www-form-urlencoded" } : {}),
-      },
-      body,
-    });
-    const json = await res.json();
-    if (!res.ok) {
-      logger.error(`Stripe request failed: ${json?.error?.message ?? "Unknown error"}`);
-      throw new Error(json?.error?.message ?? "Stripe request failed.");
-    }
-    return json;
-  } catch (error) {
-    logger.error(`Stripe fetch error: ${error}`);
-    throw error;
-  }
+  return new Stripe(key);
 }
 
 export const createCheckoutSession = createServerFn({ method: "POST" })
@@ -35,29 +18,55 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     try {
       const { userId } = context;
+      const stripe = getStripe();
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
       const { data: listing } = await (supabaseAdmin.from as any)("marketplace_listings")
-        .select("id,title,price_cents")
+        .select("id,title,price_cents,stripe_connect_account_id,creator_id")
         .eq("id", data.listingId)
         .maybeSingle();
       if (!listing || !listing.price_cents || listing.price_cents <= 0)
         throw new Error("Paid listing not found.");
       const { SITE_URL: site } = await import("@/lib/site-url");
-      const form = new URLSearchParams();
-      form.set("mode", "payment");
-      form.set(
-        "success_url",
-        `${site}/marketplace/success?session_id={CHECKOUT_SESSION_ID}&listing_id=${listing.id}`,
-      );
-      form.set("cancel_url", `${site}/marketplace`);
-      form.set("client_reference_id", userId);
-      form.set("metadata[listing_id]", listing.id);
-      form.set("metadata[user_id]", userId);
-      form.set("line_items[0][quantity]", "1");
-      form.set("line_items[0][price_data][currency]", "usd");
-      form.set("line_items[0][price_data][unit_amount]", String(listing.price_cents));
-      form.set("line_items[0][price_data][product_data][name]", listing.title);
-      const session = await stripeFetch("/checkout/sessions", form);
+
+      const sessionParams: Stripe.Checkout.SessionCreateParams = {
+        mode: "payment",
+        success_url: `${site}/marketplace/success?session_id={CHECKOUT_SESSION_ID}&listing_id=${listing.id}`,
+        cancel_url: `${site}/marketplace`,
+        client_reference_id: userId,
+        metadata: {
+          listing_id: listing.id,
+          user_id: userId,
+        },
+        line_items: [
+          {
+            quantity: 1,
+            price_data: {
+              currency: "usd",
+              unit_amount: listing.price_cents,
+              product_data: { name: listing.title },
+            },
+          },
+        ],
+      };
+
+      // If the listing has a creator with Stripe Connect, add automatic transfer
+      if (listing.stripe_connect_account_id && listing.creator_id) {
+        const fee = Math.round(listing.price_cents * 0.15); // 15% commission
+        sessionParams.payment_intent_data = {
+          transfer_data: {
+            destination: listing.stripe_connect_account_id,
+          },
+        };
+        sessionParams.metadata = {
+          ...sessionParams.metadata,
+          creator_id: listing.creator_id,
+          connect_account_id: listing.stripe_connect_account_id,
+          commission_cents: String(fee),
+          net_cents: String(listing.price_cents - fee),
+        };
+      }
+
+      const session = await stripe.checkout.sessions.create(sessionParams);
       logger.info(`Created checkout session for listing ${listing.id} user ${userId}`);
       return { url: session.url as string };
     } catch (error) {
@@ -71,11 +80,8 @@ export const verifyCheckoutSession = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     try {
       if (!data.sessionId) throw new Error("Missing session_id.");
-      const session = await stripeFetch(
-        `/checkout/sessions/${encodeURIComponent(data.sessionId)}`,
-        undefined,
-        "GET",
-      );
+      const stripe = getStripe();
+      const session = await stripe.checkout.sessions.retrieve(data.sessionId);
       logger.info(`Verified checkout session: ${data.sessionId}`);
       return {
         paid: session.payment_status === "paid",
