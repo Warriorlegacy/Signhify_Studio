@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, Clock, User, Tag, Calendar } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ARTICLES_MAP } from "@/lib/insights.data";
+import { ARTICLES_MAP, type ArticleData } from "@/lib/insights.data";
 
 export const Route = createFileRoute("/insights/$slug")({
   loader: ({ params: { slug } }) => {
@@ -83,7 +83,7 @@ export const Route = createFileRoute("/insights/$slug")({
 });
 
 function ArticlePage() {
-  const article = Route.useLoaderData();
+  const article: ArticleData = Route.useLoaderData();
 
   return (
     <div className="min-h-screen bg-background text-foreground py-16 px-4 sm:px-6 lg:px-8">
