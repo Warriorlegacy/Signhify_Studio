@@ -65,7 +65,9 @@ export function CtaSection() {
       toast.success("Sprint scope submitted! Piyush will reach out within 2 hours.");
     } catch (err: any) {
       console.error("Lead submission error:", err);
-      toast.error(err.message || "Failed to send lead. Please email Piyushrajsingh092@gmail.com directly.");
+      toast.error(
+        err.message || "Failed to send lead. Please email Piyushrajsingh092@gmail.com directly.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -134,7 +136,8 @@ export function CtaSection() {
           transition={{ duration: 0.6, delay: 0.25 }}
           className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
         >
-          Scope your idea, pick your budget, and get a production-ready AI product deployed to your infrastructure in 14 days.
+          Scope your idea, pick your budget, and get a production-ready AI product deployed to your
+          infrastructure in 14 days.
         </motion.p>
 
         {!showForm ? (
@@ -175,7 +178,9 @@ export function CtaSection() {
                 </div>
                 <h3 className="text-2xl font-bold font-display">Sprint Scope Received!</h3>
                 <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                  Thank you, <strong className="text-foreground">{name || email}</strong>. Piyush Raj Singh (Founder & Lead AI Engineer) is reviewing your scope for <strong className="text-primary">{selectedType}</strong>.
+                  Thank you, <strong className="text-foreground">{name || email}</strong>. Piyush
+                  Raj Singh (Founder & Lead AI Engineer) is reviewing your scope for{" "}
+                  <strong className="text-primary">{selectedType}</strong>.
                 </p>
                 <div className="pt-4 flex flex-wrap justify-center gap-3">
                   <a
@@ -337,4 +342,3 @@ export function CtaSection() {
     </section>
   );
 }
-

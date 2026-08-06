@@ -1,7 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ArrowRight, ChevronDown, Shield, Code2, Zap, Mail, Loader2, CheckCircle2 } from "lucide-react";
+import {
+  Check,
+  ArrowRight,
+  ChevronDown,
+  Shield,
+  Code2,
+  Zap,
+  Mail,
+  Loader2,
+  CheckCircle2,
+} from "lucide-react";
 import { ThreeDCard } from "@/components/ui/ThreeDCard";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { submitLead } from "@/lib/leads.functions";
@@ -441,7 +451,10 @@ function PricingPage() {
 
       {/* Lead capture */}
       <section className="relative py-20 border-t border-border">
-        <div className="absolute inset-0 pointer-events-none opacity-60" style={{ background: "var(--gradient-ember)" }} />
+        <div
+          className="absolute inset-0 pointer-events-none opacity-60"
+          style={{ background: "var(--gradient-ember)" }}
+        />
         <div className="relative mx-auto max-w-2xl px-6 text-center">
           <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Stay updated</div>
           <h2 className="font-display text-3xl sm:text-4xl font-bold">
@@ -549,7 +562,10 @@ function LeadCaptureForm() {
 
   const handle = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.includes("@")) { toast.error("Enter a valid email."); return; }
+    if (!email.includes("@")) {
+      toast.error("Enter a valid email.");
+      return;
+    }
     setSubmitting(true);
     try {
       await submitLeadFn({
@@ -574,16 +590,20 @@ function LeadCaptureForm() {
     }
   };
 
-  if (done) return (
-    <div className="mt-6 inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 text-sm text-emerald-300">
-      <CheckCircle2 size={16} /> You're subscribed!
-    </div>
-  );
+  if (done)
+    return (
+      <div className="mt-6 inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 text-sm text-emerald-300">
+        <CheckCircle2 size={16} /> You're subscribed!
+      </div>
+    );
 
   return (
     <form onSubmit={handle} className="mt-6 flex items-center gap-3 max-w-md mx-auto">
       <div className="relative flex-1">
-        <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+        <Mail
+          size={14}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+        />
         <input
           type="email"
           required

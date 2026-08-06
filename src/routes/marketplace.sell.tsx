@@ -114,7 +114,11 @@ function SellPage() {
           </Link>
           <p className="mt-3 text-xs text-muted-foreground">
             Already have an account?{" "}
-            <Link to="/login" search={{ redirect: "/app/marketplace/sell" } as any} className="text-primary underline">
+            <Link
+              to="/login"
+              search={{ redirect: "/app/marketplace/sell" } as any}
+              className="text-primary underline"
+            >
               Sign in
             </Link>
           </p>

@@ -7,10 +7,9 @@ function toSupabase(env: "dev" | "prod" = "prod"): string {
   const url = process.env.SUPABASE_URL;
   if (!url) throw new Error("Missing SUPABASE_URL");
   const key =
-    env === "prod"
-      ? process.env.SUPABASE_SERVICE_ROLE_KEY
-      : process.env.SUPABASE_PUBLISHABLE_KEY;
-  if (!key) throw new Error(`Missing SUPABASE_${env === "prod" ? "SERVICE_ROLE" : "PUBLISHABLE"}_KEY`);
+    env === "prod" ? process.env.SUPABASE_SERVICE_ROLE_KEY : process.env.SUPABASE_PUBLISHABLE_KEY;
+  if (!key)
+    throw new Error(`Missing SUPABASE_${env === "prod" ? "SERVICE_ROLE" : "PUBLISHABLE"}_KEY`);
   return `${url.replace(/\/$/, "")}/functions/v1`;
 }
 

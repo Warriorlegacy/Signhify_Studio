@@ -118,20 +118,18 @@ export const Route = createFileRoute("/api/cron/revenue")({
                   company: lead.company ?? undefined,
                 });
 
-                await (supabaseAdmin as any)
-                  .from("lead_scores")
-                  .upsert(
-                    {
-                      lead_id: lead.id,
-                      score: score.score,
-                      tier: score.tier,
-                      signals: score.signals,
-                      suggested_offer: score.suggestedOffer,
-                      suggested_next_action: score.suggestedNextAction,
-                      updated_at: now,
-                    },
-                    { onConflict: "lead_id" },
-                  );
+                await (supabaseAdmin as any).from("lead_scores").upsert(
+                  {
+                    lead_id: lead.id,
+                    score: score.score,
+                    tier: score.tier,
+                    signals: score.signals,
+                    suggested_offer: score.suggestedOffer,
+                    suggested_next_action: score.suggestedNextAction,
+                    updated_at: now,
+                  },
+                  { onConflict: "lead_id" },
+                );
 
                 if (score.tier === "hot" || score.tier === "warm") {
                   try {
@@ -179,7 +177,9 @@ export const Route = createFileRoute("/api/cron/revenue")({
 
                 scoredCount++;
               } catch (err) {
-                scoreErrors.push(`${lead.email}: ${err instanceof Error ? err.message : "unknown"}`);
+                scoreErrors.push(
+                  `${lead.email}: ${err instanceof Error ? err.message : "unknown"}`,
+                );
               }
             }
 

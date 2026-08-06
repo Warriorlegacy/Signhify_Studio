@@ -43,22 +43,21 @@ export const scheduleContent = createServerFn({ method: "POST" })
     return { ok: true as const };
   });
 
-export const listScheduledContent = createServerFn({ method: "GET" })
-  .handler(async () => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data, error } = await (supabaseAdmin as any)
-      .from("content_schedule")
-      .select("*")
-      .in("status", ["scheduled", "published"])
-      .order("scheduled_at", { ascending: true });
+export const listScheduledContent = createServerFn({ method: "GET" }).handler(async () => {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data, error } = await (supabaseAdmin as any)
+    .from("content_schedule")
+    .select("*")
+    .in("status", ["scheduled", "published"])
+    .order("scheduled_at", { ascending: true });
 
-    if (error) {
-      console.error("[content-schedule] list failed", error);
-      throw new Error("Failed to load content schedule.");
-    }
+  if (error) {
+    console.error("[content-schedule] list failed", error);
+    throw new Error("Failed to load content schedule.");
+  }
 
-    return { items: data ?? [] };
-  });
+  return { items: data ?? [] };
+});
 
 export const markContentPublished = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => {

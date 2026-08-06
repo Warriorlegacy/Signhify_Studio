@@ -29,54 +29,54 @@ export const Route = createFileRoute("/insights/$slug")({
         { name: "twitter:description", content: loaderData.summary },
       ],
       links: [{ rel: "canonical", href: `https://signhify.dpdns.org/insights/${loaderData.id}` }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BlogPosting",
-          headline: loaderData.title,
-          description: loaderData.summary,
-          datePublished: loaderData.date,
-          author: {
-            "@type": "Person",
-            name: loaderData.author,
-          },
-          publisher: {
-            "@type": "Organization",
-            name: "Signhify",
-            url: "https://signhify.dpdns.org",
-          },
-          url: `https://signhify.dpdns.org/insights/${loaderData.id}`,
-          mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id": `https://signhify.dpdns.org/insights/${loaderData.id}`,
-          },
-          keywords: loaderData.tags.join(", "),
-        }),
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            {
-              "@type": "ListItem",
-              position: 1,
-              name: "Insights",
-              item: "https://signhify.dpdns.org/insights",
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: loaderData.title,
+            description: loaderData.summary,
+            datePublished: loaderData.date,
+            author: {
+              "@type": "Person",
+              name: loaderData.author,
             },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: loaderData.title,
-              item: `https://signhify.dpdns.org/insights/${loaderData.id}`,
+            publisher: {
+              "@type": "Organization",
+              name: "Signhify",
+              url: "https://signhify.dpdns.org",
             },
-          ],
-        }),
-      },
-    ],
+            url: `https://signhify.dpdns.org/insights/${loaderData.id}`,
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": `https://signhify.dpdns.org/insights/${loaderData.id}`,
+            },
+            keywords: loaderData.tags.join(", "),
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Insights",
+                item: "https://signhify.dpdns.org/insights",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: loaderData.title,
+                item: `https://signhify.dpdns.org/insights/${loaderData.id}`,
+              },
+            ],
+          }),
+        },
+      ],
     };
   },
   component: ArticlePage,

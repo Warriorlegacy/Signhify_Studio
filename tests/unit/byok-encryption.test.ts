@@ -16,9 +16,13 @@ describe("BYOK key encryption at rest", () => {
       assert.ok(!ct.includes(raw), "Ciphertext should not contain raw text");
       assert.ok(
         /^[0-9a-f]{24}:[0-9a-f]{32}:[0-9a-f]+$/i.test(ct),
-        "Ciphertext should match GCM format hex pattern"
+        "Ciphertext should match GCM format hex pattern",
       );
-      assert.strictEqual(decryptAES256GCM(ct, MASTER), raw, "Decrypted text should match raw input");
+      assert.strictEqual(
+        decryptAES256GCM(ct, MASTER),
+        raw,
+        "Decrypted text should match raw input",
+      );
     }
   });
 
@@ -26,7 +30,11 @@ describe("BYOK key encryption at rest", () => {
     const raw = "sk-test-1234567890abcdef";
     const a = encryptAES256GCM(raw, MASTER);
     const b = encryptAES256GCM(raw, MASTER);
-    assert.notStrictEqual(a, b, "Two encryptions of same text should produce different ciphertexts");
+    assert.notStrictEqual(
+      a,
+      b,
+      "Two encryptions of same text should produce different ciphertexts",
+    );
     assert.strictEqual(decryptAES256GCM(a, MASTER), raw);
     assert.strictEqual(decryptAES256GCM(b, MASTER), raw);
   });

@@ -20,18 +20,16 @@ export const upsertDirectoryListing = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await (supabaseAdmin as any)
-      .from("directory_listings")
-      .upsert(
-        {
-          platform: data.platform,
-          url: data.url,
-          priority: data.priority,
-          notes: data.notes ?? null,
-          status: "pending",
-        },
-        { onConflict: "platform" },
-      );
+    const { error } = await (supabaseAdmin as any).from("directory_listings").upsert(
+      {
+        platform: data.platform,
+        url: data.url,
+        priority: data.priority,
+        notes: data.notes ?? null,
+        status: "pending",
+      },
+      { onConflict: "platform" },
+    );
 
     if (error) {
       console.error("[directory-listings] upsert failed", error);
@@ -41,22 +39,21 @@ export const upsertDirectoryListing = createServerFn({ method: "POST" })
     return { ok: true as const };
   });
 
-export const listDirectoryListings = createServerFn({ method: "GET" })
-  .handler(async () => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data, error } = await (supabaseAdmin as any)
-      .from("directory_listings")
-      .select("*")
-      .order("priority", { ascending: true })
-      .order("created_at", { ascending: true });
+export const listDirectoryListings = createServerFn({ method: "GET" }).handler(async () => {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data, error } = await (supabaseAdmin as any)
+    .from("directory_listings")
+    .select("*")
+    .order("priority", { ascending: true })
+    .order("created_at", { ascending: true });
 
-    if (error) {
-      console.error("[directory-listings] list failed", error);
-      throw new Error("Failed to load directory listings.");
-    }
+  if (error) {
+    console.error("[directory-listings] list failed", error);
+    throw new Error("Failed to load directory listings.");
+  }
 
-    return { items: data ?? [] };
-  });
+  return { items: data ?? [] };
+});
 
 export const updateDirectoryListing = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => {
@@ -71,7 +68,10 @@ export const updateDirectoryListing = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const patch: Record<string, unknown> = { status: data.status, updated_at: new Date().toISOString() };
+    const patch: Record<string, unknown> = {
+      status: data.status,
+      updated_at: new Date().toISOString(),
+    };
     if (data.reviewUrl) patch.review_url = data.reviewUrl;
     if (data.notes !== undefined) patch.notes = data.notes;
     if (data.status === "submitted") patch.submitted_at = new Date().toISOString();

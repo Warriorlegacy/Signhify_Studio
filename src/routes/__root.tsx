@@ -197,11 +197,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           },
           areaServed: "Worldwide",
           openingHoursSpecification: [
-            { "@type": "OpeningHoursSpecification", dayOfWeek: "Monday", opens: "09:00", closes: "18:00" },
-            { "@type": "OpeningHoursSpecification", dayOfWeek: "Tuesday", opens: "09:00", closes: "18:00" },
-            { "@type": "OpeningHoursSpecification", dayOfWeek: "Wednesday", opens: "09:00", closes: "18:00" },
-            { "@type": "OpeningHoursSpecification", dayOfWeek: "Thursday", opens: "09:00", closes: "18:00" },
-            { "@type": "OpeningHoursSpecification", dayOfWeek: "Friday", opens: "09:00", closes: "18:00" },
+            {
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: "Monday",
+              opens: "09:00",
+              closes: "18:00",
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: "Tuesday",
+              opens: "09:00",
+              closes: "18:00",
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: "Wednesday",
+              opens: "09:00",
+              closes: "18:00",
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: "Thursday",
+              opens: "09:00",
+              closes: "18:00",
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: "Friday",
+              opens: "09:00",
+              closes: "18:00",
+            },
           ],
           contactPoint: {
             "@type": "ContactPoint",
@@ -378,7 +403,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             {
               "@type": "Offer",
               name: "Sprint",
-              description: "Production MVP in 5-7 days. Core UI, Supabase backend, custom domain, GitHub transfer.",
+              description:
+                "Production MVP in 5-7 days. Core UI, Supabase backend, custom domain, GitHub transfer.",
               price: "299",
               priceCurrency: "USD",
               priceValidUntil: "2027-12-31",
@@ -388,7 +414,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             {
               "@type": "Offer",
               name: "Studio",
-              description: "Full SaaS platform with AI integrations, BYOK vault, Stripe billing, 30-day support.",
+              description:
+                "Full SaaS platform with AI integrations, BYOK vault, Stripe billing, 30-day support.",
               price: "799",
               priceCurrency: "USD",
               priceValidUntil: "2027-12-31",
@@ -398,7 +425,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             {
               "@type": "Offer",
               name: "Platform",
-              description: "Custom enterprise — multi-agent orchestration, LLM fine-tuning, SOC2 readiness, SLA.",
+              description:
+                "Custom enterprise — multi-agent orchestration, LLM fine-tuning, SOC2 readiness, SLA.",
               availability: "https://schema.org/OnlineOnly",
               url: "https://signhify.dpdns.org/pricing",
             },
@@ -435,18 +463,78 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           url: "https://signhify.dpdns.org/services",
           numberOfItems: 12,
           itemListElement: [
-            { "@type": "Service", name: "AI Automation", position: 1, description: "Workflow automation, AI pipelines, custom agent chains" },
-            { "@type": "Service", name: "SaaS Development", position: 2, description: "Full-stack subscription platforms with billing, auth, analytics" },
-            { "@type": "Service", name: "Web and Product Design", position: 3, description: "UI/UX, brand identity, conversion-optimized design systems" },
-            { "@type": "Service", name: "CRM Systems", position: 4, description: "Customer relationship platforms, pipeline management, automation" },
-            { "@type": "Service", name: "Digital & Performance Marketing", position: 5, description: "Paid ads, SEO, CRO, attribution, email automation" },
-            { "@type": "Service", name: "Brand Identity", position: 6, description: "Logo, visual identity, brand guidelines, positioning" },
-            { "@type": "Service", name: "API Engineering", position: 7, description: "REST/GraphQL APIs, webhooks, third-party integrations" },
-            { "@type": "Service", name: "Cloud & DevOps", position: 8, description: "Cloudflare, AWS, Docker, CI/CD, monitoring" },
-            { "@type": "Service", name: "Data & Analytics", position: 9, description: "Dashboards, reporting, data pipelines, BI systems" },
-            { "@type": "Service", name: "Mobile App Development", position: 10, description: "Responsive web apps, PWA, mobile-first design" },
-            { "@type": "Service", name: "Security & Compliance", position: 11, description: "BYOK encryption, SOC2 readiness, audit logging" },
-            { "@type": "Service", name: "AI & LLM Integrations", position: 12, description: "Custom GPTs, RAG pipelines, model fine-tuning, agent orchestration" },
+            {
+              "@type": "Service",
+              name: "AI Automation",
+              position: 1,
+              description: "Workflow automation, AI pipelines, custom agent chains",
+            },
+            {
+              "@type": "Service",
+              name: "SaaS Development",
+              position: 2,
+              description: "Full-stack subscription platforms with billing, auth, analytics",
+            },
+            {
+              "@type": "Service",
+              name: "Web and Product Design",
+              position: 3,
+              description: "UI/UX, brand identity, conversion-optimized design systems",
+            },
+            {
+              "@type": "Service",
+              name: "CRM Systems",
+              position: 4,
+              description: "Customer relationship platforms, pipeline management, automation",
+            },
+            {
+              "@type": "Service",
+              name: "Digital & Performance Marketing",
+              position: 5,
+              description: "Paid ads, SEO, CRO, attribution, email automation",
+            },
+            {
+              "@type": "Service",
+              name: "Brand Identity",
+              position: 6,
+              description: "Logo, visual identity, brand guidelines, positioning",
+            },
+            {
+              "@type": "Service",
+              name: "API Engineering",
+              position: 7,
+              description: "REST/GraphQL APIs, webhooks, third-party integrations",
+            },
+            {
+              "@type": "Service",
+              name: "Cloud & DevOps",
+              position: 8,
+              description: "Cloudflare, AWS, Docker, CI/CD, monitoring",
+            },
+            {
+              "@type": "Service",
+              name: "Data & Analytics",
+              position: 9,
+              description: "Dashboards, reporting, data pipelines, BI systems",
+            },
+            {
+              "@type": "Service",
+              name: "Mobile App Development",
+              position: 10,
+              description: "Responsive web apps, PWA, mobile-first design",
+            },
+            {
+              "@type": "Service",
+              name: "Security & Compliance",
+              position: 11,
+              description: "BYOK encryption, SOC2 readiness, audit logging",
+            },
+            {
+              "@type": "Service",
+              name: "AI & LLM Integrations",
+              position: 12,
+              description: "Custom GPTs, RAG pipelines, model fine-tuning, agent orchestration",
+            },
           ],
           provider: {
             "@type": "Organization",

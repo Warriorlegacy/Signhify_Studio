@@ -1,6 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { CalendarClock, MessageCircle, Phone, Sparkles, Send, CheckCircle2, Loader2, Calendar as CalendarIcon } from "lucide-react";
+import {
+  CalendarClock,
+  MessageCircle,
+  Phone,
+  Sparkles,
+  Send,
+  CheckCircle2,
+  Loader2,
+  Calendar as CalendarIcon,
+} from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { submitLead } from "@/lib/leads.functions";
 import { useServerFn } from "@tanstack/react-start";
@@ -92,7 +101,8 @@ function BookPage() {
           30 minutes. <span className="text-gradient">A real plan.</span>
         </h1>
         <p className="mt-5 max-w-2xl text-muted-foreground text-lg">
-          Request a discovery slot or pick a Calendly time below. We&rsquo;ll scope the idea, map a build, and decide if Signhify is the right team to ship it. No deck. No script.
+          Request a discovery slot or pick a Calendly time below. We&rsquo;ll scope the idea, map a
+          build, and decide if Signhify is the right team to ship it. No deck. No script.
         </p>
 
         <div className="mt-8 flex gap-3 border-b border-border/60 pb-4">
@@ -128,7 +138,10 @@ function BookPage() {
                   </div>
                   <h3 className="text-2xl font-bold font-display">Call Slot Requested!</h3>
                   <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                    We received your request for <strong className="text-foreground">{date || "Next Available Slot"}</strong> at <strong className="text-primary">{slot}</strong>. Piyush Raj Singh will confirm via Google Calendar invite.
+                    We received your request for{" "}
+                    <strong className="text-foreground">{date || "Next Available Slot"}</strong> at{" "}
+                    <strong className="text-primary">{slot}</strong>. Piyush Raj Singh will confirm
+                    via Google Calendar invite.
                   </p>
                   <div className="pt-4 flex flex-wrap justify-center gap-3">
                     <a
@@ -305,7 +318,8 @@ function BookPage() {
               </div>
               <div className="font-display font-semibold">Prefer WhatsApp?</div>
               <div className="mt-1 text-sm text-muted-foreground">
-                Ping <span className="font-mono text-foreground">+91 62024 42690</span> and we&rsquo;ll pick it up.
+                Ping <span className="font-mono text-foreground">+91 62024 42690</span> and
+                we&rsquo;ll pick it up.
               </div>
             </a>
 
@@ -325,4 +339,3 @@ function BookPage() {
     </section>
   );
 }
-

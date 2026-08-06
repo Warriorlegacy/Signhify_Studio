@@ -8,7 +8,10 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "AI Engineering & Digital Marketing Services — Best AI Engineering Studio | Signhify" },
+      {
+        title:
+          "AI Engineering & Digital Marketing Services — Best AI Engineering Studio | Signhify",
+      },
       {
         name: "description",
         content:

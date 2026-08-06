@@ -64,10 +64,7 @@ export function computeLeadScore(input: LeadInput) {
   const scopeScore = scoreScope(input.scope);
   const companyBonus = input.company && input.company.trim().length > 2 ? 10 : 0;
 
-  const total = Math.min(
-    budgetScore + timelineScore + goalsScore + scopeScore + companyBonus,
-    100,
-  );
+  const total = Math.min(budgetScore + timelineScore + goalsScore + scopeScore + companyBonus, 100);
 
   const tier = total >= 70 ? "hot" : total >= 40 ? "warm" : "cold";
 
@@ -105,7 +102,9 @@ export const scoreLead = createServerFn({ method: "POST" })
     const scope = typeof obj?.scope === "string" ? obj.scope.trim() : "";
     const budget = typeof obj?.budget === "string" ? obj.budget.trim() : "";
     const timeline = typeof obj?.timeline === "string" ? obj.timeline.trim() : "";
-    const goals = Array.isArray(obj?.goals) ? obj.goals.map((g) => String(g).trim()).filter(Boolean) : [];
+    const goals = Array.isArray(obj?.goals)
+      ? obj.goals.map((g) => String(g).trim()).filter(Boolean)
+      : [];
     const company = typeof obj?.company === "string" ? obj.company.trim() : undefined;
     const leadId = typeof obj?.leadId === "string" ? obj.leadId : undefined;
     if (!type || !scope || !budget || !timeline || goals.length === 0) {
@@ -118,20 +117,18 @@ export const scoreLead = createServerFn({ method: "POST" })
     const result = computeLeadScore(data);
 
     if (data.leadId) {
-      const { error } = await (supabaseAdmin as any)
-        .from("lead_scores")
-        .upsert(
-          {
-            lead_id: data.leadId,
-            score: result.score,
-            tier: result.tier,
-            signals: result.signals,
-            suggested_offer: result.suggestedOffer,
-            suggested_next_action: result.suggestedNextAction,
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: "lead_id" },
-        );
+      const { error } = await (supabaseAdmin as any).from("lead_scores").upsert(
+        {
+          lead_id: data.leadId,
+          score: result.score,
+          tier: result.tier,
+          signals: result.signals,
+          suggested_offer: result.suggestedOffer,
+          suggested_next_action: result.suggestedNextAction,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "lead_id" },
+      );
 
       if (error) {
         console.error("[lead-score] upsert failed", error);
