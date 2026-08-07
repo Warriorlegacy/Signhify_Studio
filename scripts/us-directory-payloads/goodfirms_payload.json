@@ -1,0 +1,20 @@
+{
+  "platform": "GoodFirms",
+  "targetMarket": "US Startups & Enterprise Tech Leaders",
+  "tagline": "Silicon Valley-Grade AI Engineering at 1/5th traditional agency cost",
+  "shortDescription": "Signhify builds AI SaaS MVPs in 2-week sprints. 100% US EST/PST coverage, 100% code ownership, client-side BYOK key vault.",
+  "fullDescription": "Signhify AI Studio helps US founders turn complex product visions into production SaaS applications. Our 6-agent autonomous engine handles schema generation, UI component crafting, API route wiring, unit testing, and deployment.\n\nWhy US Tech Leaders Trust Signhify:\n- Guaranteed 5-14 Day Delivery\n- 100% IP & Code Rights Transfer\n- Fixed-Fee Pricing ($299 Sprint / $799 Studio)\n- SOC2 & HIPAA Ready Architecture",
+  "servicesOffered": [
+    "AI Engineering",
+    "Web Development (React 19, TanStack Start)",
+    "Supabase & PostgreSQL Architecture",
+    "Stripe Monetization Integration"
+  ],
+  "pricingModel": "Fixed Price",
+  "minProjectSize": "$299",
+  "hourlyRate": "$50 / hr",
+  "usTimezoneSla": "Full US EST/PST Overlap",
+  "websiteUrl": "https://signhify.dpdns.org/us-ai-engineering-studio",
+  "contactEmail": "Piyushrajsingh092@gmail.com",
+  "verifiedAddress": "Signhify AI Studio, DE 19958, USA"
+}

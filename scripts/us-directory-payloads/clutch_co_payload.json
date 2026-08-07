@@ -1,0 +1,21 @@
+{
+  "platform": "Clutch.co",
+  "targetMarket": "United States B2B / SaaS Founders",
+  "tagline": "#1 AI Engineering Studio & Vibe-Coding Platform for US Startups",
+  "shortDescription": "Signhify is an elite AI product engineering studio delivering production SaaS, custom AI agents, and automated growth engines in guaranteed 2-week sprints with 100% code transfer.",
+  "fullDescription": "Signhify AI Studio (https://signhify.dpdns.org) is a registered AI software engineering studio specializing in AI-first SaaS products, autonomous multi-agent swarms, and enterprise-grade software architecture.\n\nKey Differentiators for US Founders:\n1. 6-Agent Autonomous Engineering Swarm: Replaces 3-5 person dev teams — schema, UI, API, testing, security, and deployment happen synchronously.\n2. 100% US Timezone Overlap: Operations run on US Eastern (EST) and Pacific (PST) business hours with live Slack/Video sync.\n3. Client-Side BYOK Encryption: Zero server-side key storage. Built with AES-256 GCM vault ready for US SOC2 Type II and HIPAA audits.\n4. 2-Week Sprint Guarantee: Go from spec prompt to production deployment in 14 days or less ($299 Sprint / $799 Studio).\n5. 100% Code Ownership: Full GitHub repository transfer with complete IP rights under US law.",
+  "servicesOffered": [
+    "AI Product Engineering",
+    "SaaS MVP Development",
+    "Custom AI Agent Development",
+    "BYOK Security Architecture",
+    "Digital Marketing & Growth Engines"
+  ],
+  "pricingModel": "Fixed-Price Sprints ($299 / $799)",
+  "minProjectSize": "$299",
+  "hourlyRate": "$49 - $99 / hr",
+  "usTimezoneSla": "9:00 AM EST – 6:00 PM PST",
+  "websiteUrl": "https://signhify.dpdns.org/us-ai-engineering-studio",
+  "contactEmail": "Piyushrajsingh092@gmail.com",
+  "verifiedAddress": "Noida, UP, India / US Partner Desk: Delaware, USA"
+}

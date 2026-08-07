@@ -1,0 +1,19 @@
+{
+  "platform": "ProductHunt",
+  "targetMarket": "US & Global Tech Community",
+  "tagline": "Signhify AI Studio — Turn plain English into production AI SaaS in 14 days",
+  "shortDescription": "Describe your product idea. Our 6-agent AI swarm designs, engineers, tests, and deploys it end-to-end with 100% code ownership.",
+  "fullDescription": "Hey ProductHunt! 👋 \n\nWe built Signhify AI Studio because traditional agencies take 4 months and $50k+ to build a simple SaaS MVP.\n\nWith Signhify:\n✨ 6-Agent Swarm (UX, Schema, API, Tests, Security, Deploy)\n🔐 BYOK Key Vault (Your API keys stay encrypted client-side)\n⚡ 2-Week Sprint Guarantee ($299 Sprint / $799 Studio)\n📦 100% GitHub Code Transfer (Zero vendor lock-in)\n\nSpecial PH Launch Offer: Use code PHLAUNCH20 for 20% off all Sprint packages!",
+  "servicesOffered": [
+    "AI SaaS Engine",
+    "Vibe Coding Platform",
+    "MVP Builder"
+  ],
+  "pricingModel": "$299 Sprint",
+  "minProjectSize": "$299",
+  "hourlyRate": "N/A",
+  "usTimezoneSla": "24/7 Global Support",
+  "websiteUrl": "https://signhify.dpdns.org/saas-mvp",
+  "contactEmail": "Piyushrajsingh092@gmail.com",
+  "verifiedAddress": "Signhify, DE 19958, USA"
+}

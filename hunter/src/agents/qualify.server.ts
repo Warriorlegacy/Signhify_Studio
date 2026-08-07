@@ -62,6 +62,14 @@ export function scoreLead(lead: Lead, rules: IcpRules = DEFAULT_ICP): { score: n
   }
 
   const country = countryFromRaw(lead);
+  const isUsMarket = /us|usa|united states|sf|san francisco|nyc|new york|austin|seattle|boston|california|delaware|\.com$/i.test(
+    [country ?? "", lead.org_domain, haystack].join(" "),
+  );
+  if (isUsMarket) {
+    score += 10;
+    reason.push("US market priority");
+  }
+
   if (country) {
     if (rules.excludeCountries?.some((c) => country.toUpperCase().startsWith(c.toUpperCase()))) {
       return { score: 0, tier: "C", reason: `excluded country: ${country}` };

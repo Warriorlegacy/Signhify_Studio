@@ -73,6 +73,7 @@ function Index() {
           </p>
           <Link
             to="/signup"
+            search={{ redirect: "/app/billing" }}
             className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 text-base font-bold text-primary-foreground shadow-[0_0_60px_-8px_var(--primary-glow)] hover:brightness-110 transition"
           >
             Start Building Free — No Credit Card

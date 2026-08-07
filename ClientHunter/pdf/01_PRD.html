@@ -1,0 +1,466 @@
+<!doctype html><html><head><meta charset='utf-8'><style>
+body{font-family:'Segoe UI',Calibri,Arial,sans-serif;color:#0D0D14;max-width:820px;margin:24px auto;padding:0 28px;line-height:1.55;font-size:14.5px}
+h1{font-size:26px;border-bottom:3px solid #FF6B00;padding-bottom:8px;color:#0D0D14}
+h2{font-size:19px;margin-top:26px;border-bottom:1px solid #ddd;padding-bottom:4px;color:#111}
+h3{font-size:16px;margin-top:20px;color:#333}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px}
+th,td{border:1px solid #ccc;padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#0D0D14;color:#fff}
+tr:nth-child(even){background:#f5f5f5}
+code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:13px;font-family:Consolas,monospace}
+pre{background:#0D0D14;color:#E2E8F0;padding:12px;border-radius:6px;overflow-x:auto;font-size:12.5px}
+pre code{background:none;color:inherit;padding:0}
+blockquote{border-left:4px solid #FF6B00;margin:10px 0;padding:2px 14px;background:#fff4ec;color:#333}
+hr{border:none;border-top:1px solid #ddd;margin:20px 0}
+</style></head><body><h1>Signhify Hunter — Product Requirements Document (PRD)</h1>
+<blockquote>
+<p><strong>Codename:</strong> HUNTER
+<strong>Product:</strong> Signhify Hunter — Autonomous Client Acquisition OS
+<strong>Version:</strong> 1.0 · <strong>Date:</strong> 07 Aug 2026 · <strong>Status:</strong> Draft for build
+<strong>Owner:</strong> Piyush Raj Singh (Founder, Signhify)</p>
+</blockquote>
+<hr />
+<h2>1. Executive Summary</h2>
+<p>Signhify Hunter is an autonomous AI agent system that finds prospective clients for Signhify (AI engineering studio, signhify.dpdns.org) across the public internet, enriches and scores them, then executes compliant, personalized cold outreach (email, LinkedIn, X, WhatsApp) at scale to generate a continuous pipeline of qualified leads for the studio.</p>
+<p><strong>The problem:</strong> Signhify ships 14+ products but acquires clients manually — one outreach at a time. Manual sourcing + personalization doesn't scale, so pipeline is lumpy and founder-time is spent on prospecting instead of shipping.</p>
+<p><strong>The solution:</strong> A 6-agent autonomous system (<code>Scout → Enrich → Qualify → Writer → Ops → Respond</code>) that runs continuously, from a dashboard, with human-in-the-loop approval at every money-relevant gate.</p>
+<p><strong>Success in one line:</strong> 5+ qualified meetings booked per week with &lt; 3% complaint rate and deliverability &gt; 97%, running with &lt; 2 hours/week of founder time.</p>
+<h3>1.1 North Star Metric</h3>
+<p><strong>Qualified meetings booked per week (QMB/wk).</strong> Target: 5/week by week 8 of operation.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline (manual)</th>
+<th>Target (Hunter)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Leads sourced / week</td>
+<td>20</td>
+<td>2,000+</td>
+</tr>
+<tr>
+<td>Verified email rate</td>
+<td>—</td>
+<td>≥ 85%</td>
+</tr>
+<tr>
+<td>Positive reply rate</td>
+<td>~2%</td>
+<td>3–5%</td>
+</tr>
+<tr>
+<td>Qualified meetings / week</td>
+<td>1–2</td>
+<td>5–10</td>
+</tr>
+<tr>
+<td>Cost per meeting</td>
+<td>High (founder time)</td>
+<td>&lt; $25</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>2. Background &amp; Context</h2>
+<ul>
+<li>Signhify is an AI engineering studio (MSME, UDYAM registered, India) selling: AI automation, LLM integrations, SaaS builds, web/product, CRM systems, API engineering, cloud/devops, data/analytics, mobile, performance marketing, security, brand.</li>
+<li>Founder: Piyush Raj Singh (LinkedIn/GitHub: Warriorlegacy). Existing lead channels: contact wizard, bookings, WhatsApp.</li>
+<li>Hunter turns the studio's own capability ("Describe your idea. Signhify builds it.") into an outbound engine that <em>goes to</em> the idea before it comes to the studio.</li>
+</ul>
+<h3>2.1 Who Hunter serves</h3>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Description</th>
+<th>Needs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Founder (primary user)</td>
+<td>Piyush — runs studio, ships client work</td>
+<td>Pipeline without manual prospecting; replies without context-switching</td>
+</tr>
+<tr>
+<td>Future sales ops hire</td>
+<td>Operator of campaigns, dashboards</td>
+<td>Campaign management, sequence builder, reporting</td>
+</tr>
+<tr>
+<td>Future Hunter customers</td>
+<td>Other agencies/studios (productization in Phase 7)</td>
+<td>Same system, multi-tenant</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3. Goals &amp; Non-Goals</h2>
+<h3>3.1 Goals (V1)</h3>
+<ol>
+<li>Continuously discover 2,000+ relevant prospects/month from public sources.</li>
+<li>Enrich (email/company/tech-stack/decision-maker) with ≥ 85% email verification.</li>
+<li>Score &amp; auto-qualify leads; top 10% flagged for outreach.</li>
+<li>Run multi-step, personalized email campaigns with automatic warm-up, scheduling, A/B subjects, and delivery limits.</li>
+<li>Auto-triage replies with suggested responses; founder approves before sending (HITL).</li>
+<li>Full compliance: unsubscribe one-click, suppression list, CAN-SPAM/GDPR/DPDP, sender reputation dashboards.</li>
+<li>Lead-to-meeting tracking integrated with booking link + CRM export.</li>
+</ol>
+<h3>3.2 Non-Goals (V1)</h3>
+<ul>
+<li>No mass DM <em>automation</em> on LinkedIn that violates platform ToS — LinkedIn DMs are generated as "copy-ready" suggestions for semi-manual send (Phase 5).</li>
+<li>No purchased/rented lead lists. All sourcing from public, verifiable signals.</li>
+<li>No intent-data products, no dark scraping of gated data.</li>
+<li>No full CRM — Hunter is pipeline-to-meeting; CRM export (CSV/API) only.</li>
+<li>Not a general-purpose marketing automation platform (that's Phase 7 productization).</li>
+</ul>
+<hr />
+<h2>4. Users &amp; Personas</h2>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Role</th>
+<th>Key jobs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>The Founder</strong></td>
+<td>Piyush</td>
+<td>Approves campaigns &amp; replies, reviews pipeline, books meetings, tracks ROI</td>
+</tr>
+<tr>
+<td><strong>The Operator</strong></td>
+<td>Future hire / SDR</td>
+<td>Builds campaigns, curates lists, personalizes at scale, handles inbox</td>
+</tr>
+<tr>
+<td><strong>The Observer</strong></td>
+<td>Investor / advisor</td>
+<td>Reads dashboards: pipeline value, meetings, costs</td>
+</tr>
+<tr>
+<td><strong>The Prospect</strong></td>
+<td>Lead (indirect)</td>
+<td>Receives ≤ 2-3 genuinely personalized touches; one-click opt-out; zero spam feel</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>5. Product Modules (V1)</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                     HUNTER DASHBOARD (Web)                   │
+│  Campaigns │ Leads │ Inbox │ Sources │ Analytics │ Settings  │
+└──────────────┬──────────────────────────────┬───────────────┘
+               │                              │
+┌──────────────▼──────────────┐  ┌────────────▼──────────────┐
+│        AGENT CORE           │  │       DELIVERY ENGINE      │
+│  Scout → Enrich → Qualify   │  │  Warmup · Sequences · Send │
+│  Writer → Ops → Respond     │  │  Rate-limits · Bounce mgmt │
+└─────────────────────────────┘  └────────────────────────────┘
+</code></pre>
+<h3>5.1 Agent Modules</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Agent</th>
+<th>Job</th>
+<th>Input → Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Scout</strong></td>
+<td>Find prospects across the internet</td>
+<td>Source configs → raw leads (company, URL, contact, context)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Enrich</strong></td>
+<td>Enrich + verify</td>
+<td>Raw lead → verified email, tech stack, size, decision-maker, socials</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Qualify</strong></td>
+<td>LLM score &amp; route</td>
+<td>Enriched lead → score 0–100, tier (A/B/C), reason, next action</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Writer</strong></td>
+<td>Personalize copy</td>
+<td>Lead + campaign → subject + body (per-lead, on-brand, honest)</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Ops</strong></td>
+<td>Schedule &amp; deliver</td>
+<td>Writer output → sequenced sends w/ limits, warmup, retries</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Respond</strong></td>
+<td>Triage replies</td>
+<td>Inbox → category, suggested reply (founder approves)</td>
+</tr>
+</tbody>
+</table>
+<h3>5.2 Sourcing Channels (V1)</h3>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>Method</th>
+<th>Volume/mo (est.)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clutch / agency directories</td>
+<td>Public scrape (Firecrawl) — companies that <em>hire</em> agencies</td>
+<td>600</td>
+</tr>
+<tr>
+<td>GitHub</td>
+<td>API — orgs w/ active repos, hiring signals, no marketing team</td>
+<td>400</td>
+</tr>
+<tr>
+<td>Hacker News (Algolia API)</td>
+<td>"Who is hiring" + Show HN asking for help</td>
+<td>300</td>
+</tr>
+<tr>
+<td>Reddit (public JSON API)</td>
+<td>r/forhire, r/webdev, r/SaaS, r/startups — "need dev", "looking for agency"</td>
+<td>300</td>
+</tr>
+<tr>
+<td>Product Hunt (API)</td>
+<td>New launches — no dev team, likely need help</td>
+<td>200</td>
+</tr>
+<tr>
+<td>Upwork / Freelancer (public listings)</td>
+<td>Projects tagged web/app/AI</td>
+<td>300</td>
+</tr>
+<tr>
+<td>Google (SERP via API)</td>
+<td>"hire AI development agency" style queries + local SaaS lists</td>
+<td>300</td>
+</tr>
+<tr>
+<td>X/Twitter</td>
+<td>Public posts: "need a developer", "looking for AI agency"</td>
+<td>200</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ethical sourcing rules (hard):</strong> only public data; respect robots.txt &amp; ToS; no gated/purchased data; personal data (emails) used only for B2B outreach with lawful basis; every lead carries a source URL for provenance.</p>
+<h3>5.3 Outreach Channels (V1)</h3>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>V1 scope</th>
+<th>Constraint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Email (primary)</td>
+<td>Full automation</td>
+<td>Warmup, SPF/DKIM/DMARC, limits, unsubscribe, CAN-SPAM/GDPR</td>
+</tr>
+<tr>
+<td>LinkedIn</td>
+<td>"Copy-ready" suggestions</td>
+<td>No auto-DM; founder pastes/sends (ToS safety)</td>
+</tr>
+<tr>
+<td>X DM</td>
+<td>"Copy-ready" suggestions</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>WhatsApp</td>
+<td>Manual follow-up only</td>
+<td>Only after prospect replies with consent</td>
+</tr>
+</tbody>
+</table>
+<h3>5.4 Campaigns &amp; Sequences</h3>
+<ul>
+<li>Campaign = audience (source config + filters) × sequence (steps).</li>
+<li>Sequence step: channel, delay (0–7d), template slot (A/B), send window (timezone-aware).</li>
+<li>Max 3 touchpoints per sequence (V1); reply → stop sequence automatically.</li>
+<li>One-click unsubscribe on every email + <code>list-unsubscribe</code> header + physical address (compliance).</li>
+<li>Sending limits: ≤ 30/account/day while warming → ≤ 150/account/day steady, per domain; multi-domain rotation supported.</li>
+</ul>
+<h3>5.5 Inbox &amp; HITL</h3>
+<ul>
+<li>Replies land in Hunter Inbox (also forwarded to founder email).</li>
+<li>Respond agent classifies: <code>positive / question / negative / unsubscribe / OOO</code>.</li>
+<li>Suggests reply (context-aware). Founder clicks <strong>Approve &amp; Send</strong> or <strong>Edit</strong>. Never auto-sends replies (V1).</li>
+<li>Positive → one-click "Book meeting" → Cal.com-style booking (Signhify <code>/book</code> or calendly) + CRM export.</li>
+</ul>
+<hr />
+<h2>6. Functional Requirements</h2>
+<h3>6.1 Sourcing (FR-SRC)</h3>
+<ul>
+<li>FR-SRC-1: Configure sources per campaign (channel, keywords, filters, geography, max leads).</li>
+<li>FR-SRC-2: Dedupe across channels (company domain primary key).</li>
+<li>FR-SRC-3: Every lead stores provenance URL + scraped-at timestamp.</li>
+<li>FR-SRC-4: Scout runs on schedule (cron) with per-source rate limiting and failure retry.</li>
+</ul>
+<h3>6.2 Enrichment (FR-ENR)</h3>
+<ul>
+<li>FR-ENR-1: Enrich company: domain, size, HQ, industry, tech stack, socials, decision-maker contact.</li>
+<li>FR-ENR-2: Email verification (syntax + MX + SMTP + catch-all heuristics) — mark verified/unverified/risky.</li>
+<li>FR-ENR-3: Privacy filter: skip leads with no lawful B2B contact info.</li>
+</ul>
+<h3>6.3 Qualification (FR-QUAL)</h3>
+<ul>
+<li>FR-QUAL-1: LLM scores on: budget signals, need signals ("agency", "hire dev"), tech fit (needs what Signhify sells), recency, competition intensity.</li>
+<li>FR-QUAL-2: Output tiers: A (outreach now), B (nurture 2w), C (archive).</li>
+<li>FR-QUAL-3: Each score must carry a 1-line human-readable reason.</li>
+</ul>
+<h3>6.4 Writing (FR-WR)</h3>
+<ul>
+<li>FR-WR-1: Personalize subject + 2–3 body sentences from lead signals; max 120 words.</li>
+<li>FR-WR-2: Honesty mode: never fabricate facts about the lead's company; unknown → generic hook.</li>
+<li>FR-WR-3: Brand voice: cinematic, direct, "Describe your idea. Signhify builds it." — no hype.</li>
+</ul>
+<h3>6.5 Delivery (FR-OPS)</h3>
+<ul>
+<li>FR-OPS-1: Global + per-campaign send limits, timezone windows, weekday-only default.</li>
+<li>FR-OPS-2: Auto-stop sequence on reply/unsubscribe/bounce/hard-bounce.</li>
+<li>FR-OPS-3: Warmup automation for each sending domain.</li>
+<li>FR-OPS-4: Deliverability dashboard: SPF/DKIM/DMARC status, bounce %, spam complaint %, blacklist checks.</li>
+</ul>
+<h3>6.6 Inbox (FR-RESP)</h3>
+<ul>
+<li>FR-RESP-1: All replies thread in Hunter Inbox; dedupe by message-id.</li>
+<li>FR-RESP-2: Auto-categorize replies; route unsubscribes to suppression list instantly.</li>
+<li>FR-RESP-3: Suggested replies; founder approval required before send (V1).</li>
+</ul>
+<h3>6.7 Analytics (FR-AN)</h3>
+<ul>
+<li>FR-AN-1: Funnel: sourced → verified → qualified → sent → replied → positive → meeting.</li>
+<li>FR-AN-2: Campaign KPIs: open, reply, positive-reply, meeting rate; cost per meeting.</li>
+<li>FR-AN-3: Deliverability health &amp; per-domain reputation trend.</li>
+</ul>
+<h3>6.8 Settings &amp; Billing (FR-SET)</h3>
+<ul>
+<li>FR-SET-1: Workspace settings: sending domains, integrations (booking link, CRM export), team members.</li>
+<li>FR-SET-2: Usage meter (leads sourced, emails sent) → Stripe billing (free trial → $49/mo pro; agency $149/mo).</li>
+</ul>
+<hr />
+<h2>7. Non-Functional Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Performance</td>
+<td>Dashboard &lt; 2s p95; campaign create → first send &lt; 5 min; agent loop &lt; 30s/lead</td>
+</tr>
+<tr>
+<td>Reliability</td>
+<td>99.5% uptime; jobs retried 3× with backoff; no silent drops</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>RLS on all data; secrets in vault; no PII in logs; audit log of human approvals</td>
+</tr>
+<tr>
+<td>Compliance</td>
+<td>CAN-SPAM (unsubscribe, physical address, truthful headers), GDPR (lawful basis, DSAR endpoint), India DPDP, platform ToS</td>
+</tr>
+<tr>
+<td>Scalability</td>
+<td>50k leads, 1M events/mo at V1 cost; multi-tenant ready in schema</td>
+</tr>
+<tr>
+<td>Observability</td>
+<td>Structured logs, OpenTelemetry traces, error alerts to founder</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>8. Compliance &amp; Risk (built-in, not bolted-on)</h2>
+<ol>
+<li><strong>CAN-SPAM:</strong> one-click unsubscribe, <code>list-unsubscribe</code>, physical address, no deceptive subjects, sender identification.</li>
+<li><strong>GDPR/DPDP:</strong> lawful basis (legitimate interest for B2B), DSAR endpoint (<code>/privacy-request</code>), suppression &amp; erasure flow, data retention 90 days for non-responsive leads.</li>
+<li><strong>Deliverability risk:</strong> warmup &gt; 2 weeks before volume, complaint-rate alarms at 0.1%, immediate domain rotation on blacklist.</li>
+<li><strong>Platform ToS risk:</strong> LinkedIn/X/Reddit/Upwork — scraping and DMs constrained by their terms; Hunter uses public APIs/feeds where offered and <em>suggestion mode</em> where not. Manual human action for ToS-sensitive sends.</li>
+<li><strong>Reputation risk:</strong> every email can be traced to a lead source; quality bar: positive-reply rate is the primary KPI, volume is secondary.</li>
+</ol>
+<hr />
+<h2>9. Success Metrics &amp; Targets</h2>
+<table>
+<thead>
+<tr>
+<th>KPI</th>
+<th>Target (steady state, week 8+)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Leads sourced / month</td>
+<td>2,000+</td>
+</tr>
+<tr>
+<td>Verified email rate</td>
+<td>≥ 85%</td>
+</tr>
+<tr>
+<td>Tier-A conversion of sourced</td>
+<td>≥ 8%</td>
+</tr>
+<tr>
+<td>Open rate</td>
+<td>≥ 60% (personalized)</td>
+</tr>
+<tr>
+<td>Positive reply rate</td>
+<td>3–5%</td>
+</tr>
+<tr>
+<td>Meetings booked / week</td>
+<td>5–10</td>
+</tr>
+<tr>
+<td>Complaint rate</td>
+<td>&lt; 0.1%</td>
+</tr>
+<tr>
+<td>Deliverability (inbox %)</td>
+<td>≥ 97%</td>
+</tr>
+<tr>
+<td>Founder time / week</td>
+<td>≤ 2 hrs</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>10. Open Questions (resolve in design phase)</h2>
+<ol>
+<li>Send volume ambition: 30/day/domain (safe) vs 150/day (aggressive)? → Default safe, scale with domains.</li>
+<li>Enrichment vendor budget: Apollo/Hunter.io API credits vs self-built verification (MX/SMTP)? → Hybrid.</li>
+<li>LinkedIn: accept suggestion-mode only for V1? → Yes.</li>
+<li>Productize as paid Signhify product in Phase 7? → Yes, schema multi-tenant from day 1.</li>
+</ol></body></html>

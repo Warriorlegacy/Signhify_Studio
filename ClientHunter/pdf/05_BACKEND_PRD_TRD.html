@@ -1,0 +1,342 @@
+<!doctype html><html><head><meta charset='utf-8'><style>
+body{font-family:'Segoe UI',Calibri,Arial,sans-serif;color:#0D0D14;max-width:820px;margin:24px auto;padding:0 28px;line-height:1.55;font-size:14.5px}
+h1{font-size:26px;border-bottom:3px solid #FF6B00;padding-bottom:8px;color:#0D0D14}
+h2{font-size:19px;margin-top:26px;border-bottom:1px solid #ddd;padding-bottom:4px;color:#111}
+h3{font-size:16px;margin-top:20px;color:#333}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px}
+th,td{border:1px solid #ccc;padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#0D0D14;color:#fff}
+tr:nth-child(even){background:#f5f5f5}
+code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:13px;font-family:Consolas,monospace}
+pre{background:#0D0D14;color:#E2E8F0;padding:12px;border-radius:6px;overflow-x:auto;font-size:12.5px}
+pre code{background:none;color:inherit;padding:0}
+blockquote{border-left:4px solid #FF6B00;margin:10px 0;padding:2px 14px;background:#fff4ec;color:#333}
+hr{border:none;border-top:1px solid #ddd;margin:20px 0}
+</style></head><body><h1>Signhify Hunter — Backend PRD-TRD</h1>
+<blockquote>
+<p><strong>Codename:</strong> HUNTER · <strong>Version:</strong> 1.0 · <strong>Date:</strong> 07 Aug 2026
+Scope: API, agents, queues, delivery engine, compliance, billing. Companions: <code>02_TRD.md</code>, <code>03_IMPLEMENTATION_PLAN.md</code></p>
+</blockquote>
+<hr />
+<h2>1. Product Requirements (Backend)</h2>
+<h3>1.1 Goals</h3>
+<ol>
+<li>Continuous, autonomous lead pipeline: source → enrich → verify → qualify → write → deliver → respond — with zero silent failures.</li>
+<li>At-least-once everything, idempotent everything; replays are safe.</li>
+<li>Delivery that protects sender reputation (warmup, limits, suppression, alarms).</li>
+<li>Compliance first: unsubscribes instant, suppression permanent, DSAR workable, retention enforced.</li>
+<li>Every AI decision auditable (event log with model, tokens, latency, input hash).</li>
+</ol>
+<h3>1.2 System-level non-negotiables</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B-1</td>
+<td>All queue handlers idempotent (natural-key upsert; <code>provider_message_id</code> unique)</td>
+</tr>
+<tr>
+<td>B-2</td>
+<td>No PII in logs; structured logs only; OpenTelemetry traces per lead-id</td>
+</tr>
+<tr>
+<td>B-3</td>
+<td>RLS on every table; service-role key used only in worker processes, never in browser</td>
+</tr>
+<tr>
+<td>B-4</td>
+<td>Send-time suppression check mandatory (cache + DB), even in sandbox</td>
+</tr>
+<tr>
+<td>B-5</td>
+<td>Global rate caps enforced at queue layer AND at provider layer (defense in depth)</td>
+</tr>
+<tr>
+<td>B-6</td>
+<td>Any agent failure → job retried 3× (backoff) → DLQ → alert; never silently dropped</td>
+</tr>
+<tr>
+<td>B-7</td>
+<td>Budget caps per campaign/workspace with hard stop + alarm</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>2. API Design (routes grouped)</h2>
+<h3>2.1 Auth (Supabase)</h3>
+<ul>
+<li>Session-based; middleware validates JWT → workspace id; all queries scoped.</li>
+</ul>
+<h3>2.2 Leads</h3>
+<ul>
+<li><code>GET /api/leads</code> — filters: <code>source, tier, verification, status, channel, q, page, pageSize</code>; sortable.</li>
+<li><code>GET /api/leads/:id</code> — detail + enrichment + events + messages.</li>
+<li><code>POST /api/leads/:id/tier</code> — manual tier override (audit event).</li>
+<li><code>POST /api/leads/:id/reverify</code> — re-run verify pipeline.</li>
+<li><code>POST /api/leads/bulk-tier</code> — bulk override.</li>
+<li><code>GET /api/leads/export</code> — CSV (respects 50k cap, async job + download URL).</li>
+</ul>
+<h3>2.3 Sources</h3>
+<ul>
+<li><code>GET/POST/PATCH/DELETE /api/sources</code></li>
+<li><code>POST /api/sources/:id/run</code> — enqueue immediate scout run.</li>
+<li><code>GET /api/sources/:id/status</code> — last run, counts, errors.</li>
+</ul>
+<h3>2.4 Campaigns</h3>
+<ul>
+<li><code>GET/POST /api/campaigns</code>; <code>GET/PATCH/DELETE /api/campaigns/:id</code></li>
+<li><code>POST /api/campaigns/:id/run</code> (validate → count audience → enqueue), <code>POST /api/campaigns/:id/pause</code>, <code>POST /api/campaigns/:id/resume</code></li>
+<li><code>POST /api/campaigns/:id/preview-samples</code> — generate 5 AI samples (LLM, cost-capped).</li>
+<li><code>GET /api/campaigns/:id/analytics</code> — step stats, funnel, budget.</li>
+</ul>
+<h3>2.5 Inbox</h3>
+<ul>
+<li><code>GET /api/inbox?status=&amp;category=</code> ; <code>GET /api/inbox/:threadId</code></li>
+<li><code>POST /api/inbox/:threadId/reply</code> — <code>{body}</code> → validates approved-by → sends (idempotent via thread+provider key).</li>
+<li><code>POST /api/inbox/:threadId/book</code> — create Cal.com event + lead → <code>meeting</code>.</li>
+<li><code>POST /api/inbox/:threadId/regenerate</code> — new AI suggestion.</li>
+</ul>
+<h3>2.6 Analytics</h3>
+<ul>
+<li><code>GET /api/analytics/dashboard?range=</code> — KPIs + funnel + deliverability.</li>
+<li><code>GET /api/analytics/channels</code> ; <code>GET /api/analytics/export</code></li>
+</ul>
+<h3>2.7 Settings</h3>
+<ul>
+<li><code>GET/POST /api/settings/domains</code> + <code>GET /api/settings/domains/:id/check</code> (DNS verification)</li>
+<li><code>GET/PATCH /api/settings/icp</code> — ICP rules (qualify agent reads).</li>
+<li><code>GET/POST /api/settings/integrations</code> — booking link, CRM webhook, Stripe portal link.</li>
+<li><code>GET /api/usage</code> — metered counts.</li>
+</ul>
+<h3>2.8 Compliance (public)</h3>
+<ul>
+<li><code>GET /api/compliance/unsubscribe?email=&amp;token=</code> — validates token (HMAC w/ 30-day expiry) → suppression insert + lead <code>unsubscribed</code>.</li>
+<li><code>POST /api/compliance/dsar</code> — <code>{email, action: export|erase}</code> → queued job → email result.</li>
+</ul>
+<h3>2.9 Webhooks</h3>
+<ul>
+<li><code>POST /api/webhooks/resend</code> — inbound email (message → thread), events (delivered/opened/clicked/bounced/complained). Signature-verified.</li>
+<li><code>POST /api/webhooks/stripe</code> — subscription + usage billing events.</li>
+</ul>
+<hr />
+<h2>3. Queue Architecture</h2>
+<pre><code>Upstash Redis streams per stage (scout, enrich, verify, qualify, write, deliver, warmup, reply, dlm)
+Workers: Node processes (local: `pnpm worker`; prod: Cloudflare Workers / Vercel cron + queue triggers)
+</code></pre>
+<ul>
+<li>Job payload: <code>{jobId, workspaceId, payload, attempt, idempotencyKey}</code>.</li>
+<li>Handler pattern (every worker):</li>
+</ul>
+<pre><code class="language-ts">export const handler = async (job: Job) =&gt; {
+  const key = `done:${job.idempotencyKey}`;
+  if (await redis.exists(key)) return;            // already processed
+  const result = await process(job.payload);      // business logic
+  await redis.set(key, &quot;1&quot;, { ex: 60 * 60 * 24 });// mark done
+  await logEvent(job);                            // audit trail
+  return result;
+};
+</code></pre>
+<ul>
+<li>Retries: 3 attempts, exponential backoff (1s/10s/60s), then DLQ stream + alert.</li>
+<li>Cron jobs (Vercel cron): scheduler every 5 min (due sends), warmup daily 09:00 UTC, retention daily 02:00 UTC, re-score daily for Tier B (14d cadence), DNS/blacklist check daily.</li>
+</ul>
+<hr />
+<h2>4. Delivery Engine Spec</h2>
+<h3>4.1 Send flow</h3>
+<ol>
+<li>Scheduler picks <code>CampaignLead</code> where <code>next_send_at &lt;= now</code> (limit batch 200).</li>
+<li>Checks (all must pass): suppression, daily domain cap, global cap, warmup level, send window, not-replied.</li>
+<li>Compose via Resend with headers: <code>List-Unsubscribe: &lt;https://signhify.dpdns.org/compliance/unsubscribe?…&gt;</code> + <code>List-Unsubscribe-Post: List-Unsubscribe=One-Click</code>; physical address block; truthful subject.</li>
+<li>Mark <code>sent</code> with <code>provider_message_id</code>; event log.</li>
+<li>On bounce: 550/hard → suppression + lead status <code>unsubscribed</code>; soft → retry next window (max 3).</li>
+<li>On reply/unsubscribe/complaint: sequence stops for that lead immediately; complaint → alert + domain score check.</li>
+</ol>
+<h3>4.2 Warmup engine</h3>
+<ul>
+<li>14-day ramp: day n sends = <code>min(5 * ceil(n/2), 30)</code> to warmup network (Seedleads API or self-hosted pool of test inboxes).</li>
+<li>Verifies inbox placement via seeded test addresses; stops + alerts if inbox rate &lt; 90%.</li>
+<li>Domain state machine: <code>provisioning → warming → active → cooling</code>.</li>
+</ul>
+<h3>4.3 Limits (defaults, configurable)</h3>
+<table>
+<thead>
+<tr>
+<th>Knob</th>
+<th>Default</th>
+<th>Hard cap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Per-domain daily</td>
+<td>30 → 150 (after warmup)</td>
+<td>150</td>
+</tr>
+<tr>
+<td>Per-campaign daily</td>
+<td>50</td>
+<td>workspace cap</td>
+</tr>
+<tr>
+<td>Per-lead touches</td>
+<td>3 steps / campaign</td>
+<td>3 campaigns ever</td>
+</tr>
+<tr>
+<td>Min step delay</td>
+<td>2 days</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Send window</td>
+<td>9:00–17:00 local lead tz</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Complaint alarm</td>
+<td>0.1% of last 500</td>
+<td>auto-stop campaign</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>5. Agent Workers (backend contract)</h2>
+<table>
+<thead>
+<tr>
+<th>Worker</th>
+<th>Input</th>
+<th>Output</th>
+<th>Model</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scout</code></td>
+<td><code>{sourceId, cursor}</code></td>
+<td><code>Lead[]</code> (upsert by domain)</td>
+<td>none (adapters)</td>
+<td>per-adapter rate limit; 429 → backoff; ToS-safe endpoints only</td>
+</tr>
+<tr>
+<td><code>enrich</code></td>
+<td><code>{leadId}</code></td>
+<td><code>Enrichment</code></td>
+<td>none (APIs/heuristics)</td>
+<td>Hunter.io/Apollo optional, budget-capped</td>
+</tr>
+<tr>
+<td><code>verify</code></td>
+<td><code>{leadId, email}</code></td>
+<td><code>EmailVerdict</code></td>
+<td>none (SMTP probe)</td>
+<td>3s timeout; catch-all → <code>risky</code></td>
+</tr>
+<tr>
+<td><code>qualify</code></td>
+<td><code>{leadId, icpRules}</code></td>
+<td><code>{score, tier, reasons[]}</code></td>
+<td>gpt-4o-mini</td>
+<td>deterministic pre-filter in SQL first</td>
+</tr>
+<tr>
+<td><code>writer</code></td>
+<td><code>{leadId, campaignId, step}</code></td>
+<td><code>{subject, body}</code></td>
+<td>Claude Sonnet 4</td>
+<td>120-word cap; honesty rules; fallback = template fill</td>
+</tr>
+<tr>
+<td><code>ops.send</code></td>
+<td><code>{messageId}</code></td>
+<td><code>{status}</code></td>
+<td>none</td>
+<td>all §4 gates</td>
+</tr>
+<tr>
+<td><code>ops.warmup</code></td>
+<td><code>{domainId}</code></td>
+<td><code>{count, inboxRate}</code></td>
+<td>none</td>
+<td>daily</td>
+</tr>
+<tr>
+<td><code>respond.classify</code></td>
+<td><code>{threadId}</code></td>
+<td><code>{category, intent, suggestion, needsHuman}</code></td>
+<td>gpt-4o-mini</td>
+<td>unsubscribe auto-handled, no LLM</td>
+</tr>
+<tr>
+<td><code>respond.book</code></td>
+<td><code>{threadId}</code></td>
+<td><code>{bookingUrl}</code></td>
+<td>none</td>
+<td>Cal.com API</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>6. Compliance Implementation</h2>
+<table>
+<thead>
+<tr>
+<th>Mechanism</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One-click unsubscribe</td>
+<td>HMAC token (workspace secret, 30d) → public route → suppression row + <code>Message.unsubscribed</code> + lead stop</td>
+</tr>
+<tr>
+<td><code>list-unsubscribe</code></td>
+<td>Added to every message + POST header</td>
+</tr>
+<tr>
+<td>Physical address</td>
+<td>Signhify registered address block, footer of every email</td>
+</tr>
+<tr>
+<td>GDPR/DPDP</td>
+<td>Lawful basis noted per lead (legitimate interest); DSAR export/erase jobs; retention 90d; suppression permanent &amp; re-checked on future ingest</td>
+</tr>
+<tr>
+<td>Data residency</td>
+<td>Supabase region chosen at setup (EU if EU prospects targeted)</td>
+</tr>
+<tr>
+<td>Audit</td>
+<td><code>Event</code> table: approvals, sends, tier changes, DSAR actions, by whom</td>
+</tr>
+<tr>
+<td>ToS guardrails</td>
+<td>LinkedIn/X/Reddit/Upwork adapters: public API/feed only; DM suggestions are copy-ready, human-send (no automation)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>7. Observability &amp; Ops</h2>
+<ul>
+<li>Health: <code>GET /api/health</code> (db, redis, resend, queue depths).</li>
+<li>Metrics (Axiom): jobs by stage (count, latency, error rate), send/bounce/reply rates, LLM cost/day, warmup inbox rate, queue depth alerts.</li>
+<li>Alerts (founder): complaint &gt; 0.1%, bounce &gt; 5%, blacklist hit, queue DLQ non-empty, LLM budget &gt; 80%, delivery inbox &lt; 95%.</li>
+<li>Dashboard: real-time agent activity via Realtime + <code>Event</code> table.</li>
+</ul>
+<hr />
+<h2>8. Acceptance Criteria (backend)</h2>
+<ol>
+<li>Scout: 2 sources × 100 leads, zero dupes on re-run, all jobs idempotent (replay test passes).</li>
+<li>Verify: 100-lead batch → ≥ 85% verified; verdicts deterministic on replay.</li>
+<li>Delivery: sandbox send → events flow; hard bounce auto-suppresses; reply auto-stops sequence (tested end-to-end).</li>
+<li>Limits: scheduler never exceeds caps even under 10× load (load test with 5k due sends).</li>
+<li>Compliance: unsubscribe &lt; 5s to suppression; DSAR export/erase runs; retention job deletes 90d-old untouched leads.</li>
+<li>Observability: alert fires on simulated complaint spike; DLQ replay works from UI.</li>
+</ol></body></html>

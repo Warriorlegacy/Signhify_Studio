@@ -11,6 +11,7 @@ export type Env = {
   producthuntToken?: string;
   sandbox: boolean;
   scheduleIntervalSec: number;
+  adminPassword?: string;
 };
 
 export const env: Env = {
@@ -21,11 +22,12 @@ export const env: Env = {
   resendKey: process.env.HUNTER_RESEND_API_KEY || undefined,
   fromEmail: process.env.HUNTER_FROM_EMAIL ?? "hunter@signhify.dev",
   fromName: process.env.HUNTER_FROM_NAME ?? "Piyush — Signhify Studio",
-  physicalAddress: process.env.HUNTER_PHYSICAL_ADDRESS ?? "Signhify, Bihar, India",
+  physicalAddress: process.env.HUNTER_PHYSICAL_ADDRESS ?? "Signhify AI Studio, 16192 Coastal Hwy, Lewes, DE 19958, USA",
   githubToken: process.env.HUNTER_GITHUB_TOKEN || undefined,
   producthuntToken: process.env.HUNTER_PRODUCTHUNT_TOKEN || undefined,
   sandbox: (process.env.HUNTER_SANDBOX ?? "true") !== "false",
   scheduleIntervalSec: Number(process.env.HUNTER_SCHEDULE_INTERVAL_SEC ?? 30),
+  adminPassword: process.env.HUNTER_ADMIN_PASSWORD || "SignhifyAdmin2026!",
 };
 
 export const llmKey = env.openaiKey ?? env.anthropicKey;

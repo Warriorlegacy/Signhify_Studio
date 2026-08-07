@@ -195,7 +195,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             },
             name: "Signhify AI Studio, Noida",
           },
-          areaServed: "Worldwide",
+          areaServed: ["United States", "North America", "Worldwide"],
           openingHoursSpecification: [
             {
               "@type": "OpeningHoursSpecification",

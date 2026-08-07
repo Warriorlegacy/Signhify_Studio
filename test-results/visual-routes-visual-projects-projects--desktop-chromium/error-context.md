@@ -1,0 +1,764 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: visual\routes.spec.ts >> visual: projects (/projects)
+- Location: tests\visual\routes.spec.ts:24:3
+
+# Error details
+
+```
+Error: expect(page).toHaveScreenshot(expected) failed
+
+Timeout: 5000ms
+  Timeout 5000ms exceeded.
+
+  Snapshot: projects.png
+
+Call log:
+  - Expect "toHaveScreenshot(projects.png)" with timeout 5000ms
+    - generating new stable screenshot expectation
+  - taking page screenshot
+    - disabled all CSS animations
+  - waiting for fonts to load...
+  - fonts loaded
+  - Timeout 5000ms exceeded.
+
+```
+
+```
+Tearing down "context" exceeded the test timeout of 30000ms.
+```
+
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner:
+    - generic:
+      - link "Signhify AI Engineering Studio Signhify" [ref=e2] [cursor=pointer]:
+        - /url: /
+        - img "Signhify AI Engineering Studio" [ref=e3]
+        - generic [ref=e4]: Signhify
+      - navigation [ref=e5]:
+        - link "Studio" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - link "Projects" [ref=e7] [cursor=pointer]:
+          - /url: /projects
+        - link "Services" [ref=e8] [cursor=pointer]:
+          - /url: /services
+        - link "AINew" [ref=e9] [cursor=pointer]:
+          - /url: /ai
+        - link "Market" [ref=e10] [cursor=pointer]:
+          - /url: /marketplace
+        - link "Deploy" [ref=e11] [cursor=pointer]:
+          - /url: /app/deploy
+        - link "Cloud" [ref=e12] [cursor=pointer]:
+          - /url: /app
+        - link "OS" [ref=e13] [cursor=pointer]:
+          - /url: /os
+        - link "AI Studio" [ref=e14] [cursor=pointer]:
+          - /url: /best-ai-engineering-studio
+        - button "Ecosystem" [ref=e17]:
+          - img [ref=e18]
+          - generic [ref=e22]: Ecosystem
+          - img [ref=e23]
+        - button "AI Keys" [ref=e25]:
+          - img [ref=e26]
+      - link "Start a Project" [ref=e31] [cursor=pointer]:
+        - /url: /contact
+        - generic [ref=e32]: Start a Project
+        - img [ref=e34]
+  - main [ref=e36]:
+    - generic [ref=e38]:
+      - navigation "Breadcrumb" [ref=e39]:
+        - list [ref=e40]:
+          - listitem [ref=e41]:
+            - link "Home" [ref=e42] [cursor=pointer]:
+              - /url: /
+              - img [ref=e43]
+              - generic [ref=e46]: Home
+          - listitem [ref=e47]:
+            - img [ref=e48]
+            - generic [ref=e50]: Projects
+      - generic [ref=e51]: The work
+      - heading "Shipped products. Real businesses." [level=1] [ref=e52]
+      - paragraph [ref=e53]: A snapshot of products designed, engineered and launched by Signhify across SaaS, AI, EdTech, NGO and digital & performance marketing.
+    - region "A luxury product universe — built, shipped, signed." [ref=e54]:
+      - generic [ref=e55]:
+        - generic [ref=e57]:
+          - generic [ref=e58]: Studio · Preset Gallery
+          - heading "A luxury product universe — built, shipped, signed." [level=2] [ref=e60]
+          - paragraph [ref=e61]: Every entry below is a real Signhify build. Filter by track, hover to spotlight, open one to step inside the brief.
+        - tablist "Project categories" [ref=e62]:
+          - tab "All" [selected] [ref=e63]
+          - tab "AI Workspace" [ref=e64]
+          - tab "Engineering Brand" [ref=e65]
+          - tab "SaaS Product" [ref=e66]
+          - tab "AI Automation" [ref=e67]
+          - tab "AI Marketplace" [ref=e68]
+          - tab "EdTech" [ref=e69]
+          - tab "Internal Tool" [ref=e70]
+          - tab "Developer Tools" [ref=e71]
+          - tab "Non-Profit" [ref=e72]
+          - tab "Bookings" [ref=e73]
+          - tab "Brand Platform" [ref=e74]
+          - tab "Business Web" [ref=e75]
+          - tab "Performance Marketing" [ref=e76]
+          - tab "Fintech" [ref=e77]
+          - tab "Analytics" [ref=e78]
+          - tab "AI Education" [ref=e79]
+        - generic [ref=e80]:
+          - generic [ref=e84]:
+            - button "Open Signhify AI preview" [ref=e85]:
+              - img "Signhify AI" [ref=e86]
+              - generic [ref=e89]: Signhify AI
+              - generic [ref=e90]: AI Workspace
+              - img [ref=e93]
+            - generic [ref=e97]:
+              - heading "Signhify AI · AI Workspace" [level=3] [ref=e99]:
+                - text: Signhify AI
+                - generic [ref=e100]: · AI Workspace
+              - paragraph [ref=e101]: An AI workspace that learns how you work, remembers what matters, and improves with every interaction — 7 specialized agents, BYOK, open source.
+              - generic [ref=e102]:
+                - generic [ref=e103]: Next.js
+                - generic [ref=e104]: TanStack
+                - generic [ref=e105]: Supabase
+                - generic [ref=e106]: Multi-provider AI
+              - generic [ref=e107]:
+                - button "Open brief" [ref=e108]:
+                  - img [ref=e109]
+                  - text: Open brief
+                - link "Visit" [ref=e112] [cursor=pointer]:
+                  - /url: https://signhify-ai-web.vercel.app/
+                  - img [ref=e113]
+                  - text: Visit
+          - generic [ref=e120]:
+            - button "Open Veepee Engineers preview" [ref=e121]:
+              - img "Veepee Engineers" [ref=e122]
+              - generic [ref=e125]: Veepee Engineers
+              - generic [ref=e126]: Engineering
+              - img [ref=e129]
+            - generic [ref=e133]:
+              - heading "Veepee Engineers · Engineering Brand" [level=3] [ref=e135]:
+                - text: Veepee Engineers
+                - generic [ref=e136]: · Engineering Brand
+              - paragraph [ref=e137]: Cinematic brand site for an engineering firm — services, capabilities and case work presented as a confident industrial portfolio.
+              - generic [ref=e138]:
+                - generic [ref=e139]: TanStack Start
+                - generic [ref=e140]: Tailwind
+                - generic [ref=e141]: Lovable
+              - generic [ref=e142]:
+                - button "Open brief" [ref=e143]:
+                  - img [ref=e144]
+                  - text: Open brief
+                - link "Visit" [ref=e147] [cursor=pointer]:
+                  - /url: https://veepee-engineers.lovable.app
+                  - img [ref=e148]
+                  - text: Visit
+          - generic [ref=e155]:
+            - button "Open GymFlow preview" [ref=e156]:
+              - img "GymFlow" [ref=e157]
+              - generic [ref=e160]: GymFlow
+              - generic [ref=e161]: Saas
+              - img [ref=e164]
+            - generic [ref=e168]:
+              - heading "GymFlow · SaaS Product" [level=3] [ref=e170]:
+                - text: GymFlow
+                - generic [ref=e171]: · SaaS Product
+              - paragraph [ref=e172]: Multi-tenant gym OS — memberships, attendance, billing and front-desk ops collapsed into one cinematic dashboard.
+              - generic [ref=e173]:
+                - generic [ref=e174]: Next.js
+                - generic [ref=e175]: Supabase
+                - generic [ref=e176]: Stripe
+                - generic [ref=e177]: Tailwind
+              - generic [ref=e178]:
+                - button "Open brief" [ref=e179]:
+                  - img [ref=e180]
+                  - text: Open brief
+                - link "Visit" [ref=e183] [cursor=pointer]:
+                  - /url: https://gymflow-saas.vercel.app
+                  - img [ref=e184]
+                  - text: Visit
+          - generic [ref=e191]:
+            - button "Open AutoReels AI preview" [ref=e192]:
+              - img "AutoReels AI" [ref=e193]
+              - generic [ref=e196]: AutoReels AI
+              - generic [ref=e197]: AI
+              - img [ref=e200]
+            - generic [ref=e204]:
+              - heading "AutoReels AI · AI Automation" [level=3] [ref=e206]:
+                - text: AutoReels AI
+                - generic [ref=e207]: · AI Automation
+              - paragraph [ref=e208]: Long-form video → publish-ready short-form reels. An AI pipeline that runs end-to-end with zero human edit.
+              - generic [ref=e209]:
+                - generic [ref=e210]: Python
+                - generic [ref=e211]: ffmpeg
+                - generic [ref=e212]: OpenAI
+                - generic [ref=e213]: Whisper
+              - generic [ref=e214]:
+                - button "Open brief" [ref=e215]:
+                  - img [ref=e216]
+                  - text: Open brief
+                - link "Visit" [ref=e219] [cursor=pointer]:
+                  - /url: https://autoreels-ai.vercel.app
+                  - img [ref=e220]
+                  - text: Visit
+          - generic [ref=e227]:
+            - button "Open GigMind preview" [ref=e228]:
+              - img "GigMind" [ref=e229]
+              - generic [ref=e232]: GigMind
+              - generic [ref=e233]: Marketplace
+              - img [ref=e236]
+            - generic [ref=e240]:
+              - heading "GigMind · AI Marketplace" [level=3] [ref=e242]:
+                - text: GigMind
+                - generic [ref=e243]: · AI Marketplace
+              - paragraph [ref=e244]: AI-matched gig marketplace where freelancers and clients discover, scope and ship work in days.
+              - generic [ref=e245]:
+                - generic [ref=e246]: Next.js
+                - generic [ref=e247]: Postgres
+                - generic [ref=e248]: Vercel AI SDK
+              - generic [ref=e249]:
+                - button "Open brief" [ref=e250]:
+                  - img [ref=e251]
+                  - text: Open brief
+                - link "Visit" [ref=e254] [cursor=pointer]:
+                  - /url: https://gigmind-gamma.vercel.app
+                  - img [ref=e255]
+                  - text: Visit
+          - generic [ref=e262]:
+            - button "Open TuitionTrack preview" [ref=e263]:
+              - img "TuitionTrack" [ref=e264]
+              - generic [ref=e267]: TuitionTrack
+              - generic [ref=e268]: EdTech
+              - img [ref=e271]
+            - generic [ref=e275]:
+              - heading "TuitionTrack · EdTech" [level=3] [ref=e277]:
+                - text: TuitionTrack
+                - generic [ref=e278]: · EdTech
+              - paragraph [ref=e279]: All-in-one operations layer for coaching institutes — students, attendance, fees and parent reporting.
+              - generic [ref=e280]:
+                - generic [ref=e281]: React
+                - generic [ref=e282]: Supabase
+                - generic [ref=e283]: Resend
+              - generic [ref=e284]:
+                - button "Open brief" [ref=e285]:
+                  - img [ref=e286]
+                  - text: Open brief
+                - link "Visit" [ref=e289] [cursor=pointer]:
+                  - /url: https://tuitiontrack-app.vercel.app
+                  - img [ref=e290]
+                  - text: Visit
+          - generic [ref=e297]:
+            - button "Open Signhify CRM preview" [ref=e298]:
+              - img "Signhify CRM" [ref=e299]
+              - generic [ref=e302]: Signhify CRM
+              - generic [ref=e303]: Tool
+              - img [ref=e306]
+            - generic [ref=e310]:
+              - heading "Signhify CRM · Internal Tool" [level=3] [ref=e312]:
+                - text: Signhify CRM
+                - generic [ref=e313]: · Internal Tool
+              - paragraph [ref=e314]: Our own pipeline engine — leads, deals, automations and AI follow-ups, powering every Signhify project.
+              - generic [ref=e315]:
+                - generic [ref=e316]: Next.js
+                - generic [ref=e317]: Supabase
+                - generic [ref=e318]: n8n
+              - generic [ref=e319]:
+                - button "Open brief" [ref=e320]:
+                  - img [ref=e321]
+                  - text: Open brief
+                - link "Visit" [ref=e324] [cursor=pointer]:
+                  - /url: https://signhify-crm.vercel.app
+                  - img [ref=e325]
+                  - text: Visit
+          - generic [ref=e332]:
+            - button "Open Vibe Coding preview" [ref=e333]:
+              - img "Vibe Coding" [ref=e334]
+              - generic [ref=e337]: Vibe Coding
+              - generic [ref=e338]: DevTools
+              - img [ref=e341]
+            - generic [ref=e345]:
+              - heading "Vibe Coding · Developer Tools" [level=3] [ref=e347]:
+                - text: Vibe Coding
+                - generic [ref=e348]: · Developer Tools
+              - paragraph [ref=e349]: Prototype of an AI-native coding environment — the seed that grew into Signhify AI.
+              - generic [ref=e350]:
+                - generic [ref=e351]: React
+                - generic [ref=e352]: Monaco
+                - generic [ref=e353]: Claude
+              - generic [ref=e354]:
+                - button "Open brief" [ref=e355]:
+                  - img [ref=e356]
+                  - text: Open brief
+                - link "Visit" [ref=e359] [cursor=pointer]:
+                  - /url: https://vibe-coding-platform-neon-kappa.vercel.app
+                  - img [ref=e360]
+                  - text: Visit
+          - generic [ref=e367]:
+            - button "Open Sewarth Path preview" [ref=e368]:
+              - img "Sewarth Path" [ref=e369]
+              - generic [ref=e372]: Sewarth Path
+              - generic [ref=e373]: NGO
+              - img [ref=e376]
+            - generic [ref=e380]:
+              - heading "Sewarth Path · Non-Profit" [level=3] [ref=e382]:
+                - text: Sewarth Path
+                - generic [ref=e383]: · Non-Profit
+              - paragraph [ref=e384]: Brand and digital home for an NGO running campaigns, donations and community programs across India.
+              - generic [ref=e385]:
+                - generic [ref=e386]: Next.js
+                - generic [ref=e387]: Razorpay
+              - generic [ref=e388]:
+                - button "Open brief" [ref=e389]:
+                  - img [ref=e390]
+                  - text: Open brief
+                - link "Visit" [ref=e393] [cursor=pointer]:
+                  - /url: https://sewarthpathsansthanam.vercel.app
+                  - img [ref=e394]
+                  - text: Visit
+          - generic [ref=e401]:
+            - button "Open JMD Bookings preview" [ref=e402]:
+              - img "JMD Bookings" [ref=e403]
+              - generic [ref=e406]: JMD Bookings
+              - generic [ref=e407]: Booking
+              - img [ref=e410]
+            - generic [ref=e414]:
+              - heading "JMD Bookings · Bookings" [level=3] [ref=e416]:
+                - text: JMD Bookings
+                - generic [ref=e417]: · Bookings
+              - paragraph [ref=e418]: Friction-free appointment and slot booking with automated reminders and live availability.
+              - generic [ref=e419]:
+                - generic [ref=e420]: Next.js
+                - generic [ref=e421]: Supabase
+                - generic [ref=e422]: WhatsApp API
+              - generic [ref=e423]:
+                - button "Open brief" [ref=e424]:
+                  - img [ref=e425]
+                  - text: Open brief
+                - link "Visit" [ref=e428] [cursor=pointer]:
+                  - /url: https://jmd-online-book.vercel.app
+                  - img [ref=e429]
+                  - text: Visit
+          - generic [ref=e436]:
+            - button "Open GPLE Sports preview" [ref=e437]:
+              - img "GPLE Sports" [ref=e438]
+              - generic [ref=e441]: GPLE Sports
+              - generic [ref=e442]: Brand
+              - img [ref=e445]
+            - generic [ref=e449]:
+              - heading "GPLE Sports · Brand Platform" [level=3] [ref=e451]:
+                - text: GPLE Sports
+                - generic [ref=e452]: · Brand Platform
+              - paragraph [ref=e453]: Sports brand presentation surface — fixtures, fan engagement, partner showcases.
+              - generic [ref=e454]:
+                - generic [ref=e455]: React
+                - generic [ref=e456]: Tailwind
+              - generic [ref=e457]:
+                - button "Open brief" [ref=e458]:
+                  - img [ref=e459]
+                  - text: Open brief
+                - link "Visit" [ref=e462] [cursor=pointer]:
+                  - /url: https://gplesports.vercel.app
+                  - img [ref=e463]
+                  - text: Visit
+          - generic [ref=e470]:
+            - button "Open Rahul Silk preview" [ref=e471]:
+              - img "Rahul Silk" [ref=e472]
+              - generic [ref=e475]: Rahul Silk
+              - generic [ref=e476]: Web
+              - img [ref=e479]
+            - generic [ref=e483]:
+              - heading "Rahul Silk · Business Web" [level=3] [ref=e485]:
+                - text: Rahul Silk
+                - generic [ref=e486]: · Business Web
+              - paragraph [ref=e487]: Storefront-led brand site for a heritage textile house — catalogue, story, enquiry.
+              - generic [ref=e489]: Next.js
+              - generic [ref=e490]:
+                - button "Open brief" [ref=e491]:
+                  - img [ref=e492]
+                  - text: Open brief
+                - link "Visit" [ref=e495] [cursor=pointer]:
+                  - /url: https://rahul-silk.vercel.app
+                  - img [ref=e496]
+                  - text: Visit
+          - generic [ref=e503]:
+            - button "Open VIP Telegram Funnel preview" [ref=e504]:
+              - img "VIP Telegram Funnel" [ref=e505]
+              - generic [ref=e508]: VIP Telegram Funnel
+              - generic [ref=e509]: Growth
+              - img [ref=e512]
+            - generic [ref=e516]:
+              - heading "VIP Telegram Funnel · Performance Marketing" [level=3] [ref=e518]:
+                - text: VIP Telegram Funnel
+                - generic [ref=e519]: · Performance Marketing
+              - paragraph [ref=e520]: High-conversion landing engineered around paid-traffic mechanics — CRO, social proof, deep funnel.
+              - generic [ref=e521]:
+                - generic [ref=e522]: Astro
+                - generic [ref=e523]: Tailwind
+              - generic [ref=e524]:
+                - button "Open brief" [ref=e525]:
+                  - img [ref=e526]
+                  - text: Open brief
+                - link "Visit" [ref=e529] [cursor=pointer]:
+                  - /url: https://vip-free-tennis-page.vercel.app
+                  - img [ref=e530]
+                  - text: Visit
+          - generic [ref=e537]:
+            - button "Open NebulaPay preview" [ref=e538]:
+              - img "NebulaPay" [ref=e539]
+              - generic [ref=e542]: NebulaPay
+              - generic [ref=e543]: Fintech
+              - img [ref=e546]
+            - generic [ref=e550]:
+              - heading "NebulaPay · Fintech" [level=3] [ref=e552]:
+                - text: NebulaPay
+                - generic [ref=e553]: · Fintech
+              - paragraph [ref=e554]: Cinematic fintech checkout layer — embeddable Pay-with-Nebula button, dark glass UI, sub-200ms perceived latency.
+              - generic [ref=e555]:
+                - generic [ref=e556]: Next.js
+                - generic [ref=e557]: Stripe
+                - generic [ref=e558]: Cloudflare Workers
+              - generic [ref=e559]:
+                - button "Open brief" [ref=e560]:
+                  - img [ref=e561]
+                  - text: Open brief
+                - link "Visit" [ref=e564] [cursor=pointer]:
+                  - /url: https://signhify.dpdns.org/projects/nebulapay
+                  - img [ref=e565]
+                  - text: Visit
+          - generic [ref=e572]:
+            - button "Open Aurora Analytics preview" [ref=e573]:
+              - img "Aurora Analytics" [ref=e574]
+              - generic [ref=e577]: Aurora Analytics
+              - generic [ref=e578]: Analytics
+              - img [ref=e581]
+            - generic [ref=e585]:
+              - heading "Aurora Analytics · Analytics" [level=3] [ref=e587]:
+                - text: Aurora Analytics
+                - generic [ref=e588]: · Analytics
+              - paragraph [ref=e589]: Real-time product analytics with AI-narrated dashboards — Aurora explains why your numbers moved overnight.
+              - generic [ref=e590]:
+                - generic [ref=e591]: TanStack Start
+                - generic [ref=e592]: ClickHouse
+                - generic [ref=e593]: OpenAI
+              - generic [ref=e594]:
+                - button "Open brief" [ref=e595]:
+                  - img [ref=e596]
+                  - text: Open brief
+                - link "Visit" [ref=e599] [cursor=pointer]:
+                  - /url: https://signhify.dpdns.org/projects/aurora-analytics
+                  - img [ref=e600]
+                  - text: Visit
+          - generic [ref=e607]:
+            - button "Open SkillForge AI preview" [ref=e608]:
+              - img "SkillForge AI" [ref=e609]
+              - generic [ref=e612]: SkillForge AI
+              - generic [ref=e613]: AI EDU
+              - img [ref=e616]
+            - generic [ref=e620]:
+              - heading "SkillForge AI · AI Education" [level=3] [ref=e622]:
+                - text: SkillForge AI
+                - generic [ref=e623]: · AI Education
+              - paragraph [ref=e624]: Adaptive AI tutor that turns a curriculum into a per-learner journey — adjusts pace, depth and tone in real time.
+              - generic [ref=e625]:
+                - generic [ref=e626]: Next.js
+                - generic [ref=e627]: Supabase
+                - generic [ref=e628]: Claude
+              - generic [ref=e629]:
+                - button "Open brief" [ref=e630]:
+                  - img [ref=e631]
+                  - text: Open brief
+                - link "Visit" [ref=e634] [cursor=pointer]:
+                  - /url: https://signhify.dpdns.org/projects/skillforge
+                  - img [ref=e635]
+                  - text: Visit
+          - generic [ref=e642]:
+            - button "Open Signhify AI preview" [ref=e643]:
+              - img "Signhify AI" [ref=e644]
+              - generic [ref=e647]: Signhify AI
+              - generic [ref=e648]: DevTools
+              - img [ref=e651]
+            - generic [ref=e655]:
+              - heading "Signhify AI · Developer Tools" [level=3] [ref=e657]:
+                - text: Signhify AI
+                - generic [ref=e658]: · Developer Tools
+              - paragraph [ref=e659]: Signhify's own AI studio — a full-stack coding and product intelligence platform built to accelerate how we ship for clients.
+              - generic [ref=e660]:
+                - generic [ref=e661]: TanStack Start
+                - generic [ref=e662]: Supabase
+                - generic [ref=e663]: Claude
+                - generic [ref=e664]: OpenAI
+              - generic [ref=e665]:
+                - button "Open brief" [ref=e666]:
+                  - img [ref=e667]
+                  - text: Open brief
+                - link "Visit" [ref=e670] [cursor=pointer]:
+                  - /url: https://signhify-ai.vercel.app
+                  - img [ref=e671]
+                  - text: Visit
+          - generic [ref=e678]:
+            - button "Open AdShield India preview" [ref=e679]:
+              - img "AdShield India" [ref=e680]
+              - generic [ref=e683]: AdShield India
+              - generic [ref=e684]: AI
+              - img [ref=e687]
+            - generic [ref=e691]:
+              - heading "AdShield India · AI Automation" [level=3] [ref=e693]:
+                - text: AdShield India
+                - generic [ref=e694]: · AI Automation
+              - paragraph [ref=e695]: AI-powered ad fraud detection and protection layer for Indian performance marketers — blocks invalid traffic in real time.
+              - generic [ref=e696]:
+                - generic [ref=e697]: Next.js
+                - generic [ref=e698]: Python
+                - generic [ref=e699]: ML
+                - generic [ref=e700]: Supabase
+              - generic [ref=e701]:
+                - button "Open brief" [ref=e702]:
+                  - img [ref=e703]
+                  - text: Open brief
+                - link "Visit" [ref=e706] [cursor=pointer]:
+                  - /url: https://adshield-india.vercel.app
+                  - img [ref=e707]
+                  - text: Visit
+          - generic [ref=e714]:
+            - button "Open AutoTube preview" [ref=e715]:
+              - img "AutoTube" [ref=e716]
+              - generic [ref=e719]: AutoTube
+              - generic [ref=e720]: AI
+              - img [ref=e723]
+            - generic [ref=e727]:
+              - heading "AutoTube · AI Automation" [level=3] [ref=e729]:
+                - text: AutoTube
+                - generic [ref=e730]: · AI Automation
+              - paragraph [ref=e731]: YouTube channel automation — AI scripts, auto-publish, thumbnail generation and SEO metadata pipeline end-to-end.
+              - generic [ref=e732]:
+                - generic [ref=e733]: Next.js
+                - generic [ref=e734]: OpenAI
+                - generic [ref=e735]: YouTube API
+                - generic [ref=e736]: n8n
+              - generic [ref=e737]:
+                - button "Open brief" [ref=e738]:
+                  - img [ref=e739]
+                  - text: Open brief
+                - link "Visit" [ref=e742] [cursor=pointer]:
+                  - /url: https://autotube-signhify.vercel.app
+                  - img [ref=e743]
+                  - text: Visit
+          - generic [ref=e750]:
+            - button "Open Cricket King preview" [ref=e751]:
+              - img "Cricket King" [ref=e752]
+              - generic [ref=e755]: Cricket King
+              - generic [ref=e756]: Growth
+              - img [ref=e759]
+            - generic [ref=e763]:
+              - heading "Cricket King · Performance Marketing" [level=3] [ref=e765]:
+                - text: Cricket King
+                - generic [ref=e766]: · Performance Marketing
+              - paragraph [ref=e767]: High-conversion Telegram funnel for a cricket picks channel — social proof, scarcity mechanics and deep CRO architecture.
+              - generic [ref=e768]:
+                - generic [ref=e769]: Astro
+                - generic [ref=e770]: Tailwind
+              - generic [ref=e771]:
+                - button "Open brief" [ref=e772]:
+                  - img [ref=e773]
+                  - text: Open brief
+                - link "Visit" [ref=e776] [cursor=pointer]:
+                  - /url: https://cricket-king-rahul.vercel.app
+                  - img [ref=e777]
+                  - text: Visit
+          - generic [ref=e784]:
+            - button "Open Hari Cricket preview" [ref=e785]:
+              - img "Hari Cricket" [ref=e786]
+              - generic [ref=e789]: Hari Cricket
+              - generic [ref=e790]: Growth
+              - img [ref=e793]
+            - generic [ref=e797]:
+              - heading "Hari Cricket · Performance Marketing" [level=3] [ref=e799]:
+                - text: Hari Cricket
+                - generic [ref=e800]: · Performance Marketing
+              - paragraph [ref=e801]: Conversion-first landing page for a cricket Telegram community — engineered around trust signals and frictionless join flow.
+              - generic [ref=e802]:
+                - generic [ref=e803]: React
+                - generic [ref=e804]: Tailwind
+              - generic [ref=e805]:
+                - button "Open brief" [ref=e806]:
+                  - img [ref=e807]
+                  - text: Open brief
+                - link "Visit" [ref=e810] [cursor=pointer]:
+                  - /url: https://hari-cricket.vercel.app
+                  - img [ref=e811]
+                  - text: Visit
+          - generic [ref=e818]:
+            - button "Open Tennis King Jackpot preview" [ref=e819]:
+              - img "Tennis King Jackpot" [ref=e820]
+              - generic [ref=e823]: Tennis King Jackpot
+              - generic [ref=e824]: Growth
+              - img [ref=e827]
+            - generic [ref=e831]:
+              - heading "Tennis King Jackpot · Performance Marketing" [level=3] [ref=e833]:
+                - text: Tennis King Jackpot
+                - generic [ref=e834]: · Performance Marketing
+              - paragraph [ref=e835]: Sports picks landing page with urgency mechanics, animated win-rate counter, and Telegram CTA optimised for paid traffic.
+              - generic [ref=e836]:
+                - generic [ref=e837]: Astro
+                - generic [ref=e838]: Tailwind
+              - generic [ref=e839]:
+                - button "Open brief" [ref=e840]:
+                  - img [ref=e841]
+                  - text: Open brief
+                - link "Visit" [ref=e844] [cursor=pointer]:
+                  - /url: https://tennis-king-jackpot.vercel.app
+                  - img [ref=e845]
+                  - text: Visit
+          - generic [ref=e852]:
+            - button "Open ExamAstra preview" [ref=e853]:
+              - img "ExamAstra" [ref=e854]
+              - generic [ref=e857]: ExamAstra
+              - generic [ref=e858]: AI EDU
+              - img [ref=e861]
+            - generic [ref=e865]:
+              - heading "ExamAstra · AI Education" [level=3] [ref=e867]:
+                - text: ExamAstra
+                - generic [ref=e868]: · AI Education
+              - paragraph [ref=e869]: AI-driven exam prep for UPSC, SSC & State PSC — personalised study paths, adaptive question banks and real-time timeline analytics.
+              - generic [ref=e870]:
+                - generic [ref=e871]: Next.js
+                - generic [ref=e872]: Supabase
+                - generic [ref=e873]: OpenAI
+                - generic [ref=e874]: Tailwind
+              - generic [ref=e875]:
+                - button "Open brief" [ref=e876]:
+                  - img [ref=e877]
+                  - text: Open brief
+                - link "Visit" [ref=e880] [cursor=pointer]:
+                  - /url: https://examastra.vercel.app
+                  - img [ref=e881]
+                  - text: Visit
+    - generic [ref=e888]:
+      - generic [ref=e889]:
+        - generic [ref=e890]: 14+ products shipped
+        - generic [ref=e892]: Multi-tenant SaaS
+        - generic [ref=e894]: AI-first engineering
+        - generic [ref=e896]: Delivered in weeks
+      - heading "Your idea, Signhified." [level=2] [ref=e898]
+      - paragraph [ref=e899]: Scope your idea, pick your budget, and get a production-ready AI product deployed to your infrastructure in 14 days.
+      - generic [ref=e900]:
+        - button "Instant Sprint Scoper" [ref=e901] [cursor=pointer]:
+          - img [ref=e902]
+          - text: Instant Sprint Scoper
+          - img [ref=e905]
+        - link "Book a 10-Min Call" [ref=e907] [cursor=pointer]:
+          - /url: /book
+          - img [ref=e908]
+          - text: Book a 10-Min Call
+      - paragraph [ref=e910]: No commitment. 100% Code Ownership on your GitHub from Day One.
+  - contentinfo [ref=e911]:
+    - generic [ref=e913]:
+      - generic [ref=e914]:
+        - generic [ref=e916]:
+          - generic [ref=e917]: Signhify
+          - generic [ref=e918]: AI Engineering Studio
+        - paragraph [ref=e919]: Describe your idea. Signhify builds it. We design, ship, and scale AI-first products end-to-end — from MVP to revenue.
+        - generic [ref=e920]:
+          - img [ref=e921]
+          - text: Registered MSME · Govt. of India (UDYAM)
+      - generic [ref=e924]:
+        - generic [ref=e925]: Studio
+        - list [ref=e926]:
+          - listitem [ref=e927]:
+            - link "Services" [ref=e928] [cursor=pointer]:
+              - /url: /services
+          - listitem [ref=e929]:
+            - link "Pricing" [ref=e930] [cursor=pointer]:
+              - /url: /pricing
+          - listitem [ref=e931]:
+            - link "Projects" [ref=e932] [cursor=pointer]:
+              - /url: /projects
+          - listitem [ref=e933]:
+            - link "AI Generator" [ref=e934] [cursor=pointer]:
+              - /url: /ai
+          - listitem [ref=e935]:
+            - link "Marketplace" [ref=e936] [cursor=pointer]:
+              - /url: /marketplace
+          - listitem [ref=e937]:
+            - link "About" [ref=e938] [cursor=pointer]:
+              - /url: /about
+          - listitem [ref=e939]:
+            - link "Vision 2030" [ref=e940] [cursor=pointer]:
+              - /url: /vision
+          - listitem [ref=e941]:
+            - link "Roadmap" [ref=e942] [cursor=pointer]:
+              - /url: /roadmap
+          - listitem [ref=e943]:
+            - link "Insights & AEO Playbooks" [ref=e944] [cursor=pointer]:
+              - /url: /insights
+          - listitem [ref=e945]:
+            - link "Brand Entity" [ref=e946] [cursor=pointer]:
+              - /url: /brand
+          - listitem [ref=e947]:
+            - link "Help Center" [ref=e948] [cursor=pointer]:
+              - /url: /help
+          - listitem [ref=e949]:
+            - link "AI Engineering Studio" [ref=e950] [cursor=pointer]:
+              - /url: /best-ai-engineering-studio
+          - listitem [ref=e951]:
+            - link "Vibe-Coding Platform" [ref=e952] [cursor=pointer]:
+              - /url: /best-vibe-coding-platform
+          - listitem [ref=e953]:
+            - link "Digital Marketing Studio" [ref=e954] [cursor=pointer]:
+              - /url: /best-digital-marketing-studio
+          - listitem [ref=e955]:
+            - link "SaaS MVP Development" [ref=e956] [cursor=pointer]:
+              - /url: /saas-mvp
+          - listitem [ref=e957]:
+            - link "Free Consultation" [ref=e958] [cursor=pointer]:
+              - /url: /free-consultation
+          - listitem [ref=e959]:
+            - link "Book a call" [ref=e960] [cursor=pointer]:
+              - /url: /book
+          - listitem [ref=e961]:
+            - link "Affiliate Program" [ref=e962] [cursor=pointer]:
+              - /url: /affiliate
+      - generic [ref=e963]:
+        - generic [ref=e964]: Connect
+        - list [ref=e965]:
+          - listitem [ref=e966]:
+            - link "LinkedIn" [ref=e967] [cursor=pointer]:
+              - /url: https://linkedin.com/in/piyushraj-singh
+              - img [ref=e968]
+              - text: LinkedIn
+          - listitem [ref=e971]:
+            - link "GitHub" [ref=e972] [cursor=pointer]:
+              - /url: https://github.com/Warriorlegacy
+              - img [ref=e973]
+              - text: GitHub
+          - listitem [ref=e977]:
+            - link "Piyushrajsingh092@gmail.com" [ref=e978] [cursor=pointer]:
+              - /url: mailto:Piyushrajsingh092@gmail.com
+              - img [ref=e979]
+              - text: Piyushrajsingh092@gmail.com
+          - listitem [ref=e982]:
+            - link "WhatsApp · +91 62024 42690" [ref=e983] [cursor=pointer]:
+              - /url: https://wa.me/916202442690
+              - img [ref=e984]
+              - text: WhatsApp · +91 62024 42690
+          - listitem [ref=e987]:
+            - link "Privacy" [ref=e988] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms" [ref=e989] [cursor=pointer]:
+              - /url: /terms
+    - generic [ref=e991]:
+      - generic [ref=e992]: © 2026 Signhify · Built by Piyush Raj Singh
+      - generic [ref=e993]: signhify.dpdns.org
+  - link "Chat with Signhify on WhatsApp" [ref=e994] [cursor=pointer]:
+    - /url: https://wa.me/916202442690?text=Hi%20Signhify%2C%20I%27d%20like%20to%20discuss%20a%20build.
+    - img [ref=e997]
+    - generic [ref=e999]: WhatsApp us
+  - region "Notifications alt+T"
+```

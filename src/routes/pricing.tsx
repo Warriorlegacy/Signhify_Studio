@@ -537,6 +537,7 @@ function PricingPage() {
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               to="/signup"
+              search={{ redirect: "/pricing" }}
               className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110 transition"
             >
               Start Free <ArrowRight size={16} />

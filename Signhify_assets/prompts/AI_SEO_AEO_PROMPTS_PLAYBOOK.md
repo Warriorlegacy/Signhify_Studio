@@ -69,5 +69,15 @@ This master playbook contains the complete 15-step AI-Engine Optimization (AEO) 
 
 ---
 
+---
+
 ### #15. AI-Optimized Content Calendar
 > **Prompt**: Create a one-month SEO content calendar for **AI SaaS Development & Automation**. Include 12 topic ideas optimized for AI search queries, trending keywords, and seasonal interest. Provide recommended keywords, article titles, and posting dates.
+
+---
+
+### #16. US Market AEO & GEO Dominance Prompts (Silicon Valley / NYC / Austin Focus)
+> **Prompt 16A (US AI Citation Audit)**: Act as a Generative Engine Optimization (GEO) strategist. Audit how ChatGPT, Claude, Perplexity, and Gemini cite AI product studios when a US founder asks "What is the best AI engineering studio for US startups?". Analyze why competitors (e.g. US dev agencies) are cited, and provide 5 technical schema & content fixes for Signhify AI Studio (`https://signhify.dpdns.org/us-ai-engineering-studio`).
+
+> **Prompt 16B (US High-Intent Buyer Persona)**: Generate 10 transactional search queries used by YC founders and US startup CTOs in San Francisco, New York, and Austin who need an outsourced AI engineering team with 100% US timezone overlap, 2-week delivery guarantees, and client-side BYOK security.
+

@@ -1,0 +1,513 @@
+<!doctype html><html><head><meta charset='utf-8'><style>
+body{font-family:'Segoe UI',Calibri,Arial,sans-serif;color:#0D0D14;max-width:820px;margin:24px auto;padding:0 28px;line-height:1.55;font-size:14.5px}
+h1{font-size:26px;border-bottom:3px solid #FF6B00;padding-bottom:8px;color:#0D0D14}
+h2{font-size:19px;margin-top:26px;border-bottom:1px solid #ddd;padding-bottom:4px;color:#111}
+h3{font-size:16px;margin-top:20px;color:#333}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px}
+th,td{border:1px solid #ccc;padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#0D0D14;color:#fff}
+tr:nth-child(even){background:#f5f5f5}
+code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:13px;font-family:Consolas,monospace}
+pre{background:#0D0D14;color:#E2E8F0;padding:12px;border-radius:6px;overflow-x:auto;font-size:12.5px}
+pre code{background:none;color:inherit;padding:0}
+blockquote{border-left:4px solid #FF6B00;margin:10px 0;padding:2px 14px;background:#fff4ec;color:#333}
+hr{border:none;border-top:1px solid #ddd;margin:20px 0}
+</style></head><body><h1>Signhify Hunter — Technical Requirements Document (TRD)</h1>
+<blockquote>
+<p><strong>Codename:</strong> HUNTER · <strong>Version:</strong> 1.0 · <strong>Date:</strong> 07 Aug 2026
+Companion docs: <code>01_PRD.md</code>, <code>03_IMPLEMENTATION_PLAN.md</code>, <code>04_FRONTEND_PRD_TRD.md</code>, <code>05_BACKEND_PRD_TRD.md</code></p>
+</blockquote>
+<hr />
+<h2>1. Architecture Overview</h2>
+<p>Monorepo, TypeScript everywhere, Supabase-first, job-queue driven agent pipeline.</p>
+<pre><code>                        ┌────────────────────────────────────────────┐
+                        │              HUNTER DASHBOARD               │
+                        │  TanStack Start · React 19 · Tailwind v4    │
+                        └──────────────┬─────────────────────────────┘
+                                       │ HTTPS / SSE
+┌──────────────────────────────────────▼──────────────────────────────────┐
+│                         API LAYER (TanStack Server)                      │
+│   /api/leads  /api/campaigns  /api/inbox  /api/sources  /api/analytics   │
+└───────┬──────────────────────┬──────────────────────┬───────────────────┘
+        │                      │                      │
+┌───────▼────────┐   ┌─────────▼──────────┐   ┌───────▼───────────────────┐
+│  QUEUES (Redis)│   │   AGENT WORKERS    │   │   DELIVERY ENGINE          │
+│  scout.*       │   │  Scout · Enrich    │   │  Warmup · Send · Bounce    │
+│  enrich.*      │   │  Qualify · Writer  │   │  · Reply (IMAP webhook)    │
+│  qualify.*     │   │  Ops · Respond     │   │                            │
+│  deliver.*     │   └─────────┬──────────┘   └─────────────┬─────────────┘
+└───────┬────────┘             │                            │
+        │                      │                            │
+┌───────▼──────────────────────▼────────────────────────────▼─────────────┐
+│                      DATA (Supabase)                                     │
+│  Postgres · Auth (RLS) · Realtime · Storage · Edge Functions            │
+│  Prisma schema (see §4) · pgvector (semantic dedupe, Phase 2)           │
+└──────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>1.1 Technology Stack (mirrors Signhify studio standard)</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Choice</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Language</td>
+<td>TypeScript (strict)</td>
+<td>Studio standard, one language end-to-end</td>
+</tr>
+<tr>
+<td>Frontend</td>
+<td>TanStack Start, React 19, Tailwind v4, shadcn/ui, Framer Motion</td>
+<td>Same as signhify.dpdns.org / signhify-ai-web</td>
+</tr>
+<tr>
+<td>Backend</td>
+<td>TanStack Server routes + Node workers</td>
+<td>Shared types, edge-ready</td>
+</tr>
+<tr>
+<td>DB</td>
+<td>Supabase Postgres + Prisma</td>
+<td>Auth/RLS/Realtime for free; Prisma for typed schema</td>
+</tr>
+<tr>
+<td>Queue</td>
+<td>Upstash Redis + ack-aware worker loop</td>
+<td>Serverless-friendly, cheap, no infra</td>
+</tr>
+<tr>
+<td>Email</td>
+<td>Resend (primary) + SMTP pool (secondary domains)</td>
+<td>Studio already uses Resend (TuitionTrack)</td>
+</tr>
+<tr>
+<td>Inbound</td>
+<td>Resend webhooks → inbox; IMAP polling fallback</td>
+<td>Reliability</td>
+</tr>
+<tr>
+<td>AI</td>
+<td>OpenAI (GPT-4.1/4o mini) + Anthropic (Claude Sonnet)</td>
+<td>Qualify/Write/Respond; cost-tiered (mini for bulk)</td>
+</tr>
+<tr>
+<td>Scraping</td>
+<td>Firecrawl API + plain fetch for public JSON feeds</td>
+<td>Studio skill; ToS-aware</td>
+</tr>
+<tr>
+<td>Verification</td>
+<td>Self-built (syntax→MX→SMTP) + Hunter.io/Apollo API hybrid</td>
+<td>Cost control</td>
+</tr>
+<tr>
+<td>Billing</td>
+<td>Stripe (subscription + usage metering)</td>
+<td>Studio standard</td>
+</tr>
+<tr>
+<td>Deploy</td>
+<td>Vercel (web/api) + Cloudflare Workers (cron jobs)</td>
+<td>Studio standard</td>
+</tr>
+<tr>
+<td>Secrets</td>
+<td>Supabase secrets + <code>.env</code> (never committed)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Observability</td>
+<td>OpenTelemetry → Axiom/Sentry + structured logs</td>
+<td>Cheap, searchable</td>
+</tr>
+</tbody>
+</table>
+<h3>1.2 Agent Pipeline (event-driven)</h3>
+<pre><code>[Scout]  raw leads ──► [Enrich]  enriched ──► [Qualify]  scored/tiered
+                                                      │
+                              ┌───────────────────────┤
+                              ▼                       ▼
+                       Tier A (outreach)      Tier B (nurture pool)
+                              │                       │
+                        [Writer]                  [Ops] (delay 14d re-score)
+                              ▼
+                        [Ops] schedule+send ──► events ──► [Respond] on reply
+</code></pre>
+<p>Each stage is a queue; each job idempotent; each stage stores an <code>Event</code> row (audit trail).</p>
+<hr />
+<h2>2. System Requirements</h2>
+<h3>2.1 Functional components</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source adapters</td>
+<td>One adapter per channel; config-driven; per-source rate limits; schema-versioned output</td>
+</tr>
+<tr>
+<td>Dedupe</td>
+<td>Domain-keyed <code>leads.organization_domain</code> unique per workspace; fuzzy via pgvector (Phase 2)</td>
+</tr>
+<tr>
+<td>Verification pipeline</td>
+<td>syntax → disposable-domain check → MX → SMTP (250/550/retry) → verdict (verified/risky/failed)</td>
+</tr>
+<tr>
+<td>Scoring</td>
+<td>LLM with structured output (JSON schema); deterministic pre-filters (country, industry, recency) run before LLM to save tokens</td>
+</tr>
+<tr>
+<td>Writer</td>
+<td>Per-lead JSON: <code>{subject, body}</code>; template system with <code>{{lead.field}}</code> slots + LLM personalization; 120-word cap enforced</td>
+</tr>
+<tr>
+<td>Delivery</td>
+<td>Cron-driven scheduler picks due sends; respects limits/windows; at-least-once with idempotency key</td>
+</tr>
+<tr>
+<td>Warmup</td>
+<td>Daily script: sends to warmup network (Seedleads/self-hosted pool); ramps 5→30/day over 14 days</td>
+</tr>
+<tr>
+<td>Inbound</td>
+<td>Webhook → parse (message-id, from, subject, body) → classify → notify via Realtime to dashboard</td>
+</tr>
+<tr>
+<td>Suppression</td>
+<td>Global list checked at send time (postgres lookup, cached in Redis); unsubscribes write immediately</td>
+</tr>
+</tbody>
+</table>
+<h3>2.2 Non-functional</h3>
+<ul>
+<li><strong>Latency:</strong> dashboard p95 &lt; 2s; agent job p95 &lt; 30s per lead (except SMTP verify ~5s).</li>
+<li><strong>Throughput:</strong> V1: 50k leads, 1M events/month; design headroom 10×.</li>
+<li><strong>Reliability:</strong> at-least-once delivery with idempotent handlers; DLQ with replay; 99.5% target.</li>
+<li><strong>Security:</strong> RLS everywhere; service-role key only in workers; approval audit log; no PII in logs; secrets rotated.</li>
+<li><strong>Compliance:</strong> <code>list-unsubscribe</code> + unsubscribe page + physical address; DSAR endpoint; retention policy (leads deleted 90d after last touch unless replied); suppression is permanent.</li>
+</ul>
+<hr />
+<h2>3. API Specification (internal + public surface)</h2>
+<h3>3.1 REST API (public surface, session auth)</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/api/leads?source=&amp;tier=&amp;q=</code></td>
+<td>List/search leads (paginated)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/leads/{id}/tier</code></td>
+<td>Manual re-tier</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/leads/{id}</code></td>
+<td>Detail w/ enrichment + events</td>
+</tr>
+<tr>
+<td>GET/POST</td>
+<td><code>/api/sources</code></td>
+<td>Source configs CRUD</td>
+</tr>
+<tr>
+<td>GET/POST</td>
+<td><code>/api/campaigns</code></td>
+<td>Campaigns CRUD</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/campaigns/{id}/run</code></td>
+<td>Start/stop campaign</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/campaigns/{id}/analytics</code></td>
+<td>Funnel stats</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/inbox</code></td>
+<td>Threads, unread count</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/inbox/{threadId}/reply</code></td>
+<td>Approve &amp; send reply (HITL)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/inbox/{threadId}/book</code></td>
+<td>Create meeting link + move to won</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/analytics/dashboard</code></td>
+<td>Global KPIs</td>
+</tr>
+<tr>
+<td>GET/POST</td>
+<td><code>/api/settings/domains</code></td>
+<td>Sending domains + DNS check</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/usage</code></td>
+<td>Metered usage (billing)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/webhooks/resend</code></td>
+<td>Inbound email webhook (public)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/compliance/unsubscribe?id=&amp;list=</code></td>
+<td>One-click unsubscribe (public, no auth)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/compliance/dsar</code></td>
+<td>Erasure/data request (public)</td>
+</tr>
+</tbody>
+</table>
+<h3>3.2 Agent Worker API (internal)</h3>
+<p>Workers consume Redis streams; all functions idempotent:</p>
+<ul>
+<li><code>scout.run(sourceId, cursor)</code> → <code>lead[]</code></li>
+<li><code>enrich.verify(leadId)</code> → <code>verification</code></li>
+<li><code>enrich.company(leadId)</code> → <code>enrichment</code></li>
+<li><code>qualify.score(leadId)</code> → <code>{score, tier, reasons[]}</code></li>
+<li><code>writer.compose(leadId, campaignId, stepId)</code> → <code>message[]</code></li>
+<li><code>ops.send(messageId)</code> → <code>status</code></li>
+<li><code>ops.warmup(domainId)</code> → <code>count</code></li>
+<li><code>respond.classify(threadId)</code> → <code>{category, suggestion}</code></li>
+</ul>
+<hr />
+<h2>4. Data Model (Prisma)</h2>
+<h3>4.1 Core tables</h3>
+<pre><code class="language-prisma">model Workspace { id, name, slug, created_at, Users[], Campaigns[], Domains[], Settings? }
+model User { id, email, workspace_id?, role, approvals[] }
+
+model Lead {
+  id, workspace_id, organization_name, organization_domain @unique(workspace)
+  website, industry, country, size_range, tech_stack String[] // jsonb
+  contact_name, contact_role, contact_linkedin, contact_email
+  source_url, source_channel, source_raw Json
+  email_verification EmailVerdict // verified|risky|failed|unknown
+  score Int?, tier Tier? // A|B|C
+  score_reason String?, status LeadStatus // new|qualified|contacted|replied|meeting|unsubscribed|archived
+  created_at, updated_at, Events[], Messages[], CampaignLeads[]
+}
+
+model SourceConfig {
+  id, workspace_id, channel, name, config Json // keywords, filters, geo, limits
+  enabled, last_run_at, cursor Json, rate_limit_per_hour, created_at
+}
+
+model Campaign {
+  id, workspace_id, name, status // draft|running|paused|stopped
+  audience Json, Steps[], CampaignLeads[], created_at
+}
+model CampaignStep { id, campaign_id, channel, order, delay_days, subject_template, body_template, send_window Json }
+
+model CampaignLead { id, campaign_id, lead_id, step_index, next_send_at, status }
+
+model Message {
+  id, workspace_id, lead_id, campaign_id, channel, direction // out|in
+  subject, body, provider_message_id @unique, status // queued|sent|bounced|delivered|opened|replied|unsubscribed
+  sent_at, Events[]
+}
+
+model Event { id, workspace_id, lead_id?, message_id?, type, payload Json, created_at } // full audit trail
+
+model Thread { id, workspace_id, lead_id, subject, status // new|needs_reply|replied|booked
+  category // positive|question|negative|unsub|ooo|other
+  suggestion Json?, Reply[], created_at, updated_at }
+
+model Reply { id, thread_id, direction, body, approved_by, status // draft|approved|sent|rejected }
+
+model SendingDomain { id, workspace_id, domain, provider, dkim_status, spf_status, dmarc_status,
+  warmup_level Int, daily_limit Int, sent_today Int, blacklisted Bool, created_at }
+
+model SuppressionList { id, workspace_id, email @unique, reason, source, created_at } // permanent
+
+model Booking { id, workspace_id, lead_id, thread_id, meeting_url, scheduled_at, status }
+</code></pre>
+<h3>4.2 Indexes &amp; RLS</h3>
+<ul>
+<li>Indexes: <code>Lead(workspace_id, tier)</code>, <code>Lead(organization_domain)</code>, <code>Message(provider_message_id)</code>, <code>Event(lead_id, created_at)</code>, <code>CampaignLead(campaign_id, next_send_at)</code>.</li>
+<li>RLS: every table <code>workspace_id = auth.uid()→workspace_id</code>; public rows only for the two compliance endpoints (unsubscribe/DSAR) via edge function + token, never table grants.</li>
+<li>Retention job (cron, daily): delete leads untouched 90d; write audit event first.</li>
+</ul>
+<hr />
+<h2>5. AI Agent Specifications</h2>
+<h3>5.1 Shared conventions</h3>
+<ul>
+<li>Structured outputs: all LLM calls use JSON-schema-constrained output; parse failures retried once, then <code>fallback</code> tier.</li>
+<li>Model routing: bulk classify/score → <code>gpt-4o-mini</code>; final Writer &amp; Respond → Claude Sonnet 4 (studio uses Anthropic).</li>
+<li>Cost budget: &lt; $0.02/lead end-to-end (scoring + writing); budget cap per campaign with alarm.</li>
+<li>Every agent writes an <code>Event</code> row (inputs hash, model, tokens, latency).</li>
+</ul>
+<h3>5.2 Agent prompts (summary contracts)</h3>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Input</th>
+<th>Output schema (key fields)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scout</td>
+<td>source config + cursor</td>
+<td><code>leads[] {name, domain, url, contact?, context, source_url}</code></td>
+</tr>
+<tr>
+<td>Qualify</td>
+<td>enriched lead + ICP rules</td>
+<td><code>{score: 0-100, tier, reasons: string[], signal_summary}</code></td>
+</tr>
+<tr>
+<td>Writer</td>
+<td>lead + step template</td>
+<td><code>{subject ≤60 chars, body ≤120 words, cta}</code></td>
+</tr>
+<tr>
+<td>Respond</td>
+<td>thread + lead context</td>
+<td><code>{category, intent, suggested_reply ≤80 words, needs_human: bool}</code></td>
+</tr>
+</tbody>
+</table>
+<p>ICP rules (v1, editable in settings):
+- Sells to: founders/startups/SMBs needing software, agencies needing delivery partners, scale-ups with AI/product gaps.
+- Signals: mentions of "agency/developer/hire/build app/automation/website", new funding, fresh product launch, job posts for devs, poor/no existing digital presence.
+- Budget proxy: company size 2–500, industry any, geography: US/UK/EU/AU/IN/Middle East preferred, no schools/charities (default off).</p>
+<hr />
+<h2>6. Integrations</h2>
+<table>
+<thead>
+<tr>
+<th>Integration</th>
+<th>Use</th>
+<th>Direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Resend</td>
+<td>Outbound email, inbound webhooks, open/click events</td>
+<td>in/out</td>
+</tr>
+<tr>
+<td>SMTP (custom)</td>
+<td>Extra sending domains</td>
+<td>out</td>
+</tr>
+<tr>
+<td>Hunter.io / Apollo</td>
+<td>Enrichment + verification supplement</td>
+<td>in</td>
+</tr>
+<tr>
+<td>Firecrawl</td>
+<td>Directory/website scraping</td>
+<td>in</td>
+</tr>
+<tr>
+<td>GitHub API</td>
+<td>Repo/org signals</td>
+<td>in</td>
+</tr>
+<tr>
+<td>HN Algolia / Reddit JSON / PH API</td>
+<td>Public feeds</td>
+<td>in</td>
+</tr>
+<tr>
+<td>Upwork (rss)</td>
+<td>Project listings</td>
+<td>in</td>
+</tr>
+<tr>
+<td>SerpAPI / Brave</td>
+<td>SERP sourcing</td>
+<td>in</td>
+</tr>
+<tr>
+<td>Stripe</td>
+<td>Plans + usage metering</td>
+<td>out</td>
+</tr>
+<tr>
+<td>Cal.com/Calendly</td>
+<td>Meeting booking</td>
+<td>out</td>
+</tr>
+<tr>
+<td>CSV export + (Phase 2) HubSpot API</td>
+<td>CRM export</td>
+<td>out</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>7. Environments &amp; Tooling</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Spec</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Repo</td>
+<td><code>signhify/hunter</code> monorepo (pnpm workspaces)</td>
+</tr>
+<tr>
+<td>Branching</td>
+<td><code>main</code> (protected) + feature branches; PR review; semantic commits</td>
+</tr>
+<tr>
+<td>CI</td>
+<td>GitHub Actions: typecheck, lint, unit tests, build; Playwright smoke on PR</td>
+</tr>
+<tr>
+<td>Test</td>
+<td>Vitest (unit), MSW (API), Playwright (E2E), fixture-based agent tests w/ mock LLM</td>
+</tr>
+<tr>
+<td>Local</td>
+<td><code>docker compose</code> (postgres+redis), supabase CLI, hot reload</td>
+</tr>
+<tr>
+<td>Observability</td>
+<td>OpenTelemetry → Axiom, Sentry errors, health checks on <code>/api/health</code></td>
+</tr>
+<tr>
+<td>Secrets</td>
+<td>1Password vault + CI secret store; <code>.env</code> gitignored (see <code>.env.example</code>)</td>
+</tr>
+</tbody>
+</table></body></html>

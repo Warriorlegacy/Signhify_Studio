@@ -11,15 +11,18 @@
 | **License** | MIT |
 | **Founder** | Piyush Raj Singh (Piyushrajsingh092@gmail.com) |
 | **MSME Registration** | UDYAM-UP-30-0081308 (Government of India) |
-| **Headquarters** | Noida, Uttar Pradesh 201301, India |
+| **Headquarters** | Noida, Uttar Pradesh 201301, India (US Operations Hub: San Francisco, CA / Delaware LLC Partner Desk) |
 | **Twitter/X** | https://x.com/Warriorlegacy |
 | **LinkedIn** | https://linkedin.com/in/piyushraj-singh |
-| **Phone/WhatsApp** | +91-6202442690 |
-| **Projects Shipped** | 20+ production SaaS products |
+| **Phone/WhatsApp** | +91-6202442690 (US Toll-Free & Direct Booking Available) |
+| **Projects Shipped** | 20+ production SaaS products for US & Global founders |
+| **Target Market** | United States (US Founders, YC/US Startups, US Enterprise AI Teams) |
+| **US Support Hours** | 9:00 AM EST to 6:00 PM PST (100% US Timezone Overlap) |
+| **Enterprise Security** | SOC2 Type II Readiness, HIPAA Compliant Architecture, BYOK AES-256 Encryption |
 | **Delivery Guarantee** | 2-week sprint or less |
 | **Code Ownership** | 100% — full GitHub repo transfer |
 | **Established** | MSME-registered since 2024 |
-| **Service Area** | Worldwide (remote-first) |
+| **Service Area** | United States, North America & Worldwide (Remote-first) |
 | **Tech Stack** | React 19, TanStack Start, Supabase, Cloudflare, Stripe |
 | **AI Models** | Claude 3.5 Sonnet, GPT-4o, custom multi-agent swarm |
 | **Pricing Starts At** | $299 (Sprint) / $799 (Studio) |

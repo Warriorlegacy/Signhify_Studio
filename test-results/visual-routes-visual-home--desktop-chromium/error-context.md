@@ -1,0 +1,742 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: visual\routes.spec.ts >> visual: home (/)
+- Location: tests\visual\routes.spec.ts:24:3
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded.
+```
+
+```
+Error: expect(page).toHaveScreenshot(expected) failed
+
+Timeout: 5000ms
+  Timeout 5000ms exceeded.
+
+  Snapshot: home.png
+
+Call log:
+  - Expect "toHaveScreenshot(home.png)" with timeout 5000ms
+    - generating new stable screenshot expectation
+  - taking page screenshot
+    - disabled all CSS animations
+  - waiting for fonts to load...
+  - fonts loaded
+  - Timeout 5000ms exceeded.
+
+```
+
+```
+Tearing down "context" exceeded the test timeout of 30000ms.
+```
+
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner:
+    - generic:
+      - link "Signhify AI Engineering Studio Signhify" [ref=e2] [cursor=pointer]:
+        - /url: /
+        - img "Signhify AI Engineering Studio" [ref=e3]
+        - generic [ref=e4]: Signhify
+      - navigation [ref=e5]:
+        - link "Studio" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - link "Projects" [ref=e7] [cursor=pointer]:
+          - /url: /projects
+        - link "Services" [ref=e8] [cursor=pointer]:
+          - /url: /services
+        - link "AINew" [ref=e9] [cursor=pointer]:
+          - /url: /ai
+        - link "Market" [ref=e10] [cursor=pointer]:
+          - /url: /marketplace
+        - link "Deploy" [ref=e11] [cursor=pointer]:
+          - /url: /app/deploy
+        - link "Cloud" [ref=e12] [cursor=pointer]:
+          - /url: /app
+        - link "OS" [ref=e13] [cursor=pointer]:
+          - /url: /os
+        - link "AI Studio" [ref=e14] [cursor=pointer]:
+          - /url: /best-ai-engineering-studio
+        - button "Ecosystem" [ref=e17]:
+          - img [ref=e18]
+          - generic [ref=e22]: Ecosystem
+          - img [ref=e23]
+        - button "AI Keys" [ref=e25]:
+          - img [ref=e26]
+      - link "Start a Project" [ref=e31] [cursor=pointer]:
+        - /url: /contact
+        - generic [ref=e32]: Start a Project
+        - img [ref=e34]
+  - main [ref=e36]:
+    - generic [ref=e37]:
+      - generic:
+        - img
+      - img "Cinematic ember atmosphere"
+      - generic:
+        - generic: signhify
+      - generic:
+        - generic:
+          - text: STOP IMAGINING,
+          - text: START SHIPPING.
+      - generic:
+        - generic: v2026.06 · Studio
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - img [ref=e43]
+          - text: AI Engineering Studio · Build with us
+        - heading "Describe your idea. Signhify builds it." [level=1] [ref=e46]:
+          - text: Describe your idea.
+          - text: Signhify builds it.
+        - paragraph [ref=e47]: From a single sentence to a shipped product — design, engineering, AI and launch, all in one studio.
+        - generic [ref=e49]:
+          - textbox "Describe your product…" [ref=e50]
+          - generic [ref=e51]:
+            - generic [ref=e52]:
+              - button "Voice input" [ref=e53]:
+                - img [ref=e54]
+              - button "Build" [ref=e58]:
+                - text: Build
+                - img [ref=e59]
+              - button "Web App" [ref=e62]:
+                - text: Web App
+                - img [ref=e63]
+            - button "Start" [ref=e65]:
+              - text: Start
+              - img [ref=e66]
+        - generic [ref=e68]:
+          - button "Build me a Gym CRM with memberships and billing" [ref=e69]
+          - button "Cinematic landing page for an AI startup" [ref=e70]
+          - button "AI agent that turns YouTube videos into reels" [ref=e71]
+          - button "Hotel booking platform with Stripe checkout" [ref=e72]
+        - button "Watch the studio reel" [ref=e74]:
+          - img [ref=e76]
+          - text: Watch the studio reel
+    - generic [ref=e79]:
+      - paragraph [ref=e80]: Start with 2 free AI credits — no credit card, no lock-in.
+      - link "Start Building Free — No Credit Card" [ref=e81] [cursor=pointer]:
+        - /url: /signup
+        - text: Start Building Free — No Credit Card
+        - img [ref=e82]
+    - generic [ref=e84]:
+      - generic [ref=e86]: Powered by a modern AI-native stack
+      - generic [ref=e88]:
+        - generic [ref=e89]: Next.js
+        - generic [ref=e90]: TanStack Start
+        - generic [ref=e91]: React 19
+        - generic [ref=e92]: TypeScript
+        - generic [ref=e93]: Tailwind v4
+        - generic [ref=e94]: Supabase
+        - generic [ref=e95]: Postgres
+        - generic [ref=e96]: Vercel
+        - generic [ref=e97]: Cloudflare
+        - generic [ref=e98]: OpenAI
+        - generic [ref=e99]: Anthropic
+        - generic [ref=e100]: LangChain
+        - generic [ref=e101]: Stripe
+        - generic [ref=e102]: Framer Motion
+        - generic [ref=e103]: shadcn/ui
+        - generic [ref=e104]: Lovable
+        - generic [ref=e105]: Next.js
+        - generic [ref=e106]: TanStack Start
+        - generic [ref=e107]: React 19
+        - generic [ref=e108]: TypeScript
+        - generic [ref=e109]: Tailwind v4
+        - generic [ref=e110]: Supabase
+        - generic [ref=e111]: Postgres
+        - generic [ref=e112]: Vercel
+        - generic [ref=e113]: Cloudflare
+        - generic [ref=e114]: OpenAI
+        - generic [ref=e115]: Anthropic
+        - generic [ref=e116]: LangChain
+        - generic [ref=e117]: Stripe
+        - generic [ref=e118]: Framer Motion
+        - generic [ref=e119]: shadcn/ui
+        - generic [ref=e120]: Lovable
+    - region "A luxury product universe — built, shipped, signed." [ref=e121]:
+      - generic [ref=e122]:
+        - generic [ref=e123]:
+          - generic [ref=e124]:
+            - generic [ref=e125]: Studio · Preset Gallery
+            - heading "A luxury product universe — built, shipped, signed." [level=2] [ref=e127]
+            - paragraph [ref=e128]: Every entry below is a real Signhify build. Filter by track, hover to spotlight, open one to step inside the brief.
+          - link "View full gallery" [ref=e129] [cursor=pointer]:
+            - /url: /projects
+            - text: View full gallery
+            - img [ref=e130]
+        - generic [ref=e133]:
+          - generic [ref=e137]:
+            - button "Open Signhify AI preview" [ref=e138]:
+              - img "Signhify AI" [ref=e139]
+              - generic [ref=e142]: Signhify AI
+              - generic [ref=e143]: AI Workspace
+              - img [ref=e146]
+            - generic [ref=e150]:
+              - heading "Signhify AI · AI Workspace" [level=3] [ref=e152]:
+                - text: Signhify AI
+                - generic [ref=e153]: · AI Workspace
+              - paragraph [ref=e154]: An AI workspace that learns how you work, remembers what matters, and improves with every interaction — 7 specialized agents, BYOK, open source.
+              - generic [ref=e155]:
+                - generic [ref=e156]: Next.js
+                - generic [ref=e157]: TanStack
+                - generic [ref=e158]: Supabase
+                - generic [ref=e159]: Multi-provider AI
+              - generic [ref=e160]:
+                - button "Open brief" [ref=e161]:
+                  - img [ref=e162]
+                  - text: Open brief
+                - link "Visit" [ref=e165] [cursor=pointer]:
+                  - /url: https://signhify-ai-web.vercel.app/
+                  - img [ref=e166]
+                  - text: Visit
+          - generic [ref=e173]:
+            - button "Open Veepee Engineers preview" [ref=e174]:
+              - img "Veepee Engineers" [ref=e175]
+              - generic [ref=e178]: Veepee Engineers
+              - generic [ref=e179]: Engineering
+              - img [ref=e182]
+            - generic [ref=e186]:
+              - heading "Veepee Engineers · Engineering Brand" [level=3] [ref=e188]:
+                - text: Veepee Engineers
+                - generic [ref=e189]: · Engineering Brand
+              - paragraph [ref=e190]: Cinematic brand site for an engineering firm — services, capabilities and case work presented as a confident industrial portfolio.
+              - generic [ref=e191]:
+                - generic [ref=e192]: TanStack Start
+                - generic [ref=e193]: Tailwind
+                - generic [ref=e194]: Lovable
+              - generic [ref=e195]:
+                - button "Open brief" [ref=e196]:
+                  - img [ref=e197]
+                  - text: Open brief
+                - link "Visit" [ref=e200] [cursor=pointer]:
+                  - /url: https://veepee-engineers.lovable.app
+                  - img [ref=e201]
+                  - text: Visit
+          - generic [ref=e208]:
+            - button "Open GymFlow preview" [ref=e209]:
+              - img "GymFlow" [ref=e210]
+              - generic [ref=e213]: GymFlow
+              - generic [ref=e214]: Saas
+              - img [ref=e217]
+            - generic [ref=e221]:
+              - heading "GymFlow · SaaS Product" [level=3] [ref=e223]:
+                - text: GymFlow
+                - generic [ref=e224]: · SaaS Product
+              - paragraph [ref=e225]: Multi-tenant gym OS — memberships, attendance, billing and front-desk ops collapsed into one cinematic dashboard.
+              - generic [ref=e226]:
+                - generic [ref=e227]: Next.js
+                - generic [ref=e228]: Supabase
+                - generic [ref=e229]: Stripe
+                - generic [ref=e230]: Tailwind
+              - generic [ref=e231]:
+                - button "Open brief" [ref=e232]:
+                  - img [ref=e233]
+                  - text: Open brief
+                - link "Visit" [ref=e236] [cursor=pointer]:
+                  - /url: https://gymflow-saas.vercel.app
+                  - img [ref=e237]
+                  - text: Visit
+          - generic [ref=e244]:
+            - button "Open AutoReels AI preview" [ref=e245]:
+              - img "AutoReels AI" [ref=e246]
+              - generic [ref=e249]: AutoReels AI
+              - generic [ref=e250]: AI
+              - img [ref=e253]
+            - generic [ref=e257]:
+              - heading "AutoReels AI · AI Automation" [level=3] [ref=e259]:
+                - text: AutoReels AI
+                - generic [ref=e260]: · AI Automation
+              - paragraph [ref=e261]: Long-form video → publish-ready short-form reels. An AI pipeline that runs end-to-end with zero human edit.
+              - generic [ref=e262]:
+                - generic [ref=e263]: Python
+                - generic [ref=e264]: ffmpeg
+                - generic [ref=e265]: OpenAI
+                - generic [ref=e266]: Whisper
+              - generic [ref=e267]:
+                - button "Open brief" [ref=e268]:
+                  - img [ref=e269]
+                  - text: Open brief
+                - link "Visit" [ref=e272] [cursor=pointer]:
+                  - /url: https://autoreels-ai.vercel.app
+                  - img [ref=e273]
+                  - text: Visit
+          - generic [ref=e280]:
+            - button "Open GigMind preview" [ref=e281]:
+              - img "GigMind" [ref=e282]
+              - generic [ref=e285]: GigMind
+              - generic [ref=e286]: Marketplace
+              - img [ref=e289]
+            - generic [ref=e293]:
+              - heading "GigMind · AI Marketplace" [level=3] [ref=e295]:
+                - text: GigMind
+                - generic [ref=e296]: · AI Marketplace
+              - paragraph [ref=e297]: AI-matched gig marketplace where freelancers and clients discover, scope and ship work in days.
+              - generic [ref=e298]:
+                - generic [ref=e299]: Next.js
+                - generic [ref=e300]: Postgres
+                - generic [ref=e301]: Vercel AI SDK
+              - generic [ref=e302]:
+                - button "Open brief" [ref=e303]:
+                  - img [ref=e304]
+                  - text: Open brief
+                - link "Visit" [ref=e307] [cursor=pointer]:
+                  - /url: https://gigmind-gamma.vercel.app
+                  - img [ref=e308]
+                  - text: Visit
+          - generic [ref=e315]:
+            - button "Open TuitionTrack preview" [ref=e316]:
+              - img "TuitionTrack" [ref=e317]
+              - generic [ref=e320]: TuitionTrack
+              - generic [ref=e321]: EdTech
+              - img [ref=e324]
+            - generic [ref=e328]:
+              - heading "TuitionTrack · EdTech" [level=3] [ref=e330]:
+                - text: TuitionTrack
+                - generic [ref=e331]: · EdTech
+              - paragraph [ref=e332]: All-in-one operations layer for coaching institutes — students, attendance, fees and parent reporting.
+              - generic [ref=e333]:
+                - generic [ref=e334]: React
+                - generic [ref=e335]: Supabase
+                - generic [ref=e336]: Resend
+              - generic [ref=e337]:
+                - button "Open brief" [ref=e338]:
+                  - img [ref=e339]
+                  - text: Open brief
+                - link "Visit" [ref=e342] [cursor=pointer]:
+                  - /url: https://tuitiontrack-app.vercel.app
+                  - img [ref=e343]
+                  - text: Visit
+    - region "One studio. End-to-end execution." [ref=e347]:
+      - generic [ref=e348]:
+        - generic [ref=e349]:
+          - generic [ref=e350]:
+            - generic [ref=e351]: What we do
+            - heading "One studio. End-to-end execution." [level=2] [ref=e353]
+          - generic [ref=e354]:
+            - paragraph [ref=e355]: Twelve core capabilities, one team. We stitch them together to ship outcomes — not deliverables.
+            - link "Explore all services" [ref=e356] [cursor=pointer]:
+              - /url: /services
+              - text: Explore all services
+              - img [ref=e357]
+        - generic [ref=e360]:
+          - generic [ref=e364]:
+            - generic [ref=e365]:
+              - img "AI Automation service preview" [ref=e366]
+              - generic [ref=e368]: AI Automation
+            - generic [ref=e371]:
+              - generic [ref=e372]:
+                - img [ref=e374]
+                - generic [ref=e377]: AI Automation
+              - paragraph [ref=e378]: Custom agents, workflows and integrations that remove operational friction — from inbox to invoicing.
+          - generic [ref=e383]:
+            - generic [ref=e384]:
+              - img "AI & LLM Integrations service preview" [ref=e385]
+              - generic [ref=e387]: AI & LLM Integrations
+            - generic [ref=e390]:
+              - generic [ref=e391]:
+                - img [ref=e393]
+                - generic [ref=e396]: AI & LLM Integrations
+              - paragraph [ref=e397]: RAG pipelines, semantic search, vector databases, and custom fine-tuned model agents.
+        - generic [ref=e399]:
+          - generic [ref=e403]:
+            - generic [ref=e404]:
+              - img "SaaS Development service preview" [ref=e405]
+              - generic [ref=e407]: SaaS Development
+            - generic [ref=e410]:
+              - generic [ref=e411]:
+                - img [ref=e413]
+                - generic [ref=e417]: SaaS Development
+              - paragraph [ref=e418]: Multi-tenant products built to scale — auth, billing, dashboards, infra.
+          - generic [ref=e423]:
+            - generic [ref=e424]:
+              - img "Web & Product service preview" [ref=e425]
+              - generic [ref=e427]: Web & Product
+            - generic [ref=e430]:
+              - generic [ref=e431]:
+                - img [ref=e433]
+                - generic [ref=e438]: Web & Product
+              - paragraph [ref=e439]: Cinematic websites, MVPs and product surfaces engineered for conversion.
+          - generic [ref=e444]:
+            - generic [ref=e445]:
+              - img "CRM & Systems service preview" [ref=e446]
+              - generic [ref=e448]: CRM & Systems
+            - generic [ref=e451]:
+              - generic [ref=e452]:
+                - img [ref=e454]
+                - generic [ref=e458]: CRM & Systems
+              - paragraph [ref=e459]: Internal tools, CRMs and pipelines tailored to how your business actually runs.
+          - generic [ref=e464]:
+            - generic [ref=e465]:
+              - img "API Engineering service preview" [ref=e466]
+              - generic [ref=e468]: API Engineering
+            - generic [ref=e471]:
+              - generic [ref=e472]:
+                - img [ref=e474]
+                - generic [ref=e479]: API Engineering
+              - paragraph [ref=e480]: High-throughput REST & GraphQL endpoints, webhooks, and secure third-party integrations.
+          - generic [ref=e485]:
+            - generic [ref=e486]:
+              - img "Cloud & DevOps service preview" [ref=e487]
+              - generic [ref=e489]: Cloud & DevOps
+            - generic [ref=e492]:
+              - generic [ref=e493]:
+                - img [ref=e495]
+                - generic [ref=e497]: Cloud & DevOps
+              - paragraph [ref=e498]: Scalable hosting (AWS, Supabase, Vercel), continuous delivery, and load scaling.
+          - generic [ref=e503]:
+            - generic [ref=e504]:
+              - img "Data & Analytics service preview" [ref=e505]
+              - generic [ref=e507]: Data & Analytics
+            - generic [ref=e510]:
+              - generic [ref=e511]:
+                - img [ref=e513]
+                - generic [ref=e516]: Data & Analytics
+              - paragraph [ref=e517]: Real-time reporting pipelines, database tracking, and custom metrics engines.
+          - generic [ref=e522]:
+            - generic [ref=e523]:
+              - img "Mobile App Development service preview" [ref=e524]
+              - generic [ref=e526]: Mobile App Development
+            - generic [ref=e529]:
+              - generic [ref=e530]:
+                - img [ref=e532]
+                - generic [ref=e534]: Mobile App Development
+              - paragraph [ref=e535]: React Native and Flutter apps built for speed, offline capability, and App Store readiness.
+          - generic [ref=e540]:
+            - generic [ref=e541]:
+              - img "Performance Marketing service preview" [ref=e542]
+              - generic [ref=e544]: Performance Marketing
+            - generic [ref=e547]:
+              - generic [ref=e548]:
+                - img [ref=e550]
+                - generic [ref=e553]: Performance Marketing
+              - paragraph [ref=e554]: Landing pages, funnels and paid acquisition systems that compound over time.
+          - generic [ref=e559]:
+            - generic [ref=e560]:
+              - img "Security & Compliance service preview" [ref=e561]
+              - generic [ref=e563]: Security & Compliance
+            - generic [ref=e566]:
+              - generic [ref=e567]:
+                - img [ref=e569]
+                - generic [ref=e572]: Security & Compliance
+              - paragraph [ref=e573]: SOC2 readiness, penetration testing, secure auth policy, and data encryption audits.
+          - generic [ref=e578]:
+            - generic [ref=e579]:
+              - img "Brand & Identity service preview" [ref=e580]
+              - generic [ref=e582]: Brand & Identity
+            - generic [ref=e585]:
+              - generic [ref=e586]:
+                - img [ref=e588]
+                - generic [ref=e591]: Brand & Identity
+              - paragraph [ref=e592]: Visual systems, logos and creative direction for AI-first brands that want to be remembered.
+    - region "From a sentence to a shipped product — in weeks." [ref=e594]:
+      - generic [ref=e595]:
+        - generic [ref=e596]: How we work
+        - heading "From a sentence to a shipped product — in weeks." [level=2] [ref=e598]
+        - generic [ref=e599]:
+          - generic [ref=e602]:
+            - generic: "01"
+            - generic [ref=e603]:
+              - img [ref=e605]
+              - generic [ref=e607]: Step 01
+            - generic [ref=e608]: Describe
+            - paragraph [ref=e609]: You share the idea. We map outcomes, scope and stack in one working session.
+          - generic [ref=e611]:
+            - generic: "02"
+            - generic [ref=e612]:
+              - img [ref=e614]
+              - generic [ref=e620]: Step 02
+            - generic [ref=e621]: Design
+            - paragraph [ref=e622]: Cinematic UI, product architecture and AI surfaces — prototyped in days, not months.
+          - generic [ref=e624]:
+            - generic: "03"
+            - generic [ref=e625]:
+              - img [ref=e627]
+              - generic [ref=e629]: Step 03
+            - generic [ref=e630]: Build
+            - paragraph [ref=e631]: Engineered with modern stacks. Multi-tenant, typed, automated, production-ready.
+          - generic [ref=e633]:
+            - generic: "04"
+            - generic [ref=e634]:
+              - img [ref=e636]
+              - generic [ref=e641]: Step 04
+            - generic [ref=e642]: Launch
+            - paragraph [ref=e643]: We ship to your domain, wire analytics, payments and AI ops — and stay on for v2.
+    - region "A film unfolding, scene by scene." [ref=e644]:
+      - generic [ref=e645]:
+        - generic [ref=e650]:
+          - generic [ref=e651]:
+            - generic [ref=e652]: How we work
+            - heading "A film unfolding, scene by scene." [level=2] [ref=e653]:
+              - text: A film unfolding,
+              - text: scene by scene.
+            - generic [ref=e654]:
+              - generic [ref=e655]:
+                - generic [ref=e657]: "01"
+                - generic [ref=e658]: Describe
+              - generic [ref=e659]:
+                - generic [ref=e661]: "02"
+                - generic [ref=e662]: Design
+              - generic [ref=e663]:
+                - generic [ref=e665]: "03"
+                - generic [ref=e666]: Build
+              - generic [ref=e667]:
+                - generic [ref=e669]: "04"
+                - generic [ref=e670]: Launch
+          - generic [ref=e671]:
+            - article [ref=e672]:
+              - generic [ref=e673]:
+                - generic [ref=e674]: "01"
+                - text: · Describe
+              - heading "It starts with one sentence." [level=3] [ref=e675]
+              - paragraph [ref=e676]: You drop your idea — a CRM for gyms, an AI agent that ships reels, a fintech for diaspora. We map outcomes, stack and scope in a single working session.
+            - article [ref=e678]:
+              - generic [ref=e679]:
+                - generic [ref=e680]: "02"
+                - text: · Design
+              - heading "Cinematic, in days." [level=3] [ref=e681]
+              - paragraph [ref=e682]: Brand system, product architecture and AI surfaces — prototyped fast, refined to a luxury finish. You see and feel the product before a line of business logic is written.
+            - article [ref=e684]:
+              - generic [ref=e685]:
+                - generic [ref=e686]: "03"
+                - text: · Build
+              - heading "Engineered to ship." [level=3] [ref=e687]
+              - paragraph [ref=e688]: Modern stacks. Multi-tenant. Typed end-to-end. Auth, billing, dashboards, AI ops — all production-ready, not demo-ware.
+            - article [ref=e690]:
+              - generic [ref=e691]:
+                - generic [ref=e692]: "04"
+                - text: · Launch
+              - heading "Live on your domain." [level=3] [ref=e693]
+              - paragraph [ref=e694]: We deploy to Vercel, Cloudflare or your stack. Analytics, payments, AI ops wired in. Then we stay on for v2, v3 — the part that compounds.
+        - generic [ref=e696]: Scroll · Scene 01 of 4
+    - generic [ref=e699]:
+      - generic [ref=e700]: The Signhify Ecosystem
+      - heading "One studio. Six products. Built for the AI-native era." [level=2] [ref=e701]
+      - paragraph [ref=e702]: From cinematic studio sites to autonomous agent runtimes — every product is accessible from your dashboard.
+      - generic [ref=e705]:
+        - link "Signhify Studio LIVE AI engineering studio. Revenue-generating today. Live now" [ref=e707] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e708]:
+            - img [ref=e710]
+            - generic [ref=e713]:
+              - generic [ref=e714]:
+                - generic [ref=e715]: Signhify Studio
+                - generic [ref=e716]: LIVE
+              - paragraph [ref=e717]: AI engineering studio. Revenue-generating today.
+          - generic [ref=e718]:
+            - generic [ref=e719]: Live now
+            - img [ref=e720]
+        - link "Signhify AI LIVE Prompt-to-product pipeline. 6-agent generation, streaming, and builder. Live now" [ref=e723] [cursor=pointer]:
+          - /url: /ai
+          - generic [ref=e724]:
+            - img [ref=e726]
+            - generic [ref=e729]:
+              - generic [ref=e730]:
+                - generic [ref=e731]: Signhify AI
+                - generic [ref=e732]: LIVE
+              - paragraph [ref=e733]: Prompt-to-product pipeline. 6-agent generation, streaming, and builder.
+          - generic [ref=e734]:
+            - generic [ref=e735]: Live now
+            - img [ref=e736]
+        - link "Signhify Deploy LIVE One-click deployment dashboard for Cloudflare Pages and custom domains. Live now" [ref=e739] [cursor=pointer]:
+          - /url: /app/deploy
+          - generic [ref=e740]:
+            - img [ref=e742]
+            - generic [ref=e745]:
+              - generic [ref=e746]:
+                - generic [ref=e747]: Signhify Deploy
+                - generic [ref=e748]: LIVE
+              - paragraph [ref=e749]: One-click deployment dashboard for Cloudflare Pages and custom domains.
+          - generic [ref=e750]:
+            - generic [ref=e751]: Live now
+            - img [ref=e752]
+        - link "Signhify Marketplace LIVE Browse, sell, and purchase templates and agents with Stripe checkout. Live now" [ref=e755] [cursor=pointer]:
+          - /url: /marketplace
+          - generic [ref=e756]:
+            - img [ref=e758]
+            - generic [ref=e761]:
+              - generic [ref=e762]:
+                - generic [ref=e763]: Signhify Marketplace
+                - generic [ref=e764]: LIVE
+              - paragraph [ref=e765]: Browse, sell, and purchase templates and agents with Stripe checkout.
+          - generic [ref=e766]:
+            - generic [ref=e767]: Live now
+            - img [ref=e768]
+        - link "Signhify Cloud LIVE Workspace dashboard, project management, secrets vault, and analytics. Live now" [ref=e771] [cursor=pointer]:
+          - /url: /app
+          - generic [ref=e772]:
+            - img [ref=e774]
+            - generic [ref=e777]:
+              - generic [ref=e778]:
+                - generic [ref=e779]: Signhify Cloud
+                - generic [ref=e780]: LIVE
+              - paragraph [ref=e781]: Workspace dashboard, project management, secrets vault, and analytics.
+          - generic [ref=e782]:
+            - generic [ref=e783]: Live now
+            - img [ref=e784]
+        - link "Signhify OS LIVE Agent orchestration runtime. Manage agents, workflows, and system logs. Live now" [ref=e787] [cursor=pointer]:
+          - /url: /os
+          - generic [ref=e788]:
+            - img [ref=e790]
+            - generic [ref=e793]:
+              - generic [ref=e794]:
+                - generic [ref=e795]: Signhify OS
+                - generic [ref=e796]: LIVE
+              - paragraph [ref=e797]: Agent orchestration runtime. Manage agents, workflows, and system logs.
+          - generic [ref=e798]:
+            - generic [ref=e799]: Live now
+            - img [ref=e800]
+    - generic [ref=e803]:
+      - generic [ref=e804]: Founder
+      - heading "Built by Piyush Raj Singh — engineer, founder, AI native." [level=2] [ref=e805]
+      - generic [ref=e807]:
+        - paragraph [ref=e808]: "\"14+ shipped products across SaaS, AI automation, EdTech and NGO platforms. Signhify is the studio I always wanted to hire — one that treats software like a film: scripted, designed and shipped with conviction.\""
+        - generic [ref=e811]: Piyush Raj Singh · Founder
+      - generic [ref=e813]:
+        - generic [ref=e814]:
+          - generic [ref=e815]: 0+
+          - generic [ref=e816]: Products shipped
+        - generic [ref=e817]:
+          - generic [ref=e818]: "0"
+          - generic [ref=e819]: SaaS platforms live
+        - generic [ref=e820]:
+          - generic [ref=e821]: "0"
+          - generic [ref=e822]: Countries
+        - generic [ref=e823]:
+          - generic [ref=e824]: 0k+
+          - generic [ref=e825]: End users reached
+      - generic [ref=e826]:
+        - link "Work with us" [ref=e827] [cursor=pointer]:
+          - /url: /contact
+        - link "Founder on LinkedIn" [ref=e828] [cursor=pointer]:
+          - /url: https://linkedin.com/in/piyushraj-singh
+    - generic [ref=e832]:
+      - generic [ref=e833]:
+        - generic [ref=e834]: 14+ products shipped
+        - generic [ref=e836]: Multi-tenant SaaS
+        - generic [ref=e838]: AI-first engineering
+        - generic [ref=e840]: Delivered in weeks
+      - heading "Your idea, Signhified." [level=2] [ref=e842]
+      - paragraph [ref=e843]: Scope your idea, pick your budget, and get a production-ready AI product deployed to your infrastructure in 14 days.
+      - generic [ref=e844]:
+        - button "Instant Sprint Scoper" [ref=e845] [cursor=pointer]:
+          - img [ref=e846]
+          - text: Instant Sprint Scoper
+          - img [ref=e849]
+        - link "Book a 10-Min Call" [ref=e851] [cursor=pointer]:
+          - /url: /book
+          - img [ref=e852]
+          - text: Book a 10-Min Call
+      - paragraph [ref=e854]: No commitment. 100% Code Ownership on your GitHub from Day One.
+  - contentinfo [ref=e855]:
+    - generic [ref=e857]:
+      - generic [ref=e858]:
+        - generic [ref=e860]:
+          - generic [ref=e861]: Signhify
+          - generic [ref=e862]: AI Engineering Studio
+        - paragraph [ref=e863]: Describe your idea. Signhify builds it. We design, ship, and scale AI-first products end-to-end — from MVP to revenue.
+        - generic [ref=e864]:
+          - img [ref=e865]
+          - text: Registered MSME · Govt. of India (UDYAM)
+      - generic [ref=e868]:
+        - generic [ref=e869]: Studio
+        - list [ref=e870]:
+          - listitem [ref=e871]:
+            - link "Services" [ref=e872] [cursor=pointer]:
+              - /url: /services
+          - listitem [ref=e873]:
+            - link "Pricing" [ref=e874] [cursor=pointer]:
+              - /url: /pricing
+          - listitem [ref=e875]:
+            - link "Projects" [ref=e876] [cursor=pointer]:
+              - /url: /projects
+          - listitem [ref=e877]:
+            - link "AI Generator" [ref=e878] [cursor=pointer]:
+              - /url: /ai
+          - listitem [ref=e879]:
+            - link "Marketplace" [ref=e880] [cursor=pointer]:
+              - /url: /marketplace
+          - listitem [ref=e881]:
+            - link "About" [ref=e882] [cursor=pointer]:
+              - /url: /about
+          - listitem [ref=e883]:
+            - link "Vision 2030" [ref=e884] [cursor=pointer]:
+              - /url: /vision
+          - listitem [ref=e885]:
+            - link "Roadmap" [ref=e886] [cursor=pointer]:
+              - /url: /roadmap
+          - listitem [ref=e887]:
+            - link "Insights & AEO Playbooks" [ref=e888] [cursor=pointer]:
+              - /url: /insights
+          - listitem [ref=e889]:
+            - link "Brand Entity" [ref=e890] [cursor=pointer]:
+              - /url: /brand
+          - listitem [ref=e891]:
+            - link "Help Center" [ref=e892] [cursor=pointer]:
+              - /url: /help
+          - listitem [ref=e893]:
+            - link "AI Engineering Studio" [ref=e894] [cursor=pointer]:
+              - /url: /best-ai-engineering-studio
+          - listitem [ref=e895]:
+            - link "Vibe-Coding Platform" [ref=e896] [cursor=pointer]:
+              - /url: /best-vibe-coding-platform
+          - listitem [ref=e897]:
+            - link "Digital Marketing Studio" [ref=e898] [cursor=pointer]:
+              - /url: /best-digital-marketing-studio
+          - listitem [ref=e899]:
+            - link "SaaS MVP Development" [ref=e900] [cursor=pointer]:
+              - /url: /saas-mvp
+          - listitem [ref=e901]:
+            - link "Free Consultation" [ref=e902] [cursor=pointer]:
+              - /url: /free-consultation
+          - listitem [ref=e903]:
+            - link "Book a call" [ref=e904] [cursor=pointer]:
+              - /url: /book
+          - listitem [ref=e905]:
+            - link "Affiliate Program" [ref=e906] [cursor=pointer]:
+              - /url: /affiliate
+      - generic [ref=e907]:
+        - generic [ref=e908]: Connect
+        - list [ref=e909]:
+          - listitem [ref=e910]:
+            - link "LinkedIn" [ref=e911] [cursor=pointer]:
+              - /url: https://linkedin.com/in/piyushraj-singh
+              - img [ref=e912]
+              - text: LinkedIn
+          - listitem [ref=e915]:
+            - link "GitHub" [ref=e916] [cursor=pointer]:
+              - /url: https://github.com/Warriorlegacy
+              - img [ref=e917]
+              - text: GitHub
+          - listitem [ref=e921]:
+            - link "Piyushrajsingh092@gmail.com" [ref=e922] [cursor=pointer]:
+              - /url: mailto:Piyushrajsingh092@gmail.com
+              - img [ref=e923]
+              - text: Piyushrajsingh092@gmail.com
+          - listitem [ref=e926]:
+            - link "WhatsApp · +91 62024 42690" [ref=e927] [cursor=pointer]:
+              - /url: https://wa.me/916202442690
+              - img [ref=e928]
+              - text: WhatsApp · +91 62024 42690
+          - listitem [ref=e931]:
+            - link "Privacy" [ref=e932] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms" [ref=e933] [cursor=pointer]:
+              - /url: /terms
+    - generic [ref=e935]:
+      - generic [ref=e936]: © 2026 Signhify · Built by Piyush Raj Singh
+      - generic [ref=e937]: signhify.dpdns.org
+  - link "Chat with Signhify on WhatsApp" [ref=e938] [cursor=pointer]:
+    - /url: https://wa.me/916202442690?text=Hi%20Signhify%2C%20I%27d%20like%20to%20discuss%20a%20build.
+    - img [ref=e941]
+    - generic [ref=e943]: WhatsApp us
+  - region "Notifications alt+T"
+```

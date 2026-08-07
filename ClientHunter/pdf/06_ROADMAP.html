@@ -1,0 +1,145 @@
+<!doctype html><html><head><meta charset='utf-8'><style>
+body{font-family:'Segoe UI',Calibri,Arial,sans-serif;color:#0D0D14;max-width:820px;margin:24px auto;padding:0 28px;line-height:1.55;font-size:14.5px}
+h1{font-size:26px;border-bottom:3px solid #FF6B00;padding-bottom:8px;color:#0D0D14}
+h2{font-size:19px;margin-top:26px;border-bottom:1px solid #ddd;padding-bottom:4px;color:#111}
+h3{font-size:16px;margin-top:20px;color:#333}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px}
+th,td{border:1px solid #ccc;padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#0D0D14;color:#fff}
+tr:nth-child(even){background:#f5f5f5}
+code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:13px;font-family:Consolas,monospace}
+pre{background:#0D0D14;color:#E2E8F0;padding:12px;border-radius:6px;overflow-x:auto;font-size:12.5px}
+pre code{background:none;color:inherit;padding:0}
+blockquote{border-left:4px solid #FF6B00;margin:10px 0;padding:2px 14px;background:#fff4ec;color:#333}
+hr{border:none;border-top:1px solid #ddd;margin:20px 0}
+</style></head><body><h1>Signhify Hunter — Roadmap</h1>
+<blockquote>
+<p><strong>Codename:</strong> HUNTER · <strong>Version:</strong> 1.0 · <strong>Date:</strong> 07 Aug 2026
+From internal acquisition engine (Weeks 1–8) to productized Signhify product (Quarter 4).</p>
+</blockquote>
+<hr />
+<h2>Horizon View</h2>
+<pre><code>W1-8 ──► MVP LIVE: first booked meetings (internal tool)
+Q3    ──► V1.5: multi-channel, nurture, CRM export (internal, polished)
+Q4    ──► V2: productized — Signhify Hunter as paid SaaS (multi-tenant)
+2027  ──► V3: autonomous account-based engine, integrations marketplace
+</code></pre>
+<hr />
+<h2>Phase 1 — Foundations &amp; MVP (Weeks 1–8) · <em>internal tool</em></h2>
+<p><strong>Goal: 5–10 qualified meetings/week booked, ≤ 2h founder time.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Weeks</th>
+<th>Exit criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M0 Foundations</td>
+<td>1</td>
+<td>Repo, Supabase, queues, compliance skeleton green</td>
+</tr>
+<tr>
+<td>M1 Scout</td>
+<td>1</td>
+<td>100+ leads from 2 sources, dedupe proven</td>
+</tr>
+<tr>
+<td>M2 Enrich &amp; Verify</td>
+<td>1</td>
+<td>≥ 85% verified email rate</td>
+</tr>
+<tr>
+<td>M3 Qualify</td>
+<td>0.5</td>
+<td>Tier A/B/C + reasons, manual override</td>
+</tr>
+<tr>
+<td>M4 Writer + Campaigns</td>
+<td>1</td>
+<td>First campaign w/ AI-personalized samples</td>
+</tr>
+<tr>
+<td>M5 Delivery Engine</td>
+<td>1.5</td>
+<td>Warmup done, live sends ≤ 30/day, deliverability dashboard</td>
+</tr>
+<tr>
+<td>M6 Respond + Inbox</td>
+<td>1</td>
+<td>HITL replies &lt; 1 min, bookings in 2 clicks</td>
+</tr>
+<tr>
+<td>M7 Analytics + Billing + Hardening</td>
+<td>1</td>
+<td>Funnel, Stripe, E2E green, go-live</td>
+</tr>
+<tr>
+<td><strong>Go-live ramp</strong></td>
+<td>1</td>
+<td>Scale to 150/day/domain, first 10 meetings</td>
+</tr>
+</tbody>
+</table>
+<p><strong>KPIs at Phase 1 exit:</strong> 2,000+ leads/mo · 85% verified · 3–5% positive reply · 5–10 meetings/wk · &lt; 0.1% complaints.</p>
+<hr />
+<h2>Phase 2 — V1.5: Sharpen the Loop (Quarter 3)</h2>
+<p><strong>Goal: higher reply rates, more channels, less founder time.</strong></p>
+<ul>
+<li>[ ] <strong>LinkedIn channel v1:</strong> semi-manual DM workflow (copy-ready + open-in-LinkedIn deep links), connection-note personalization, ToS-safe only</li>
+<li>[ ] <strong>X channel:</strong> public-post-trigger sourcing (people asking for dev help) → suggestion DMs</li>
+<li>[ ] <strong>Nurture engine:</strong> Tier-B drip (3-touch, 2-week cadence), re-score on signal changes</li>
+<li>[ ] <strong>Semantic dedupe:</strong> pgvector embeddings — catch same company via different domains/socials</li>
+<li>[ ] <strong>CRM exports:</strong> HubSpot + Pipedrive + CSV (deeper than V1)</li>
+<li>[ ] <strong>Personalization 2.0:</strong> tech-stack-aware hooks (e.g., "your site is Next.js…"), project-repo-aware case studies</li>
+<li>[ ] <strong>A/B testing suite:</strong> subject + body + CTA experiments with significance reporting</li>
+<li>[ ] <strong>Meeting pipeline:</strong> automated pre-meeting briefing card (lead signals + suggested agenda) attached to booked meetings</li>
+<li>[ ] <strong>Founder mode:</strong> daily digest email (yesterday's numbers, today's approval queue)</li>
+</ul>
+<p><strong>KPIs:</strong> positive reply 5%+ · 10–15 meetings/wk · founder time &lt; 1 hr/wk · 4+ active channels.</p>
+<hr />
+<h2>Phase 3 — V2: Productize as Signhify Hunter SaaS (Quarter 4)</h2>
+<p><strong>Goal: second revenue line for Signhify; other agencies pay for the engine.</strong></p>
+<ul>
+<li>[ ] <strong>Multi-tenant hardening:</strong> workspace isolation review, audit, security pass</li>
+<li>[ ] <strong>Onboarding:</strong> connect domain → DNS wizard → warmup → first campaign templates (agency/studio ICP presets)</li>
+<li>[ ] <strong>Template gallery:</strong> 10 starter campaigns (SaaS dev, agency, AI automation, EdTech) — ships with the studio's own proven sequences</li>
+<li>[ ] <strong>Billing full:</strong> Pro $49/mo (2 domains, 3k leads/mo), Agency $149/mo (10 domains, 20k leads/mo, team seats), usage add-ons</li>
+<li>[ ] <strong>Public site:</strong> hunter.signhify.dpdns.org — cinematic landing (same design language), docs, pricing, affiliate program</li>
+<li>[ ] <strong>API + webhooks:</strong> lead/event streaming to customer CRMs</li>
+<li>[ ] <strong>Signhify eat-own-dogfood:</strong> Hunter is the acquisition engine for all future Signhify sales</li>
+<li>[ ] <strong>Case study:</strong> publish Hunter's own funnel data (with consent) as the flagship testimonial</li>
+</ul>
+<p><strong>KPIs:</strong> 30 paying agencies · $5k MRR · NRR &gt; 110%.</p>
+<hr />
+<h2>Phase 4 — V3: Autonomous Account Engine (2027)</h2>
+<p><strong>Goal: from leads to accounts; from outreach to revenue orchestration.</strong></p>
+<ul>
+<li>[ ] <strong>Account-based mode:</strong> target account lists → multi-contact sequences (CEO+CTO+founder), coordinated touches</li>
+<li>[ ] <strong>Intent signals:</strong> funding events, hiring spikes, tech migrations, competitor activity → auto-wake dormant campaigns</li>
+<li>[ ] <strong>AI SDR conversations:</strong> reply engine with escalating HITL (auto-answer FAQs, escalate anything novel)</li>
+<li>[ ] <strong>Multi-channel orchestration:</strong> email ↔ LinkedIn ↔ WhatsApp (with consent) unified journeys</li>
+<li>[ ] <strong>Revenue analytics:</strong> pipeline value, win rates by source/channel, CAC/LTV per channel — "the ROI sheet" feature</li>
+<li>[ ] <strong>Integration marketplace:</strong> n8n, HubSpot, Salesforce, Slack alerts, Google Sheets sync</li>
+<li>[ ] <strong>Agent marketplace:</strong> third-party agents (scrapers, enrichers, writers) sellable on Hunter</li>
+</ul>
+<p><strong>KPIs:</strong> 200 agencies · $50k MRR · positive-reply benchmark library shared publicly.</p>
+<hr />
+<h2>Guardrails for Every Phase</h2>
+<ol>
+<li><strong>Deliverability is sacred</strong> — never ship a volume feature before its reputation-protection (warmup/limits/alarms) ships with it.</li>
+<li><strong>Compliance is a feature</strong> — unsubscribe/suppression/DSAR exist from M0 and are never bypassed.</li>
+<li><strong>ToS-aware by design</strong> — platforms that prohibit automation get suggestion-mode, not loopholes.</li>
+<li><strong>Dogfood first</strong> — every phase ships internally for 2 weeks before it's a product feature.</li>
+<li><strong>Data hygiene</strong> — retention, dedupe, and suppression are quarterly review items, not one-time fixes.</li>
+<li><strong>AI costs tracked per campaign</strong> — hard budget caps from day 1 (mini-model defaults).</li>
+</ol>
+<hr />
+<h2>Milestone Owners &amp; Cadence</h2>
+<ul>
+<li>Owner: Piyush Raj Singh (founder) — all phases, with AI pairing tools per <code>07_GOD_LEVEL_AGENT_PROMPT.md</code>.</li>
+<li>Review cadence: weekly funnel review (Mon 09:30), monthly roadmap re-plan, quarterly compliance &amp; deliverability audit.</li>
+<li>Definitions: MVP = Phase 1 exit; Product-ready = Phase 3 exit; Scale = Phase 4.</li>
+</ul></body></html>
