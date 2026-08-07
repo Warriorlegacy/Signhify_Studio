@@ -5,13 +5,23 @@ import { Key, Check, Loader2, ExternalLink, X } from "lucide-react";
 import { listMyAiKeys, saveMyAiKey, deleteMyAiKey } from "@/lib/user-ai-keys.functions";
 import { BYOK_PROVIDERS } from "@/lib/ai-access.server";
 
-const PROVIDER_META: Record<string, { label: string; docs: string }> = {
-  OpenAI: { label: "OpenAI", docs: "https://platform.openai.com/api-keys" },
-  Groq: { label: "Groq", docs: "https://console.groq.com/keys" },
-  Cerebras: { label: "Cerebras", docs: "https://cloud.cerebras.ai/" },
+const PROVIDER_META: Record<string, { label: string; docs: string; placeholder?: string }> = {
+  OpenAI: { label: "OpenAI API", docs: "https://platform.openai.com/api-keys", placeholder: "sk-proj-..." },
+  ChatGPT_Cookies: {
+    label: "ChatGPT Cookies / Session Token",
+    docs: "https://chatgpt.com",
+    placeholder: "Paste __Secure-next-auth.session-token or JWT accessToken",
+  },
+  Gemini: { label: "Google Gemini Free API (1.5k/day)", docs: "https://aistudio.google.com/app/apikey", placeholder: "AIzaSy..." },
+  Gemini_Cookies: {
+    label: "Gemini Web Cookies",
+    docs: "https://gemini.google.com",
+    placeholder: "Paste __Secure-1PSID or session cookie",
+  },
+  Groq: { label: "Groq (Free 30 RPM)", docs: "https://console.groq.com/keys", placeholder: "gsk_..." },
+  Cerebras: { label: "Cerebras Fast", docs: "https://cloud.cerebras.ai/", placeholder: "csk-..." },
   NVIDIA: { label: "NVIDIA NIM", docs: "https://build.nvidia.com/" },
-  OpenRouter: { label: "OpenRouter", docs: "https://openrouter.ai/keys" },
-  Gemini: { label: "Google Gemini", docs: "https://aistudio.google.com/app/apikey" },
+  OpenRouter: { label: "OpenRouter (Free DeepSeek)", docs: "https://openrouter.ai/keys", placeholder: "sk-or-..." },
   Ollama: { label: "Ollama Turbo", docs: "https://ollama.com/settings/keys" },
   Mistral: { label: "Mistral", docs: "https://console.mistral.ai/api-keys" },
   Cohere: { label: "Cohere", docs: "https://dashboard.cohere.com/api-keys" },
@@ -146,7 +156,7 @@ export default function AiKeyQuickConfig() {
               <input
                 type="password"
                 autoComplete="off"
-                placeholder="Paste API key"
+                placeholder={PROVIDER_META[selected]?.placeholder ?? "Paste API key or session token"}
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
                 className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"

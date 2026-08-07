@@ -7,11 +7,13 @@ const PAID_PLANS = new Set(["studio", "scale", "pro"]);
 // Provider names accepted for BYOK. Must match names in robust-ai-service.
 export const BYOK_PROVIDERS = [
   "OpenAI",
+  "ChatGPT_Cookies",
+  "Gemini",
+  "Gemini_Cookies",
   "Groq",
   "Cerebras",
   "NVIDIA",
   "OpenRouter",
-  "Gemini",
   "Ollama",
   "Mistral",
   "Cohere",
