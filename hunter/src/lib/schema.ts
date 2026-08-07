@@ -137,7 +137,8 @@ CREATE TABLE IF NOT EXISTS settings (
 );
 `;
 
+import { db } from "./db.server";
+
 export function initSchema(): void {
-  const { db } = require("./db.server") as typeof import("./db.server");
   db.exec(SCHEMA);
 }
