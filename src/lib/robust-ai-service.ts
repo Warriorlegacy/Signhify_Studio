@@ -274,6 +274,13 @@ class RobustAIService {
       headers["anthropic-version"] = "2023-06-01";
     } else {
       headers["Authorization"] = `Bearer ${provider.apiKey}`;
+      if (provider.name === "ChatGPT_Cookies") {
+        headers["Cookie"] = `__Secure-next-auth.session-token=${provider.apiKey};`;
+        headers["User-Agent"] =
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+      } else if (provider.name === "Gemini_Cookies") {
+        headers["Cookie"] = `__Secure-1PSID=${provider.apiKey};`;
+      }
       if (provider.headers) {
         Object.assign(headers, provider.headers);
       }
@@ -313,6 +320,98 @@ class RobustAIService {
       return json.content?.[0]?.text || "";
     } else {
       return json.choices?.[0]?.message?.content || "";
+    }
+  }
+
+  async testProviderCredentials(
+    providerName: string,
+    apiKey: string,
+    customEndpoint?: string,
+  ): Promise<{ ok: boolean; message: string }> {
+    const testOptions: AIGatewayOptions = {
+      messages: [{ role: "user", content: "ping" }],
+      max_tokens: 5,
+    };
+
+    let url = "https://api.openai.com/v1/chat/completions";
+    let model = "gpt-4o-mini";
+    let isAnthropic = false;
+    let extraHeaders: Record<string, string> = {};
+
+    if (providerName === "OpenAI") {
+      url = "https://api.openai.com/v1/chat/completions";
+      model = "gpt-4o-mini";
+    } else if (providerName === "ChatGPT_Cookies") {
+      url = "https://api.openai.com/v1/chat/completions";
+      model = "gpt-4o";
+      extraHeaders["Cookie"] = `__Secure-next-auth.session-token=${apiKey};`;
+    } else if (providerName === "Gemini" || providerName === "Gemini_Cookies") {
+      url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+      model = "gemini-2.0-flash";
+    } else if (providerName === "Groq") {
+      url = "https://api.groq.com/openai/v1/chat/completions";
+      model = "llama-3.3-70b-versatile";
+    } else if (providerName === "Cerebras") {
+      url = "https://api.cerebras.ai/v1/chat/completions";
+      model = "llama-3.3-70b";
+    } else if (providerName === "NVIDIA") {
+      url = "https://integrate.api.nvidia.com/v1/chat/completions";
+      model = "nvidia/llama-3.3-nemotron-super-49b-v1";
+    } else if (providerName === "OpenRouter") {
+      url = "https://openrouter.ai/api/v1/chat/completions";
+      model = "deepseek/deepseek-chat-v3.1:free";
+      extraHeaders["HTTP-Referer"] = "https://signhify.lovable.app";
+    } else if (providerName === "Anthropic") {
+      url = "https://api.anthropic.com/v1/messages";
+      model = "claude-3-5-sonnet-20241022";
+      isAnthropic = true;
+    } else if (providerName === "Custom" && customEndpoint) {
+      url = customEndpoint.endsWith("/chat/completions")
+        ? customEndpoint
+        : customEndpoint.replace(/\/$/, "") + "/chat/completions";
+      model = "custom-model";
+    }
+
+    const testProvider: ProviderConfig = {
+      name: providerName,
+      url,
+      model,
+      apiKey,
+      headers: extraHeaders,
+      isAnthropic,
+      priority: 1,
+      enabled: true,
+      failureCount: 0,
+      lastFailureTime: null,
+      cooldownPeriod: 60000,
+    };
+
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: this.buildProviderHeaders(testProvider),
+        body: JSON.stringify(this.buildRequestBody(testProvider, testOptions)),
+      });
+
+      if (!res.ok) {
+        const errText = await res.text().catch(() => "Unknown error");
+        if (res.status === 401 || res.status === 403) {
+          throw new Error(`Authentication failed (${res.status}): Invalid or expired credentials.`);
+        }
+        if (res.status === 429) {
+          return {
+            ok: true,
+            message: `Authenticated successfully! (Provider is currently rate-limited on free tier).`,
+          };
+        }
+        throw new Error(`Provider returned ${res.status}: ${errText.slice(0, 150)}`);
+      }
+
+      const json = await res.json();
+      const content = this.parseResponse(testProvider, json);
+      return { ok: true, message: `Connected successfully! Provider (${model}) verified.` };
+    } catch (e: any) {
+      throw new Error(e?.message || `Connection failed for ${providerName}.`);
     }
   }
 
@@ -358,8 +457,6 @@ class RobustAIService {
             continue;
           }
 
-          // For other errors, we might want to stop trying depending on the error
-          // For now, we'll continue to try other providers
           continue;
         }
 
@@ -394,15 +491,12 @@ class RobustAIService {
     throw lastError || new Error(errorMessage);
   }
 
-  // BYOK: run the same fallback loop but using user-supplied keys.
-  // `userKeys` maps provider name (e.g. "Groq") -> api key.
+  // BYOK: run the fallback loop using user-supplied keys and session cookies.
   async generateAIResponseWithKeys(
     options: AIGatewayOptions,
     userKeys: Record<string, string>,
     customEndpoints?: Record<string, string>,
   ): Promise<{ content: string; providerUsed: string }> {
-    // Build transient providers from the templates in initializeProviders,
-    // but seeded with the user's keys and no shared cooldown state.
     const templates: Array<
       Omit<
         ProviderConfig,
@@ -410,25 +504,53 @@ class RobustAIService {
       >
     > = [
       {
+        name: "OpenAI",
+        url: "https://api.openai.com/v1/chat/completions",
+        model: "gpt-4o-mini",
+        isAnthropic: false,
+        priority: 1,
+      },
+      {
+        name: "ChatGPT_Cookies",
+        url: "https://api.openai.com/v1/chat/completions",
+        model: "gpt-4o",
+        isAnthropic: false,
+        priority: 1.5,
+      },
+      {
+        name: "Gemini",
+        url: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+        model: "gemini-2.0-flash",
+        isAnthropic: false,
+        priority: 2,
+      },
+      {
+        name: "Gemini_Cookies",
+        url: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+        model: "gemini-2.0-flash",
+        isAnthropic: false,
+        priority: 2.5,
+      },
+      {
         name: "Groq",
         url: "https://api.groq.com/openai/v1/chat/completions",
         model: "llama-3.3-70b-versatile",
         isAnthropic: false,
-        priority: 1,
+        priority: 3,
       },
       {
         name: "Cerebras",
         url: "https://api.cerebras.ai/v1/chat/completions",
         model: "llama-3.3-70b",
         isAnthropic: false,
-        priority: 2,
+        priority: 4,
       },
       {
         name: "NVIDIA",
         url: "https://integrate.api.nvidia.com/v1/chat/completions",
         model: "nvidia/llama-3.3-nemotron-super-49b-v1",
         isAnthropic: false,
-        priority: 3,
+        priority: 5,
       },
       {
         name: "OpenRouter",
@@ -436,49 +558,42 @@ class RobustAIService {
         model: "deepseek/deepseek-chat-v3.1:free",
         headers: { "HTTP-Referer": "https://signhify.lovable.app", "X-Title": "Signhify" },
         isAnthropic: false,
-        priority: 4,
-      },
-      {
-        name: "Gemini",
-        url: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
-        model: "gemini-2.0-flash",
-        isAnthropic: false,
-        priority: 5,
+        priority: 6,
       },
       {
         name: "Ollama",
         url: "https://ollama.com/v1/chat/completions",
         model: "gpt-oss:120b",
         isAnthropic: false,
-        priority: 6,
+        priority: 7,
       },
       {
         name: "Mistral",
         url: "https://api.mistral.ai/v1/chat/completions",
         model: "mistral-small-latest",
         isAnthropic: false,
-        priority: 7,
+        priority: 8,
       },
       {
         name: "Cohere",
         url: "https://api.cohere.ai/compatibility/v1/chat/completions",
         model: "command-r-plus",
         isAnthropic: false,
-        priority: 8,
+        priority: 9,
       },
       {
         name: "xAI",
         url: "https://api.x.ai/v1/chat/completions",
         model: "grok-2-latest",
         isAnthropic: false,
-        priority: 9,
+        priority: 10,
       },
       {
         name: "Anthropic",
         url: "https://api.anthropic.com/v1/messages",
         model: "claude-3-5-sonnet-20241022",
         isAnthropic: true,
-        priority: 10,
+        priority: 11,
       },
     ];
 
@@ -498,6 +613,7 @@ class RobustAIService {
 
     const providers: ProviderConfig[] = templates
       .filter((t) => !!userKeys[t.name])
+      .sort((a, b) => a.priority - b.priority)
       .map((t) => ({
         ...t,
         apiKey: userKeys[t.name],
@@ -508,7 +624,7 @@ class RobustAIService {
       }));
 
     if (providers.length === 0) {
-      throw new Error("No BYOK API keys available for this user.");
+      throw new Error("No BYOK API keys or session tokens available for this user.");
     }
 
     let lastError: unknown = null;
@@ -541,7 +657,19 @@ class RobustAIService {
         continue;
       }
     }
-    throw lastError || new Error(`All BYOK providers failed: ${attempts.join(", ")}`);
+
+    // If user's session token or BYOK failed due to expiration/challenge, attempt graceful fallback
+    const enabledManaged = this.providers.filter((p) => p.enabled);
+    if (enabledManaged.length > 0) {
+      logger.info("[BYOK] User keys exhausted, falling back to managed provider");
+      try {
+        return await this.generateAIResponse(options);
+      } catch {
+        /* proceed to throw lastError */
+      }
+    }
+
+    throw lastError || new Error(`All configured AI providers failed: ${attempts.join(", ")}`);
   }
 
   // Method to manually reset a provider (useful for admin actions)

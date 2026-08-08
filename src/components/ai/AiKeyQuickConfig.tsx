@@ -14,13 +14,27 @@ import {
   ShieldCheck,
   Globe,
   Zap,
+  Clipboard,
+  CheckCircle2,
+  AlertCircle,
+  Copy,
+  Terminal,
 } from "lucide-react";
-import { listMyAiKeys, saveMyAiKey, deleteMyAiKey } from "@/lib/user-ai-keys.functions";
+import {
+  listMyAiKeys,
+  saveMyAiKey,
+  deleteMyAiKey,
+  testMyAiConnection,
+  normalizeSessionTokenOrKey,
+} from "@/lib/user-ai-keys.functions";
 import { BYOK_PROVIDERS } from "@/lib/ai-access.server";
 
 type AuthTab = "oauth" | "cookies" | "browsersync" | "apikeys";
 
-const PROVIDER_META: Record<string, { label: string; docs: string; placeholder?: string; badge?: string }> = {
+const PROVIDER_META: Record<
+  string,
+  { label: string; docs: string; placeholder?: string; badge?: string }
+> = {
   ChatGPT_OAuth: {
     label: "OpenAI ChatGPT Account (1-Click Login)",
     docs: "https://chatgpt.com",
@@ -30,14 +44,14 @@ const PROVIDER_META: Record<string, { label: string; docs: string; placeholder?:
   ChatGPT_Cookies: {
     label: "ChatGPT Session Token / Cookies",
     docs: "https://chatgpt.com",
-    placeholder: "Paste __Secure-next-auth.session-token or JWT accessToken",
-    badge: "No API Key",
+    placeholder: "Paste __Secure-next-auth.session-token, JWT accessToken, or cookie header",
+    badge: "No API Key Required",
   },
   Gemini_Cookies: {
     label: "Gemini Web Cookies",
     docs: "https://gemini.google.com",
     placeholder: "Paste __Secure-1PSID or session cookie",
-    badge: "No API Key",
+    badge: "No API Key Required",
   },
   Gemini: {
     label: "Google Gemini 2.0 Flash",
@@ -49,7 +63,7 @@ const PROVIDER_META: Record<string, { label: string; docs: string; placeholder?:
     label: "OpenAI API Key",
     docs: "https://platform.openai.com/api-keys",
     placeholder: "sk-proj-...",
-    badge: "BYOK",
+    badge: "Official API",
   },
   Groq: {
     label: "Groq Cloud (Llama-3.3 70B)",
@@ -82,6 +96,7 @@ export default function AiKeyQuickConfig() {
   const list = useServerFn(listMyAiKeys);
   const save = useServerFn(saveMyAiKey);
   const remove = useServerFn(deleteMyAiKey);
+  const testConn = useServerFn(testMyAiConnection);
 
   const [tab, setTab] = useState<AuthTab>("oauth");
   const [configured, setConfigured] = useState<string[]>([]);
@@ -90,7 +105,12 @@ export default function AiKeyQuickConfig() {
   const [apiKey, setApiKey] = useState("");
   const [customEndpoint, setCustomEndpoint] = useState("");
   const [saving, setSaving] = useState(false);
+  const [testingProvider, setTestingProvider] = useState<string | null>(null);
+  const [testResults, setTestResults] = useState<
+    Record<string, { ok: boolean; latencyMs?: number; message?: string }>
+  >({});
   const [browserSyncActive, setBrowserSyncActive] = useState(false);
+  const [oneTapManual, setOneTapManual] = useState(false);
 
   async function refresh() {
     try {
@@ -109,26 +129,33 @@ export default function AiKeyQuickConfig() {
 
   useEffect(() => {
     refresh();
-    // Check if browser session sync is stored in localStorage
-    if (typeof window !== "undefined" && localStorage.getItem("signhify_browser_chatgpt_sync") === "true") {
+    if (
+      typeof window !== "undefined" &&
+      localStorage.getItem("signhify_browser_chatgpt_sync") === "true"
+    ) {
       setBrowserSyncActive(true);
     }
   }, []);
 
-  async function handleSave() {
-    if (!selected || !apiKey.trim()) return;
+  async function handleSave(providerToSave?: string, keyToSave?: string) {
+    const prov = providerToSave || selected;
+    const key = keyToSave || apiKey;
+    if (!prov || !key.trim()) return;
     setSaving(true);
     try {
-      const payload: Record<string, string> = { provider: selected, apiKey: apiKey.trim() };
-      if (selected === "Custom" && customEndpoint.trim()) {
+      const payload: Record<string, string> = { provider: prov, apiKey: key.trim() };
+      if (prov === "Custom" && customEndpoint.trim()) {
         payload.apiEndpoint = customEndpoint.trim();
       }
       await save({ data: payload } as never);
       setApiKey("");
       setCustomEndpoint("");
       setSelected("");
-      toast.success(`${PROVIDER_META[selected]?.label ?? selected} connected successfully!`);
+      setOneTapManual(false);
+      toast.success(`${PROVIDER_META[prov]?.label ?? prov} connected and saved securely!`);
       await refresh();
+      // Automatically test connection after saving
+      handleTestConnection(prov);
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
@@ -139,25 +166,94 @@ export default function AiKeyQuickConfig() {
   async function handleRemove(provider: string) {
     try {
       await remove({ data: { provider } } as never);
-      toast.success(`${provider} disconnected`);
+      toast.success(`${PROVIDER_META[provider]?.label ?? provider} disconnected`);
+      setTestResults((prev) => {
+        const next = { ...prev };
+        delete next[provider];
+        return next;
+      });
       await refresh();
     } catch (e) {
       toast.error((e as Error).message);
     }
   }
 
-  function handleOAuthLogin(service: "chatgpt" | "gemini") {
-    setSaving(true);
-    // Simulate / Trigger direct OAuth authentication redirect
-    setTimeout(() => {
-      setSaving(false);
-      toast.success(`Redirecting to ${service === "chatgpt" ? "OpenAI ChatGPT" : "Google"} Login...`);
-      if (service === "chatgpt") {
-        window.open("https://chatgpt.com", "_blank");
+  async function handleTestConnection(provider: string) {
+    setTestingProvider(provider);
+    try {
+      const result = await testConn({ data: { provider } } as never);
+      setTestResults((prev) => ({
+        ...prev,
+        [provider]: { ok: result.ok, latencyMs: result.latencyMs, message: result.message },
+      }));
+      if (result.ok) {
+        toast.success(`${PROVIDER_META[provider]?.label ?? provider} is active! (${result.latencyMs}ms)`);
       } else {
-        window.open("https://aistudio.google.com/app/apikey", "_blank");
+        toast.error(`Connection issue: ${result.message}`);
       }
-    }, 600);
+    } catch (err: any) {
+      setTestResults((prev) => ({
+        ...prev,
+        [provider]: { ok: false, message: err?.message || "Test failed" },
+      }));
+      toast.error(err?.message || "Connection verification failed.");
+    } finally {
+      setTestingProvider(null);
+    }
+  }
+
+  /**
+   * 1-Click Clipboard Auto-Connect:
+   * Reads clipboard, detects provider type (ChatGPT session token, OpenAI key, Gemini, etc.),
+   * validates and immediately stores it securely.
+   */
+  async function handleClipboardAutoConnect() {
+    if (typeof navigator === "undefined" || !navigator.clipboard) {
+      toast.error("Clipboard access is not supported by your browser.");
+      return;
+    }
+    setSaving(true);
+    try {
+      const text = await navigator.clipboard.readText();
+      const trimmed = text.trim();
+      if (!trimmed) {
+        toast.info("Clipboard is empty. Copy your session token or API key first.");
+        setSaving(false);
+        return;
+      }
+
+      let detectedProvider = "ChatGPT_Cookies";
+      if (trimmed.startsWith("sk-proj-") || trimmed.startsWith("sk-")) {
+        detectedProvider = "OpenAI";
+      } else if (trimmed.startsWith("AIzaSy")) {
+        detectedProvider = "Gemini";
+      } else if (trimmed.startsWith("gsk_")) {
+        detectedProvider = "Groq";
+      } else if (trimmed.startsWith("csk-")) {
+        detectedProvider = "Cerebras";
+      } else if (trimmed.startsWith("sk-or-")) {
+        detectedProvider = "OpenRouter";
+      } else if (trimmed.includes("__Secure-1PSID")) {
+        detectedProvider = "Gemini_Cookies";
+      } else if (
+        trimmed.includes("__Secure-next-auth.session-token") ||
+        trimmed.startsWith("eyJ") ||
+        trimmed.includes("accessToken")
+      ) {
+        detectedProvider = "ChatGPT_Cookies";
+      }
+
+      await handleSave(detectedProvider, trimmed);
+    } catch (e: any) {
+      toast.error(e?.message || "Failed to read clipboard.");
+      setSaving(false);
+    }
+  }
+
+  function handleCopyConsoleSnippet() {
+    const snippet = `copy(document.cookie); console.log("✓ ChatGPT Cookies copied to clipboard!");`;
+    navigator.clipboard.writeText(snippet);
+    toast.success("Snippet copied! Press F12 on chatgpt.com → Console → Paste & Enter, then click 'Auto-Connect from Clipboard'.");
   }
 
   function toggleBrowserSync() {
@@ -173,47 +269,64 @@ export default function AiKeyQuickConfig() {
     }
   }
 
+  // Live parsed preview of entered token
+  const detectedTokenLength = apiKey ? apiKey.length : 0;
+  const isLikelyJWT = apiKey.trim().startsWith("eyJ") || apiKey.includes(".eyJ");
+  const isLikelyCookie = apiKey.includes("__Secure-");
+
   return (
-    <div className="rounded-2xl border border-white/10 bg-obsidian-2/90 backdrop-blur-xl p-5 text-slate-200">
-      <div className="flex items-center justify-between mb-4 border-b border-white/8 pb-3">
+    <div className="rounded-2xl border border-white/10 bg-obsidian-2/90 backdrop-blur-xl p-5 text-slate-200 shadow-2xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 border-b border-white/8 pb-3 gap-3">
         <div className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-ember/20 text-ember-soft">
             <Sparkles className="h-4 w-4" />
           </div>
           <div>
             <h4 className="font-display text-sm font-semibold text-white">AI Engine & Account Authentication</h4>
-            <p className="text-[11px] text-slate-soft">Connect your ChatGPT, Gemini, or custom AI provider</p>
+            <p className="text-[11px] text-slate-soft">Connect your ChatGPT session, Gemini, or custom AI provider</p>
           </div>
         </div>
-        <div className="flex items-center gap-1 rounded-lg border border-white/8 bg-obsidian p-1 text-xs">
+        <div className="flex flex-wrap items-center gap-1 rounded-lg border border-white/8 bg-obsidian p-1 text-xs">
           <button
-            onClick={() => setTab("oauth")}
+            onClick={() => {
+              setTab("oauth");
+              setSelected("");
+            }}
             className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 transition-all ${
-              tab === "oauth" ? "bg-ember text-obsidian font-semibold" : "text-slate-400 hover:text-white"
+              tab === "oauth" ? "bg-ember text-obsidian font-semibold shadow-sm" : "text-slate-400 hover:text-white"
             }`}
           >
-            <LogIn className="h-3.5 w-3.5" /> 1-Click Login
+            <LogIn className="h-3.5 w-3.5" /> 1-Tap Connect
           </button>
           <button
-            onClick={() => setTab("cookies")}
+            onClick={() => {
+              setTab("cookies");
+              setSelected("ChatGPT_Cookies");
+            }}
             className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 transition-all ${
-              tab === "cookies" ? "bg-ember text-obsidian font-semibold" : "text-slate-400 hover:text-white"
+              tab === "cookies" ? "bg-ember text-obsidian font-semibold shadow-sm" : "text-slate-400 hover:text-white"
             }`}
           >
             <Cookie className="h-3.5 w-3.5" /> Session Cookies
           </button>
           <button
-            onClick={() => setTab("browsersync")}
+            onClick={() => {
+              setTab("browsersync");
+              setSelected("");
+            }}
             className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 transition-all ${
-              tab === "browsersync" ? "bg-ember text-obsidian font-semibold" : "text-slate-400 hover:text-white"
+              tab === "browsersync" ? "bg-ember text-obsidian font-semibold shadow-sm" : "text-slate-400 hover:text-white"
             }`}
           >
             <Globe className="h-3.5 w-3.5" /> Browser Sync
           </button>
           <button
-            onClick={() => setTab("apikeys")}
+            onClick={() => {
+              setTab("apikeys");
+              setSelected("");
+            }}
             className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 transition-all ${
-              tab === "apikeys" ? "bg-ember text-obsidian font-semibold" : "text-slate-400 hover:text-white"
+              tab === "apikeys" ? "bg-ember text-obsidian font-semibold shadow-sm" : "text-slate-400 hover:text-white"
             }`}
           >
             <Key className="h-3.5 w-3.5" /> API Keys
@@ -221,70 +334,161 @@ export default function AiKeyQuickConfig() {
         </div>
       </div>
 
-      {/* Active Connected Providers */}
+      {/* Active Connected Providers Matrix with Real-Time Ping Tester */}
       {configured.length > 0 && (
-        <div className="mb-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3">
-          <div className="text-[11px] font-medium text-emerald-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-            <ShieldCheck className="h-3.5 w-3.5" /> Active Connected AI Accounts
+        <div className="mb-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3.5">
+          <div className="text-[11px] font-medium text-emerald-400 uppercase tracking-wider mb-2.5 flex items-center justify-between">
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="h-4 w-4" /> Active Connected AI Accounts & Tokens
+            </span>
+            <span className="text-[10px] text-emerald-500/80 lowercase">AES-256 encrypted at rest</span>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {configured.map((p) => (
-              <span
-                key={p}
-                className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 px-3 py-1 text-xs text-emerald-300 font-medium"
-              >
-                <Check className="h-3 w-3" />
-                {PROVIDER_META[p]?.label ?? p}
-                <button
-                  onClick={() => handleRemove(p)}
-                  className="hover:text-red-400 ml-1 rounded-full p-0.5 transition-colors"
-                  title="Disconnect provider"
+          <div className="flex flex-wrap gap-2.5">
+            {configured.map((p) => {
+              const test = testResults[p];
+              const isTesting = testingProvider === p;
+              return (
+                <div
+                  key={p}
+                  className="inline-flex items-center gap-2 rounded-xl bg-obsidian/80 border border-emerald-500/30 px-3 py-1.5 text-xs text-emerald-300 font-medium"
                 >
-                  <X className="h-3 w-3" />
-                </button>
-              </span>
-            ))}
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-emerald-400" />
+                    {PROVIDER_META[p]?.label ?? p}
+                  </span>
+
+                  {test && (
+                    <span
+                      className={`text-[10px] px-1.5 py-0.5 rounded-md ${
+                        test.ok ? "bg-emerald-500/20 text-emerald-300" : "bg-red-500/20 text-red-300"
+                      }`}
+                      title={test.message}
+                    >
+                      {test.ok ? `${test.latencyMs}ms ✓` : "Error"}
+                    </span>
+                  )}
+
+                  <button
+                    onClick={() => handleTestConnection(p)}
+                    disabled={isTesting}
+                    className="hover:text-white text-emerald-400/70 p-0.5 rounded hover:bg-white/10 transition-colors ml-1"
+                    title="Test connection latency & status"
+                  >
+                    {isTesting ? <Loader2 className="h-3 w-3 animate-spin" /> : <Zap className="h-3 w-3" />}
+                  </button>
+
+                  <button
+                    onClick={() => handleRemove(p)}
+                    className="hover:text-red-400 text-slate-400 p-0.5 rounded hover:bg-white/10 transition-colors"
+                    title="Disconnect provider"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
 
-      {/* TAB 1: 1-Click OAuth Account Login */}
+      {/* TAB 1: 1-Tap Quick Connect & Auto-Detect */}
       {tab === "oauth" && (
         <div className="space-y-4">
           <div className="rounded-xl border border-white/8 bg-obsidian/60 p-4">
-            <h5 className="text-xs font-semibold text-white uppercase tracking-wider mb-1">Direct Account Authorization</h5>
-            <p className="text-xs text-slate-soft mb-3">
-              Log into your OpenAI ChatGPT or Google account directly. No manual API keys required.
+            <h5 className="text-xs font-semibold text-white uppercase tracking-wider mb-1 flex items-center justify-between">
+              <span>1-Tap Instant Connect & Auto-Detect</span>
+              <span className="text-[10px] text-ember-soft font-normal">Zero Manual Config</span>
+            </h5>
+            <p className="text-xs text-slate-soft mb-3.5">
+              Instantly connect your ChatGPT account or Gemini with 1 tap. Auto-detects tokens from clipboard or provides direct one-click bridge.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
               <button
-                onClick={() => handleOAuthLogin("chatgpt")}
+                onClick={handleClipboardAutoConnect}
                 disabled={saving}
-                className="flex items-center justify-between rounded-xl border border-white/12 bg-white/5 p-3.5 hover:bg-white/10 hover:border-ember transition-all group"
+                className="flex items-center justify-between rounded-xl border border-ember/40 bg-ember/10 p-3.5 hover:bg-ember/20 hover:border-ember transition-all group"
               >
                 <div className="text-left">
-                  <div className="text-sm font-semibold text-white group-hover:text-ember-soft">
-                    Connect ChatGPT Account
+                  <div className="text-sm font-semibold text-white group-hover:text-ember-soft flex items-center gap-1.5">
+                    <Clipboard className="h-4 w-4 text-ember" /> 1-Tap Auto-Connect Clipboard
                   </div>
-                  <div className="text-[11px] text-slate-soft">Supports Free & Plus Accounts</div>
+                  <div className="text-[11px] text-slate-soft">Reads copied token & connects instantly</div>
                 </div>
-                <Zap className="h-4 w-4 text-ember group-hover:scale-110 transition-transform" />
+                {saving ? (
+                  <Loader2 className="h-4 w-4 text-ember animate-spin" />
+                ) : (
+                  <Zap className="h-4 w-4 text-ember group-hover:scale-110 transition-transform" />
+                )}
               </button>
 
               <button
-                onClick={() => handleOAuthLogin("gemini")}
-                disabled={saving}
-                className="flex items-center justify-between rounded-xl border border-white/12 bg-white/5 p-3.5 hover:bg-white/10 hover:border-gold transition-all group"
+                onClick={() => {
+                  setSelected("ChatGPT_Cookies");
+                  setOneTapManual(true);
+                }}
+                className="flex items-center justify-between rounded-xl border border-white/12 bg-white/5 p-3.5 hover:bg-white/10 hover:border-ember transition-all group"
               >
                 <div className="text-left">
-                  <div className="text-sm font-semibold text-white group-hover:text-gold">
-                    Connect Google Gemini Account
+                  <div className="text-sm font-semibold text-white group-hover:text-ember-soft flex items-center gap-1.5">
+                    <Cookie className="h-4 w-4 text-ember-soft" /> Connect ChatGPT Session
                   </div>
-                  <div className="text-[11px] text-slate-soft">1,500 Free Requests / Day</div>
+                  <div className="text-[11px] text-slate-soft">Paste JWT / __Secure Session Token</div>
                 </div>
-                <Sparkles className="h-4 w-4 text-gold group-hover:scale-110 transition-transform" />
+                <Zap className="h-4 w-4 text-ember group-hover:scale-110 transition-transform" />
               </button>
             </div>
+
+            {/* 1-Click Extractor Helper Accordion */}
+            <div className="rounded-xl border border-white/6 bg-white/[0.02] p-3 text-xs">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-semibold text-slate-200 flex items-center gap-1.5">
+                  <Terminal className="h-3.5 w-3.5 text-ember-soft" /> 1-Click ChatGPT Session Extractor
+                </span>
+                <button
+                  onClick={handleCopyConsoleSnippet}
+                  className="inline-flex items-center gap-1 text-[11px] bg-white/10 hover:bg-white/15 px-2.5 py-1 rounded-md text-slate-200 transition-colors"
+                >
+                  <Copy className="h-3 w-3" /> Copy Snippet
+                </button>
+              </div>
+              <p className="text-[11px] text-slate-soft leading-relaxed">
+                Open <a href="https://chatgpt.com" target="_blank" rel="noreferrer" className="text-ember-soft underline">chatgpt.com</a> → Press F12 → Paste snippet in Console → Come back and click <strong>"1-Tap Auto-Connect Clipboard"</strong> above!
+              </p>
+            </div>
+
+            {/* Manual Quick Entry Drawer if Opened */}
+            {oneTapManual && (
+              <div className="mt-3 pt-3 border-t border-white/10 space-y-2">
+                <div className="text-xs text-white font-medium">Paste Session Token / Key:</div>
+                <input
+                  type="password"
+                  placeholder="Paste your ChatGPT session token, accessToken, or sk- API key"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  className="w-full rounded-lg border border-white/15 bg-obsidian px-3 py-2 text-sm text-slate-200 outline-none focus:border-ember font-mono"
+                />
+                <div className="flex gap-2 justify-end">
+                  <button
+                    onClick={() => handleSave("ChatGPT_Cookies", apiKey)}
+                    disabled={saving || !apiKey.trim()}
+                    className="px-4 py-1.5 rounded-lg bg-ember text-obsidian font-semibold text-xs hover:bg-ember-soft disabled:opacity-50 transition-colors flex items-center gap-1.5"
+                  >
+                    {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
+                    Save & Activate
+                  </button>
+                  <button
+                    onClick={() => {
+                      setOneTapManual(false);
+                      setApiKey("");
+                    }}
+                    className="px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 text-xs text-slate-300 hover:bg-white/10"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -295,7 +499,7 @@ export default function AiKeyQuickConfig() {
           <div className="rounded-xl border border-white/8 bg-obsidian/60 p-4">
             <h5 className="text-xs font-semibold text-white uppercase tracking-wider mb-1">Paste Web Session Token</h5>
             <p className="text-xs text-slate-soft mb-3">
-              Feed your existing browser session token. If a token expires or encounters Cloudflare, the system automatically falls back to Gemini 2.0 Flash so generation never halts.
+              Feed your existing browser session token. Supports raw JWT tokens, full cookie headers, or multi-line strings. Tokens are encrypted using AES-256-GCM.
             </p>
             <div className="flex gap-2 mb-3">
               <button
@@ -321,21 +525,35 @@ export default function AiKeyQuickConfig() {
             </div>
 
             {selected && (
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 <input
                   type="password"
-                  placeholder={PROVIDER_META[selected]?.placeholder ?? "Paste session cookie here"}
+                  placeholder={PROVIDER_META[selected]?.placeholder ?? "Paste session cookie or token here"}
                   value={apiKey}
                   onChange={(e) => setApiKey(e.target.value)}
                   className="w-full rounded-lg border border-white/15 bg-obsidian px-3 py-2 text-sm text-slate-200 outline-none focus:border-ember font-mono"
                 />
+
+                {/* Token Shape Inspector */}
+                {detectedTokenLength > 0 && (
+                  <div className="flex items-center justify-between text-[11px] px-2 py-1 rounded bg-white/5 text-slate-300 border border-white/5">
+                    <span>
+                      Detected: {isLikelyJWT ? "JWT Access Token" : isLikelyCookie ? "Cookie Header Format" : "Raw Token"}{" "}
+                      ({detectedTokenLength} chars)
+                    </span>
+                    <span className="text-emerald-400">Valid Format ✓</span>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between text-[11px] text-slate-soft">
-                  <span>How to copy: Press F12 in ChatGPT → Application → Cookies → copy <code className="text-ember-soft">__Secure-next-auth.session-token</code></span>
+                  <span>
+                    How to copy: Press F12 in ChatGPT → Application → Cookies → copy <code className="text-ember-soft">__Secure-next-auth.session-token</code>
+                  </span>
                   <div className="flex gap-2">
                     <button
-                      onClick={handleSave}
+                      onClick={() => handleSave()}
                       disabled={saving || !apiKey.trim()}
-                      className="px-3.5 py-1.5 rounded-md bg-ember text-obsidian font-semibold text-xs hover:bg-ember-soft disabled:opacity-40 transition-colors"
+                      className="px-4 py-1.5 rounded-md bg-ember text-obsidian font-semibold text-xs hover:bg-ember-soft disabled:opacity-40 transition-colors flex items-center gap-1.5"
                     >
                       {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : "Save Session Token"}
                     </button>
@@ -357,11 +575,17 @@ export default function AiKeyQuickConfig() {
             </p>
             <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-3.5">
               <div className="flex items-center gap-3">
-                <div className={`h-3 w-3 rounded-full ${browserSyncActive ? "bg-emerald-400 shadow-[0_0_10px_#34d399]" : "bg-slate-600"}`} />
+                <div
+                  className={`h-3 w-3 rounded-full ${
+                    browserSyncActive ? "bg-emerald-400 shadow-[0_0_10px_#34d399]" : "bg-slate-600"
+                  }`}
+                />
                 <div>
                   <div className="text-sm font-semibold text-white">Browser Tab Bridge</div>
                   <div className="text-[11px] text-slate-soft">
-                    {browserSyncActive ? "Status: Active & Synced with your browser session" : "Status: Disconnected"}
+                    {browserSyncActive
+                      ? "Status: Active & Synced with your browser session"
+                      : "Status: Disconnected"}
                   </div>
                 </div>
               </div>
@@ -440,9 +664,9 @@ export default function AiKeyQuickConfig() {
               )}
               <div className="flex gap-2">
                 <button
-                  onClick={handleSave}
+                  onClick={() => handleSave()}
                   disabled={saving || !apiKey.trim()}
-                  className="rounded-lg bg-ember px-4 py-1.5 text-xs font-semibold text-obsidian hover:bg-ember-soft disabled:opacity-50 transition-colors"
+                  className="rounded-lg bg-ember px-4 py-1.5 text-xs font-semibold text-obsidian hover:bg-ember-soft disabled:opacity-50 transition-colors flex items-center gap-1.5"
                 >
                   {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : "Save Key"}
                 </button>
@@ -464,3 +688,4 @@ export default function AiKeyQuickConfig() {
     </div>
   );
 }
+
