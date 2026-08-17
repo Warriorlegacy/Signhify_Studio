@@ -141,6 +141,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "dns-prefetch", href: "https://fonts.googleapis.com" },
       { rel: "dns-prefetch", href: "https://supabase.co" },
+      { rel: "canonical", href: "https://signhify.dpdns.org" },
       { rel: "alternate", hrefLang: "x-default", href: "https://signhify.dpdns.org" },
       { rel: "alternate", hrefLang: "en-US", href: "https://signhify.dpdns.org" },
       { rel: "alternate", hrefLang: "en-IN", href: "https://signhify.dpdns.org" },
@@ -388,6 +389,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@type": "Product",
           name: "Signhify AI Engineering Studio",
           alternateName: "Signhify AI Studio",
+          image:
+            "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
           description:
             "AI-powered product studio. Describe your idea in plain English — our 6-agent autonomous swarm designs, engineers, tests, secures, and deploys it. Production SaaS in 2 weeks.",
           brand: {
@@ -427,6 +430,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               name: "Platform",
               description:
                 "Custom enterprise — multi-agent orchestration, LLM fine-tuning, SOC2 readiness, SLA.",
+              price: "2499",
+              priceCurrency: "USD",
+              priceValidUntil: "2027-12-31",
               availability: "https://schema.org/OnlineOnly",
               url: "https://signhify.dpdns.org/pricing",
             },

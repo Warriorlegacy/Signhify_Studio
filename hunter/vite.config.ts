@@ -5,6 +5,8 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
+    server: { port: 3001, host: true },
+    preview: { port: 3001, host: true },
     build: {
       rollupOptions: {
         external: ["bun:sqlite", "node:net", "node:dns/promises", "node:fs", "node:path", "node:url"],

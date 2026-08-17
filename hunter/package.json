@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "vite dev --port 3001 --host",
     "build": "vite build",
-    "start": "vite preview",
+    "start": "vite preview --port 3001 --host",
     "worker": "bun scripts/worker.ts",
     "typecheck": "tsc --noEmit",
     "smoke": "bun scripts/smoke.ts"

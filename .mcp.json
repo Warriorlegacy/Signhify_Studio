@@ -13,6 +13,10 @@
         "BROWSER_USE_LLM_MODEL": "claude-3-5-sonnet-20241022",
         "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}"
       }
+    },
+    "openseo": {
+      "type": "http",
+      "url": "https://app.openseo.so/mcp"
     }
   }
 }

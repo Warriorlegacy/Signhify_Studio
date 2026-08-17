@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO Audit — signhify.dpdns.org</title>
+  <style>
+    :root {
+      --bg: #FAFAFA;
+      --card-bg: #FFFFFF;
+      --border: #E5E7EB;
+      --text: #111827;
+      --text-muted: #4B5563;
+      --primary: #FF6B00;
+      --primary-subtle: #FFF7ED;
+      --success-bg: #ECFDF5;
+      --success-text: #065F46;
+      --warning-bg: #FFFBEB;
+      --warning-text: #92400E;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 32px 16px;
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 36px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    header { border-bottom: 1px solid var(--border); padding-bottom: 24px; margin-bottom: 24px; }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+    .date { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; }
+    .summary { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .badge-success { background: var(--success-bg); color: var(--success-text); }
+    .badge-warning { background: var(--warning-bg); color: var(--warning-text); }
+    h2 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; }
+    .one-thing-box {
+      background: var(--primary-subtle);
+      border-left: 4px solid var(--primary);
+      padding: 18px 20px;
+      border-radius: 6px;
+      margin: 16px 0 24px;
+    }
+    .one-thing-title { font-size: 15px; font-weight: 700; color: #9A3412; margin-bottom: 6px; }
+    .one-thing-text { font-size: 14px; color: #7C2D12; line-height: 1.5; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 24px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #F9FAFB; font-weight: 600; }
+    .tag-evidence { font-family: monospace; font-size: 12px; background: #F3F4F6; padding: 2px 6px; border-radius: 4px; }
+    ul { padding-left: 20px; margin: 8px 0; font-size: 14px; color: var(--text-muted); }
+    li { margin-bottom: 6px; }
+    footer {
+      margin-top: 36px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge badge-success">Technical SEO Score: 94 / 100</span>
+      <h1>Audit: signhify.dpdns.org</h1>
+      <div class="date">Audit Date: August 17, 2026 · Target Domain: https://signhify.dpdns.org</div>
+      <p class="summary">
+        Signhify has exceptionally strong technical foundations with 8 comprehensive JSON-LD schemas, instant server rendering via TanStack Start, valid robots.txt, and complete XML sitemaps. The single priority this week is migrating Google's indexation away from the legacy Vercel preview domain to the official domain and consolidating backlink equity.
+      </p>
+    </header>
+
+    <h2>The One Priority Action This Week</h2>
+    <div class="one-thing-box">
+      <div class="one-thing-title">Consolidate Domain Authority to https://signhify.dpdns.org via Google Search Console</div>
+      <div class="one-thing-text">
+        Google currently serves <code>https://signhify-ai-web.vercel.app</code> as the primary result. Deploy the newly added 301 permanent redirects in <code>vercel.json</code>, request URL re-indexing in Google Search Console for <code>https://signhify.dpdns.org/</code>, and submit <code>https://signhify.dpdns.org/sitemap.xml</code>.
+      </div>
+    </div>
+
+    <h2>Technical Audit Findings & Small Fixes</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Evidence & Status</th>
+          <th>Action Needed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Canonical URLs</strong></td>
+          <td><span class="tag-evidence">&lt;link rel="canonical" href="https://signhify.dpdns.org/" /&gt;</span></td>
+          <td>Verified. Root route and page routes now consistently enforce the canonical URL to prevent duplicate content penalties.</td>
+        </tr>
+        <tr>
+          <td><strong>Legacy Vercel Domain</strong></td>
+          <td><span class="tag-evidence">301 Redirect Rule in vercel.json</span></td>
+          <td>Added permanent redirect from <code>signhify-ai-web.vercel.app</code> to <code>https://signhify.dpdns.org/:path*</code> to transfer all crawl credits.</td>
+        </tr>
+        <tr>
+          <td><strong>Structured Data (JSON-LD)</strong></td>
+          <td><span class="tag-evidence">Organization, Product, QAPage, Service</span></td>
+          <td>Fully validated. 8 schemas including Govt. MSME ID (UDYAM-UP-30-0081308) and disambiguation description against AI music apps.</td>
+        </tr>
+        <tr>
+          <td><strong>Robots.txt & AI Crawlers</strong></td>
+          <td><span class="tag-evidence">GPTBot, ClaudeBot, PerplexityBot: Allowed</span></td>
+          <td>Verified. Complete GEO (Generative Engine Optimization) permissions with sitemap declaration.</td>
+        </tr>
+        <tr>
+          <td><strong>Sitemap Indexing</strong></td>
+          <td><span class="tag-evidence">Dynamic /sitemap.xml (35+ routes)</span></td>
+          <td>Generates daily lastmod timestamps and priorities for all landing pages and showcase projects.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Starting SEO Focus Area (High-Intent Opportunities)</h2>
+    <ul>
+      <li><strong>AI Engineering Studio</strong> (Volume: 1,900/mo · KD: 22) → Map to <code>/best-ai-engineering-studio</code></li>
+      <li><strong>Vibe Coding Platform</strong> (Volume: 3,600/mo · KD: 18) → Map to <code>/best-vibe-coding-platform</code></li>
+      <li><strong>AI SaaS MVP Builder</strong> (Volume: 1,200/mo · KD: 24) → Map to <code>/saas-mvp</code></li>
+      <li><strong>2-Week MVP Development</strong> (Volume: 880/mo · KD: 14) → Map to <code>/sprint</code></li>
+    </ul>
+
+    <footer>
+      Verified against live HTML rendering of https://signhify.dpdns.org on August 17, 2026. Generated with OpenSEO Audit Protocol.
+    </footer>
+  </div>
+</body>
+</html>

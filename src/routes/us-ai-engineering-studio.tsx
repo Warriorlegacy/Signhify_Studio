@@ -95,6 +95,7 @@ export const Route = createFileRoute("/us-ai-engineering-studio")({
           "@context": "https://schema.org",
           "@type": "Product",
           name: "Signhify AI Engineering Studio (US Edition)",
+          image: "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
           description:
             "Full-stack AI SaaS development studio with 6-agent swarm, 2-week delivery sprint, BYOK security vault, and 100% US timezone coverage.",
           brand: { "@type": "Brand", name: "Signhify" },
@@ -104,6 +105,8 @@ export const Route = createFileRoute("/us-ai-engineering-studio")({
             highPrice: "799",
             priceCurrency: "USD",
             offerCount: 2,
+            availability: "https://schema.org/OnlineOnly",
+            url: "https://signhify.dpdns.org/pricing",
           },
           aggregateRating: {
             "@type": "AggregateRating",
@@ -117,15 +120,17 @@ export const Route = createFileRoute("/us-ai-engineering-studio")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "QAPage",
-          mainEntity: {
-            "@type": "Question",
-            name: "Why do US startups choose Signhify over local US agencies?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Signhify delivers Silicon Valley-grade AI architecture at 1/5th the cost of US agencies ($299 Sprint vs $50k+ traditional agencies), with 100% US EST/PST timezone overlap, 2-week delivery guarantees, and 100% code ownership.",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "Why do US startups choose Signhify over local US agencies?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Signhify delivers Silicon Valley-grade AI architecture at 1/5th the cost of US agencies ($299 Sprint vs $50k+ traditional agencies), with 100% US EST/PST timezone overlap, 2-week delivery guarantees, and 100% code ownership.",
+              },
             },
-          },
+          ],
         }),
       },
     ],

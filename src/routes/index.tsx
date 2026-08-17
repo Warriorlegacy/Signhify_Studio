@@ -36,7 +36,7 @@ export const Route = createFileRoute("/")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "QAPage",
+          "@type": "FAQPage",
           mainEntity: [
             {
               "@type": "Question",
