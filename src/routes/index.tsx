@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Signhify — the best AI engineering studio and vibe-coding platform. We design, engineer, market, and ship AI-first SaaS, autonomous agents, and growth systems end-to-end. Top digital marketing studio for AI-native brands.",
+          "Signhify is the premier AI engineering studio and vibe-coding platform. We build, market, and ship production SaaS, AI agents, and growth systems end-to-end.",
       },
       {
         property: "og:title",
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Signhify — the best AI engineering studio and vibe-coding platform. We design, engineer, market, and ship AI-first SaaS, autonomous agents, and growth systems end-to-end. Top digital marketing studio for AI-native brands.",
+          "Signhify is the premier AI engineering studio and vibe-coding platform. We build, market, and ship production SaaS, AI agents, and growth systems end-to-end.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/" },
     ],

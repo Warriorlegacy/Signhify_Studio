@@ -4,7 +4,8 @@ import { marked } from "marked";
 import guideMarkdown from "../../public/signhify-local-dev-guide.md?raw";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
-const guideHtml = marked.parse(guideMarkdown, { async: false }) as string;
+const sanitizedGuideMarkdown = guideMarkdown.replace(/^#\s+/gm, "## ");
+const guideHtml = marked.parse(sanitizedGuideMarkdown, { async: false }) as string;
 
 export const Route = createFileRoute("/roadmap")({
   head: () => ({

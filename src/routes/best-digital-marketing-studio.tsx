@@ -29,23 +29,21 @@ export const Route = createFileRoute("/best-digital-marketing-studio")({
   head: () => ({
     meta: [
       {
-        title:
-          "Best Digital Marketing Studio — Signhify | #1 Growth Engineering & Marketing Studio 2026",
+        title: "Best Digital Marketing Studio for AI SaaS — Signhify",
       },
       {
         name: "description",
         content:
-          "Signhify is the best digital marketing studio that builds AND markets your product. SEO/AEO optimization, performance marketing, brand strategy, CRO, and email automation — with a built-in AI engineering studio.",
+          "Signhify is the top digital marketing studio for AI brands. SEO/AEO, performance marketing, brand strategy, CRO, and growth engineering.",
       },
       {
         property: "og:title",
-        content:
-          "Best Digital Marketing Studio — Signhify | #1 Growth Engineering & Marketing Studio 2026",
+        content: "Best Digital Marketing Studio for AI SaaS — Signhify",
       },
       {
         property: "og:description",
         content:
-          "Signhify is the best digital marketing studio that builds AND markets your product. SEO/AEO optimization, performance marketing, brand strategy, CRO, and email automation.",
+          "Signhify is the top digital marketing studio for AI brands. SEO/AEO, performance marketing, brand strategy, CRO, and growth engineering.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/best-digital-marketing-studio" },
       { property: "og:image", content: SOCIAL_IMAGE },

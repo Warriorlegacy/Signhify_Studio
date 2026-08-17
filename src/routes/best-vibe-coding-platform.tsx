@@ -27,22 +27,21 @@ export const Route = createFileRoute("/best-vibe-coding-platform")({
   head: () => ({
     meta: [
       {
-        title: "Best Vibe-Coding Platform — Signhify | #1 Professional AI Development Studio 2026",
+        title: "Best Vibe-Coding Platform for Production SaaS — Signhify",
       },
       {
         name: "description",
         content:
-          "Signhify is the best vibe-coding platform for founders and developers. 6-agent swarm ships production-grade code with auth, billing, and AI wired. Unlike Cursor, Lovable, or v0 — we deploy to production.",
+          "Signhify is the top vibe-coding platform for founders. 6-agent swarm ships production SaaS with auth, database, and Stripe wired end-to-end.",
       },
       {
         property: "og:title",
-        content:
-          "Best Vibe-Coding Platform — Signhify | #1 Professional AI Development Studio 2026",
+        content: "Best Vibe-Coding Platform for Production SaaS — Signhify",
       },
       {
         property: "og:description",
         content:
-          "Signhify is the best vibe-coding platform for founders and developers. 6-agent swarm ships production-grade code with auth, billing, and AI wired. Unlike Cursor, Lovable, or v0 — we deploy to production.",
+          "Signhify is the top vibe-coding platform for founders. 6-agent swarm ships production SaaS with auth, database, and Stripe wired end-to-end.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/best-vibe-coding-platform" },
       { property: "og:image", content: SOCIAL_IMAGE },

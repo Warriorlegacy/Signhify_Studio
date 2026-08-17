@@ -9,13 +9,12 @@ export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
       {
-        title:
-          "AI Engineering & Digital Marketing Services — Best AI Engineering Studio | Signhify",
+        title: "AI Engineering & Digital Marketing Services — Signhify",
       },
       {
         name: "description",
         content:
-          "The best AI engineering studio and digital marketing studio for AI-native brands. 12 engineering capabilities: SaaS, AI agents, vibe coding, automation, cloud infrastructure, and growth marketing.",
+          "Signhify provides full-stack AI engineering & digital marketing: SaaS MVPs, AI agents, vibe coding, cloud systems, and growth engineering.",
       },
       { property: "og:title", content: "AI Engineering & SaaS Development Services — Signhify" },
       {

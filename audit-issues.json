@@ -1,0 +1,702 @@
+[
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/us-ai-engineering-studio",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/signhify-ai",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/veepee-engineers",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/marketplace/sell",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/marketplace",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/gymflow-saas",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/gigmind",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/autoreels-ai",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/tuitiontrack",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/signhify-crm",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/sewarth-path",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/vibe-coding",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/jmd-online-book",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/vip-tennis",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/gple-sports",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/nebulapay",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/rahul-silk",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/aurora-analytics",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/skillforge-ai",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/autotube",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/adshield-india",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/cricket-king-rahul",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/tennis-king-jackpot",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "canonicalized-page",
+    "issue": "Canonicalized to another URL",
+    "url": "https://signhify.dpdns.org/projects/hari-cricket",
+    "details": {
+      "canonicalUrl": "https://signhify.dpdns.org/"
+    },
+    "howToFix": "If this page should rank on its own, set its canonical to itself. Otherwise no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "heading-order-skip",
+    "issue": "Heading levels skip",
+    "url": "https://signhify.dpdns.org/ai",
+    "details": null,
+    "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+  },
+  {
+    "severity": "info",
+    "issueType": "heading-order-skip",
+    "issue": "Heading levels skip",
+    "url": "https://signhify.dpdns.org/book",
+    "details": null,
+    "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+  },
+  {
+    "severity": "info",
+    "issueType": "heading-order-skip",
+    "issue": "Heading levels skip",
+    "url": "https://signhify.dpdns.org/marketplace/sell",
+    "details": null,
+    "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+  },
+  {
+    "severity": "info",
+    "issueType": "heading-order-skip",
+    "issue": "Heading levels skip",
+    "url": "https://signhify.dpdns.org/marketplace",
+    "details": null,
+    "howToFix": "Adjust heading levels so they descend one step at a time (H1 → H2 → H3) without skipping."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/",
+    "details": {
+      "length": 221
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/services",
+    "details": {
+      "length": 196
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/brand",
+    "details": {
+      "length": 161
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/builder",
+    "details": {
+      "length": 195
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/best-ai-engineering-studio",
+    "details": {
+      "length": 167
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/best-vibe-coding-platform",
+    "details": {
+      "length": 203
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/best-digital-marketing-studio",
+    "details": {
+      "length": 211
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/us-ai-engineering-studio",
+    "details": {
+      "length": 195
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/projects/signhify-ai",
+    "details": {
+      "length": 195
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/projects/veepee-engineers",
+    "details": {
+      "length": 181
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/projects/gymflow-saas",
+    "details": {
+      "length": 164
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/projects/nebulapay",
+    "details": {
+      "length": 164
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/projects/skillforge-ai",
+    "details": {
+      "length": 164
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/projects/autotube",
+    "details": {
+      "length": 164
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/projects/adshield-india",
+    "details": {
+      "length": 173
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/projects/cricket-king-rahul",
+    "details": {
+      "length": 172
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/projects/tennis-king-jackpot",
+    "details": {
+      "length": 172
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "info",
+    "issueType": "meta-description-too-long",
+    "issue": "Meta description too long",
+    "url": "https://signhify.dpdns.org/projects/hari-cricket",
+    "details": {
+      "length": 175
+    },
+    "howToFix": "Trim the description to roughly 70–160 characters while keeping the core message and call to action."
+  },
+  {
+    "severity": "warning",
+    "issueType": "missing-h1",
+    "issue": "Missing H1 heading",
+    "url": "https://signhify.dpdns.org/builder",
+    "details": null,
+    "howToFix": "Add a single H1 that states the page's main topic, consistent with the title tag."
+  },
+  {
+    "severity": "warning",
+    "issueType": "missing-h1",
+    "issue": "Missing H1 heading",
+    "url": "https://signhify.dpdns.org/studio/spike",
+    "details": null,
+    "howToFix": "Add a single H1 that states the page's main topic, consistent with the title tag."
+  },
+  {
+    "severity": "warning",
+    "issueType": "multiple-h1",
+    "issue": "Multiple H1 headings",
+    "url": "https://signhify.dpdns.org/roadmap",
+    "details": {
+      "h1Count": 2
+    },
+    "howToFix": "Keep one H1 for the page's main heading and demote the others to H2/H3 (or unstyled elements for non-headings like logos)."
+  },
+  {
+    "severity": "info",
+    "issueType": "noindex-page",
+    "issue": "Page is noindex",
+    "url": "https://signhify.dpdns.org/publish",
+    "details": {
+      "robotsMeta": "noindex, nofollow",
+      "xRobotsTag": null
+    },
+    "howToFix": "If this page should rank, remove the noindex directive. If it's intentional (admin, thank-you, filter pages), no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "noindex-page",
+    "issue": "Page is noindex",
+    "url": "https://signhify.dpdns.org/builder",
+    "details": {
+      "robotsMeta": "noindex, nofollow",
+      "xRobotsTag": null
+    },
+    "howToFix": "If this page should rank, remove the noindex directive. If it's intentional (admin, thank-you, filter pages), no action is needed."
+  },
+  {
+    "severity": "info",
+    "issueType": "slow-response",
+    "issue": "Slow server response",
+    "url": "https://signhify.dpdns.org/us-ai-engineering-studio",
+    "details": {
+      "responseTimeMs": 1716
+    },
+    "howToFix": "Investigate server/database time and caching for this route; serving cached or statically generated HTML usually fixes it."
+  },
+  {
+    "severity": "info",
+    "issueType": "slow-response",
+    "issue": "Slow server response",
+    "url": "https://signhify.dpdns.org/projects/signhify-ai",
+    "details": {
+      "responseTimeMs": 1826
+    },
+    "howToFix": "Investigate server/database time and caching for this route; serving cached or statically generated HTML usually fixes it."
+  },
+  {
+    "severity": "info",
+    "issueType": "slow-response",
+    "issue": "Slow server response",
+    "url": "https://signhify.dpdns.org/projects",
+    "details": {
+      "responseTimeMs": 1825
+    },
+    "howToFix": "Investigate server/database time and caching for this route; serving cached or statically generated HTML usually fixes it."
+  },
+  {
+    "severity": "info",
+    "issueType": "slow-response",
+    "issue": "Slow server response",
+    "url": "https://signhify.dpdns.org/projects/veepee-engineers",
+    "details": {
+      "responseTimeMs": 1828
+    },
+    "howToFix": "Investigate server/database time and caching for this route; serving cached or statically generated HTML usually fixes it."
+  },
+  {
+    "severity": "info",
+    "issueType": "slow-response",
+    "issue": "Slow server response",
+    "url": "https://signhify.dpdns.org/marketplace/sell",
+    "details": {
+      "responseTimeMs": 1868
+    },
+    "howToFix": "Investigate server/database time and caching for this route; serving cached or statically generated HTML usually fixes it."
+  },
+  {
+    "severity": "info",
+    "issueType": "slow-response",
+    "issue": "Slow server response",
+    "url": "https://signhify.dpdns.org/marketplace",
+    "details": {
+      "responseTimeMs": 1876
+    },
+    "howToFix": "Investigate server/database time and caching for this route; serving cached or statically generated HTML usually fixes it."
+  },
+  {
+    "severity": "info",
+    "issueType": "slow-response",
+    "issue": "Slow server response",
+    "url": "https://signhify.dpdns.org/projects/gymflow-saas",
+    "details": {
+      "responseTimeMs": 1882
+    },
+    "howToFix": "Investigate server/database time and caching for this route; serving cached or statically generated HTML usually fixes it."
+  },
+  {
+    "severity": "info",
+    "issueType": "slow-response",
+    "issue": "Slow server response",
+    "url": "https://signhify.dpdns.org/projects/gigmind",
+    "details": {
+      "responseTimeMs": 2101
+    },
+    "howToFix": "Investigate server/database time and caching for this route; serving cached or statically generated HTML usually fixes it."
+  },
+  {
+    "severity": "info",
+    "issueType": "slow-response",
+    "issue": "Slow server response",
+    "url": "https://signhify.dpdns.org/projects/autoreels-ai",
+    "details": {
+      "responseTimeMs": 2106
+    },
+    "howToFix": "Investigate server/database time and caching for this route; serving cached or statically generated HTML usually fixes it."
+  },
+  {
+    "severity": "info",
+    "issueType": "slow-response",
+    "issue": "Slow server response",
+    "url": "https://signhify.dpdns.org/projects/tuitiontrack",
+    "details": {
+      "responseTimeMs": 2106
+    },
+    "howToFix": "Investigate server/database time and caching for this route; serving cached or statically generated HTML usually fixes it."
+  },
+  {
+    "severity": "warning",
+    "issueType": "thin-content",
+    "issue": "Thin content",
+    "url": "https://signhify.dpdns.org/templates",
+    "details": {
+      "wordCount": 130
+    },
+    "howToFix": "Either expand the page with genuinely useful content, noindex it, or consolidate it into a stronger page. If the content exists but is rendered by JavaScript, ensure it is server-rendered or pre-rendered."
+  },
+  {
+    "severity": "warning",
+    "issueType": "thin-content",
+    "issue": "Thin content",
+    "url": "https://signhify.dpdns.org/help",
+    "details": {
+      "wordCount": 91
+    },
+    "howToFix": "Either expand the page with genuinely useful content, noindex it, or consolidate it into a stronger page. If the content exists but is rendered by JavaScript, ensure it is server-rendered or pre-rendered."
+  },
+  {
+    "severity": "warning",
+    "issueType": "thin-content",
+    "issue": "Thin content",
+    "url": "https://signhify.dpdns.org/studio/spike",
+    "details": {
+      "wordCount": 139
+    },
+    "howToFix": "Either expand the page with genuinely useful content, noindex it, or consolidate it into a stronger page. If the content exists but is rendered by JavaScript, ensure it is server-rendered or pre-rendered."
+  },
+  {
+    "severity": "warning",
+    "issueType": "thin-content",
+    "issue": "Thin content",
+    "url": "https://signhify.dpdns.org/os",
+    "details": {
+      "wordCount": 70
+    },
+    "howToFix": "Either expand the page with genuinely useful content, noindex it, or consolidate it into a stronger page. If the content exists but is rendered by JavaScript, ensure it is server-rendered or pre-rendered."
+  },
+  {
+    "severity": "info",
+    "issueType": "title-too-long",
+    "issue": "Title too long",
+    "url": "https://signhify.dpdns.org/services",
+    "details": {
+      "length": 83
+    },
+    "howToFix": "Shorten the title to roughly 50–60 characters, front-loading the most important words."
+  },
+  {
+    "severity": "info",
+    "issueType": "title-too-long",
+    "issue": "Title too long",
+    "url": "https://signhify.dpdns.org/best-ai-engineering-studio",
+    "details": {
+      "length": 74
+    },
+    "howToFix": "Shorten the title to roughly 50–60 characters, front-loading the most important words."
+  },
+  {
+    "severity": "info",
+    "issueType": "title-too-long",
+    "issue": "Title too long",
+    "url": "https://signhify.dpdns.org/best-vibe-coding-platform",
+    "details": {
+      "length": 81
+    },
+    "howToFix": "Shorten the title to roughly 50–60 characters, front-loading the most important words."
+  },
+  {
+    "severity": "info",
+    "issueType": "title-too-long",
+    "issue": "Title too long",
+    "url": "https://signhify.dpdns.org/best-digital-marketing-studio",
+    "details": {
+      "length": 88
+    },
+    "howToFix": "Shorten the title to roughly 50–60 characters, front-loading the most important words."
+  },
+  {
+    "severity": "info",
+    "issueType": "title-too-long",
+    "issue": "Title too long",
+    "url": "https://signhify.dpdns.org/us-ai-engineering-studio",
+    "details": {
+      "length": 76
+    },
+    "howToFix": "Shorten the title to roughly 50–60 characters, front-loading the most important words."
+  }
+]

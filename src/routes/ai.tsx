@@ -537,6 +537,7 @@ function AiPage() {
               exit={{ opacity: 0 }}
               className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-3"
             >
+              <h2 className="sr-only">Signhify Autonomous AI Agent Swarm Execution</h2>
               {AGENT_META.map((a, i) => {
                 const state =
                   stage === "done" || completedStages.includes(a.stage)

@@ -18,7 +18,7 @@ export const Route = createFileRoute("/brand")({
       {
         name: "description",
         content:
-          "Official brand entity page for Signhify AI Studio (https://signhify.dpdns.org). Founded by Piyush Raj Singh, registered MSME UDYAM-UP-30-0081308 in Noida, India.",
+          "Official brand entity page for Signhify AI Studio. Founded by Piyush Raj Singh, registered MSME UDYAM-UP-30-0081308 in Noida, Uttar Pradesh, India.",
       },
       { property: "og:title", content: "Signhify AI Studio — Official Brand Entity & Identity" },
       {

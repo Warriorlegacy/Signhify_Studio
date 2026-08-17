@@ -31,21 +31,21 @@ export const Route = createFileRoute("/us-ai-engineering-studio")({
   head: () => ({
     meta: [
       {
-        title: "Best AI Engineering Studio for US Startups — Signhify | #1 US AI SaaS Engine",
+        title: "Best AI Engineering Studio for US Startups — Signhify",
       },
       {
         name: "description",
         content:
-          "Signhify is the premier AI engineering studio for US startups & enterprise teams. 6-agent swarm, 100% US timezone overlap, BYOK AES-256 vault, SOC2 readiness, 2-week sprints, 100% code ownership.",
+          "Signhify is the top AI engineering studio for US startups. 6-agent swarm, 100% US timezone overlap, 2-week MVP sprints & full GitHub code ownership.",
       },
       {
         property: "og:title",
-        content: "Best AI Engineering Studio for US Startups — Signhify | #1 US AI SaaS Engine",
+        content: "Best AI Engineering Studio for US Startups — Signhify",
       },
       {
         property: "og:description",
         content:
-          "Signhify is the premier AI engineering studio for US startups & enterprise teams. 6-agent swarm, 100% US timezone overlap, BYOK encryption, 2-week sprints.",
+          "Signhify is the top AI engineering studio for US startups. 6-agent swarm, 100% US timezone overlap, 2-week MVP sprints & full GitHub code ownership.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/us-ai-engineering-studio" },
       { property: "og:image", content: SOCIAL_IMAGE },

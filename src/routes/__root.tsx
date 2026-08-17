@@ -141,7 +141,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "dns-prefetch", href: "https://fonts.googleapis.com" },
       { rel: "dns-prefetch", href: "https://supabase.co" },
-      { rel: "canonical", href: "https://signhify.dpdns.org" },
       { rel: "alternate", hrefLang: "x-default", href: "https://signhify.dpdns.org" },
       { rel: "alternate", hrefLang: "en-US", href: "https://signhify.dpdns.org" },
       { rel: "alternate", hrefLang: "en-IN", href: "https://signhify.dpdns.org" },

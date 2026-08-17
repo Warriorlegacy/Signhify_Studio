@@ -163,9 +163,9 @@ function BookPage() {
               ) : (
                 <form onSubmit={handleFormSubmit} className="space-y-6">
                   <div className="border-b border-border/50 pb-4">
-                    <h3 className="font-display text-xl font-bold flex items-center gap-2">
+                    <h2 className="font-display text-xl font-bold flex items-center gap-2">
                       <Sparkles className="text-primary h-5 w-5" /> Request a 30-Min Discovery Call
-                    </h3>
+                    </h2>
                     <p className="text-xs text-muted-foreground mt-1">
                       Direct booking confirmed within 2 hours.
                     </p>

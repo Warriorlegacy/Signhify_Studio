@@ -1,0 +1,222 @@
+[
+  {
+    "url": "https://signhify.dpdns.org/best-ai-engineering-studio",
+    "strategy": "mobile",
+    "performance": 89,
+    "accessibility": 100,
+    "seo": 92,
+    "lcpMs": 2848.247,
+    "cls": 0.07647409,
+    "inpMs": null,
+    "ttfbMs": 498
+  },
+  {
+    "url": "https://signhify.dpdns.org/best-ai-engineering-studio",
+    "strategy": "desktop",
+    "performance": 98,
+    "accessibility": 96,
+    "seo": 92,
+    "lcpMs": 927.24,
+    "cls": 0.0088390205,
+    "inpMs": null,
+    "ttfbMs": 643
+  },
+  {
+    "url": "https://signhify.dpdns.org/brand",
+    "strategy": "mobile",
+    "performance": 99,
+    "accessibility": 100,
+    "seo": 92,
+    "lcpMs": 1607.5765,
+    "cls": 0.015009361,
+    "inpMs": null,
+    "ttfbMs": 473
+  },
+  {
+    "url": "https://signhify.dpdns.org/brand",
+    "strategy": "desktop",
+    "performance": 92,
+    "accessibility": 96,
+    "seo": 92,
+    "lcpMs": 850.1558,
+    "cls": 0.1553618,
+    "inpMs": null,
+    "ttfbMs": 480
+  },
+  {
+    "url": "https://signhify.dpdns.org/builder",
+    "strategy": "mobile",
+    "performance": 89,
+    "accessibility": 100,
+    "seo": 92,
+    "lcpMs": 3657.1511,
+    "cls": 0,
+    "inpMs": null,
+    "ttfbMs": 548
+  },
+  {
+    "url": "https://signhify.dpdns.org/builder",
+    "strategy": "desktop",
+    "performance": 90,
+    "accessibility": 96,
+    "seo": 92,
+    "lcpMs": 1958.7812,
+    "cls": 0.0011709237,
+    "inpMs": null,
+    "ttfbMs": 567
+  },
+  {
+    "url": "https://signhify.dpdns.org/free-consultation",
+    "strategy": "mobile",
+    "performance": 74,
+    "accessibility": 100,
+    "seo": 92,
+    "lcpMs": 4056.754,
+    "cls": 0.037692524,
+    "inpMs": null,
+    "ttfbMs": 475
+  },
+  {
+    "url": "https://signhify.dpdns.org/free-consultation",
+    "strategy": "desktop",
+    "performance": 97,
+    "accessibility": 96,
+    "seo": 92,
+    "lcpMs": 1017.5288,
+    "cls": 0.0064564454,
+    "inpMs": null,
+    "ttfbMs": 734
+  },
+  {
+    "url": "https://signhify.dpdns.org/contact",
+    "strategy": "mobile",
+    "performance": 84,
+    "accessibility": 96,
+    "seo": 92,
+    "lcpMs": 3465.934,
+    "cls": 0.0008653572,
+    "inpMs": null,
+    "ttfbMs": 616
+  },
+  {
+    "url": "https://signhify.dpdns.org/contact",
+    "strategy": "desktop",
+    "performance": 97,
+    "accessibility": 93,
+    "seo": 92,
+    "lcpMs": 1019.9828,
+    "cls": 0.0014816995,
+    "inpMs": null,
+    "ttfbMs": 452
+  },
+  {
+    "url": "https://signhify.dpdns.org/",
+    "strategy": "mobile",
+    "performance": 62,
+    "accessibility": 100,
+    "seo": 100,
+    "lcpMs": 12061.561,
+    "cls": 0,
+    "inpMs": null,
+    "ttfbMs": 948
+  },
+  {
+    "url": "https://signhify.dpdns.org/",
+    "strategy": "desktop",
+    "performance": null,
+    "accessibility": null,
+    "seo": null,
+    "lcpMs": null,
+    "cls": null,
+    "inpMs": null,
+    "ttfbMs": null
+  },
+  {
+    "url": "https://signhify.dpdns.org/about",
+    "strategy": "mobile",
+    "performance": 90,
+    "accessibility": 100,
+    "seo": 92,
+    "lcpMs": 2926.9927,
+    "cls": 0.013981335,
+    "inpMs": null,
+    "ttfbMs": 668
+  },
+  {
+    "url": "https://signhify.dpdns.org/about",
+    "strategy": "desktop",
+    "performance": 77,
+    "accessibility": 96,
+    "seo": 92,
+    "lcpMs": 2083.465,
+    "cls": 0.0071239527,
+    "inpMs": null,
+    "ttfbMs": 732
+  },
+  {
+    "url": "https://signhify.dpdns.org/help",
+    "strategy": "mobile",
+    "performance": 92,
+    "accessibility": 100,
+    "seo": 92,
+    "lcpMs": 2691.3135,
+    "cls": 0.018454384,
+    "inpMs": null,
+    "ttfbMs": 452
+  },
+  {
+    "url": "https://signhify.dpdns.org/help",
+    "strategy": "desktop",
+    "performance": 96,
+    "accessibility": 96,
+    "seo": 92,
+    "lcpMs": 1004.0151,
+    "cls": 0.001578874,
+    "inpMs": null,
+    "ttfbMs": 838
+  },
+  {
+    "url": "https://signhify.dpdns.org/ai",
+    "strategy": "mobile",
+    "performance": 90,
+    "accessibility": 95,
+    "seo": 92,
+    "lcpMs": 2873.942,
+    "cls": 0.004145663,
+    "inpMs": null,
+    "ttfbMs": 632
+  },
+  {
+    "url": "https://signhify.dpdns.org/ai",
+    "strategy": "desktop",
+    "performance": 70,
+    "accessibility": 92,
+    "seo": 92,
+    "lcpMs": 2648.652,
+    "cls": 0.011388423,
+    "inpMs": null,
+    "ttfbMs": 552
+  },
+  {
+    "url": "https://signhify.dpdns.org/book",
+    "strategy": "mobile",
+    "performance": 99,
+    "accessibility": 87,
+    "seo": 92,
+    "lcpMs": 1637.9365,
+    "cls": 0.020089995,
+    "inpMs": null,
+    "ttfbMs": 735
+  },
+  {
+    "url": "https://signhify.dpdns.org/book",
+    "strategy": "desktop",
+    "performance": 98,
+    "accessibility": 83,
+    "seo": 92,
+    "lcpMs": 882.9015,
+    "cls": 0.0046881777,
+    "inpMs": null,
+    "ttfbMs": 793
+  }
+]
