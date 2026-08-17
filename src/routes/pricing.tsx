@@ -571,13 +571,13 @@ function LeadCaptureForm() {
     try {
       await submitLeadFn({
         data: {
-          name: email.split("@")[0],
+          name: (email.split("@")[0] || "Subscriber").padEnd(2, "_"),
           email: email.trim(),
           company: "",
           type: "Pricing lead",
           scope: "Pricing page",
-          budget: "",
-          timeline: "",
+          budget: "Not specified",
+          timeline: "Not specified",
           goals: ["pricing-lead"],
           message: "Lead capture from pricing page",
         },
