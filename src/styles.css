@@ -38,6 +38,13 @@
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
 
+  /* Brand aliases used by AI/quick-config surfaces */
+  --color-ember: var(--primary);
+  --color-ember-soft: var(--amber);
+  --color-obsidian: var(--background);
+  --color-obsidian-2: var(--surface);
+  --color-slate-soft: var(--muted-foreground);
+
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", "Inter", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
