@@ -48,7 +48,8 @@ export const Route = createFileRoute("/ai-mvp-builder")({
           "@context": "https://schema.org",
           "@type": "Product",
           name: "AI MVP Builder by Signhify",
-          image: "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
+          image:
+            "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
           description:
             "Fixed-price AI SaaS development sprint. Describe your idea, get a production-ready app in 14 days with full code ownership.",
           brand: { "@type": "Brand", name: "Signhify AI Studio" },

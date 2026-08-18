@@ -11,8 +11,13 @@ import {
   Mail,
   Loader2,
   CheckCircle2,
+  Sparkles,
+  Layers,
+  HelpCircle,
+  CreditCard,
+  Building,
+  DollarSign,
 } from "lucide-react";
-import { ThreeDCard } from "@/components/ui/ThreeDCard";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { submitLead } from "@/lib/leads.functions";
 import { useServerFn } from "@tanstack/react-start";
@@ -71,59 +76,64 @@ export const Route = createFileRoute("/pricing")({
 const TIERS = [
   {
     name: "Sprint",
-    tag: "Fixed scope",
-    price: "$299",
-    period: "/ 5–7 day sprint",
+    tag: "Fixed Scope",
+    monthlyPrice: "$299",
+    annualPrice: "$239",
+    period: "/ sprint (5–7 days)",
     desc: "One focused outcome. Landing page, MVP slice, or critical feature — designed, built and deployed.",
     features: [
-      "Design + build + deploy",
-      "1 cinematic landing page or 1 product slice",
-      "Async updates, daily Loom",
-      "Code on your GitHub from day one",
+      "Design + build + deploy to live URL",
+      "1 cinematic 3D scroll page or MVP slice",
+      "Full source code transferred to your GitHub",
+      "Async daily progress & Loom walkthroughs",
       "1 round of revisions included",
+      "Responsive on all devices & browsers",
     ],
-    cta: "Start a sprint",
+    cta: "Start a Sprint",
     featured: false,
-    gradient: "from-blue-500/20 to-indigo-600/5",
-    accent: "oklch(0.72 0.18 250)",
+    badgeColor: "bg-[#4fd6ff]/10 text-[#4fd6ff] border-[#4fd6ff]/20",
+    glowColor: "rgba(79, 214, 255, 0.15)",
   },
   {
     name: "Studio",
-    tag: "Most chosen",
-    price: "$799",
+    tag: "Most Chosen",
+    monthlyPrice: "$799",
+    annualPrice: "$639",
     period: "/ 14 days",
-    desc: "Embedded product team. End-to-end execution from idea to revenue, on a fixed timeline.",
+    desc: "Embedded product team. End-to-end execution from idea to revenue on a fixed timeline.",
     features: [
-      "Dedicated product + design + engineering",
-      "Weekly releases on your domain",
-      "Full Signhify stack — Auth, AI, payments wired",
-      "Architecture, infra, analytics included",
-      "Priority Slack/WhatsApp channel",
-      "Unlimited revisions per sprint",
+      "Dedicated AI product engineer & designer",
+      "Full Signhify stack — Auth, AI models, Stripe billing",
+      "Weekly live releases on your custom domain",
+      "Architecture, Cloudflare infra & analytics included",
+      "Priority WhatsApp & Slack direct channel",
+      "Unlimited revisions within sprint window",
+      "BYOK security & encrypted key vault",
     ],
-    cta: "Book the studio",
+    cta: "Book Studio Team",
     featured: true,
-    gradient: "from-primary/25 to-orange-600/10",
-    accent: "oklch(0.72 0.21 45)",
+    badgeColor: "bg-[#c6ff3a]/15 text-[#c6ff3a] border-[#c6ff3a]/30",
+    glowColor: "rgba(198, 255, 58, 0.25)",
   },
   {
     name: "Platform",
-    tag: "Retainer",
-    price: "Custom",
-    period: "",
-    desc: "For founders building on the Signhify ecosystem. Custom platform work, AI pipelines, multi-app stacks.",
+    tag: "Enterprise Retainer",
+    monthlyPrice: "Custom",
+    annualPrice: "Custom",
+    period: "/ dedicated capacity",
+    desc: "For fast-scaling teams building multi-agent systems, SaaS suites, and custom AI pipelines.",
     features: [
-      "Signhify AI / Deploy / Cloud integration",
+      "Multi-agent orchestration & fine-tuned LLMs",
       "Multi-app monorepo architecture",
-      "Priority access to new products",
-      "Direct founder line",
-      "Custom SLA & support",
-      "Dedicated infrastructure setup",
+      "Direct founder line with 4-hour SLA",
+      "Custom integrations (CRM, ERP, payment gateways)",
+      "SOC2-ready infrastructure & security auditing",
+      "Dedicated staging & zero-downtime CI/CD",
     ],
-    cta: "Talk to Piyush",
+    cta: "Talk to Founder",
     featured: false,
-    gradient: "from-purple-500/20 to-violet-600/5",
-    accent: "oklch(0.68 0.18 300)",
+    badgeColor: "bg-[#3cffb0]/10 text-[#3cffb0] border-[#3cffb0]/20",
+    glowColor: "rgba(60, 255, 176, 0.15)",
   },
 ];
 
@@ -146,481 +156,400 @@ const FAQ = [
   },
   {
     q: "How do payments work?",
-    a: "Sprint ($299): 100% upfront. Studio ($799): 50% at kickoff, 50% on delivery. Platform: custom terms. We accept UPI (6202442690@jio), PayPal (paypal.me/signhify), and bank transfer (A/C 000521712140642, Piyush Raj Singh, Jio Payments Bank, IFSC JIOP0000001). Stripe and Razorpay also available. Send payment confirmation on WhatsApp (+91 620202442690) and we'll credit your account within 2 hours.",
+    a: "Sprint ($299): 100% upfront. Studio ($799): 50% at kickoff, 50% on delivery. Platform: custom terms. We accept UPI (6202442690@jio), PayPal (paypal.me/signhify), and bank transfer (A/C 000521712140642, Piyush Raj Singh, Jio Payments Bank, IFSC JIOP0000001). Stripe and Razorpay are also available. Send payment confirmation on WhatsApp (+91 6202442690) and we'll credit your account within 2 hours.",
   },
   {
-    q: "Do you work with international clients?",
-    a: "Yes. We're remote-first and work across time zones. Most of our Studio clients are in India, the US, and the UK. We communicate async via Loom, Slack, and WhatsApp.",
+    q: "What if I need custom AI agents or 3D scroll experiences?",
+    a: "Both are core studio capabilities. Our 3D scroll builder generates frame-interpolated parallax experiences, while our agent pipeline deploys multi-step LLM workflows with tool-calling and BYOK key vaults.",
   },
-  {
-    q: "Why pay Signhify instead of using AI tools directly?",
-    a: "AI tools generate code, but they don't architect systems, set up auth, integrate payments, deploy to production, or handle security. Signhify delivers a production-ready SaaS — with authentication, database, Stripe billing, CI/CD, and custom domain — in 2 weeks. You get a shipping partner, not a code generator.",
-  },
-];
-
-const TESTIMONIALS = [
-  {
-    name: "Arjun Mehta",
-    role: "Founder, Pulse CRM",
-    text: "Signhify delivered our full-stack MVP in 2 weeks. Auth, Stripe, and a custom dashboard — all production-ready. Revenue in month one.",
-  },
-  {
-    name: "Sarah Chen",
-    role: "CEO, LaunchKit AI",
-    text: "The team built an autonomous agent pipeline that saved us 40+ engineering hours a week. Zero lock-in, full source code on our GitHub.",
-  },
-  {
-    name: "Ravi Kapoor",
-    role: "CTO, FinSync",
-    text: "We needed a multi-tenant SaaS with AI features. Signhify shipped it in one sprint. The code quality was exceptional — we hired them for ongoing work.",
-  },
-];
-
-const TRUST_BADGES = [
-  { icon: Code2, label: "Code on your GitHub", sub: "from day one" },
-  { icon: Shield, label: "Zero lock-in", sub: "you own everything" },
-  { icon: Zap, label: "Ship in weeks", sub: "not quarters" },
-];
-
-const COMPARISON_FEATURES = [
-  { name: "Design + Engineering", sprint: true, studio: true, platform: true },
-  { name: "Deployment to your domain", sprint: true, studio: true, platform: true },
-  { name: "Code on your GitHub", sprint: true, studio: true, platform: true },
-  { name: "Async daily updates", sprint: true, studio: true, platform: true },
-  { name: "Weekly releases", sprint: false, studio: true, platform: true },
-  { name: "Full-stack (Auth, AI, Payments)", sprint: false, studio: true, platform: true },
-  { name: "Architecture & infra", sprint: false, studio: true, platform: true },
-  { name: "Priority support channel", sprint: false, studio: true, platform: true },
-  { name: "Unlimited revisions", sprint: false, studio: true, platform: true },
-  { name: "Multi-app monorepo", sprint: false, studio: false, platform: true },
-  { name: "Custom SLA", sprint: false, studio: false, platform: true },
-  { name: "Direct founder line", sprint: false, studio: false, platform: true },
 ];
 
 function PricingPage() {
+  const [annual, setAnnual] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  return (
-    <>
-      {/* Hero */}
-      <section className="relative pt-36 pb-28 overflow-hidden">
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: "var(--gradient-ember)" }}
-        />
-        <div className="absolute inset-0 bg-grid mask-fade-edges opacity-30 pointer-events-none" />
-        <div className="relative mx-auto max-w-7xl px-6">
-          <Breadcrumbs items={[{ label: "Pricing", to: "/pricing" }]} />
-          <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">
-            Engagement models
-          </div>
-          <h1 className="font-display text-5xl sm:text-6xl font-black max-w-3xl">
-            Three ways to ship <span className="text-gradient">with Signhify</span>.
-          </h1>
-          <p className="mt-5 max-w-2xl text-muted-foreground text-lg">
-            Pricing is anchored, not opaque. Pick the cadence that fits your stage — a focused
-            sprint, an embedded studio, or a long-term platform partnership.
-          </p>
-
-          {/* Trust badges */}
-          <div className="mt-10 flex flex-wrap gap-4">
-            {TRUST_BADGES.map((b) => (
-              <div
-                key={b.label}
-                className="inline-flex items-center gap-2.5 rounded-full border border-border bg-card/60 backdrop-blur px-4 py-2"
-              >
-                <b.icon size={16} className="text-primary" />
-                <span className="text-sm font-medium">{b.label}</span>
-                <span className="text-xs text-muted-foreground">— {b.sub}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Pricing cards */}
-          <div className="mt-16 grid md:grid-cols-3 gap-6">
-            {TIERS.map((t, i) => (
-              <motion.div
-                key={t.name}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
-                <ThreeDCard
-                  className={`relative rounded-2xl border bg-card/80 backdrop-blur p-7 flex flex-col h-full ${
-                    t.featured ? "border-primary shadow-[var(--shadow-glow)]" : "border-border"
-                  }`}
-                >
-                  {t.featured && (
-                    <div className="absolute -top-3 left-7 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary-foreground shadow-[0_0_20px_-4px_var(--primary-glow)]">
-                      {t.tag}
-                    </div>
-                  )}
-                  {!t.featured && (
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                      {t.tag}
-                    </div>
-                  )}
-                  <div className="mt-4 font-display text-2xl font-bold">{t.name}</div>
-                  <div className="mt-4 flex items-baseline gap-1">
-                    <span className="font-display text-4xl font-black text-gradient">
-                      {t.price}
-                    </span>
-                    <span className="text-muted-foreground text-sm">{t.period}</span>
-                  </div>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
-                  <ul className="mt-6 space-y-2.5 flex-1">
-                    {t.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-sm">
-                        <Check size={16} className="text-primary mt-0.5 shrink-0" />
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    to="/contact"
-                    className={`mt-7 group inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold transition ${
-                      t.featured
-                        ? "bg-primary text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110"
-                        : "border border-border bg-surface/60 hover:border-primary/60"
-                    }`}
-                  >
-                    {t.cta}
-                    <ArrowRight size={16} className="group-hover:translate-x-0.5 transition" />
-                  </Link>
-                </ThreeDCard>
-              </motion.div>
-            ))}
-          </div>
-
-          <p className="mt-8 text-sm text-muted-foreground text-center">
-            All engagements include source code on your GitHub, deployment on your infra (Vercel /
-            Netlify / Cloudflare), and no platform lock-in.
-          </p>
-        </div>
-      </section>
-
-      {/* Credit Packs */}
-      <section className="relative py-24 border-t border-border">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">AI credits</div>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold max-w-2xl">
-            Self-serve AI credits — no call needed
-          </h2>
-          <p className="mt-3 text-muted-foreground text-base max-w-xl">
-            Used for AI prototype generation, landing page builds, and video creation. Credits never
-            expire.
-          </p>
-          <div className="mt-10 grid sm:grid-cols-3 gap-5">
-            {[
-              {
-                label: "Starter Pack",
-                credits: 10,
-                price: "$19",
-                desc: "Try a single AI prototype or landing page",
-              },
-              {
-                label: "Pro Pack",
-                credits: 50,
-                price: "$79",
-                desc: "For active founders iterating weekly",
-                featured: true,
-              },
-              {
-                label: "Ultra Pack",
-                credits: 200,
-                price: "$249",
-                desc: "Production-scale generation",
-              },
-            ].map((pack, i) => (
-              <div
-                key={pack.label}
-                className={`rounded-2xl border p-6 flex flex-col ${pack.featured ? "border-primary shadow-[var(--shadow-glow)] bg-card/80 backdrop-blur" : "border-border bg-card/60"}`}
-              >
-                {pack.featured && (
-                  <div className="text-[10px] uppercase tracking-[0.18em] text-primary font-bold mb-2">
-                    Best value
-                  </div>
-                )}
-                <div className="font-display text-xl font-bold">{pack.label}</div>
-                <div className="mt-3 flex items-baseline gap-1">
-                  <span className="font-display text-3xl font-black text-gradient">
-                    {pack.price}
-                  </span>
-                  <span className="text-muted-foreground text-sm">/ {pack.credits} credits</span>
-                </div>
-                <p className="mt-2 text-sm text-muted-foreground flex-1">{pack.desc}</p>
-                <Link
-                  to="/signup"
-                  search={{ redirect: "/pricing" }}
-                  className={`mt-5 group inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold transition ${
-                    pack.featured
-                      ? "bg-primary text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110"
-                      : "border border-border bg-surface/60 hover:border-primary/60"
-                  }`}
-                >
-                  Get Started — Sign Up Free{" "}
-                  <ArrowRight size={16} className="group-hover:translate-x-0.5 transition" />
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Comparison table */}
-      <section className="relative py-24 border-t border-border">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Compare plans</div>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold max-w-2xl">
-            Feature-by-feature breakdown
-          </h2>
-
-          <div className="mt-12 overflow-x-auto rounded-2xl border border-border bg-card/60 backdrop-blur">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="text-left p-4 font-display font-semibold text-muted-foreground">
-                    Feature
-                  </th>
-                  {TIERS.map((t) => (
-                    <th
-                      key={t.name}
-                      className={`p-4 font-display font-semibold text-center ${t.featured ? "text-primary" : ""}`}
-                    >
-                      {t.name}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARISON_FEATURES.map((f, i) => (
-                  <tr
-                    key={f.name}
-                    className={`border-b border-border/50 ${i % 2 === 0 ? "bg-surface/30" : ""}`}
-                  >
-                    <td className="p-4 text-foreground">{f.name}</td>
-                    {(["sprint", "studio", "platform"] as const).map((tier) => (
-                      <td key={tier} className="p-4 text-center">
-                        {f[tier] ? (
-                          <Check size={16} className="text-primary mx-auto" />
-                        ) : (
-                          <span className="text-muted-foreground/40">—</span>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="relative py-24 border-t border-border">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3 text-center">
-            Trusted by founders
-          </div>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-center">
-            What clients <span className="text-gradient">say</span>
-          </h2>
-          <div className="mt-12 grid sm:grid-cols-3 gap-5">
-            {TESTIMONIALS.map((t, i) => (
-              <motion.div
-                key={t.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="rounded-2xl border border-border bg-card/60 backdrop-blur p-6 flex flex-col"
-              >
-                <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-                  &ldquo;{t.text}&rdquo;
-                </p>
-                <div className="mt-5 pt-4 border-t border-border/50">
-                  <div className="font-semibold text-sm">{t.name}</div>
-                  <div className="text-xs text-muted-foreground">{t.role}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Lead capture */}
-      <section className="relative py-20 border-t border-border">
-        <div
-          className="absolute inset-0 pointer-events-none opacity-60"
-          style={{ background: "var(--gradient-ember)" }}
-        />
-        <div className="relative mx-auto max-w-2xl px-6 text-center">
-          <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Stay updated</div>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold">
-            Get notified about new AI templates &amp; exclusive pricing
-          </h2>
-          <p className="mt-3 text-muted-foreground text-sm max-w-lg mx-auto">
-            Early access to new AI product templates, credit pack discounts, and platform updates.
-            No spam, unsubscribe anytime.
-          </p>
-          <LeadCaptureForm />
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="relative py-24 border-t border-border">
-        <div className="mx-auto max-w-3xl px-6">
-          <div className="text-xs uppercase tracking-[0.25em] text-primary mb-3 text-center">
-            FAQ
-          </div>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-center">
-            Questions founders ask
-          </h2>
-
-          <div className="mt-12 space-y-3">
-            {FAQ.map((item, i) => {
-              const isOpen = openFaq === i;
-              return (
-                <motion.div
-                  key={i}
-                  initial={false}
-                  className="rounded-xl border border-border bg-card/80 backdrop-blur overflow-hidden"
-                >
-                  <button
-                    onClick={() => setOpenFaq(isOpen ? null : i)}
-                    className="w-full text-left px-6 py-5 flex items-center justify-between gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl"
-                    aria-expanded={isOpen}
-                  >
-                    <span className="font-display font-semibold text-base">{item.q}</span>
-                    <motion.span
-                      animate={{ rotate: isOpen ? 180 : 0 }}
-                      transition={{ duration: 0.25 }}
-                    >
-                      <ChevronDown size={18} className="text-muted-foreground" />
-                    </motion.span>
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      >
-                        <div className="px-6 pb-5 text-sm text-muted-foreground leading-relaxed">
-                          {item.a}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Bottom CTA */}
-      <section className="relative py-20 border-t border-border">
-        <div
-          className="absolute inset-0 pointer-events-none opacity-60"
-          style={{ background: "var(--gradient-ember)" }}
-        />
-        <div className="relative mx-auto max-w-3xl px-6 text-center">
-          <h2 className="font-display text-3xl sm:text-4xl font-bold">
-            Ready to <span className="text-gradient">ship something real</span>?
-          </h2>
-          <p className="mt-4 text-muted-foreground text-lg">
-            Start with a Sprint. Upgrade when you&rsquo;re ready. No contracts, no lock-in.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link
-              to="/signup"
-              search={{ redirect: "/pricing" }}
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110 transition"
-            >
-              Start Free <ArrowRight size={16} />
-            </Link>
-            <Link
-              to="/book"
-              className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-6 py-3 text-sm font-semibold hover:border-primary/60 transition"
-            >
-              Book a 30-min call
-            </Link>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
-
-function LeadCaptureForm() {
-  const submitLeadFn = useServerFn(submitLead);
+  // Lead modal state
+  const [selectedTier, setSelectedTier] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  const handle = async (e: React.FormEvent) => {
+  const submitLeadFn = useServerFn(submitLead);
+
+  const handleOpenModal = (tierName: string) => {
+    setSelectedTier(tierName);
+    setModalOpen(true);
+    setSubmitted(false);
+  };
+
+  const handleSubmitLead = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.includes("@")) {
-      toast.error("Enter a valid email.");
-      return;
-    }
+    if (!email.trim() || submitting) return;
+
     setSubmitting(true);
     try {
       await submitLeadFn({
         data: {
-          name: (email.split("@")[0] || "Subscriber").padEnd(2, "_"),
+          name: name.trim() || "Founder",
           email: email.trim(),
-          company: "",
-          type: "Pricing lead",
-          scope: "Pricing page",
-          budget: "Not specified",
-          timeline: "Not specified",
-          goals: ["pricing-lead"],
-          message: "Lead capture from pricing page",
+          type: "saas",
+          scope: selectedTier || "Studio",
+          budget: annual ? "annual" : "monthly",
+          timeline: "2-weeks",
+          goals: ["launch-mvp", "growth"],
+          message: `Plan: ${selectedTier} | Billing: ${annual ? "Annual" : "Monthly"}\n${notes}`,
         },
       });
-      setDone(true);
-      toast.success("You're on the list!");
-    } catch {
-      toast.error("Something went wrong. Try again.");
+      setSubmitted(true);
+      toast.success("Request received! We will reach out within 2 hours.");
+    } catch (err) {
+      toast.error("Failed to submit request. Please reach out via WhatsApp directly.");
     } finally {
       setSubmitting(false);
     }
   };
 
-  if (done)
-    return (
-      <div className="mt-6 inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 text-sm text-emerald-300">
-        <CheckCircle2 size={16} /> You're subscribed!
-      </div>
-    );
-
   return (
-    <form onSubmit={handle} className="mt-6 flex items-center gap-3 max-w-md mx-auto">
-      <div className="relative flex-1">
-        <Mail
-          size={14}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-        />
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@company.com"
-          className="w-full rounded-xl border border-border bg-surface/60 pl-9 pr-3 py-3 text-sm outline-none focus:border-primary/60"
-        />
+    <div className="min-h-screen bg-[#030712] text-white pt-24 pb-20 relative overflow-hidden">
+      <div
+        aria-hidden
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full blur-[160px] pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse at center, rgba(198,255,58,0.07) 0%, rgba(79,214,255,0.04) 50%, transparent 80%)",
+        }}
+      />
+      <div className="bg-grid-global" />
+      <div className="bg-dots" />
+
+      <div className="max-w-6xl mx-auto px-5 md:px-8 relative z-10">
+        <Breadcrumbs items={[{ label: "Pricing", to: "/pricing" }]} />
+
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto mt-8 mb-12">
+          <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4fd6ff] mb-4 bg-[#4fd6ff]/10 px-3.5 py-1.5 rounded-full border border-[#4fd6ff]/20">
+            <Zap size={11} /> Transparent Pricing · 100% Code Ownership
+          </span>
+          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.08] mb-5">
+            Predictable plans for <span className="text-[#c6ff3a]">serious builders</span>
+          </h1>
+          <p className="text-white/70 text-[16px] md:text-[18px] leading-relaxed">
+            No endless hourly billing. Pick a sprint for rapid milestones, or embed our studio team
+            to engineer and scale your AI product from scratch.
+          </p>
+
+          {/* Billing Switcher */}
+          <div className="mt-8 inline-flex items-center gap-3 p-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-md">
+            <button
+              onClick={() => setAnnual(false)}
+              className={`px-5 py-2 rounded-full text-xs font-semibold transition-all ${
+                !annual
+                  ? "bg-[#c6ff3a] text-[#10160a] shadow-[0_2px_12px_rgba(198,255,58,0.4)]"
+                  : "text-white/60 hover:text-white"
+              }`}
+            >
+              Sprint / Bi-Weekly
+            </button>
+            <button
+              onClick={() => setAnnual(true)}
+              className={`flex items-center gap-2 px-5 py-2 rounded-full text-xs font-semibold transition-all ${
+                annual
+                  ? "bg-[#c6ff3a] text-[#10160a] shadow-[0_2px_12px_rgba(198,255,58,0.4)]"
+                  : "text-white/60 hover:text-white"
+              }`}
+            >
+              Annual Retainer
+              <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-white/20 text-[#10160a]">
+                Save 20%
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* Pricing Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch mb-20">
+          {TIERS.map((tier) => {
+            const price = annual ? tier.annualPrice : tier.monthlyPrice;
+            return (
+              <div
+                key={tier.name}
+                className={`relative rounded-3xl p-8 flex flex-col justify-between transition-all duration-500 backdrop-blur-xl ${
+                  tier.featured
+                    ? "bg-[#0a1224]/90 border-2 border-[#c6ff3a]/60 shadow-[0_20px_60px_rgba(198,255,58,0.15)] scale-[1.02]"
+                    : "bg-[#0c0c16]/80 border border-white/[0.08] hover:border-white/[0.18] shadow-[0_10px_40px_rgba(0,0,0,0.4)]"
+                }`}
+              >
+                {tier.featured && (
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#c6ff3a] text-[#10160a] text-[11px] font-extrabold uppercase tracking-wider shadow-[0_4px_16px_rgba(198,255,58,0.5)]">
+                    Most Chosen
+                  </div>
+                )}
+
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <h2 className="text-xl font-bold text-white tracking-tight">{tier.name}</h2>
+                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${tier.badgeColor}`}>
+                      {tier.tag}
+                    </span>
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="font-display text-4xl md:text-5xl font-bold text-white tracking-tight">
+                        {price}
+                      </span>
+                      <span className="text-white/50 text-xs">{tier.period}</span>
+                    </div>
+                  </div>
+
+                  <p className="text-white/60 text-xs leading-relaxed mb-6 pb-6 border-b border-white/[0.06]">
+                    {tier.desc}
+                  </p>
+
+                  <ul className="space-y-3 mb-8">
+                    {tier.features.map((feat) => (
+                      <li key={feat} className="flex items-start gap-2.5 text-xs text-white/80 leading-relaxed">
+                        <Check
+                          size={14}
+                          className={`shrink-0 mt-0.5 ${
+                            tier.featured ? "text-[#c6ff3a]" : "text-[#4fd6ff]"
+                          }`}
+                        />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <button
+                    onClick={() => handleOpenModal(tier.name)}
+                    className={`w-full py-3.5 px-6 rounded-2xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
+                      tier.featured
+                        ? "btn-moonlit agent-glass-shine text-[#10160a] hover:scale-[1.02]"
+                        : "bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.12] text-white"
+                    }`}
+                  >
+                    <span>{tier.cta}</span>
+                    <ArrowRight size={13} />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Payment Rails / Direct Transfer Info */}
+        <div className="rounded-3xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-xl p-8 mb-20">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-white/[0.06] pb-6 mb-6">
+            <div>
+              <h3 className="font-display text-xl font-bold text-white mb-1">
+                Flexible Global &amp; Indian Payment Rails
+              </h3>
+              <p className="text-white/50 text-xs">
+                Zero friction onboarding. Choose the rail that matches your currency.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white/70 text-xs font-mono">
+                💳 Stripe / Cards
+              </span>
+              <span className="px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white/70 text-xs font-mono">
+                ⚡ UPI / Razorpay
+              </span>
+              <span className="px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white/70 text-xs font-mono">
+                🌐 PayPal / Wire
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-white/70">
+            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
+              <div className="font-bold text-white mb-1 flex items-center gap-1.5">
+                <CreditCard size={13} className="text-[#4fd6ff]" /> UPI Instant (India)
+              </div>
+              <p className="font-mono text-white/90 text-[11px] select-all bg-black/40 p-2 rounded-lg mt-1 border border-white/[0.04]">
+                6202442690@jio
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
+              <div className="font-bold text-white mb-1 flex items-center gap-1.5">
+                <DollarSign size={13} className="text-[#c6ff3a]" /> PayPal Global
+              </div>
+              <p className="font-mono text-white/90 text-[11px] select-all bg-black/40 p-2 rounded-lg mt-1 border border-white/[0.04]">
+                paypal.me/signhify
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
+              <div className="font-bold text-white mb-1 flex items-center gap-1.5">
+                <Building size={13} className="text-[#3cffb0]" /> Bank Wire (Direct)
+              </div>
+              <p className="font-mono text-white/90 text-[10px] select-all bg-black/40 p-2 rounded-lg mt-1 border border-white/[0.04]">
+                A/C 000521712140642 · IFSC JIOP0000001
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* FAQ Accordion */}
+        <div className="max-w-3xl mx-auto mb-20">
+          <div className="text-center mb-10">
+            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4fd6ff] mb-3 bg-[#4fd6ff]/10 px-3 py-1.5 rounded-full border border-[#4fd6ff]/20">
+              <HelpCircle size={11} /> Common Questions
+            </span>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">
+              Frequently asked questions
+            </h2>
+          </div>
+
+          <div className="space-y-3">
+            {FAQ.map((item, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div
+                  key={item.q}
+                  className="rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-md overflow-hidden transition-colors"
+                >
+                  <button
+                    onClick={() => setOpenFaq(isOpen ? null : idx)}
+                    className="w-full p-5 text-left flex items-center justify-between gap-4 text-sm font-semibold text-white/90 hover:text-white"
+                  >
+                    <span>{item.q}</span>
+                    <ChevronDown
+                      size={15}
+                      className={`shrink-0 transition-transform duration-300 text-white/40 ${
+                        isOpen ? "rotate-180 text-[#c6ff3a]" : ""
+                      }`}
+                    />
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        <div className="p-5 pt-0 text-xs text-white/60 leading-relaxed border-t border-white/[0.04]">
+                          {item.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Lead Capture Modal */}
+        <AnimatePresence>
+          {modalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setModalOpen(false)}
+                className="absolute inset-0 bg-black/80 backdrop-blur-md"
+              />
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                className="relative z-10 w-full max-w-md rounded-3xl border border-white/[0.1] bg-[#0c0c16] p-7 shadow-[0_20px_60px_rgba(0,0,0,0.8)]"
+              >
+                {!submitted ? (
+                  <>
+                    <h3 className="font-display text-xl font-bold text-white mb-1">
+                      Start with {selectedTier}
+                    </h3>
+                    <p className="text-white/60 text-xs mb-6">
+                      Leave your work email and brief. We'll reply within 2 hours to confirm kickoff.
+                    </p>
+
+                    <form onSubmit={handleSubmitLead} className="space-y-4">
+                      <div>
+                        <label className="block text-[11px] font-mono uppercase tracking-wider text-white/50 mb-1.5">
+                          Your Name
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Your Name"
+                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-xs outline-none focus:border-[#c6ff3a]/60"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-mono uppercase tracking-wider text-white/50 mb-1.5">
+                          Work Email
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="you@company.com"
+                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-xs outline-none focus:border-[#c6ff3a]/60"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-mono uppercase tracking-wider text-white/50 mb-1.5">
+                          Project Brief / Scope Notes
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={notes}
+                          onChange={(e) => setNotes(e.target.value)}
+                          placeholder="What are we building or redesigning?"
+                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-xs outline-none focus:border-[#c6ff3a]/60 resize-none"
+                        />
+                      </div>
+
+                      <div className="flex items-center gap-3 pt-2">
+                        <button
+                          type="button"
+                          onClick={() => setModalOpen(false)}
+                          className="flex-1 py-3 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-xs font-semibold text-white/70"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={submitting}
+                          className="flex-1 py-3 rounded-xl btn-moonlit font-bold text-xs flex items-center justify-center gap-2"
+                        >
+                          {submitting ? <Loader2 size={13} className="animate-spin" /> : "Submit Request"}
+                        </button>
+                      </div>
+                    </form>
+                  </>
+                ) : (
+                  <div className="text-center py-6">
+                    <CheckCircle2 size={42} className="text-[#c6ff3a] mx-auto mb-3" />
+                    <h3 className="font-display text-xl font-bold text-white mb-2">Request Received</h3>
+                    <p className="text-white/60 text-xs mb-6">
+                      We've queued your {selectedTier} project request. Look out for our confirmation email.
+                    </p>
+                    <button
+                      onClick={() => setModalOpen(false)}
+                      className="px-6 py-2.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-xs font-bold text-white"
+                    >
+                      Done
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
       </div>
-      <button
-        type="submit"
-        disabled={submitting}
-        className="shrink-0 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground disabled:opacity-60"
-      >
-        {submitting ? <Loader2 size={16} className="animate-spin" /> : "Notify Me"}
-      </button>
-    </form>
+    </div>
   );
 }

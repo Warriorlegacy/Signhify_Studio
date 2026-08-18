@@ -88,7 +88,8 @@ export const Route = createFileRoute("/best-digital-marketing-studio")({
           "@context": "https://schema.org",
           "@type": "Product",
           name: "Signhify Digital Marketing Studio",
-          image: "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
+          image:
+            "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
           description:
             "Full-stack digital marketing studio combining AI engineering with growth marketing. SEO/AEO, performance marketing, brand strategy, CRO, email automation, and analytics.",
           brand: { "@type": "Brand", name: "Signhify" },

@@ -86,7 +86,8 @@ export const Route = createFileRoute("/best-vibe-coding-platform")({
           "@context": "https://schema.org",
           "@type": "Product",
           name: "Signhify Vibe-Coding Platform",
-          image: "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
+          image:
+            "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
           description:
             "Professional vibe-coding platform with 6-agent swarm that ships production-grade SaaS code with auth, billing, AI integration, and deployment automation.",
           brand: { "@type": "Brand", name: "Signhify" },

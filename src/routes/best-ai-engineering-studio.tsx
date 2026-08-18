@@ -86,7 +86,8 @@ export const Route = createFileRoute("/best-ai-engineering-studio")({
           "@context": "https://schema.org",
           "@type": "Product",
           name: "Signhify AI Engineering Studio",
-          image: "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
+          image:
+            "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
           description:
             "Premium AI engineering studio service delivering production SaaS with 6-agent swarm, BYOK encryption, and 2-week sprints.",
           brand: { "@type": "Brand", name: "Signhify" },

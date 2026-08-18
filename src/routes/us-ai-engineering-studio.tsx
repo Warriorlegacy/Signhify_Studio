@@ -63,8 +63,16 @@ export const Route = createFileRoute("/us-ai-engineering-studio")({
     ],
     links: [
       { rel: "canonical", href: "https://signhify.dpdns.org/us-ai-engineering-studio" },
-      { rel: "alternate", hrefLang: "en-US", href: "https://signhify.dpdns.org/us-ai-engineering-studio" },
-      { rel: "alternate", hrefLang: "x-default", href: "https://signhify.dpdns.org/us-ai-engineering-studio" },
+      {
+        rel: "alternate",
+        hrefLang: "en-US",
+        href: "https://signhify.dpdns.org/us-ai-engineering-studio",
+      },
+      {
+        rel: "alternate",
+        hrefLang: "x-default",
+        href: "https://signhify.dpdns.org/us-ai-engineering-studio",
+      },
     ],
     scripts: [
       {
@@ -95,7 +103,8 @@ export const Route = createFileRoute("/us-ai-engineering-studio")({
           "@context": "https://schema.org",
           "@type": "Product",
           name: "Signhify AI Engineering Studio (US Edition)",
-          image: "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
+          image:
+            "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
           description:
             "Full-stack AI SaaS development studio with 6-agent swarm, 2-week delivery sprint, BYOK security vault, and 100% US timezone coverage.",
           brand: { "@type": "Brand", name: "Signhify" },
@@ -251,7 +260,9 @@ function USAiEngineeringStudioPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mt-6 text-lg text-muted-foreground sm:text-xl"
             >
-              The premier AI development engine for US founders and enterprise teams. 6-agent autonomous swarm, 100% US EST/PST coverage, BYOK AES-256 security, 2-week guaranteed sprints, and 100% GitHub code transfer.
+              The premier AI development engine for US founders and enterprise teams. 6-agent
+              autonomous swarm, 100% US EST/PST coverage, BYOK AES-256 security, 2-week guaranteed
+              sprints, and 100% GitHub code transfer.
             </motion.p>
 
             <motion.div
@@ -302,7 +313,8 @@ function USAiEngineeringStudioPage() {
               Why US Tech Founders Partner with Signhify
             </h2>
             <p className="mt-4 text-muted-foreground">
-              Engineered specifically to solve the high cost, slow timelines, and vendor lock-in of traditional US software agencies.
+              Engineered specifically to solve the high cost, slow timelines, and vendor lock-in of
+              traditional US software agencies.
             </p>
           </div>
 
@@ -331,7 +343,8 @@ function USAiEngineeringStudioPage() {
               Signhify vs. US Software Agencies
             </h2>
             <p className="mt-4 text-muted-foreground">
-              Compare our 6-agent autonomous engineering studio against legacy agencies and traditional dev shops.
+              Compare our 6-agent autonomous engineering studio against legacy agencies and
+              traditional dev shops.
             </p>
           </div>
 
@@ -339,10 +352,16 @@ function USAiEngineeringStudioPage() {
             <table className="w-full min-w-[640px] border-collapse text-left">
               <thead>
                 <tr className="border-b border-border bg-surface/50">
-                  <th className="p-4 text-sm font-semibold text-muted-foreground">Feature / Metric</th>
+                  <th className="p-4 text-sm font-semibold text-muted-foreground">
+                    Feature / Metric
+                  </th>
                   <th className="p-4 text-sm font-bold text-primary">Signhify Studio</th>
-                  <th className="p-4 text-sm font-semibold text-muted-foreground">Traditional US Agencies</th>
-                  <th className="p-4 text-sm font-semibold text-muted-foreground">Offshore Dev Shops</th>
+                  <th className="p-4 text-sm font-semibold text-muted-foreground">
+                    Traditional US Agencies
+                  </th>
+                  <th className="p-4 text-sm font-semibold text-muted-foreground">
+                    Offshore Dev Shops
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">
@@ -371,10 +390,7 @@ function USAiEngineeringStudioPage() {
 
           <div className="mx-auto mt-12 max-w-3xl space-y-4">
             {FAQS.map((faq, idx) => (
-              <div
-                key={idx}
-                className="rounded-xl border border-border bg-card overflow-hidden"
-              >
+              <div key={idx} className="rounded-xl border border-border bg-card overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
                   className="flex w-full items-center justify-between p-5 text-left font-semibold"

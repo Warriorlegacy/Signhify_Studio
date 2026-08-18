@@ -40,7 +40,8 @@ export const Route = createFileRoute("/saas-mvp")({
           "@context": "https://schema.org",
           "@type": "Product",
           name: "$299 AI SaaS MVP Sprint",
-          image: "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
+          image:
+            "https://storage.googleapis.com/gpt-engineer-file-uploads/z9pHpNWd9MUTo6M3fEIu8Itwhu83/social-images/social-1780607616175-ChatGPT_Image_Jun_5,_2026,_02_40_45_AM.webp",
           description: "2-week fixed-price sprint to design, build, and deploy an AI SaaS MVP.",
           brand: { "@type": "Brand", name: "Signhify" },
           offers: {
