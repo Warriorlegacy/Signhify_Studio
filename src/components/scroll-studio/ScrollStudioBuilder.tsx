@@ -118,7 +118,11 @@ export function ScrollStudioBuilder() {
         </p>
         <Link
           to="/login"
-          search={{ redirect: "/scroll-studio" }}
+          search={{
+            redirect: search.prompt
+              ? `/scroll-studio?prompt=${encodeURIComponent(search.prompt)}`
+              : "/scroll-studio",
+          }}
           className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
         >
           Sign in
