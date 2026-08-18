@@ -20,6 +20,7 @@ import {
   Clock,
   Star,
 } from "lucide-react";
+import { SignhifyLogo } from "@/components/SignhifyLogo";
 
 interface NavLinkItem {
   to: string;
@@ -29,7 +30,7 @@ interface NavLinkItem {
 }
 
 const NAV_LINKS: NavLinkItem[] = [
-  { to: "/builder", label: "3D Builder", icon: Box },
+  { to: "/scroll-studio", label: "3D Builder", icon: Box },
   { to: "/templates", label: "Presets", icon: Layers, beta: true },
   { to: "/insights", label: "Blog", icon: Newspaper },
   { to: "/pricing", label: "Pricing", icon: Tags },
@@ -38,20 +39,8 @@ const NAV_LINKS: NavLinkItem[] = [
 
 /* ── Logo ────────────────────────────────────────────────── */
 
-function LogoMark({
-  className = "w-8 h-8 rounded-[10px]",
-  inner = "w-2.5 h-2.5 rounded-[3px]",
-}: {
-  className?: string;
-  inner?: string;
-}) {
-  return (
-    <span
-      className={`bg-gradient-to-br from-[#d9ff6e] to-[#9fd62a] flex items-center justify-center shadow-[0_2px_12px_rgba(198,255,58,0.45)] ${className}`}
-    >
-      <span className={`bg-[#0b0d16] ${inner}`} />
-    </span>
-  );
+function LogoMark() {
+  return <SignhifyLogo size={30} />;
 }
 
 /* ── Pricing pill CTA ────────────────────────────────────── */
@@ -60,18 +49,18 @@ function PricingPillCta() {
   return (
     <a
       aria-label="Signhify Basic — $25/mo — Get started"
-      className="group relative block overflow-hidden rounded-full bg-[rgba(10,4,18,0.96)] backdrop-blur-xl pl-3 pr-1.5 py-1.5 sm:pl-4 sm:pr-2 sm:py-2 shadow-[0_14px_40px_rgba(0,0,0,0.55),0_0_0_1.5px_rgba(198,255,58,0.95),0_0_48px_rgba(198,255,58,0.36)] transition-all duration-300 hover:shadow-[0_18px_48px_rgba(0,0,0,0.6),0_0_0_1.5px_rgba(198,255,58,1),0_0_64px_rgba(198,255,58,0.5)] hover:scale-[1.015] focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c6ff3a]/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      className="group relative block overflow-hidden rounded-full bg-[rgba(10,4,18,0.96)] backdrop-blur-xl pl-3 pr-1.5 py-1.5 sm:pl-4 sm:pr-2 sm:py-2 shadow-[0_14px_40px_rgba(0,0,0,0.55),0_0_0_1.5px_rgba(255,107,26,0.95),0_0_48px_rgba(255,107,26,0.36)] transition-all duration-300 hover:shadow-[0_18px_48px_rgba(0,0,0,0.6),0_0_0_1.5px_rgba(255,107,26,1),0_0_64px_rgba(255,107,26,0.5)] hover:scale-[1.015] focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b1a]/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
       href="/pricing"
     >
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[#4fd6ff]/12 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+        className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[#ffb347]/12 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
       />
       <span className="relative flex items-center gap-2.5 sm:gap-3">
         <span className="flex items-center gap-2.5 min-w-0 flex-1">
           <span
             aria-hidden
-            className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[#c6ff3a] text-[#10160a] shadow-[0_4px_18px_rgba(198,255,58,0.55),inset_0_1px_0_rgba(255,255,255,0.25)] shrink-0 ring-2 ring-[#c6ff3a]/20"
+            className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[#ff6b1a] text-[#1a0a00] shadow-[0_4px_18px_rgba(255,107,26,0.55),inset_0_1px_0_rgba(255,255,255,0.25)] shrink-0 ring-2 ring-[#ff6b1a]/20"
           >
             <Rocket className="text-[12px] sm:text-[13px]" size={13} />
           </span>
@@ -84,7 +73,7 @@ function PricingPillCta() {
             </span>
           </span>
         </span>
-        <span className="agent-glass-shine shrink-0 inline-flex items-center justify-center gap-2 rounded-[15px] bg-[#c6ff3a] backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2 text-[12px] sm:text-[13px] font-extrabold text-[#10160a] transition-all duration-300 group-hover:bg-[#4fd6ff] group-hover:gap-2.5 shadow-[0_4px_20px_rgba(198,255,58,0.55),inset_0_1px_0_rgba(255,255,255,0.18)]">
+        <span className="agent-glass-shine shrink-0 inline-flex items-center justify-center gap-2 rounded-[15px] bg-[#ff6b1a] backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2 text-[12px] sm:text-[13px] font-extrabold text-[#1a0a00] transition-all duration-300 group-hover:bg-[#ffb347] group-hover:gap-2.5 shadow-[0_4px_20px_rgba(255,107,26,0.55),inset_0_1px_0_rgba(255,255,255,0.18)]">
           <Bolt size={12} />
           Get started
           <ArrowRight
@@ -100,13 +89,16 @@ function PricingPillCta() {
 /* ── Chat input card ─────────────────────────────────────── */
 
 function ChatCard() {
+  const [prompt, setPrompt] = useState("");
   return (
     <div className="relative">
-      <div className="draftly-chat-bloom" aria-hidden />
-      <div className="draftly-chat-ring">
+      <div className="signhify-chat-bloom" aria-hidden />
+      <div className="signhify-chat-ring">
         <div className="relative backdrop-blur-2xl bg-[#0a0a14]/95 rounded-[16.5px] overflow-hidden p-2">
           <div className="px-2 pt-2 pb-1">
             <textarea
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
               placeholder="Describe your website for our new Signhify Agent V2"
               rows={1}
               className="w-full resize-none bg-transparent border-none outline-none text-sm text-white/90 placeholder:text-white/60 leading-relaxed min-h-[44px]"
@@ -131,9 +123,10 @@ function ChatCard() {
               </button>
             </div>
             <Link
-              to="/builder"
+              to="/scroll-studio"
+              search={{ prompt: prompt.trim() || undefined }}
               title="Start"
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all bg-[#c6ff3a] text-[#10160a] hover:scale-105 shadow-[0_2px_10px_rgba(198,255,58,0.4)]"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all bg-[#ff6b1a] text-[#1a0a00] hover:scale-105 shadow-[0_2px_10px_rgba(255,107,26,0.4)]"
             >
               <ArrowUp size={16} />
               <span className="sr-only">Start</span>
@@ -166,7 +159,7 @@ function HeroCanvas() {
       x: Math.random(),
       y: Math.random(),
       r: Math.random() * 1.6 + 0.4,
-      hue: Math.random() < 0.4 ? 82 : Math.random() < 0.7 ? 162 : 200,
+      hue: Math.random() < 0.4 ? 25 : Math.random() < 0.7 ? 35 : 30,
       drift: Math.random() * 0.0002 + 0.00005,
     }));
     const draw = () => {
@@ -183,7 +176,7 @@ function HeroCanvas() {
           0,
           Math.PI * 2,
         );
-        ctx.fillStyle = `hsla(${d.hue}, 90%, 65%, ${0.04 + progress * 0.2})`;
+        ctx.fillStyle = `hsla(${d.hue}, 90%, 62%, ${0.04 + progress * 0.2})`;
         ctx.fill();
       }
       raf = requestAnimationFrame(draw);
@@ -247,7 +240,7 @@ function StatsBar() {
             transitionDelay: `${i * 120 + 400}ms`,
           }}
         >
-          <s.icon size={14} className="text-[#c6ff3a]/70" />
+          <s.icon size={14} className="text-[#ff6b1a]/70" />
           <div className="flex flex-col">
             <span className="text-[16px] sm:text-[18px] font-bold text-white tracking-tight leading-none">
               {s.value}
@@ -300,7 +293,7 @@ function LandingNav() {
                 className="absolute left-1/2 top-1/2 w-[26px] h-[26px] -ml-[13px] -mt-[13px] rounded-full"
                 style={{
                   background:
-                    "radial-gradient(circle at 34% 28%, rgba(214,255,150,0.8) 0%, rgba(120,190,70,0.45) 38%, rgb(11,13,22) 72%)",
+                    "radial-gradient(circle at 34% 28%, rgba(255,170,120,0.8) 0%, rgba(230,110,40,0.45) 38%, rgb(11,13,22) 72%)",
                 }}
               />
             </div>
@@ -312,7 +305,7 @@ function LandingNav() {
                   className="group relative flex items-center gap-2 px-3.5 h-[38px] rounded-full text-[13px] transition-colors duration-200 text-white hover:bg-white/[0.07] font-medium"
                 >
                   <Icon
-                    className="text-[11px] text-white/80 group-hover:text-[#c6ff3a] transition-colors"
+                    className="text-[11px] text-white/80 group-hover:text-[#ff6b1a] transition-colors"
                     size={11}
                   />
                   {label}
@@ -350,12 +343,12 @@ function LandingNav() {
           <Link
             to="/signup"
             search={{ redirect: "/app/billing" }}
-            className="group hidden md:block rounded-full p-[1.5px] bg-[conic-gradient(from_140deg,#4fd6ff,#3cffb0,#c6ff3a,#3cffb0,#4fd6ff)] shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
+            className="group hidden md:block rounded-full p-[1.5px] bg-[conic-gradient(from_140deg,#ff9442,#ffb347,#ff6b1a,#ffb347,#ff9442)] shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
           >
             <span className="flex items-center gap-2.5 h-[47px] px-5 rounded-full bg-[#0b0d16] text-[13px] font-semibold tracking-[-0.01em] text-white transition-colors group-hover:bg-[#12141f]">
               Get started
               <ArrowRight
-                className="text-[10px] text-[#c6ff3a] transition-transform duration-300 group-hover:translate-x-0.5"
+                className="text-[10px] text-[#ff6b1a] transition-transform duration-300 group-hover:translate-x-0.5"
                 size={10}
               />
             </span>
@@ -401,7 +394,7 @@ function LandingNav() {
             to="/signup"
             search={{ redirect: "/app/billing" }}
             onClick={() => setMenuOpen(false)}
-            className="mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#c6ff3a] px-3.5 py-2.5 text-[13px] font-bold text-[#10160a]"
+            className="mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#ff6b1a] px-3.5 py-2.5 text-[13px] font-bold text-[#1a0a00]"
           >
             Get started <ArrowRight size={12} />
           </Link>
@@ -421,7 +414,7 @@ function HeroBackground() {
         style={{
           top: "-15%",
           right: "-8%",
-          background: "radial-gradient(circle, rgba(198,255,58,0.08) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(255,107,26,0.08) 0%, transparent 70%)",
           filter: "blur(120px)",
         }}
       />
@@ -430,7 +423,7 @@ function HeroBackground() {
         style={{
           bottom: "5%",
           left: "-10%",
-          background: "radial-gradient(circle, rgba(79,214,255,0.06) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(255,148,66,0.06) 0%, transparent 70%)",
           filter: "blur(140px)",
         }}
       />
@@ -439,7 +432,7 @@ function HeroBackground() {
         style={{
           top: "30%",
           left: "40%",
-          background: "radial-gradient(circle, rgba(60,255,176,0.05) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(255,179,71,0.05) 0%, transparent 70%)",
           filter: "blur(160px)",
         }}
       />
@@ -449,7 +442,7 @@ function HeroBackground() {
         style={{
           backgroundColor: "rgb(3,7,18)",
           backgroundImage:
-            "radial-gradient(420px at 86% 12%, rgba(160,255,140,0.14) 0%, rgba(90,230,180,0.05) 45%, rgba(5,5,10,0) 100%), linear-gradient(228deg, rgba(198,255,58,0.1) 12%, rgba(60,255,176,0.07) 30%, rgba(79,214,255,0.06) 48%, rgba(5,5,10,0) 66%), radial-gradient(rgba(150,156,190,0.1) 0.6px, transparent 0.9px)",
+            "radial-gradient(420px at 86% 12%, rgba(255,170,120,0.14) 0%, rgba(255,200,130,0.05) 45%, rgba(5,5,10,0) 100%), linear-gradient(228deg, rgba(255,107,26,0.1) 12%, rgba(255,179,71,0.07) 30%, rgba(255,148,66,0.06) 48%, rgba(5,5,10,0) 66%), radial-gradient(rgba(150,156,190,0.1) 0.6px, transparent 0.9px)",
           backgroundSize: "100% 100%, 100% 100%, 7px 7px",
         }}
       />
@@ -470,7 +463,8 @@ export function LandingHero() {
   const fadeIn = (delay: number): React.CSSProperties => ({
     opacity: mounted ? 1 : 0,
     transform: mounted ? "translateY(0)" : "translateY(28px)",
-    transition: "opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)",
+    transition:
+      "opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)",
     transitionDelay: `${delay}ms`,
   });
 
@@ -506,14 +500,16 @@ export function LandingHero() {
         >
           {/* Headline */}
           <div className="text-center max-w-4xl px-6 mb-8" style={fadeIn(0)}>
-            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4fd6ff] mb-5 bg-[#4fd6ff]/10 px-3.5 py-1.5 rounded-full border border-[#4fd6ff]/20">
+            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#ffb347] mb-5 bg-[#ffb347]/10 px-3.5 py-1.5 rounded-full border border-[#ffb347]/20">
               <Zap size={10} />
               AI 3D Website Builder
             </span>
             <h2 className="font-display text-4xl md:text-5xl lg:text-[64px] xl:text-[72px] font-bold text-white tracking-tight leading-[1.05] mb-5">
               Cinematic Scroll Websites
               <br />
-              <span className="text-[#c6ff3a]">from a Single Prompt</span>
+              <span className="bg-gradient-to-r from-[#ff6b1a] to-[#ffb347] bg-clip-text text-transparent">
+                from a Single Prompt
+              </span>
             </h2>
             <p className="text-white/70 text-[16px] md:text-[18px] max-w-2xl mx-auto leading-relaxed">
               Type a prompt. AI generates a complete scroll-reactive site with cinematic video,
@@ -527,21 +523,31 @@ export function LandingHero() {
           </div>
 
           {/* Pricing pill */}
-          <div className="w-full max-w-[min(100vw-1rem,560px)] px-2 sm:px-3 mt-8 mb-3" style={fadeIn(250)}>
+          <div
+            className="w-full max-w-[min(100vw-1rem,560px)] px-2 sm:px-3 mt-8 mb-3"
+            style={fadeIn(250)}
+          >
             <PricingPillCta />
           </div>
 
           {/* Chat card */}
-          <div className="w-full max-w-[min(100vw-1rem,660px)] px-2 sm:px-3 relative" style={fadeIn(350)}>
+          <div
+            className="w-full max-w-[min(100vw-1rem,660px)] px-2 sm:px-3 relative"
+            style={fadeIn(350)}
+          >
             <div className="relative z-10">
               <ChatCard />
             </div>
           </div>
 
           {/* Builder CTA */}
-          <div className="flex items-center justify-center gap-2.5 mt-5 w-full max-w-[min(94vw,340px)]" style={fadeIn(450)}>
+          <div
+            className="flex items-center justify-center gap-2.5 mt-5 w-full max-w-[min(94vw,340px)]"
+            style={fadeIn(450)}
+          >
             <Link
-              to="/builder"
+              to="/scroll-studio"
+              search={{ prompt: undefined }}
               className="btn-moonlit agent-glass-shine group flex-1 h-12 px-4 rounded-[15px] text-[14px] font-semibold tracking-[-0.01em] transition-all duration-300 inline-flex items-center justify-center gap-2"
             >
               <Box size={12} className="group-hover:rotate-12 transition-transform duration-300" />
@@ -575,7 +581,7 @@ export function LandingHero() {
           style={{
             backgroundColor: "#030712",
             backgroundImage:
-              "radial-gradient(circle 420px at 86% 12%, rgba(160,255,140,0.14) 0%, rgba(90,230,180,0.05) 45%, rgba(5,5,10,0) 100%),linear-gradient(228deg, rgba(198,255,58,0.10) 12%, rgba(60,255,176,0.07) 30%, rgba(79,214,255,0.06) 48%, rgba(5,5,10,0) 66%),radial-gradient(rgba(150,156,190,0.10) 0.6px, transparent 0.9px)",
+              "radial-gradient(circle 420px at 86% 12%, rgba(255,170,120,0.14) 0%, rgba(255,200,130,0.05) 45%, rgba(5,5,10,0) 100%),linear-gradient(228deg, rgba(255,107,26,0.10) 12%, rgba(255,179,71,0.07) 30%, rgba(255,148,66,0.06) 48%, rgba(5,5,10,0) 66%),radial-gradient(rgba(150,156,190,0.10) 0.6px, transparent 0.9px)",
             backgroundSize: "100% 100%, 100% 100%, 7px 7px",
           }}
         />
@@ -584,20 +590,22 @@ export function LandingHero() {
           style={{
             top: "10%",
             right: "-20%",
-            background: "radial-gradient(circle, rgba(198,255,58,0.08) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(255,107,26,0.08) 0%, transparent 70%)",
             filter: "blur(100px)",
           }}
         />
         <div className="relative z-10 px-4 pt-28 pb-8 flex flex-col items-center gap-4 min-h-screen justify-center">
           <div className="text-center mb-4">
-            <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#4fd6ff] mb-4 bg-[#4fd6ff]/10 px-3 py-1.5 rounded-full border border-[#4fd6ff]/20">
+            <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ffb347] mb-4 bg-[#ffb347]/10 px-3 py-1.5 rounded-full border border-[#ffb347]/20">
               <Zap size={9} />
               AI 3D Website Builder
             </span>
             <h2 className="font-display text-3xl font-bold text-white tracking-tight leading-[1.1] mb-3">
               Cinematic Scroll Websites
               <br />
-              <span className="text-[#c6ff3a]">from a Single Prompt</span>
+              <span className="bg-gradient-to-r from-[#ff6b1a] to-[#ffb347] bg-clip-text text-transparent">
+                from a Single Prompt
+              </span>
             </h2>
             <p className="text-white/60 text-[14px] max-w-sm mx-auto leading-relaxed">
               AI generates motion, frames, and production HTML — publish in minutes.
@@ -607,7 +615,7 @@ export function LandingHero() {
           <div className="flex flex-wrap items-center justify-center gap-4 mb-4">
             {HERO_STATS.slice(0, 3).map((s) => (
               <div key={s.label} className="flex items-center gap-2">
-                <s.icon size={12} className="text-[#c6ff3a]/60" />
+                <s.icon size={12} className="text-[#ff6b1a]/60" />
                 <span className="text-[13px] font-bold text-white">{s.value}</span>
                 <span className="text-[9px] text-white/35 uppercase tracking-wide">{s.label}</span>
               </div>
@@ -624,7 +632,8 @@ export function LandingHero() {
           </div>
           <div className="flex items-center gap-2 w-full max-w-[400px]">
             <Link
-              to="/builder"
+              to="/scroll-studio"
+              search={{ prompt: undefined }}
               className="btn-moonlit agent-glass-shine flex-1 h-11 px-3 rounded-[15px] text-[12px] font-semibold inline-flex items-center justify-center gap-1.5 whitespace-nowrap transition-colors"
             >
               <Box size={10} />

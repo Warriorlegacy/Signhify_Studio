@@ -91,7 +91,7 @@ const TIERS = [
     ],
     cta: "Start a Sprint",
     featured: false,
-    badgeColor: "bg-[#4fd6ff]/10 text-[#4fd6ff] border-[#4fd6ff]/20",
+    badgeColor: "bg-[#ffb347]/10 text-[#ffb347] border-[#ffb347]/20",
     glowColor: "rgba(79, 214, 255, 0.15)",
   },
   {
@@ -112,7 +112,7 @@ const TIERS = [
     ],
     cta: "Book Studio Team",
     featured: true,
-    badgeColor: "bg-[#c6ff3a]/15 text-[#c6ff3a] border-[#c6ff3a]/30",
+    badgeColor: "bg-[#ff6b1a]/15 text-[#ff6b1a] border-[#ff6b1a]/30",
     glowColor: "rgba(198, 255, 58, 0.25)",
   },
   {
@@ -132,7 +132,7 @@ const TIERS = [
     ],
     cta: "Talk to Founder",
     featured: false,
-    badgeColor: "bg-[#3cffb0]/10 text-[#3cffb0] border-[#3cffb0]/20",
+    badgeColor: "bg-[#ff9442]/10 text-[#ff9442] border-[#ff9442]/20",
     glowColor: "rgba(60, 255, 176, 0.15)",
   },
 ];
@@ -218,7 +218,7 @@ function PricingPage() {
         aria-hidden
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full blur-[160px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse at center, rgba(198,255,58,0.07) 0%, rgba(79,214,255,0.04) 50%, transparent 80%)",
+          background: "radial-gradient(ellipse at center, rgba(255,107,26,0.07) 0%, rgba(255,179,71,0.04) 50%, transparent 80%)",
         }}
       />
       <div className="bg-grid-global" />
@@ -229,11 +229,11 @@ function PricingPage() {
 
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mt-8 mb-12">
-          <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4fd6ff] mb-4 bg-[#4fd6ff]/10 px-3.5 py-1.5 rounded-full border border-[#4fd6ff]/20">
+          <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#ffb347] mb-4 bg-[#ffb347]/10 px-3.5 py-1.5 rounded-full border border-[#ffb347]/20">
             <Zap size={11} /> Transparent Pricing · 100% Code Ownership
           </span>
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.08] mb-5">
-            Predictable plans for <span className="text-[#c6ff3a]">serious builders</span>
+            Predictable plans for <span className="text-[#ff6b1a]">serious builders</span>
           </h1>
           <p className="text-white/70 text-[16px] md:text-[18px] leading-relaxed">
             No endless hourly billing. Pick a sprint for rapid milestones, or embed our studio team
@@ -246,7 +246,7 @@ function PricingPage() {
               onClick={() => setAnnual(false)}
               className={`px-5 py-2 rounded-full text-xs font-semibold transition-all ${
                 !annual
-                  ? "bg-[#c6ff3a] text-[#10160a] shadow-[0_2px_12px_rgba(198,255,58,0.4)]"
+                  ? "bg-[#ff6b1a] text-[#1a0a00] shadow-[0_2px_12px_rgba(255,107,26,0.4)]"
                   : "text-white/60 hover:text-white"
               }`}
             >
@@ -256,12 +256,12 @@ function PricingPage() {
               onClick={() => setAnnual(true)}
               className={`flex items-center gap-2 px-5 py-2 rounded-full text-xs font-semibold transition-all ${
                 annual
-                  ? "bg-[#c6ff3a] text-[#10160a] shadow-[0_2px_12px_rgba(198,255,58,0.4)]"
+                  ? "bg-[#ff6b1a] text-[#1a0a00] shadow-[0_2px_12px_rgba(255,107,26,0.4)]"
                   : "text-white/60 hover:text-white"
               }`}
             >
               Annual Retainer
-              <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-white/20 text-[#10160a]">
+              <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-white/20 text-[#1a0a00]">
                 Save 20%
               </span>
             </button>
@@ -277,12 +277,12 @@ function PricingPage() {
                 key={tier.name}
                 className={`relative rounded-3xl p-8 flex flex-col justify-between transition-all duration-500 backdrop-blur-xl ${
                   tier.featured
-                    ? "bg-[#0a1224]/90 border-2 border-[#c6ff3a]/60 shadow-[0_20px_60px_rgba(198,255,58,0.15)] scale-[1.02]"
+                    ? "bg-[#0e1018]/90 border-2 border-[#ff6b1a]/60 shadow-[0_20px_60px_rgba(255,107,26,0.15)] scale-[1.02]"
                     : "bg-[#0c0c16]/80 border border-white/[0.08] hover:border-white/[0.18] shadow-[0_10px_40px_rgba(0,0,0,0.4)]"
                 }`}
               >
                 {tier.featured && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#c6ff3a] text-[#10160a] text-[11px] font-extrabold uppercase tracking-wider shadow-[0_4px_16px_rgba(198,255,58,0.5)]">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#ff6b1a] text-[#1a0a00] text-[11px] font-extrabold uppercase tracking-wider shadow-[0_4px_16px_rgba(255,107,26,0.5)]">
                     Most Chosen
                   </div>
                 )}
@@ -314,7 +314,7 @@ function PricingPage() {
                         <Check
                           size={14}
                           className={`shrink-0 mt-0.5 ${
-                            tier.featured ? "text-[#c6ff3a]" : "text-[#4fd6ff]"
+                            tier.featured ? "text-[#ff6b1a]" : "text-[#ffb347]"
                           }`}
                         />
                         <span>{feat}</span>
@@ -328,7 +328,7 @@ function PricingPage() {
                     onClick={() => handleOpenModal(tier.name)}
                     className={`w-full py-3.5 px-6 rounded-2xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
                       tier.featured
-                        ? "btn-moonlit agent-glass-shine text-[#10160a] hover:scale-[1.02]"
+                        ? "btn-moonlit agent-glass-shine text-[#1a0a00] hover:scale-[1.02]"
                         : "bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.12] text-white"
                     }`}
                   >
@@ -368,7 +368,7 @@ function PricingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-white/70">
             <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
               <div className="font-bold text-white mb-1 flex items-center gap-1.5">
-                <CreditCard size={13} className="text-[#4fd6ff]" /> UPI Instant (India)
+                <CreditCard size={13} className="text-[#ffb347]" /> UPI Instant (India)
               </div>
               <p className="font-mono text-white/90 text-[11px] select-all bg-black/40 p-2 rounded-lg mt-1 border border-white/[0.04]">
                 6202442690@jio
@@ -376,7 +376,7 @@ function PricingPage() {
             </div>
             <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
               <div className="font-bold text-white mb-1 flex items-center gap-1.5">
-                <DollarSign size={13} className="text-[#c6ff3a]" /> PayPal Global
+                <DollarSign size={13} className="text-[#ff6b1a]" /> PayPal Global
               </div>
               <p className="font-mono text-white/90 text-[11px] select-all bg-black/40 p-2 rounded-lg mt-1 border border-white/[0.04]">
                 paypal.me/signhify
@@ -384,7 +384,7 @@ function PricingPage() {
             </div>
             <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
               <div className="font-bold text-white mb-1 flex items-center gap-1.5">
-                <Building size={13} className="text-[#3cffb0]" /> Bank Wire (Direct)
+                <Building size={13} className="text-[#ff9442]" /> Bank Wire (Direct)
               </div>
               <p className="font-mono text-white/90 text-[10px] select-all bg-black/40 p-2 rounded-lg mt-1 border border-white/[0.04]">
                 A/C 000521712140642 · IFSC JIOP0000001
@@ -396,7 +396,7 @@ function PricingPage() {
         {/* FAQ Accordion */}
         <div className="max-w-3xl mx-auto mb-20">
           <div className="text-center mb-10">
-            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4fd6ff] mb-3 bg-[#4fd6ff]/10 px-3 py-1.5 rounded-full border border-[#4fd6ff]/20">
+            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#ffb347] mb-3 bg-[#ffb347]/10 px-3 py-1.5 rounded-full border border-[#ffb347]/20">
               <HelpCircle size={11} /> Common Questions
             </span>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">
@@ -420,7 +420,7 @@ function PricingPage() {
                     <ChevronDown
                       size={15}
                       className={`shrink-0 transition-transform duration-300 text-white/40 ${
-                        isOpen ? "rotate-180 text-[#c6ff3a]" : ""
+                        isOpen ? "rotate-180 text-[#ff6b1a]" : ""
                       }`}
                     />
                   </button>
@@ -481,7 +481,7 @@ function PricingPage() {
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           placeholder="Your Name"
-                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-xs outline-none focus:border-[#c6ff3a]/60"
+                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-xs outline-none focus:border-[#ff6b1a]/60"
                         />
                       </div>
 
@@ -495,7 +495,7 @@ function PricingPage() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="you@company.com"
-                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-xs outline-none focus:border-[#c6ff3a]/60"
+                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-xs outline-none focus:border-[#ff6b1a]/60"
                         />
                       </div>
 
@@ -508,7 +508,7 @@ function PricingPage() {
                           value={notes}
                           onChange={(e) => setNotes(e.target.value)}
                           placeholder="What are we building or redesigning?"
-                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-xs outline-none focus:border-[#c6ff3a]/60 resize-none"
+                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white text-xs outline-none focus:border-[#ff6b1a]/60 resize-none"
                         />
                       </div>
 
@@ -532,7 +532,7 @@ function PricingPage() {
                   </>
                 ) : (
                   <div className="text-center py-6">
-                    <CheckCircle2 size={42} className="text-[#c6ff3a] mx-auto mb-3" />
+                    <CheckCircle2 size={42} className="text-[#ff6b1a] mx-auto mb-3" />
                     <h3 className="font-display text-xl font-bold text-white mb-2">Request Received</h3>
                     <p className="text-white/60 text-xs mb-6">
                       We've queued your {selectedTier} project request. Look out for our confirmation email.

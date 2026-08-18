@@ -45,6 +45,10 @@ type Message = {
 
 type RenderStyle = "wireframe" | "glowing" | "particle";
 
+function styleColorHex(color: string): string {
+  return color.includes("160") ? "#14b8a6" : color.includes("290") ? "#8b5cf6" : "#ff6b00";
+}
+
 function StudioSpike() {
   const { user } = useUser();
   const userId = user?.id || "00000000-0000-0000-0000-000000000000";
@@ -107,11 +111,7 @@ function StudioSpike() {
       framesRef.current.forEach((f) => f.close());
       setFrames([]);
 
-      const colorHex = color.includes("160")
-        ? "#14b8a6" // Teal
-        : color.includes("290")
-          ? "#8b5cf6" // Violet
-          : "#ff6b00"; // Primary Electric Orange
+      const colorHex = styleColorHex(color);
 
       try {
         // 1. Trigger the server function to start generation job
@@ -472,15 +472,15 @@ function StudioSpike() {
         setExporting(true);
         reply = "Export process initialized. Compiling project files...";
 
-        // Call the export function
-        exportScrollStudioProject
-          .call({ projectId })
+        // Call the export function with the spike's current design state
+        const files = buildSpikeSiteFiles(style, styleColorHex(primaryColor), frameCount);
+        exportScrollStudioProject({ data: { projectId, files } })
           .then((result) => {
-            if (result.data?.success) {
+            if (result?.success) {
               setExportReady(true);
-              setExportUrl(result.data.downloadUrl);
-              setExportFileName(result.data.fileName);
-              reply = `Export complete! Your project is ready for download as ${result.data.fileName}.`;
+              setExportUrl(result.downloadUrl);
+              setExportFileName(result.fileName);
+              reply = `Export complete! Your project is ready for download as ${result.fileName}.`;
             } else {
               throw new Error("Export failed");
             }
@@ -780,15 +780,15 @@ function StudioSpike() {
               <button
                 onClick={async () => {
                   setExporting(true);
-                  // Call the deploy function
+                  // Call the deploy function with the spike's current design state
                   const { deployScrollStudioProject } =
                     await import("@/lib/studio-export.functions");
-                  deployScrollStudioProject
-                    .call({ projectId })
+                  const files = buildSpikeSiteFiles(style, styleColorHex(primaryColor), frameCount);
+                  deployScrollStudioProject({ data: { projectId, files } })
                     .then((result) => {
-                      if (result.data?.success) {
+                      if (result?.success) {
                         // Show success and open deployment URL in new tab
-                        window.open(result.data.deploymentUrl, "_blank");
+                        window.open(result.deploymentUrl, "_blank");
                       } else {
                         throw new Error("Deployment failed");
                       }
@@ -907,4 +907,103 @@ function StudioSpike() {
       </div>
     </div>
   );
+}
+
+function buildSpikeSiteFiles(
+  style: RenderStyle,
+  colorHex: string,
+  frameCount: number,
+): Array<{ name: string; content: string }> {
+  const indexHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Signhify Scroll Site</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #050505; color: #fff; font-family: system-ui, sans-serif; overflow-x: hidden; }
+  .scene { height: 300vh; position: relative; }
+  .stage { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; overflow: hidden; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .title { position: relative; z-index: 10; text-align: center; pointer-events: none; padding: 0 1rem; }
+  .title h1 { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(135deg, #fff 30%, ${colorHex}); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .title p { margin-top: 1rem; color: rgba(255,255,255,0.6); font-size: 1.1rem; }
+  .badge { position: fixed; bottom: 1rem; right: 1rem; z-index: 20; font: 600 0.75rem/1 ui-monospace, monospace; color: ${colorHex}; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.75rem; border-radius: 999px; backdrop-filter: blur(8px); }
+</style>
+</head>
+<body>
+  <div class="scene">
+    <div class="stage">
+      <canvas id="fx"></canvas>
+      <div class="title">
+        <h1>Built with Signhify</h1>
+        <p>Scroll-linked ${style} renderer — ${frameCount} frames</p>
+      </div>
+    </div>
+  </div>
+  <div class="badge" id="badge">frame 0 / ${frameCount}</div>
+  <script>
+    const canvas = document.getElementById("fx");
+    const ctx = canvas.getContext("2d");
+    const badge = document.getElementById("badge");
+    const style = ${JSON.stringify(style)};
+    const color = ${JSON.stringify(colorHex)};
+    const frameCount = ${frameCount};
+    let particles = [];
+    if (style === "particle") {
+      for (let i = 0; i < 220; i++) particles.push({ x: Math.random(), y: Math.random(), r: Math.random() * 2 + 0.5, s: Math.random() * 0.5 + 0.1 });
+    }
+    function resize() { const dpr = window.devicePixelRatio || 1; canvas.width = canvas.clientWidth * dpr; canvas.height = canvas.clientHeight * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+    window.addEventListener("resize", resize); resize();
+    function draw(frame) {
+      const t = frame / Math.max(frameCount - 1, 1);
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "rgba(5,5,5,0.35)"; ctx.fillRect(0, 0, w, h);
+      if (style === "wireframe") {
+        ctx.strokeStyle = color; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(w / 2, h / 2, 60 + t * 140, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(w / 2, h / 2, 30 + t * 100, 0, Math.PI * 2); ctx.stroke();
+        ctx.globalAlpha = 0.25;
+        for (let i = -12; i <= 12; i++) {
+          ctx.beginPath(); ctx.moveTo(0, h / 2 + i * 30); ctx.lineTo(w, h / 2 + i * 30); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(w / 2 + i * 30, 0); ctx.lineTo(w / 2 + i * 30, h); ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      } else if (style === "particle") {
+        ctx.fillStyle = color;
+        particles.forEach((p, i) => {
+          const x = (p.x * w + t * 40 * ((i % 5) + 1)) % w;
+          const y = (p.y * h + t * 60) % h;
+          ctx.globalAlpha = 0.4 + t * 0.6;
+          ctx.beginPath(); ctx.arc(x, y, p.r, 0, Math.PI * 2); ctx.fill();
+        });
+        ctx.globalAlpha = 1;
+      } else {
+        const g = ctx.createRadialGradient(w / 2 - 60, h / 2 - 60, 10, w / 2, h / 2, 240 + t * 120);
+        g.addColorStop(0, color); g.addColorStop(1, "rgba(5,5,5,0)");
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(w / 2, h / 2, 240 + t * 120, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    function render() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? window.scrollY / max : 0;
+      const frame = Math.min(frameCount - 1, Math.round(progress * (frameCount - 1)));
+      draw(frame);
+      badge.textContent = "frame " + frame + " / " + frameCount;
+    }
+    window.addEventListener("scroll", render, { passive: true });
+    render();
+  </script>
+</body>
+</html>`;
+  return [
+    { name: "index.html", content: indexHtml },
+    {
+      name: "styles.css",
+      content: "/* Styles are inlined in index.html for this spike export. */",
+    },
+    { name: "script.js", content: "// Script is inlined in index.html for this spike export." },
+  ];
 }

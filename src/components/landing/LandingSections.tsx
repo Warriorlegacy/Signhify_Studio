@@ -74,7 +74,7 @@ function SectionBadge({
   label: string;
 }) {
   return (
-    <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4fd6ff] mb-4 bg-[#4fd6ff]/10 px-3 py-1.5 rounded-full border border-[#4fd6ff]/20">
+    <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#ffb347] mb-4 bg-[#ffb347]/10 px-3 py-1.5 rounded-full border border-[#ffb347]/20">
       <Icon size={11} />
       {label}
     </span>
@@ -87,7 +87,7 @@ function PresetCard({ preset, delay }: { preset: (typeof PRESETS)[number]; delay
   return (
     <Reveal from="up" delay={delay} className="h-full">
       <article className="group relative rounded-2xl xl:rounded-3xl overflow-hidden border border-white/[0.08] bg-[#0c0c16] hover:border-white/[0.18] transition-all duration-500 h-full flex flex-col shadow-[0_10px_40px_rgba(0,0,0,0.3)]">
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(198,255,58,0.06) 0%, transparent 70%)" }} />
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,107,26,0.06) 0%, transparent 70%)" }} />
         <div className="aspect-video w-full relative overflow-hidden bg-[#0a0a0c] border-b border-white/10 isolate z-0">
           <div className={`absolute inset-0 bg-gradient-to-br ${preset.gradient}`} aria-hidden />
           <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1px, transparent 0)", backgroundSize: "16px 16px" }} />
@@ -244,7 +244,7 @@ function TestimonialCarousel() {
               setIndex(i);
               restart();
             }}
-            className={`rounded-full transition-all duration-300 ${i === index ? "w-6 h-1.5 bg-[#c6ff3a]/70" : "w-1.5 h-1.5 bg-white/20 hover:bg-white/40"}`}
+            className={`rounded-full transition-all duration-300 ${i === index ? "w-6 h-1.5 bg-[#ff6b1a]/70" : "w-1.5 h-1.5 bg-white/20 hover:bg-white/40"}`}
           />
         ))}
       </div>
@@ -329,13 +329,13 @@ function PipelineSection() {
     <section id="features" className="relative z-10 py-24 md:py-32 scroll-mt-20 overflow-hidden">
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[700px] md:h-[700px] rounded-full blur-[120px] md:blur-[180px] pointer-events-none"
-        style={{ background: "rgba(198,255,58,0.08)" }}
+        style={{ background: "rgba(255,107,26,0.08)" }}
       />
       <div className="max-w-[1400px] mx-auto px-5 md:px-6 relative z-10">
         <Reveal className="text-center mb-16 md:mb-24">
           <SectionBadge icon={Sparkles} label="The Pipeline" />
           <h2 className="font-display text-4xl md:text-6xl lg:text-[72px] font-bold text-white tracking-tight leading-[1.05] mb-6">
-            From prompt to <span className="text-[#c6ff3a]">production</span>
+            From prompt to <span className="text-[#ff6b1a]">production</span>
           </h2>
           <p className="text-white/70 text-[16px] md:text-[18px] max-w-2xl mx-auto leading-relaxed">
             Use a stunning preset and edit in place — or describe a 3D scroll site from scratch. AI
@@ -343,18 +343,18 @@ function PipelineSection() {
           </p>
         </Reveal>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-4 relative">
-          <div className="hidden xl:block absolute top-1/2 left-[8%] right-[8%] h-[1px] bg-gradient-to-r from-transparent via-[#c6ff3a]/20 to-transparent -translate-y-1/2 z-0" />
+          <div className="hidden xl:block absolute top-1/2 left-[8%] right-[8%] h-[1px] bg-gradient-to-r from-transparent via-[#ff6b1a]/20 to-transparent -translate-y-1/2 z-0" />
           {PIPELINE.map((step, i) => {
             const Icon = ICONS[step.icon];
             return (
               <Reveal key={step.n} from="up" delay={i * 90} className="relative z-10 h-full">
-                <div className="relative bg-white/[0.02] rounded-3xl border border-white/[0.04] p-6 md:p-8 h-full group hover:bg-[#c6ff3a]/5 hover:border-[#c6ff3a]/30 transition-all duration-500 backdrop-blur-md shadow-[0_10px_40px_rgba(0,0,0,0.3)]">
-                  <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(198,255,58,0.06) 0%, transparent 60%)" }} />
+                <div className="relative bg-white/[0.02] rounded-3xl border border-white/[0.04] p-6 md:p-8 h-full group hover:bg-[#ff6b1a]/5 hover:border-[#ff6b1a]/30 transition-all duration-500 backdrop-blur-md shadow-[0_10px_40px_rgba(0,0,0,0.3)]">
+                  <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(255,107,26,0.06) 0%, transparent 60%)" }} />
                   <div className="relative z-10 flex flex-col h-full items-center text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center mb-6 text-white group-hover:text-[#c6ff3a] transition-all duration-500 shadow-inner group-hover:scale-110 group-hover:shadow-[0_0_24px_rgba(198,255,58,0.15)]">
+                    <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center mb-6 text-white group-hover:text-[#ff6b1a] transition-all duration-500 shadow-inner group-hover:scale-110 group-hover:shadow-[0_0_24px_rgba(255,107,26,0.15)]">
                       <Icon size={24} />
                     </div>
-                    <span className="text-[10px] font-mono font-medium text-[#4fd6ff]/80 uppercase tracking-widest mb-3">
+                    <span className="text-[10px] font-mono font-medium text-[#ffb347]/80 uppercase tracking-widest mb-3">
                       {step.n}
                     </span>
                     <h3 className="text-white/90 font-semibold text-[18px] mb-3 tracking-tight">
@@ -370,8 +370,8 @@ function PipelineSection() {
         <Reveal className="flex items-center justify-center gap-3 mt-10">
           {[0, 1, 2, 3, 4].map((i) => (
             <div key={i} className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-[#c6ff3a]/40 border border-[#c6ff3a]/20" />
-              {i < 4 && <div className="w-8 h-px bg-[#c6ff3a]/10" />}
+              <div className="w-2 h-2 rounded-full bg-[#ff6b1a]/40 border border-[#ff6b1a]/20" />
+              {i < 4 && <div className="w-8 h-px bg-[#ff6b1a]/10" />}
             </div>
           ))}
         </Reveal>
@@ -387,7 +387,7 @@ function ZeroCodeSection() {
     <section className="relative z-10 py-24 md:py-32 overflow-hidden">
       <div
         className="absolute top-0 right-0 w-[400px] h-[400px] md:w-[700px] md:h-[700px] rounded-full blur-[120px] md:blur-[180px] pointer-events-none"
-        style={{ background: "rgba(60,255,176,0.1)" }}
+        style={{ background: "rgba(255,148,66,0.1)" }}
       />
       <div className="max-w-[1400px] mx-auto px-5 md:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
@@ -396,7 +396,7 @@ function ZeroCodeSection() {
             <h2 className="font-display text-4xl md:text-5xl lg:text-[56px] font-bold text-white tracking-tight leading-[1.05] mb-6">
               Your video becomes
               <br className="hidden md:block" />
-              <span className="text-[#c6ff3a]">a scroll experience</span>
+              <span className="text-[#ff6b1a]">a scroll experience</span>
             </h2>
             <div className="space-y-6 text-white/70 text-[16px] md:text-[18px] leading-relaxed mb-10">
               <p>
@@ -412,7 +412,7 @@ function ZeroCodeSection() {
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 to="/builder"
-                className="group relative px-8 py-4 rounded-[15px] text-[14px] font-bold bg-[#c6ff3a]/70 backdrop-blur-md agent-glass-shine text-[#10160a] hover:bg-[#9fd62a]/80 hover:shadow-[0_0_20px_rgba(198,255,58,0.55)] transition-all duration-300 flex items-center gap-3"
+                className="group relative px-8 py-4 rounded-[15px] text-[14px] font-bold bg-[#ff6b1a]/70 backdrop-blur-md agent-glass-shine text-[#1a0a00] hover:bg-[#e25700]/80 hover:shadow-[0_0_20px_rgba(255,107,26,0.55)] transition-all duration-300 flex items-center gap-3"
               >
                 Try the Builder
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -420,14 +420,14 @@ function ZeroCodeSection() {
             </div>
           </Reveal>
           <Reveal from="right">
-            <div className="relative rounded-3xl border border-white/[0.08] bg-white/[0.02] shadow-[0_20px_60px_rgba(60,255,176,0.1)] p-2 group hover:border-[#3cffb0]/30 transition-colors duration-500 backdrop-blur-md">
+            <div className="relative rounded-3xl border border-white/[0.08] bg-white/[0.02] shadow-[0_20px_60px_rgba(255,148,66,0.1)] p-2 group hover:border-[#ff9442]/30 transition-colors duration-500 backdrop-blur-md">
               <div className="absolute top-5 left-5 flex gap-2 z-20">
                 <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
                 <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
                 <div className="w-3 h-3 rounded-full bg-[#28c840]" />
               </div>
               <div className="rounded-2xl overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#3cffb0]/10 via-transparent to-[#3cffb0]/10 z-10 pointer-events-none mix-blend-overlay" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#ff9442]/10 via-transparent to-[#ff9442]/10 z-10 pointer-events-none mix-blend-overlay" />
                 <div className="relative aspect-[4/3] bg-gradient-to-b from-[#0a0a14] to-[#050508] overflow-hidden">
                   <video
                     src="/landing/scroll-experience-demo.mp4"
@@ -454,13 +454,13 @@ function ProToolsSection() {
     <section className="relative z-10 py-24 md:py-32 overflow-hidden">
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[700px] md:h-[700px] rounded-full blur-[120px] md:blur-[180px] pointer-events-none"
-        style={{ background: "rgba(198,255,58,0.08)" }}
+        style={{ background: "rgba(255,107,26,0.08)" }}
       />
       <div className="max-w-[1400px] mx-auto px-5 md:px-6">
         <Reveal className="text-center mb-16 md:mb-24">
           <SectionBadge icon={Box} label="Pro Tools" />
           <h2 className="font-display text-4xl md:text-6xl lg:text-[72px] font-bold text-white tracking-tight leading-[1.05] mb-6">
-            Built for <span className="text-[#c6ff3a]">serious websites</span>
+            Built for <span className="text-[#ff6b1a]">serious websites</span>
           </h2>
           <p className="text-white/70 text-[16px] md:text-[18px] max-w-2xl mx-auto leading-relaxed">
             Presets give you polished UI instantly; the 3D builder adds cinematic scroll on top.
@@ -477,10 +477,10 @@ function ProToolsSection() {
                 delay={i * 80}
                 className={`${tool.span ?? ""} h-full`}
               >
-                <div className="relative overflow-hidden rounded-3xl border border-white/[0.04] bg-white/[0.02] p-8 md:p-10 h-full group hover:border-[#c6ff3a]/30 hover:bg-white/[0.03] transition-all duration-500 backdrop-blur-md shadow-[0_10px_40px_rgba(0,0,0,0.3)]">
-                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#c6ff3a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                <div className="relative overflow-hidden rounded-3xl border border-white/[0.04] bg-white/[0.02] p-8 md:p-10 h-full group hover:border-[#ff6b1a]/30 hover:bg-white/[0.03] transition-all duration-500 backdrop-blur-md shadow-[0_10px_40px_rgba(0,0,0,0.3)]">
+                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#ff6b1a]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                   <div className="relative z-10 flex flex-col h-full justify-between">
-                    <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.05] shadow-inner flex items-center justify-center mb-16 text-white group-hover:text-[#c6ff3a] transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_24px_rgba(198,255,58,0.15)]">
+                    <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.05] shadow-inner flex items-center justify-center mb-16 text-white group-hover:text-[#ff6b1a] transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_24px_rgba(255,107,26,0.15)]">
                       <Icon size={24} />
                     </div>
                     <div>
@@ -509,18 +509,18 @@ function CtaStatsSection() {
     <section className="relative z-10 py-24 md:py-40 overflow-hidden">
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[700px] md:h-[700px] rounded-full blur-[120px] md:blur-[180px] pointer-events-none"
-        style={{ background: "rgba(60,255,176,0.08)" }}
+        style={{ background: "rgba(255,148,66,0.08)" }}
       />
       <div className="max-w-[1400px] mx-auto px-5 md:px-6 relative z-10">
         <div className="rounded-[40px] border border-white/[0.06] bg-white/[0.02] p-8 md:p-16 lg:p-24 overflow-hidden relative backdrop-blur-md shadow-[0_20px_80px_rgba(0,0,0,0.5)]">
-          <div className="absolute top-0 left-0 w-[420px] h-[420px] bg-[#3cffb0]/15 rounded-full blur-[120px] pointer-events-none -translate-x-1/3 -translate-y-1/3" />
-          <div className="absolute bottom-0 right-0 w-[420px] h-[420px] bg-[#c6ff3a]/10 rounded-full blur-[120px] pointer-events-none translate-x-1/3 translate-y-1/3" />
+          <div className="absolute top-0 left-0 w-[420px] h-[420px] bg-[#ff9442]/15 rounded-full blur-[120px] pointer-events-none -translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 right-0 w-[420px] h-[420px] bg-[#ff6b1a]/10 rounded-full blur-[120px] pointer-events-none translate-x-1/3 translate-y-1/3" />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
             <Reveal from="left">
               <h2 className="font-display text-4xl md:text-5xl lg:text-[64px] font-bold text-white tracking-tight leading-[1.05] mb-6">
                 Build 3D websites
                 <br />
-                <span className="text-[#c6ff3a]">10x faster</span> with AI
+                <span className="text-[#ff6b1a]">10x faster</span> with AI
               </h2>
               <p className="text-white/70 text-[16px] md:text-[18px] leading-relaxed mb-10 max-w-lg">
                 Describe what you want once. Signhify generates cinematic motion, extracts frames,
@@ -531,9 +531,9 @@ function CtaStatsSection() {
                 <Link
                   to="/signup"
                   search={{ redirect: "/app/billing" }}
-                  className="group relative px-8 py-4 rounded-[15px] text-[14px] font-bold bg-[#c6ff3a]/70 backdrop-blur-md agent-glass-shine text-[#10160a] hover:bg-[#9fd62a]/80 hover:shadow-[0_0_20px_rgba(198,255,58,0.55)] transition-all duration-300 flex items-center gap-3"
+                  className="group relative px-8 py-4 rounded-[15px] text-[14px] font-bold bg-[#ff6b1a]/70 backdrop-blur-md agent-glass-shine text-[#1a0a00] hover:bg-[#e25700]/80 hover:shadow-[0_0_20px_rgba(255,107,26,0.55)] transition-all duration-300 flex items-center gap-3"
                 >
-                  <Sparkles size={16} className="text-[#c6ff3a]" />
+                  <Sparkles size={16} className="text-[#ff6b1a]" />
                   Start Building Free
                 </Link>
                 <Link
@@ -549,10 +549,10 @@ function CtaStatsSection() {
                 const Icon = ICONS[stat.icon];
                 return (
                   <Reveal key={stat.label} from="scale" delay={i * 100}>
-                    <div className="bg-white/[0.02] border border-white/[0.04] rounded-3xl p-6 md:p-8 flex flex-col justify-center items-start group hover:bg-white/[0.04] hover:border-[#c6ff3a]/30 transition-all duration-300 shadow-inner">
+                    <div className="bg-white/[0.02] border border-white/[0.04] rounded-3xl p-6 md:p-8 flex flex-col justify-center items-start group hover:bg-white/[0.04] hover:border-[#ff6b1a]/30 transition-all duration-300 shadow-inner">
                       <Icon
                         size={24}
-                        className="text-white/60 mb-4 group-hover:text-[#c6ff3a] transition-colors duration-300 group-hover:scale-110"
+                        className="text-white/60 mb-4 group-hover:text-[#ff6b1a] transition-colors duration-300 group-hover:scale-110"
                       />
                       <div className="font-display text-3xl md:text-4xl font-bold text-white/90 tracking-tight mb-2">
                         {stat.value}

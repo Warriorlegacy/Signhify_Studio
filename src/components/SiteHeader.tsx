@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, ArrowRight, Key, LogIn, UserPlus, LayoutDashboard, User } from "lucide-react";
-import logoAsset from "@/assets/signhify-logo.png.asset.json";
+import { SignhifyLogo } from "@/components/SignhifyLogo";
 import { EcosystemSwitcher } from "./EcosystemSwitcher";
 import AiKeyQuickConfig from "@/components/ai/AiKeyQuickConfig";
 import { useUser } from "@/hooks/useUser";
@@ -39,15 +39,7 @@ export function SiteHeader() {
           to="/"
           className="pointer-events-auto group inline-flex items-center gap-2 rounded-full border border-white/10 bg-background/80 backdrop-blur-xl pl-1.5 pr-4 py-1.5 shadow-[0_10px_30px_-10px_oklch(0_0_0/0.6)] hover:border-primary/40 transition"
         >
-          <img
-            src={logoAsset.url}
-            loading="lazy"
-            decoding="async"
-            width="28"
-            height="28"
-            alt="Signhify AI Engineering Studio"
-            className="h-7 w-7 rounded-full ring-1 ring-primary/40 group-hover:ring-primary transition"
-          />
+          <SignhifyLogo size={28} className="shrink-0" />
           <span className="font-display font-bold tracking-tight text-sm text-foreground">Signhify</span>
         </Link>
 

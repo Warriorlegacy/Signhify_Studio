@@ -6,8 +6,8 @@
 
 /* ============================================================
    Signhify Design System
-   - Inner pages: ember-orange on near-black (shadcn/Radix tokens)
-   - Landing page: Draftly-inspired "dark glass + neon" cinematic
+   Ember-orange on near-black — one theme across landing and
+   inner pages: cinematic dark glass + ember glow accents.
    ============================================================ */
 
 @theme inline {
@@ -86,36 +86,11 @@
   --shadow-glow: 0 0 60px -10px oklch(0.72 0.21 45 / 0.55);
   --shadow-card: 0 20px 60px -20px oklch(0 0 0 / 0.6);
 
-  /* Brand accent trio */
-  --brand-primary: #c6ff3a;
-  --brand-secondary: #3cffb0;
-  --brand-tertiary: #4fd6ff;
-
-  /* Draftly dark navy surface scale */
-  --draftly-bg-deep: #030712;
-  --draftly-bg-base: #050b18;
-  --draftly-bg-elevated: #0a1224;
-  --draftly-bg-surface: #0e1830;
-  --draftly-card-bg: #0c0c16;
-
-  /* Blue accent */
-  --draftly-blue-300: #66c8ff;
-  --draftly-blue-500: #0096ff;
-  --draftly-blue-600: #0078d4;
-  --draftly-hero-sky: #0096ff;
-
-  /* Borders */
-  --draftly-border-subtle: rgba(102, 200, 255, 0.08);
-  --draftly-border-default: rgba(102, 200, 255, 0.14);
-  --draftly-border-strong: rgba(102, 200, 255, 0.22);
-
-  /* Glow system */
-  --draftly-glow-sm: 0 0 24px rgba(0, 150, 255, 0.12);
-  --draftly-glow-md: 0 0 40px rgba(0, 150, 255, 0.2);
-  --draftly-glow-lg: 0 0 64px rgba(0, 150, 255, 0.28);
-  --draftly-glow-lime: 0 0 48px rgba(198, 255, 58, 0.36);
-  --draftly-focus-ring: 0 0 0 1px rgba(102, 200, 255, 0.35), 0 4px 24px rgba(0, 150, 255, 0.28);
-  --draftly-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Brand accent trio — ember, gold, light ember */
+  --brand-primary: #ff6b1a;
+  --brand-secondary: #ffb347;
+  --brand-tertiary: #ff9442;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
@@ -141,8 +116,7 @@
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 @keyframes agent-shine-sweep { 0%, 20% { transform: translateX(-150%) skewX(-20deg); } 50% { transform: translateX(150%) skewX(-20deg); } 100% { transform: translateX(150%) skewX(-20deg); } }
-@keyframes draftly-chat-ring-spin { to { transform: translate(-50%, -50%) rotate(1turn); } }
-@keyframes draftly-preset-glow { 0%, 100% { opacity: 0.4; filter: blur(30px); } 50% { opacity: 0.7; filter: blur(40px); } }
+@keyframes signhify-chat-ring-spin { to { transform: translate(-50%, -50%) rotate(1turn); } }
 @keyframes handle-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(52,211,153,0.7), 0 0 0 0 rgba(52,211,153,0.15); } 50% { box-shadow: 0 0 20px rgba(52,211,153,0.7), 0 0 0 6px rgba(52,211,153,0.15); } }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -160,18 +134,18 @@
 .divider { height: 1px; background: linear-gradient(90deg, transparent, hsla(0,0%,100%,0.06), transparent); }
 
 /* ============ Buttons ============ */
-.btn-moonlit { background: linear-gradient(180deg, #d9ff6e, #c6ff3a 55%, #a9e02c); color: #10160a; border: none; box-shadow: 0 2px 20px rgba(198,255,58,0.42), inset 0 1px 0 hsla(0,0%,100%,0.34); }
-.btn-moonlit:hover { background: linear-gradient(180deg, #e6ff96, #b8f52e 55%, #9fd62a); color: #10160a; }
-.btn-preset-cta { background: #c6ff3a; color: #10160a; border: none; box-shadow: 0 2px 16px rgba(198,255,58,0.4); }
-.btn-preset-cta:hover { background: #9fd62a; color: #10160a; }
+.btn-moonlit { background: linear-gradient(180deg, #ff9442, #ff6b1a 55%, #e25700); color: #1a0a00; border: none; box-shadow: 0 2px 20px rgba(255,107,26,0.42), inset 0 1px 0 hsla(0,0%,100%,0.34); }
+.btn-moonlit:hover { background: linear-gradient(180deg, #ffa15c, #ff7d33 55%, #ff6b1a); color: #1a0a00; }
+.btn-preset-cta { background: #ff6b1a; color: #1a0a00; border: none; box-shadow: 0 2px 16px rgba(255,107,26,0.4); }
+.btn-preset-cta:hover { background: #e25700; color: #1a0a00; }
 
 /* ============ Glass shine & chat ============ */
 .agent-glass-shine { position: relative; overflow: hidden; isolation: isolate; }
 .agent-glass-shine:before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(115deg, transparent 20%, hsla(0,0%,100%,0.3) 50%, transparent 80%); transform: translateX(-150%) skewX(-20deg); animation: agent-shine-sweep 4s ease-in-out infinite; pointer-events: none; }
-.draftly-chat-bloom { position: absolute; inset: -14px; border-radius: 28px; background: radial-gradient(60% 60% at 50% 50%, rgba(79,214,255,0.3) 0, rgba(198,255,58,0.14) 45%, transparent 75%); filter: blur(18px); pointer-events: none; z-index: 0; }
-.draftly-chat-ring { position: relative; padding: 1.5px; border-radius: 18px; overflow: hidden; isolation: isolate; }
-.draftly-chat-ring:before { content: ""; position: absolute; top: 50%; left: 50%; width: 150%; aspect-ratio: 1/1; transform: translate(-50%, -50%); background: conic-gradient(from 0deg, rgba(198,255,58,0.3) 0deg, rgba(198,255,58,0.3) 190deg, rgba(60,255,176,0.7) 250deg, #3cffb0 295deg, #4fd6ff 330deg, #fff 348deg, #d6f7ff 354deg, rgba(198,255,58,0.3) 1turn); animation: draftly-chat-ring-spin 6s linear infinite; z-index: 0; }
-.draftly-chat-ring > * { position: relative; z-index: 1; }
+.signhify-chat-bloom { position: absolute; inset: -14px; border-radius: 28px; background: radial-gradient(60% 60% at 50% 50%, rgba(255,148,66,0.3) 0, rgba(255,107,26,0.14) 45%, transparent 75%); filter: blur(18px); pointer-events: none; z-index: 0; }
+.signhify-chat-ring { position: relative; padding: 1.5px; border-radius: 18px; overflow: hidden; isolation: isolate; }
+.signhify-chat-ring:before { content: ""; position: absolute; top: 50%; left: 50%; width: 150%; aspect-ratio: 1/1; transform: translate(-50%, -50%); background: conic-gradient(from 0deg, rgba(255,107,26,0.3) 0deg, rgba(255,107,26,0.3) 190deg, rgba(255,179,71,0.7) 250deg, #ffb347 295deg, #ff9442 330deg, #fff 348deg, #ffe6c9 354deg, rgba(255,107,26,0.3) 1turn); animation: signhify-chat-ring-spin 6s linear infinite; z-index: 0; }
+.signhify-chat-ring > * { position: relative; z-index: 1; }
 
 /* ============ Glassmorphism ============ */
 .glass-card { background: rgba(12,12,22,0.85); backdrop-filter: blur(32px) saturate(180%); -webkit-backdrop-filter: blur(32px) saturate(180%); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 60px rgba(0,0,0,0.55); }
@@ -179,7 +153,7 @@
 
 .tag { display: inline-flex; align-items: center; gap: 0.5rem; border-radius: 9999px; padding: 0.375rem 1rem; font-size: 0.75rem; line-height: 1rem; font-weight: 600; letter-spacing: 0.025em; background: hsla(0,0%,100%,0.05); backdrop-filter: blur(8px); border: 1px solid hsla(0,0%,100%,0.1); color: hsla(0,0%,100%,0.7); }
 
-.stat-counter { display: inline-block; animation: counter-up 0.8s var(--draftly-ease-out) both; }
+.stat-counter { display: inline-block; animation: counter-up 0.8s var(--ease-out) both; }
 
 /* ============ Guide prose ============ */
 .guide-prose { color: hsl(var(--foreground) / 0.92); }
@@ -202,5 +176,5 @@
 .guide-prose hr { border: 0; border-top: 1px solid hsl(var(--border)); margin: 1.25rem 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  .agent-glass-shine:before, .draftly-chat-ring:before { animation: none !important; }
+  .agent-glass-shine:before, .signhify-chat-ring:before { animation: none !important; }
 }

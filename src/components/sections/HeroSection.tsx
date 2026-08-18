@@ -52,7 +52,7 @@ export function HeroSection() {
       <HeroBackground />
       <CinematicHero3D />
 
-      {/* GIANT WORDMARK — behind content, draftly-style scale */}
+      {/* GIANT WORDMARK — behind content, cinematic scale */}
       <div className="absolute inset-x-0 bottom-[14%] sm:bottom-[10%] flex justify-center pointer-events-none select-none">
         <motion.div
           initial={{ opacity: 0, y: 30, filter: "blur(20px)" }}
@@ -74,7 +74,7 @@ export function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Corner tagline — bottom-left mono, draftly's "STOP LOOKING START BUILDING" energy */}
+      {/* Corner tagline — bottom-left mono, "STOP LOOKING START BUILDING" energy */}
       <div className="absolute left-6 sm:left-10 bottom-8 z-20 pointer-events-none">
         <motion.div
           initial={{ opacity: 0, x: -12 }}
@@ -133,7 +133,7 @@ export function HeroSection() {
           one studio.
         </motion.p>
 
-        {/* PROMPT INPUT — draftly-style centered glass card */}
+        {/* PROMPT INPUT — centered glass card */}
         <motion.div
           initial={{ opacity: 0, y: 18, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}

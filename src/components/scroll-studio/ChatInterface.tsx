@@ -5,12 +5,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useServerFn } from "@tanstack/react-start";
 import { scrollStudioChat } from "@/lib/scroll-studio.functions";
+import {
+  getScrollStudioProject,
+  updateScrollStudioProject,
+} from "@/lib/scroll-studio-projects.functions";
 
 interface Message {
   id: string;
   role: "user" | "assistant" | "system";
   content: string;
 }
+
+const WELCOME: Message = {
+  id: "welcome",
+  role: "assistant",
+  content: "Welcome to Scroll Studio! Describe the cinematic website you want to build.",
+};
 
 export function ChatInterface({
   projectId,
@@ -19,24 +29,49 @@ export function ChatInterface({
   projectId: string | null;
   onUpdatePreview: (data: { html: string; css: string; js: string }) => void;
 }) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([WELCOME]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<Message[]>(messages);
   const chatFn = useServerFn(scrollStudioChat);
+  const getFn = useServerFn(getScrollStudioProject);
+  const updateFn = useServerFn(updateScrollStudioProject);
 
   useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
+
+  // Hydrate the conversation when a project is selected
+  useEffect(() => {
     if (!projectId) {
-      setMessages([
-        {
-          id: "welcome",
-          role: "assistant",
-          content: "Welcome to Scroll Studio! Describe the cinematic website you want to build.",
-        },
-      ]);
+      setMessages([WELCOME]);
       return;
     }
-  }, [projectId]);
+    let cancelled = false;
+    getFn({ data: { id: projectId } })
+      .then((project) => {
+        if (cancelled || !project) return;
+        const history = Array.isArray(project.conversation_history)
+          ? (
+              project.conversation_history as Array<{
+                id?: unknown;
+                role?: unknown;
+                content?: unknown;
+              }>
+            ).map((m) => ({
+              id: String(m.id ?? Math.random()),
+              role: (m.role === "user" ? "user" : "assistant") as Message["role"],
+              content: String(m.content ?? ""),
+            }))
+          : [];
+        setMessages(history.length > 0 ? history : [WELCOME]);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [projectId, getFn]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -48,31 +83,42 @@ export function ChatInterface({
     if (!input.trim() || isLoading) return;
 
     const userMsg: Message = { id: Date.now().toString(), role: "user", content: input };
-    setMessages((prev) => [...prev, userMsg]);
+    const nextMessages = [...messagesRef.current, userMsg];
+    setMessages(nextMessages);
     setInput("");
     setIsLoading(true);
 
     try {
-      let currentProjectId = projectId;
-
       const data = await chatFn({
-        data: { projectId: currentProjectId, message: userMsg.content },
+        data: { projectId, message: userMsg.content },
       });
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now().toString(),
-          role: "assistant",
-          content: data.message || "I've updated the site based on your request.",
-        },
-      ]);
+      const assistantMsg: Message = {
+        id: Date.now().toString(),
+        role: "assistant",
+        content: data.message || "I've updated the site based on your request.",
+      };
+      const history = [...nextMessages, assistantMsg];
+      setMessages(history);
 
-      if (data.html || data.css || data.js) {
+      const hasCode = data.html || data.css || data.js;
+      if (hasCode) {
         onUpdatePreview({
           html: data.html || "",
           css: data.css || "",
           js: data.js || "",
+        });
+      }
+
+      if (projectId) {
+        const updates: Record<string, unknown> = { conversation_history: history };
+        if (hasCode) {
+          updates.current_html = data.html || "";
+          updates.current_css = data.css || "";
+          updates.current_js = data.js || "";
+        }
+        updateFn({ data: { id: projectId, updates } }).catch((error) => {
+          console.error("Failed to persist project:", error);
         });
       }
     } catch (error) {

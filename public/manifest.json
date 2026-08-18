@@ -4,11 +4,17 @@
   "description": "AI-powered product studio. Describe your idea — we design, engineer, automate and launch it end-to-end.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0A0A0A",
+  "background_color": "#0B0B0D",
   "theme_color": "#FF6B00",
   "orientation": "portrait-primary",
   "categories": ["developer tools", "productivity", "business"],
   "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
     {
       "src": "/favicon.ico",
       "sizes": "48x48",

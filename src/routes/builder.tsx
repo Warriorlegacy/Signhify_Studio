@@ -1,7 +1,6 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "@/hooks/useUser";
-import { isAdminEmail } from "@/lib/admin";
 import { supabase } from "@/integrations/supabase/client";
 import { buildProduct, editProduct, ejectProduct, editFiles } from "@/lib/build-product.functions";
 import {
@@ -157,7 +156,6 @@ function injectInspector(html: string): string {
 
 function BuilderPage() {
   const { user, loading } = useUser();
-  const admin = isAdminEmail(user?.email);
   const projectId = user?.id;
 
   // State for the current project data
@@ -535,21 +533,6 @@ function BuilderPage() {
     );
   }
 
-  if (!admin) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-background px-4 text-center">
-        <h1 className="font-display text-3xl font-bold">Restricted</h1>
-        <p className="max-w-md text-sm text-muted-foreground">
-          The vibe-coding builder is private. Signed in as{" "}
-          <span className="text-foreground">{user.email}</span>.
-        </p>
-        <Link to="/" className="text-sm text-primary underline">
-          Back home
-        </Link>
-      </div>
-    );
-  }
-
   const selected = currentFiles.find((f) => f.path === selectedFile) || null;
 
   return (
@@ -562,12 +545,18 @@ function BuilderPage() {
             Builder
           </div>
           <button
-            onClick={() => {
-              // Create a new project by generating a new ID and redirecting
-              const newId = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-              // We would need to navigate to the new project, but for simplicity, we just reset the current project.
-              // In a real app, we would use the router to navigate to /builder/:newId
-              alert("New project feature would navigate to a new project ID");
+            onClick={async () => {
+              const blank: Project = {
+                id: projectId!,
+                name: "Untitled build",
+                mode: "single",
+                createdAt: Date.now(),
+                updatedAt: Date.now(),
+                chat: [],
+                versions: [],
+              };
+              setProject(blank);
+              await supabase.from("builder_projects").delete().eq("id", projectId!);
             }}
             className="rounded-md bg-[#FF6A00] px-2 py-1 text-xs font-semibold text-black hover:opacity-90"
             title="New project"

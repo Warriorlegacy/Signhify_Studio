@@ -35,7 +35,20 @@ export function PreviewCanvas({
       </div>
 
       <div className="absolute top-4 right-4 z-10">
-        <Button variant="outline" size="sm" className="bg-background/80 backdrop-blur-md">
+        <Button
+          variant="outline"
+          size="sm"
+          className="bg-background/80 backdrop-blur-md"
+          onClick={() => {
+            if (!previewHtml) return;
+            const w = window.open("", "_blank");
+            if (!w) return;
+            w.document.open();
+            w.document.write(previewHtml);
+            w.document.close();
+          }}
+          disabled={!previewHtml}
+        >
           <Maximize2 className="w-4 h-4 mr-2" />
           Full Screen
         </Button>

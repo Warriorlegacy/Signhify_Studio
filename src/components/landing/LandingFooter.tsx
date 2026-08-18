@@ -1,13 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Mail, ArrowRight } from "lucide-react";
+import { SignhifyLogo } from "@/components/SignhifyLogo";
 
 const FOOTER_COLS: { title: string; links: { label: string; to: string }[] }[] = [
   {
     title: "Product",
     links: [
       { label: "Features", to: "/services" },
-      { label: "3D Builder", to: "/builder" },
+      { label: "3D Builder", to: "/scroll-studio" },
       { label: "Presets", to: "/templates" },
       { label: "Pricing", to: "/pricing" },
       { label: "Changelog", to: "/roadmap" },
@@ -31,7 +32,7 @@ const FOOTER_COLS: { title: string; links: { label: string; to: string }[] }[] =
       { label: "API Reference", to: "/os" },
       { label: "MCP Server", to: "/os" },
       { label: "Help Center", to: "/help" },
-      { label: "Signhify Engine", to: "/builder" },
+      { label: "Signhify Engine", to: "/scroll-studio" },
     ],
   },
   {
@@ -100,8 +101,8 @@ export function LandingFooter() {
       >
         <div className="max-w-6xl mx-auto px-6 mb-16">
           <div className="relative rounded-3xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-md p-8 md:p-12 overflow-hidden">
-            <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-[#c6ff3a]/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 right-0 w-[250px] h-[250px] bg-[#4fd6ff]/10 rounded-full blur-[100px] pointer-events-none translate-x-1/2 translate-y-1/2" />
+            <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-[#ff6b1a]/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute bottom-0 right-0 w-[250px] h-[250px] bg-[#ffb347]/10 rounded-full blur-[100px] pointer-events-none translate-x-1/2 translate-y-1/2" />
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
                 <h3 className="font-display text-2xl md:text-3xl font-bold text-white tracking-tight mb-2">
@@ -127,9 +128,7 @@ export function LandingFooter() {
           <div className="grid grid-cols-1 md:grid-cols-[1.4fr_repeat(4,1fr)] gap-12">
             <div>
               <Link to="/" className="flex items-center gap-2.5 mb-3.5">
-                <div className="w-7 h-7 rounded-[8px] bg-gradient-to-br from-[#d9ff6e] to-[#9fd62a] flex items-center justify-center shadow-[0_2px_8px_rgba(198,255,58,0.3)]">
-                  <div className="w-2 h-2 rounded-[2px] bg-[#0b0d16]" />
-                </div>
+                <SignhifyLogo size={28} />
                 <span className="font-display font-extrabold text-[17px] tracking-tight uppercase text-white/90">
                   SIGNHIFY
                 </span>
@@ -212,7 +211,7 @@ export function LandingFooter() {
               We use cookies for authentication, analytics, and to improve your experience.{" "}
               <Link
                 to="/privacy"
-                className="text-[#4fd6ff]/80 underline underline-offset-2 hover:text-[#4fd6ff]"
+                className="text-[#ffb347]/80 underline underline-offset-2 hover:text-[#ffb347]"
               >
                 Cookie Policy
               </Link>
@@ -226,7 +225,7 @@ export function LandingFooter() {
               </button>
               <button
                 onClick={dismissCookies}
-                className="rounded-lg bg-[#c6ff3a] px-4 py-2 text-[12px] font-bold text-[#10160a] hover:bg-[#b8f52e] transition-colors"
+                className="rounded-lg bg-[#ff6b1a] px-4 py-2 text-[12px] font-bold text-[#1a0a00] hover:bg-[#e25700] transition-colors"
               >
                 Accept all
               </button>
