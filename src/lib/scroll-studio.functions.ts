@@ -3,10 +3,11 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { generateAIResponseFor, type Message } from "./ai-gateway.server";
 import { BYOKRequiredError } from "./ai-access.server";
 import { rateLimitMiddleware } from "./rate-limit.server";
+import { withByokKeys } from "./byok-middleware";
 
 // This is the AI endpoint for Scroll Studio Chat
 export const scrollStudioChat = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireSupabaseAuth, withByokKeys])
   .inputValidator((input: unknown) => {
     const obj = input as Record<string, unknown>;
     const projectId = typeof obj?.projectId === "string" ? obj.projectId : null;
@@ -21,6 +22,7 @@ export const scrollStudioChat = createServerFn({ method: "POST" })
       claims?: { email?: string | null };
     };
     const email = claims?.email ?? null;
+    const byokClientKeys = (context as { byokClientKeys?: Record<string, string> }).byokClientKeys;
 
     const SYSTEM = `You are the Signhify Scroll Studio AI, an expert web developer specializing in cinematic, 3D-feeling websites driven by scroll interactions.
 
@@ -54,7 +56,7 @@ Always output high-quality, production-ready, beautiful designs.`;
           temperature: 0.7,
           response_format: { type: "json_object" },
         },
-        { supabase, userId, email },
+        { supabase, userId, email, byokClientKeys },
       );
 
       try {

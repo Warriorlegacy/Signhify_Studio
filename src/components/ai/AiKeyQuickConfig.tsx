@@ -19,14 +19,23 @@ import {
   AlertCircle,
   Copy,
   Terminal,
+  Lock,
 } from "lucide-react";
 import {
   listMyAiKeys,
   saveMyAiKey,
   deleteMyAiKey,
   testMyAiConnection,
-  normalizeSessionTokenOrKey,
 } from "@/lib/user-ai-keys.functions";
+import {
+  byokEncrypt,
+  byokGenerateKey,
+  normalizeSessionTokenOrKey,
+  validateApiKeyShape,
+  readByokSessionKeys,
+  setByokSessionKey,
+  clearByokSessionKey,
+} from "@/lib/byok-client";
 import { BYOK_PROVIDERS } from "@/lib/ai-access.server";
 
 type AuthTab = "oauth" | "cookies" | "browsersync" | "apikeys";
@@ -143,7 +152,14 @@ export default function AiKeyQuickConfig() {
     if (!prov || !key.trim()) return;
     setSaving(true);
     try {
-      const payload: Record<string, string> = { provider: prov, apiKey: key.trim() };
+      // Zero-knowledge: encrypt in the browser with a session-held client key.
+      // The server receives only ciphertext and never sees the raw key.
+      const normalized = normalizeSessionTokenOrKey(prov, key.trim());
+      validateApiKeyShape(prov, normalized);
+      const clientKey = await byokGenerateKey();
+      const apiKeyEncrypted = await byokEncrypt(normalized, clientKey);
+      setByokSessionKey(prov, clientKey);
+      const payload: Record<string, string> = { provider: prov, apiKeyEncrypted };
       if (prov === "Custom" && customEndpoint.trim()) {
         payload.apiEndpoint = customEndpoint.trim();
       }
@@ -166,6 +182,7 @@ export default function AiKeyQuickConfig() {
   async function handleRemove(provider: string) {
     try {
       await remove({ data: { provider } } as never);
+      clearByokSessionKey(provider);
       toast.success(`${PROVIDER_META[provider]?.label ?? provider} disconnected`);
       setTestResults((prev) => {
         const next = { ...prev };
@@ -187,7 +204,9 @@ export default function AiKeyQuickConfig() {
         [provider]: { ok: result.ok, latencyMs: result.latencyMs, message: result.message },
       }));
       if (result.ok) {
-        toast.success(`${PROVIDER_META[provider]?.label ?? provider} is active! (${result.latencyMs}ms)`);
+        toast.success(
+          `${PROVIDER_META[provider]?.label ?? provider} is active! (${result.latencyMs}ms)`,
+        );
       } else {
         toast.error(`Connection issue: ${result.message}`);
       }
@@ -253,7 +272,9 @@ export default function AiKeyQuickConfig() {
   function handleCopyConsoleSnippet() {
     const snippet = `copy(document.cookie); console.log("✓ ChatGPT Cookies copied to clipboard!");`;
     navigator.clipboard.writeText(snippet);
-    toast.success("Snippet copied! Press F12 on chatgpt.com → Console → Paste & Enter, then click 'Auto-Connect from Clipboard'.");
+    toast.success(
+      "Snippet copied! Press F12 on chatgpt.com → Console → Paste & Enter, then click 'Auto-Connect from Clipboard'.",
+    );
   }
 
   function toggleBrowserSync() {
@@ -282,8 +303,12 @@ export default function AiKeyQuickConfig() {
             <Sparkles className="h-4 w-4" />
           </div>
           <div>
-            <h4 className="font-display text-sm font-semibold text-white">AI Engine & Account Authentication</h4>
-            <p className="text-[11px] text-slate-soft">Connect your ChatGPT session, Gemini, or custom AI provider</p>
+            <h4 className="font-display text-sm font-semibold text-white">
+              AI Engine & Account Authentication
+            </h4>
+            <p className="text-[11px] text-slate-soft">
+              Connect your ChatGPT session, Gemini, or custom AI provider
+            </p>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-1 rounded-lg border border-white/8 bg-obsidian p-1 text-xs">
@@ -293,7 +318,9 @@ export default function AiKeyQuickConfig() {
               setSelected("");
             }}
             className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 transition-all ${
-              tab === "oauth" ? "bg-ember text-obsidian font-semibold shadow-sm" : "text-slate-400 hover:text-white"
+              tab === "oauth"
+                ? "bg-ember text-obsidian font-semibold shadow-sm"
+                : "text-slate-400 hover:text-white"
             }`}
           >
             <LogIn className="h-3.5 w-3.5" /> 1-Tap Connect
@@ -304,7 +331,9 @@ export default function AiKeyQuickConfig() {
               setSelected("ChatGPT_Cookies");
             }}
             className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 transition-all ${
-              tab === "cookies" ? "bg-ember text-obsidian font-semibold shadow-sm" : "text-slate-400 hover:text-white"
+              tab === "cookies"
+                ? "bg-ember text-obsidian font-semibold shadow-sm"
+                : "text-slate-400 hover:text-white"
             }`}
           >
             <Cookie className="h-3.5 w-3.5" /> Session Cookies
@@ -315,7 +344,9 @@ export default function AiKeyQuickConfig() {
               setSelected("");
             }}
             className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 transition-all ${
-              tab === "browsersync" ? "bg-ember text-obsidian font-semibold shadow-sm" : "text-slate-400 hover:text-white"
+              tab === "browsersync"
+                ? "bg-ember text-obsidian font-semibold shadow-sm"
+                : "text-slate-400 hover:text-white"
             }`}
           >
             <Globe className="h-3.5 w-3.5" /> Browser Sync
@@ -326,7 +357,9 @@ export default function AiKeyQuickConfig() {
               setSelected("");
             }}
             className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 transition-all ${
-              tab === "apikeys" ? "bg-ember text-obsidian font-semibold shadow-sm" : "text-slate-400 hover:text-white"
+              tab === "apikeys"
+                ? "bg-ember text-obsidian font-semibold shadow-sm"
+                : "text-slate-400 hover:text-white"
             }`}
           >
             <Key className="h-3.5 w-3.5" /> API Keys
@@ -341,12 +374,15 @@ export default function AiKeyQuickConfig() {
             <span className="flex items-center gap-1.5">
               <ShieldCheck className="h-4 w-4" /> Active Connected AI Accounts & Tokens
             </span>
-            <span className="text-[10px] text-emerald-500/80 lowercase">AES-256 encrypted at rest</span>
+            <span className="text-[10px] text-emerald-500/80 lowercase">
+              AES-256-GCM encrypted in your browser
+            </span>
           </div>
           <div className="flex flex-wrap gap-2.5">
             {configured.map((p) => {
               const test = testResults[p];
               const isTesting = testingProvider === p;
+              const locked = !readByokSessionKeys()[p];
               return (
                 <div
                   key={p}
@@ -357,10 +393,21 @@ export default function AiKeyQuickConfig() {
                     {PROVIDER_META[p]?.label ?? p}
                   </span>
 
+                  {locked && (
+                    <span
+                      className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-md bg-gold/15 text-gold"
+                      title="This browser session lost the unlock key — re-save your key to unlock"
+                    >
+                      <Lock className="h-3 w-3" /> Locked
+                    </span>
+                  )}
+
                   {test && (
                     <span
                       className={`text-[10px] px-1.5 py-0.5 rounded-md ${
-                        test.ok ? "bg-emerald-500/20 text-emerald-300" : "bg-red-500/20 text-red-300"
+                        test.ok
+                          ? "bg-emerald-500/20 text-emerald-300"
+                          : "bg-red-500/20 text-red-300"
                       }`}
                       title={test.message}
                     >
@@ -374,7 +421,11 @@ export default function AiKeyQuickConfig() {
                     className="hover:text-white text-emerald-400/70 p-0.5 rounded hover:bg-white/10 transition-colors ml-1"
                     title="Test connection latency & status"
                   >
-                    {isTesting ? <Loader2 className="h-3 w-3 animate-spin" /> : <Zap className="h-3 w-3" />}
+                    {isTesting ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <Zap className="h-3 w-3" />
+                    )}
                   </button>
 
                   <button
@@ -400,7 +451,8 @@ export default function AiKeyQuickConfig() {
               <span className="text-[10px] text-ember-soft font-normal">Zero Manual Config</span>
             </h5>
             <p className="text-xs text-slate-soft mb-3.5">
-              Instantly connect your ChatGPT account or Gemini with 1 tap. Auto-detects tokens from clipboard or provides direct one-click bridge.
+              Instantly connect your ChatGPT account or Gemini with 1 tap. Auto-detects tokens from
+              clipboard or provides direct one-click bridge.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
@@ -413,7 +465,9 @@ export default function AiKeyQuickConfig() {
                   <div className="text-sm font-semibold text-white group-hover:text-ember-soft flex items-center gap-1.5">
                     <Clipboard className="h-4 w-4 text-ember" /> 1-Tap Auto-Connect Clipboard
                   </div>
-                  <div className="text-[11px] text-slate-soft">Reads copied token & connects instantly</div>
+                  <div className="text-[11px] text-slate-soft">
+                    Reads copied token & connects instantly
+                  </div>
                 </div>
                 {saving ? (
                   <Loader2 className="h-4 w-4 text-ember animate-spin" />
@@ -433,7 +487,9 @@ export default function AiKeyQuickConfig() {
                   <div className="text-sm font-semibold text-white group-hover:text-ember-soft flex items-center gap-1.5">
                     <Cookie className="h-4 w-4 text-ember-soft" /> Connect ChatGPT Session
                   </div>
-                  <div className="text-[11px] text-slate-soft">Paste JWT / __Secure Session Token</div>
+                  <div className="text-[11px] text-slate-soft">
+                    Paste JWT / __Secure Session Token
+                  </div>
                 </div>
                 <Zap className="h-4 w-4 text-ember group-hover:scale-110 transition-transform" />
               </button>
@@ -443,7 +499,8 @@ export default function AiKeyQuickConfig() {
             <div className="rounded-xl border border-white/6 bg-white/[0.02] p-3 text-xs">
               <div className="flex items-center justify-between mb-2">
                 <span className="font-semibold text-slate-200 flex items-center gap-1.5">
-                  <Terminal className="h-3.5 w-3.5 text-ember-soft" /> 1-Click ChatGPT Session Extractor
+                  <Terminal className="h-3.5 w-3.5 text-ember-soft" /> 1-Click ChatGPT Session
+                  Extractor
                 </span>
                 <button
                   onClick={handleCopyConsoleSnippet}
@@ -453,7 +510,17 @@ export default function AiKeyQuickConfig() {
                 </button>
               </div>
               <p className="text-[11px] text-slate-soft leading-relaxed">
-                Open <a href="https://chatgpt.com" target="_blank" rel="noreferrer" className="text-ember-soft underline">chatgpt.com</a> → Press F12 → Paste snippet in Console → Come back and click <strong>"1-Tap Auto-Connect Clipboard"</strong> above!
+                Open{" "}
+                <a
+                  href="https://chatgpt.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-ember-soft underline"
+                >
+                  chatgpt.com
+                </a>{" "}
+                → Press F12 → Paste snippet in Console → Come back and click{" "}
+                <strong>"1-Tap Auto-Connect Clipboard"</strong> above!
               </p>
             </div>
 
@@ -474,7 +541,11 @@ export default function AiKeyQuickConfig() {
                     disabled={saving || !apiKey.trim()}
                     className="px-4 py-1.5 rounded-lg bg-ember text-obsidian font-semibold text-xs hover:bg-ember-soft disabled:opacity-50 transition-colors flex items-center gap-1.5"
                   >
-                    {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
+                    {saving ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                    )}
                     Save & Activate
                   </button>
                   <button
@@ -497,9 +568,12 @@ export default function AiKeyQuickConfig() {
       {tab === "cookies" && (
         <div className="space-y-3">
           <div className="rounded-xl border border-white/8 bg-obsidian/60 p-4">
-            <h5 className="text-xs font-semibold text-white uppercase tracking-wider mb-1">Paste Web Session Token</h5>
+            <h5 className="text-xs font-semibold text-white uppercase tracking-wider mb-1">
+              Paste Web Session Token
+            </h5>
             <p className="text-xs text-slate-soft mb-3">
-              Feed your existing browser session token. Supports raw JWT tokens, full cookie headers, or multi-line strings. Tokens are encrypted using AES-256-GCM.
+              Feed your existing browser session token. Supports raw JWT tokens, full cookie
+              headers, or multi-line strings. Tokens are encrypted using AES-256-GCM.
             </p>
             <div className="flex gap-2 mb-3">
               <button
@@ -528,7 +602,9 @@ export default function AiKeyQuickConfig() {
               <div className="space-y-2.5">
                 <input
                   type="password"
-                  placeholder={PROVIDER_META[selected]?.placeholder ?? "Paste session cookie or token here"}
+                  placeholder={
+                    PROVIDER_META[selected]?.placeholder ?? "Paste session cookie or token here"
+                  }
                   value={apiKey}
                   onChange={(e) => setApiKey(e.target.value)}
                   className="w-full rounded-lg border border-white/15 bg-obsidian px-3 py-2 text-sm text-slate-200 outline-none focus:border-ember font-mono"
@@ -538,7 +614,12 @@ export default function AiKeyQuickConfig() {
                 {detectedTokenLength > 0 && (
                   <div className="flex items-center justify-between text-[11px] px-2 py-1 rounded bg-white/5 text-slate-300 border border-white/5">
                     <span>
-                      Detected: {isLikelyJWT ? "JWT Access Token" : isLikelyCookie ? "Cookie Header Format" : "Raw Token"}{" "}
+                      Detected:{" "}
+                      {isLikelyJWT
+                        ? "JWT Access Token"
+                        : isLikelyCookie
+                          ? "Cookie Header Format"
+                          : "Raw Token"}{" "}
                       ({detectedTokenLength} chars)
                     </span>
                     <span className="text-emerald-400">Valid Format ✓</span>
@@ -547,7 +628,8 @@ export default function AiKeyQuickConfig() {
 
                 <div className="flex items-center justify-between text-[11px] text-slate-soft">
                   <span>
-                    How to copy: Press F12 in ChatGPT → Application → Cookies → copy <code className="text-ember-soft">__Secure-next-auth.session-token</code>
+                    How to copy: Press F12 in ChatGPT → Application → Cookies → copy{" "}
+                    <code className="text-ember-soft">__Secure-next-auth.session-token</code>
                   </span>
                   <div className="flex gap-2">
                     <button
@@ -569,9 +651,12 @@ export default function AiKeyQuickConfig() {
       {tab === "browsersync" && (
         <div className="space-y-3">
           <div className="rounded-xl border border-white/8 bg-obsidian/60 p-4">
-            <h5 className="text-xs font-semibold text-white uppercase tracking-wider mb-1">Active Browser Tab Sync</h5>
+            <h5 className="text-xs font-semibold text-white uppercase tracking-wider mb-1">
+              Active Browser Tab Sync
+            </h5>
             <p className="text-xs text-slate-soft mb-3">
-              Automatically routes code generation prompts to your active open ChatGPT tab in this browser without copying any tokens or API keys.
+              Automatically routes code generation prompts to your active open ChatGPT tab in this
+              browser without copying any tokens or API keys.
             </p>
             <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-3.5">
               <div className="flex items-center gap-3">
@@ -688,4 +773,3 @@ export default function AiKeyQuickConfig() {
     </div>
   );
 }
-

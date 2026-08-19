@@ -2,6 +2,15 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { listMyAiKeys, saveMyAiKey, deleteMyAiKey } from "@/lib/user-ai-keys.functions";
+import {
+  byokEncrypt,
+  byokGenerateKey,
+  normalizeSessionTokenOrKey,
+  validateApiKeyShape,
+  readByokSessionKeys,
+  setByokSessionKey,
+  clearByokSessionKey,
+} from "@/lib/byok-client";
 
 // Keep names in sync with BYOK_PROVIDERS in ai-access.server.ts.
 const PROVIDER_META: Record<string, { label: string; hint: string; docs: string }> = {
@@ -75,7 +84,14 @@ export default function AiKeysPanel() {
     if (!apiKey) return;
     setBusy(provider);
     try {
-      const payload: Record<string, string> = { provider, apiKey };
+      // Zero-knowledge: encrypt in the browser with a session-held client key.
+      // The server receives only ciphertext and never sees the raw key.
+      const normalized = normalizeSessionTokenOrKey(provider, apiKey);
+      validateApiKeyShape(provider, normalized);
+      const clientKey = await byokGenerateKey();
+      const apiKeyEncrypted = await byokEncrypt(normalized, clientKey);
+      setByokSessionKey(provider, clientKey);
+      const payload: Record<string, string> = { provider, apiKeyEncrypted };
       if (provider === "Custom" && endpoints[provider]?.trim()) {
         payload.apiEndpoint = endpoints[provider].trim();
       }
@@ -95,6 +111,7 @@ export default function AiKeysPanel() {
     setBusy(provider);
     try {
       await remove({ data: { provider } } as never);
+      clearByokSessionKey(provider);
       toast.success(`${PROVIDER_META[provider]?.label ?? provider} key removed`);
       await refresh();
     } catch (e) {
@@ -110,7 +127,8 @@ export default function AiKeysPanel() {
         <h2 className="text-lg font-semibold">Bring your own AI keys</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Free plan uses your own provider keys. Paid plans (Studio, Scale) use managed Signhify AI
-          automatically. Keys are stored only for your account and never shown back in full.
+          automatically. Keys are encrypted in your browser with a session-held key — the server
+          stores ciphertext only and never sees the raw key.
         </p>
       </div>
       {loading ? (
@@ -132,9 +150,18 @@ export default function AiKeysPanel() {
                   </div>
                   <div className="flex items-center gap-2 text-xs">
                     {r.configured ? (
-                      <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-emerald-400">
-                        Configured
-                      </span>
+                      readByokSessionKeys()[r.provider] ? (
+                        <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-emerald-400">
+                          Configured
+                        </span>
+                      ) : (
+                        <span
+                          className="rounded-full bg-amber-500/15 px-2 py-1 text-amber-400"
+                          title="This browser session lost the unlock key — re-enter your key to use it"
+                        >
+                          Locked — re-enter key
+                        </span>
+                      )
                     ) : (
                       <a
                         href={meta.docs}

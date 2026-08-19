@@ -1,9 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
-import {
-  normalizeSessionTokenOrKey,
-  validateApiKeyShape,
-} from "../../src/lib/user-ai-keys.functions";
+import { normalizeSessionTokenOrKey, validateApiKeyShape } from "../../src/lib/byok-client";
 import { encryptAES256GCM, decryptAES256GCM } from "../../src/lib/secrets.server";
 
 const MASTER_KEY = "test-master-secret-key-32-chars-length-ok!";

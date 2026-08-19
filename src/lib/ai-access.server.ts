@@ -41,6 +41,8 @@ export type AICtx = {
   supabase: SupabaseClient;
   userId: string;
   email?: string | null;
+  /** Browser-held client keys (per provider) sent per-request via withByokKeys middleware. */
+  byokClientKeys?: Record<string, string>;
 };
 
 export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
@@ -64,18 +66,11 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
     .from("user_ai_keys")
     .select("provider, api_key_encrypted, api_endpoint");
 
-  const masterKey = process.env.SECRETS_MASTER_KEY;
-  if (!masterKey || masterKey.length < 16) {
-    // Fail closed with a clear, user-safe message.
-    const { default: logger } = await import("./logger");
-    logger.error({ event: "byok.master_key_missing", kind: "byok_audit", userId: ctx.userId });
-    throw new Error(
-      "AI is temporarily unavailable: server encryption key not configured. Please contact support.",
-    );
-  }
   const { decryptAES256GCM } = await import("./secrets.server");
   const { default: logger } = await import("./logger");
 
+  const masterKey = process.env.SECRETS_MASTER_KEY;
+  const clientKeys = ctx.byokClientKeys ?? {};
   const userKeys: Record<string, string> = {};
   const customEndpoints: Record<string, string> = {};
   let decryptFailures = 0;
@@ -85,18 +80,22 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
     api_endpoint?: string;
   }>) {
     if (!k?.api_key_encrypted) continue;
-    try {
-      userKeys[k.provider] = decryptAES256GCM(k.api_key_encrypted, masterKey);
-      if (k.provider === "Custom" && k.api_endpoint) {
-        customEndpoints[k.provider] = k.api_endpoint;
+    // Try the browser-held client key first (new scheme), then the legacy
+    // server master key for rows saved before BYOK moved client-side.
+    const attempts = [
+      ...(clientKeys[k.provider] ? [clientKeys[k.provider]] : []),
+      ...(masterKey && masterKey.length >= 16 ? [masterKey] : []),
+    ];
+    let decrypted: string | null = null;
+    for (const attempt of attempts) {
+      try {
+        decrypted = decryptAES256GCM(k.api_key_encrypted, attempt);
+        break;
+      } catch {
+        /* try next */
       }
-      logger.debug({
-        event: "byok.decrypt_ok",
-        kind: "byok_audit",
-        userId: ctx.userId,
-        provider: k.provider,
-      });
-    } catch {
+    }
+    if (decrypted === null) {
       decryptFailures += 1;
       // Never log key material — only provider + userId.
       logger.warn({
@@ -105,7 +104,18 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
         userId: ctx.userId,
         provider: k.provider,
       });
+      continue;
     }
+    userKeys[k.provider] = decrypted;
+    if (k.provider === "Custom" && k.api_endpoint) {
+      customEndpoints[k.provider] = k.api_endpoint;
+    }
+    logger.debug({
+      event: "byok.decrypt_ok",
+      kind: "byok_audit",
+      userId: ctx.userId,
+      provider: k.provider,
+    });
   }
   if (Object.keys(userKeys).length === 0) {
     if (decryptFailures > 0) {

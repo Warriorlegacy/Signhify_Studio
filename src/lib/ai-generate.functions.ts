@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { generateAIResponseFor } from "./ai-gateway.server";
 import { BYOKRequiredError } from "./ai-access.server";
+import { withByokKeys } from "./byok-middleware";
 
 type GenerateInput = { prompt: string };
 
@@ -33,11 +34,12 @@ Given a single product idea, return a concise build plan as STRICT JSON matching
 - Output ONLY the JSON object. No prose, no code fences.`;
 
 export const generatePlan = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireSupabaseAuth, withByokKeys])
   .inputValidator((input: unknown) => validate(input))
   .handler(async ({ context, data }): Promise<GeneratedPlan> => {
     const { supabase, userId, claims } = context;
     const email = (claims as { email?: string | null } | undefined)?.email ?? null;
+    const byokClientKeys = (context as { byokClientKeys?: Record<string, string> }).byokClientKeys;
     try {
       const { content, providerUsed } = await generateAIResponseFor(
         {
@@ -48,7 +50,7 @@ export const generatePlan = createServerFn({ method: "POST" })
           temperature: 0.6,
           response_format: { type: "json_object" },
         },
-        { supabase, userId, email },
+        { supabase, userId, email, byokClientKeys },
       );
 
       const parsed = JSON.parse(content) as GeneratedPlan;

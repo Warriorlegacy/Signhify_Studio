@@ -5,9 +5,10 @@ import JSZip from "jszip";
 import { deployToCloudflare } from "./cloudflare.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { rateLimitMiddleware } from "./rate-limit.server";
+import { withByokKeys } from "./byok-middleware";
 
 export const buildAndDeploy = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireSupabaseAuth, withByokKeys])
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
     const prompt = typeof obj.prompt === "string" ? obj.prompt.slice(0, 4000) : "";
@@ -22,8 +23,9 @@ export const buildAndDeploy = createServerFn({ method: "POST" })
       supabase: any;
       claims?: { email?: string | null };
     };
+    const byokClientKeys = (context as { byokClientKeys?: Record<string, string> }).byokClientKeys;
     // Gate: free users must BYOK; paid/admin proceed with managed Signhify AI.
-    await resolveAIAccess({ supabase, userId, email: claims?.email ?? null });
+    await resolveAIAccess({ supabase, userId, email: claims?.email ?? null, byokClientKeys });
 
     // Step 1: Generate the full-stack app contents
     const files: Array<{ name: string; content: string }> = [];
