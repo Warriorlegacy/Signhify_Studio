@@ -325,7 +325,7 @@ const CATEGORIES = [
 /* ── Main Component ───────────────────────────────────────── */
 
 function TemplatesPage() {
-  const navigate = useNavigate();
+  const navigate = Route.useNavigate();
   const searchParams = Route.useSearch();
   const [selectedCategory, setSelectedCategory] = useState<string>(
     searchParams.category || "All",
@@ -373,11 +373,8 @@ function TemplatesPage() {
     setScrubProgress(25);
     setIsPlaying(false);
     navigate({
-      search: (prev: TemplatesSearch) => ({
-        id: prev.id,
-        category: prev.category,
-        preview: template.id,
-      }),
+      to: ".",
+      search: (prev) => ({ ...prev, preview: template.id }),
     });
   };
 
@@ -385,11 +382,8 @@ function TemplatesPage() {
     setActivePreview(null);
     setIsPlaying(false);
     navigate({
-      search: (prev: TemplatesSearch) => ({
-        id: prev.id,
-        category: prev.category,
-        preview: undefined,
-      }),
+      to: ".",
+      search: (prev) => ({ ...prev, preview: undefined }),
     });
   };
 
