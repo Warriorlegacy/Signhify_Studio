@@ -61,12 +61,6 @@ export const Route = createFileRoute("/ai-mvp-builder")({
             availability: "https://schema.org/OnlineOnly",
             url: "https://signhify.dpdns.org/pricing",
           },
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.9",
-            bestRating: "5",
-            ratingCount: "12",
-          },
         }),
       },
       {
