@@ -119,9 +119,11 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
   }
   if (Object.keys(userKeys).length === 0) {
     if (decryptFailures > 0) {
-      throw new Error(
+      const error = new Error(
         "Your saved AI keys could not be decrypted. Please re-enter them in Settings → AI Keys.",
       );
+      (error as { code?: string }).code = "BYOK_DECRYPT_FAILED";
+      throw error;
     }
     throw new BYOKRequiredError();
   }

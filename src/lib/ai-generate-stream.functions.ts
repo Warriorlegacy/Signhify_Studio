@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { resolveAIAccess } from "./ai-access.server";
 import { withByokKeys } from "./byok-middleware";
@@ -17,7 +18,10 @@ export const getGeneratePlanStreamConfig = createServerFn({ method: "POST" })
     await resolveAIAccess({ supabase, userId, email: claims?.email ?? null, byokClientKeys });
 
     const base = process.env.SUPABASE_URL;
-    const bearer = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY;
+    const request = getRequest();
+    const userToken = request?.headers?.get("authorization")?.replace(/^Bearer\s+/i, "");
+    const fallbackBearer = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY;
+    const bearer = userToken || fallbackBearer;
     if (!base || !bearer) throw new Error("Missing Supabase Edge Function configuration.");
-    return { url: `${base.replace(/\/$/, "")}/functions/v1/generate-plan`, bearer };
+    return { url: `${base.replace(/\/$/, "")}/functions/v1/generate-plan`, bearer, token: userToken };
   });

@@ -21,6 +21,7 @@ import {
   Star,
 } from "lucide-react";
 import { SignhifyLogo } from "@/components/SignhifyLogo";
+import { useSpeechToText } from "@/hooks/use-speech-to-text";
 
 interface NavLinkItem {
   to: string;
@@ -90,6 +91,9 @@ function PricingPillCta() {
 
 function ChatCard() {
   const [prompt, setPrompt] = useState("");
+  const { supported, listening, toggle } = useSpeechToText((text) =>
+    setPrompt((p) => (p ? `${p} ${text}` : text)),
+  );
   return (
     <div className="relative">
       <div className="signhify-chat-bloom" aria-hidden />
@@ -116,8 +120,20 @@ function ChatCard() {
               </button>
               <button
                 type="button"
-                title="Voice input"
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all text-white/70 hover:text-white hover:bg-white/[0.06]"
+                onClick={toggle}
+                disabled={!supported}
+                title={
+                  supported
+                    ? listening
+                      ? "Stop voice input"
+                      : "Voice input"
+                    : "Voice input is not supported in this browser"
+                }
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all ${
+                  listening
+                    ? "text-[#ff6b1a] animate-pulse bg-[#ff6b1a]/10"
+                    : "text-white/70 hover:text-white hover:bg-white/[0.06]"
+                } ${supported ? "" : "text-white/30 cursor-not-allowed"}`}
               >
                 <Mic size={16} />
               </button>

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BadgeCheck, Code2, Link2, Mail } from "lucide-react";
+import { BadgeCheck, Camera, Code2, Link2, Mail } from "lucide-react";
 import logoAsset from "@/assets/signhify-logo.png.asset.json";
 
 export function SiteFooter() {
@@ -142,6 +142,16 @@ export function SiteFooter() {
                 className="inline-flex items-center gap-2 hover:text-foreground"
               >
                 <Link2 size={14} /> LinkedIn
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://instagram.com/piyushrajsingh.golu"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 hover:text-foreground"
+              >
+                <Camera size={14} /> Instagram
               </a>
             </li>
             <li>

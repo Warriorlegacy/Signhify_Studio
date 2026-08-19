@@ -50,6 +50,7 @@ export const Route = createFileRoute("/brand")({
             "https://github.com/Warriorlegacy/Signhify_Studio",
             "https://github.com/Warriorlegacy",
             "https://linkedin.com/in/piyushraj-singh",
+            "https://instagram.com/piyushrajsingh.golu",
           ],
         }),
       },

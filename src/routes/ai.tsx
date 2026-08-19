@@ -22,6 +22,7 @@ import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { generatePlan, savePlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
 import { getGeneratePlanStreamConfig } from "@/lib/ai-generate-stream.functions";
+import { readByokSessionKeys } from "@/lib/byok-client";
 import { buildProduct, buildMultiProduct } from "@/lib/build-product.functions";
 import { buildFullStackApp } from "@/lib/build-full-stack.functions";
 import { getUserCredits, createCheckoutSession } from "@/lib/monetization.functions";
@@ -308,15 +309,17 @@ function AiPage() {
     };
 
     try {
-      const { url, bearer } = await getStreamConfig({ data: undefined });
+      const { url, bearer, token } = await getStreamConfig({ data: undefined });
+      const clientKeys = readByokSessionKeys();
+      const authToken = token || bearer;
       const res = await fetch(url, {
         method: "POST",
-        headers: { "content-type": "application/json", authorization: `Bearer ${bearer}` },
-        body: JSON.stringify({ prompt: value }),
+        headers: { "content-type": "application/json", authorization: `Bearer ${authToken}` },
+        body: JSON.stringify({ prompt: value, clientKeys }),
       });
       if (!res.ok || !res.body) {
         const json = await res.json().catch(() => null);
-        throw new Error(json?.error ?? "Streaming plan failed.");
+        throw new Error(json?.message || json?.error || "Streaming plan failed.");
       }
       const reader = res.body.getReader();
       const decoder = new TextDecoder();

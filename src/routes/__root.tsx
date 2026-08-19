@@ -181,7 +181,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             name: "Piyush Raj Singh",
             jobTitle: "Founder & Lead AI Engineer",
             email: "Piyushrajsingh092@gmail.com",
-            sameAs: ["https://github.com/Warriorlegacy", "https://linkedin.com/in/piyushraj-singh"],
+            sameAs: [
+              "https://github.com/Warriorlegacy",
+              "https://linkedin.com/in/piyushraj-singh",
+              "https://instagram.com/piyushrajsingh.golu",
+            ],
           },
           address: {
             "@type": "PostalAddress",
@@ -239,7 +243,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             contactType: "customer service",
             availableLanguage: ["English", "Hindi"],
           },
-          sameAs: ["https://github.com/Warriorlegacy", "https://linkedin.com/in/piyushraj-singh"],
+          sameAs: [
+              "https://github.com/Warriorlegacy",
+              "https://linkedin.com/in/piyushraj-singh",
+              "https://instagram.com/piyushrajsingh.golu",
+            ],
         }),
       },
       {
@@ -363,7 +371,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             name: "Piyush Raj Singh",
             jobTitle: "Founder & Lead AI Engineer",
             email: "Piyushrajsingh092@gmail.com",
-            sameAs: ["https://github.com/Warriorlegacy", "https://linkedin.com/in/piyushraj-singh"],
+            sameAs: [
+              "https://github.com/Warriorlegacy",
+              "https://linkedin.com/in/piyushraj-singh",
+              "https://instagram.com/piyushrajsingh.golu",
+            ],
           },
           address: {
             "@type": "PostalAddress",
@@ -382,6 +394,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             "https://github.com/Warriorlegacy",
             "https://linkedin.com/in/piyushraj-singh",
             "https://x.com/Warriorlegacy",
+            "https://instagram.com/piyushrajsingh.golu",
           ],
         }),
       },

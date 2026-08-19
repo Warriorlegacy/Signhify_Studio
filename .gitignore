@@ -38,5 +38,7 @@ dist-ssr
 api keys.md
 
 /src/generated/prisma
+.firecrawl/
+Signhify_assets/*.mp4
 
 nul

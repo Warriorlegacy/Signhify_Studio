@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { ArrowUp, Mic, Sparkles, Play } from "lucide-react";
 import { HeroBackground } from "../HeroBackground";
 import { CinematicHero3D } from "../three/CinematicHero3D";
+import { useSpeechToText } from "@/hooks/use-speech-to-text";
 
 const MODES = ["Build", "Design", "Automate", "Launch"] as const;
 const STACKS = ["Web App", "Landing Page", "AI Agent", "Mobile"] as const;
@@ -23,6 +24,9 @@ export function HeroSection() {
   const [openMode, setOpenMode] = useState(false);
   const [openStack, setOpenStack] = useState(false);
   const taRef = useRef<HTMLTextAreaElement | null>(null);
+  const { supported, listening, toggle } = useSpeechToText((text) =>
+    setPrompt((p) => (p ? `${p} ${text}` : text)),
+  );
 
   useEffect(() => {
     const ta = taRef.current;
@@ -174,9 +178,14 @@ export function HeroSection() {
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  aria-label="Voice input"
-                  className="rounded-full p-2 text-muted-foreground hover:text-foreground hover:bg-surface/60 transition"
-                  onClick={() => submit("Voice prompt placeholder — describe your product")}
+                  aria-label={listening ? "Stop voice input" : "Voice input"}
+                  disabled={!supported}
+                  className={`rounded-full p-2 transition ${
+                    listening
+                      ? "text-primary animate-pulse bg-primary/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-surface/60"
+                  } ${supported ? "" : "opacity-40 cursor-not-allowed"}`}
+                  onClick={toggle}
                 >
                   <Mic size={16} />
                 </button>

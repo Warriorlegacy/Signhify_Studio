@@ -1,7 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
-import { generateAIResponseWithMetadataAndUsage } from "./ai-with-usage.service";
+import { generateAIResponseFor } from "./ai-gateway.server";
+import type { AICtx } from "./ai-access.server";
+import { withByokKeys } from "./byok-middleware";
 import logger from "./logger";
-import { supabase } from "@/integrations/supabase/client";
 import { rateLimitMiddleware } from "./rate-limit.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
@@ -875,8 +876,22 @@ MIT License - feel free to use, modify, and distribute this application as neede
   ];
 }
 
+function aiCtxFrom(context: Record<string, unknown>): AICtx {
+  return {
+    supabase: context.supabase as AICtx["supabase"],
+    userId: context.userId as string,
+    email: (context.claims as { email?: string | null } | undefined)?.email ?? null,
+    byokClientKeys: (context.byokClientKeys as Record<string, string> | undefined) ?? {},
+  };
+}
+
+// Gate/decrypt errors must surface to the user, not be swallowed by mock fallback.
+function isByokGateError(error: unknown): boolean {
+  return String((error as { code?: string })?.code ?? "").startsWith("BYOK");
+}
+
 export const buildProduct = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireSupabaseAuth, withByokKeys])
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
     const prompt = typeof obj.prompt === "string" ? obj.prompt.slice(0, 4000) : "";
@@ -885,10 +900,9 @@ export const buildProduct = createServerFn({ method: "POST" })
     return { prompt, planText };
   })
   .handler(async ({ context, data }) => {
-    const userId = context.userId as string;
     try {
       const user = `Product prompt:\n${data.prompt}\n\n${data.planText ? `Plan / spec to implement:\n${data.planText}\n` : ""}Now output the complete standalone HTML for this product. Start with <!doctype html>.`;
-      const { content } = await generateAIResponseWithMetadataAndUsage(
+      const { content } = await generateAIResponseFor(
         {
           messages: [
             { role: "system", content: SYSTEM },
@@ -897,13 +911,13 @@ export const buildProduct = createServerFn({ method: "POST" })
           temperature: 0.65,
           max_tokens: 8000,
         },
-        userId,
-        supabase,
+        aiCtxFrom(context),
       );
       const html = extractHtml(content);
       if (!html) throw new Error("AI returned no usable HTML. Try a more specific prompt.");
       return { html };
     } catch (error) {
+      if (isByokGateError(error)) throw error;
       // Fallback to mock product generation when AI is unavailable
       logger.warn(
         "[buildProduct] AI gateway failed, falling back to mock product generation:",
@@ -914,7 +928,7 @@ export const buildProduct = createServerFn({ method: "POST" })
   });
 
 export const editProduct = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireSupabaseAuth, withByokKeys])
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
     const currentHtml =
@@ -924,9 +938,8 @@ export const editProduct = createServerFn({ method: "POST" })
     return { currentHtml, instruction };
   })
   .handler(async ({ context, data }) => {
-    const userId = context.userId as string;
     const user = `Here is the CURRENT product HTML:\n\n${data.currentHtml}\n\n---\nUser change request:\n${data.instruction}\n\nReturn the COMPLETE updated HTML document (full file, not a diff). Preserve everything that wasn't asked to change. Start with <!doctype html>.`;
-    const { content } = await generateAIResponseWithMetadataAndUsage(
+    const { content } = await generateAIResponseFor(
       {
         messages: [
           { role: "system", content: SYSTEM },
@@ -935,8 +948,7 @@ export const editProduct = createServerFn({ method: "POST" })
         temperature: 0.45,
         max_tokens: 8000,
       },
-      userId,
-      supabase,
+      aiCtxFrom(context),
     );
     const html = extractHtml(content);
     if (!html) throw new Error("AI returned no usable HTML for the edit.");
@@ -944,7 +956,7 @@ export const editProduct = createServerFn({ method: "POST" })
   });
 
 export const ejectProduct = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireSupabaseAuth, withByokKeys])
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
     const currentHtml =
@@ -953,9 +965,8 @@ export const ejectProduct = createServerFn({ method: "POST" })
     return { currentHtml };
   })
   .handler(async ({ context, data }) => {
-    const userId = context.userId as string;
     const user = `Split this single-file HTML into a clean multi-file project. Extract <style> into styles.css and <script> (non-CDN) into app.js. Keep Tailwind CDN <script> in index.html <head>. Add a short README.md.\n\nCURRENT HTML:\n${data.currentHtml}\n\nReturn ONLY the JSON object: { "files": [ {"path":"index.html","content":"..."}, {"path":"styles.css","content":"..."}, {"path":"app.js","content":"..."}, {"path":"README.md","content":"..."} ] }.`;
-    const { content } = await generateAIResponseWithMetadataAndUsage(
+    const { content } = await generateAIResponseFor(
       {
         messages: [
           { role: "system", content: MULTI_SYSTEM },
@@ -965,8 +976,7 @@ export const ejectProduct = createServerFn({ method: "POST" })
         max_tokens: 80000,
         response_format: { type: "json_object" },
       },
-      userId,
-      supabase,
+      aiCtxFrom(context),
     );
     const parsed = extractJson(content);
     const files = sanitizeFiles(parsed);
@@ -976,7 +986,7 @@ export const ejectProduct = createServerFn({ method: "POST" })
   });
 
 export const buildMultiProduct = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireSupabaseAuth, withByokKeys])
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
     const prompt = typeof obj.prompt === "string" ? obj.prompt.slice(0, 4000) : "";
@@ -984,10 +994,9 @@ export const buildMultiProduct = createServerFn({ method: "POST" })
     return { prompt };
   })
   .handler(async ({ context, data }) => {
-    const userId = context.userId as string;
     try {
       const user = `Product prompt:\n${data.prompt}\n\nOutput the multi-file project JSON now.`;
-      const { content } = await generateAIResponseWithMetadataAndUsage(
+      const { content } = await generateAIResponseFor(
         {
           messages: [
             { role: "system", content: MULTI_SYSTEM },
@@ -997,8 +1006,7 @@ export const buildMultiProduct = createServerFn({ method: "POST" })
           max_tokens: 8000,
           response_format: { type: "json_object" },
         },
-        userId,
-        supabase,
+        aiCtxFrom(context),
       );
       const parsed = extractJson(content);
       const files = sanitizeFiles(parsed);
@@ -1006,6 +1014,7 @@ export const buildMultiProduct = createServerFn({ method: "POST" })
         throw new Error("AI returned no index.html.");
       return { files };
     } catch (error) {
+      if (isByokGateError(error)) throw error;
       // Fallback to mock multi-file product generation when AI is unavailable
       logger.warn(
         "[buildMultiProduct] AI gateway failed, falling back to mock multi-file product generation:",
@@ -1016,7 +1025,7 @@ export const buildMultiProduct = createServerFn({ method: "POST" })
   });
 
 export const editFiles = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireSupabaseAuth, withByokKeys])
   .inputValidator((input: unknown) => {
     const obj = (input ?? {}) as Record<string, unknown>;
     const files = sanitizeFiles({ files: (obj as any).files });
@@ -1025,10 +1034,9 @@ export const editFiles = createServerFn({ method: "POST" })
     return { files, instruction };
   })
   .handler(async ({ context, data }) => {
-    const userId = context.userId as string;
     const dump = data.files.map((f) => `=== ${f.path} ===\n${f.content}`).join("\n\n");
     const user = `Here is the CURRENT multi-file project:\n\n${dump}\n\n---\nUser change request:\n${data.instruction}\n\nReturn the COMPLETE updated project as JSON: { "files": [...] }. Include EVERY file (changed or not). No diffs.`;
-    const { content } = await generateAIResponseWithMetadataAndUsage(
+    const { content } = await generateAIResponseFor(
       {
         messages: [
           { role: "system", content: MULTI_SYSTEM },
@@ -1038,8 +1046,7 @@ export const editFiles = createServerFn({ method: "POST" })
         max_tokens: 8000,
         response_format: { type: "json_object" },
       },
-      userId,
-      supabase,
+      aiCtxFrom(context),
     );
     const parsed = extractJson(content);
     const files = sanitizeFiles(parsed);

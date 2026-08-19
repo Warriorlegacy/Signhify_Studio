@@ -185,6 +185,14 @@ export function FounderSection() {
           >
             Founder on LinkedIn
           </a>
+          <a
+            href="https://instagram.com/piyushrajsingh.golu"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-6 py-3.5 text-sm font-semibold hover:border-primary/60 transition"
+          >
+            Founder on Instagram
+          </a>
         </motion.div>
       </div>
     </section>
