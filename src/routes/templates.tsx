@@ -325,7 +325,7 @@ const CATEGORIES = [
 /* ── Main Component ───────────────────────────────────────── */
 
 function TemplatesPage() {
-  const navigate = useNavigate();
+  const navigate = Route.useNavigate();
   const searchParams = Route.useSearch();
   const [selectedCategory, setSelectedCategory] = useState<string>(
     searchParams.category || "All",
