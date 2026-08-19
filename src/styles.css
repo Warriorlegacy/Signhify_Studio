@@ -6,8 +6,8 @@
 
 /* ============================================================
    Signhify Design System
-   Ember-orange on near-black — one theme across landing and
-   inner pages: cinematic dark glass + ember glow accents.
+   Pure Green (#22c55e / #4ade80), Deep Onyx Black (#030712 / #000000),
+   and Crisp White (#ffffff) — Minimalist high-impact aesthetic.
    ============================================================ */
 
 @theme inline {
@@ -57,39 +57,39 @@
 :root,
 .dark {
   --radius: 0.75rem;
-  --background: oklch(0.13 0.02 260);
-  --foreground: oklch(0.985 0 0);
-  --surface: oklch(0.18 0.03 260);
-  --surface-2: oklch(0.23 0.035 260);
-  --card: oklch(0.17 0.025 260);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.17 0.025 260);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.72 0.21 45);
-  --primary-foreground: oklch(0.12 0.02 260);
-  --primary-glow: oklch(0.72 0.21 45 / 0.35);
-  --amber: oklch(0.78 0.16 70);
-  --gold: oklch(0.88 0.14 90);
-  --secondary: oklch(0.25 0.03 260);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.22 0.025 260);
-  --muted-foreground: oklch(0.7 0.02 260);
-  --accent: oklch(0.72 0.21 45);
-  --accent-foreground: oklch(0.12 0.02 260);
-  --destructive: oklch(0.6 0.24 27);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 0.08);
-  --input: oklch(1 0 0 / 0.1);
-  --ring: oklch(0.72 0.21 45 / 0.6);
-  --gradient-brand: linear-gradient(135deg, oklch(0.72 0.21 45), oklch(0.78 0.16 70), oklch(0.88 0.14 90));
-  --gradient-ember: radial-gradient(circle at 50% 0%, oklch(0.72 0.21 45 / 0.35), transparent 60%);
-  --shadow-glow: 0 0 60px -10px oklch(0.72 0.21 45 / 0.55);
-  --shadow-card: 0 20px 60px -20px oklch(0 0 0 / 0.6);
+  --background: #030712;
+  --foreground: #ffffff;
+  --surface: #0b0f19;
+  --surface-2: #111827;
+  --card: #080c16;
+  --card-foreground: #ffffff;
+  --popover: #080c16;
+  --popover-foreground: #ffffff;
+  --primary: #22c55e;
+  --primary-foreground: #000000;
+  --primary-glow: rgba(34, 197, 94, 0.35);
+  --amber: #4ade80;
+  --gold: #86efac;
+  --secondary: #111827;
+  --secondary-foreground: #ffffff;
+  --muted: #1f2937;
+  --muted-foreground: #9ca3af;
+  --accent: #22c55e;
+  --accent-foreground: #000000;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: rgba(34, 197, 94, 0.6);
+  --gradient-brand: linear-gradient(135deg, #22c55e, #4ade80, #ffffff);
+  --gradient-ember: radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.25), transparent 60%);
+  --shadow-glow: 0 0 60px -10px rgba(34, 197, 94, 0.45);
+  --shadow-card: 0 20px 60px -20px rgba(0, 0, 0, 0.8);
 
-  /* Brand accent trio — ember, gold, light ember */
-  --brand-primary: #ff6b1a;
-  --brand-secondary: #ffb347;
-  --brand-tertiary: #ff9442;
+  /* Brand accent trio — Electric Green, Mint Light, Emerald Deep */
+  --brand-primary: #22c55e;
+  --brand-secondary: #4ade80;
+  --brand-tertiary: #86efac;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -101,7 +101,7 @@
 }
 
 @utility text-gradient { background: var(--gradient-brand); -webkit-background-clip: text; background-clip: text; color: transparent; }
-@utility bg-grid { background-image: linear-gradient(to right, oklch(1 0 0 / 0.04) 1px, transparent 1px), linear-gradient(to bottom, oklch(1 0 0 / 0.04) 1px, transparent 1px); background-size: 56px 56px; }
+@utility bg-grid { background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 56px 56px; }
 @utility mask-fade-edges { mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%); }
 
 .bg-brand-primary { background-color: var(--brand-primary); }
@@ -117,7 +117,7 @@
 @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 @keyframes agent-shine-sweep { 0%, 20% { transform: translateX(-150%) skewX(-20deg); } 50% { transform: translateX(150%) skewX(-20deg); } 100% { transform: translateX(150%) skewX(-20deg); } }
 @keyframes signhify-chat-ring-spin { to { transform: translate(-50%, -50%) rotate(1turn); } }
-@keyframes handle-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(52,211,153,0.7), 0 0 0 0 rgba(52,211,153,0.15); } 50% { box-shadow: 0 0 20px rgba(52,211,153,0.7), 0 0 0 6px rgba(52,211,153,0.15); } }
+@keyframes handle-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.7), 0 0 0 0 rgba(34,197,94,0.15); } 50% { box-shadow: 0 0 20px rgba(34,197,94,0.7), 0 0 0 6px rgba(34,197,94,0.15); } }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 @keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -134,17 +134,18 @@
 .divider { height: 1px; background: linear-gradient(90deg, transparent, hsla(0,0%,100%,0.06), transparent); }
 
 /* ============ Buttons ============ */
-.btn-moonlit { background: linear-gradient(180deg, #ff9442, #ff6b1a 55%, #e25700); color: #1a0a00; border: none; box-shadow: 0 2px 20px rgba(255,107,26,0.42), inset 0 1px 0 hsla(0,0%,100%,0.34); }
-.btn-moonlit:hover { background: linear-gradient(180deg, #ffa15c, #ff7d33 55%, #ff6b1a); color: #1a0a00; }
-.btn-preset-cta { background: #ff6b1a; color: #1a0a00; border: none; box-shadow: 0 2px 16px rgba(255,107,26,0.4); }
-.btn-preset-cta:hover { background: #e25700; color: #1a0a00; }
+.btn-moonlit { background: linear-gradient(180deg, #4ade80, #22c55e 55%, #16a34a); color: #000000; font-weight: 700; border: none; box-shadow: 0 2px 20px rgba(34,197,94,0.42), inset 0 1px 0 hsla(0,0%,100%,0.4); }
+.btn-moonlit:hover { background: linear-gradient(180deg, #86efac, #4ade80 55%, #22c55e); color: #000000; }
+.btn-preset-cta { background: #22c55e; color: #000000; font-weight: 700; border: none; box-shadow: 0 2px 16px rgba(34,197,94,0.4); }
+.btn-preset-cta:hover { background: #16a34a; color: #000000; }
 
 /* ============ Glass shine & chat ============ */
 .agent-glass-shine { position: relative; overflow: hidden; isolation: isolate; }
 .agent-glass-shine:before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(115deg, transparent 20%, hsla(0,0%,100%,0.3) 50%, transparent 80%); transform: translateX(-150%) skewX(-20deg); animation: agent-shine-sweep 4s ease-in-out infinite; pointer-events: none; }
-.signhify-chat-bloom { position: absolute; inset: -14px; border-radius: 28px; background: radial-gradient(60% 60% at 50% 50%, rgba(255,148,66,0.3) 0, rgba(255,107,26,0.14) 45%, transparent 75%); filter: blur(18px); pointer-events: none; z-index: 0; }
+.signhify-chat-bloom { position: absolute; inset: -14px; border-radius: 28px; background: radial-gradient(60% 60% at 50% 50%, rgba(34,197,94,0.3) 0, rgba(34,197,94,0.12) 45%, transparent 75%); filter: blur(18px); pointer-events: none; z-index: 0; }
 .signhify-chat-ring { position: relative; padding: 1.5px; border-radius: 18px; overflow: hidden; isolation: isolate; }
-.signhify-chat-ring:before { content: ""; position: absolute; top: 50%; left: 50%; width: 150%; aspect-ratio: 1/1; transform: translate(-50%, -50%); background: conic-gradient(from 0deg, rgba(255,107,26,0.3) 0deg, rgba(255,107,26,0.3) 190deg, rgba(255,179,71,0.7) 250deg, #ffb347 295deg, #ff9442 330deg, #fff 348deg, #ffe6c9 354deg, rgba(255,107,26,0.3) 1turn); animation: signhify-chat-ring-spin 6s linear infinite; z-index: 0; }
+.signhify-chat-ring:before { content: ""; position: absolute; top: 50%; left: 50%; width: 150%; aspect-ratio: 1/1; transform: translate(-50%, -50%); background: conic-gradient(from 0deg, rgba(34,197,94,0.3) 0deg, rgba(34,197,94,0.3) 190deg, rgba(74,222,128,0.7) 250deg, #4ade80 295deg, #22c55e 330deg, #fff 348deg, #dcfce7 354deg, rgba(34,197,94,0.3) 1turn); animation: signhify-chat-ring-spin 6s linear infinite; z-index: 0; }
+.signhify-chat-ring > * { position: relative; z-index: 1; }
 .signhify-chat-ring > * { position: relative; z-index: 1; }
 
 /* ============ Glassmorphism ============ */

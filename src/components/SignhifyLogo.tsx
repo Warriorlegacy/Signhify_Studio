@@ -31,12 +31,12 @@ export function SignhifyLogo({
     >
       <defs>
         <linearGradient id={main} x1="8" y1="10" x2="40" y2="38" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FF6B00" />
-          <stop offset="1" stopColor="#FFB347" />
+          <stop stopColor="#22C55E" />
+          <stop offset="1" stopColor="#4ADE80" />
         </linearGradient>
         <linearGradient id={border} x1="6" y1="6" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FF6B00" stopOpacity="0.55" />
-          <stop offset="1" stopColor="#FFB347" stopOpacity="0.18" />
+          <stop stopColor="#22C55E" stopOpacity="0.65" />
+          <stop offset="1" stopColor="#4ADE80" stopOpacity="0.2" />
         </linearGradient>
       </defs>
 
@@ -47,7 +47,7 @@ export function SignhifyLogo({
           width="43"
           height="43"
           rx="13"
-          fill="#0B0B0D"
+          fill="#080C16"
           stroke={`url(#${border})`}
           strokeWidth="1.5"
         />
@@ -64,7 +64,7 @@ export function SignhifyLogo({
       />
 
       {/* spark + orbit */}
-      <circle cx="14.5" cy="16" r="2.4" fill="#FFD9A0" />
+      <circle cx="14.5" cy="16" r="2.4" fill="#FFFFFF" />
       <ellipse
         cx="14.5"
         cy="16"

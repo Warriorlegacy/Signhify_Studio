@@ -105,8 +105,8 @@ export function LandingFooter() {
       >
         <div className="max-w-6xl mx-auto px-6 mb-16">
           <div className="relative rounded-3xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-md p-8 md:p-12 overflow-hidden">
-            <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-[#ff6b1a]/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 right-0 w-[250px] h-[250px] bg-[#ffb347]/10 rounded-full blur-[100px] pointer-events-none translate-x-1/2 translate-y-1/2" />
+            <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-[#22c55e]/12 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute bottom-0 right-0 w-[250px] h-[250px] bg-[#4ade80]/10 rounded-full blur-[100px] pointer-events-none translate-x-1/2 translate-y-1/2" />
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
                 <h3 className="font-display text-2xl md:text-3xl font-bold text-white tracking-tight mb-2">
@@ -148,7 +148,7 @@ export function LandingFooter() {
                     href={s.href}
                     target={s.href.startsWith("mailto") ? undefined : "_blank"}
                     rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-[10px] bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-white/50 hover:text-white hover:bg-white/[0.08] hover:border-white/[0.16] transition-all duration-300"
+                    className="w-9 h-9 rounded-[10px] bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-white/50 hover:text-white hover:bg-white/[0.08] hover:border-[#22c55e]/40 transition-all duration-300"
                   >
                     {s.icon}
                     <span className="sr-only">{s.label}</span>
@@ -166,7 +166,7 @@ export function LandingFooter() {
                     <li key={l.label}>
                       <Link
                         to={l.to}
-                        className="text-[13px] text-white/40 hover:text-white/80 transition-colors duration-200"
+                        className="text-[13px] text-white/40 hover:text-[#4ade80] transition-colors duration-200"
                       >
                         {l.label}
                       </Link>
@@ -210,12 +210,12 @@ export function LandingFooter() {
 
       {!cookiesDismissed && (
         <div className="fixed bottom-0 inset-x-0 z-[9999] p-4 pointer-events-none">
-          <div className="pointer-events-auto mx-auto max-w-lg rounded-2xl border border-white/[0.1] bg-[#0c0c14]/95 backdrop-blur-xl shadow-[0_-8px_40px_rgba(0,0,0,0.5)] px-5 py-4 animate-[slideUp_0.4s_ease-out]">
+          <div className="pointer-events-auto mx-auto max-w-lg rounded-2xl border border-white/[0.1] bg-[#080c16]/95 backdrop-blur-xl shadow-[0_-8px_40px_rgba(0,0,0,0.7)] px-5 py-4 animate-[slideUp_0.4s_ease-out]">
             <p className="text-[13px] leading-relaxed text-white/60">
               We use cookies for authentication, analytics, and to improve your experience.{" "}
               <Link
                 to="/privacy"
-                className="text-[#ffb347]/80 underline underline-offset-2 hover:text-[#ffb347]"
+                className="text-[#4ade80] underline underline-offset-2 hover:text-white"
               >
                 Cookie Policy
               </Link>
@@ -229,7 +229,7 @@ export function LandingFooter() {
               </button>
               <button
                 onClick={dismissCookies}
-                className="rounded-lg bg-[#ff6b1a] px-4 py-2 text-[12px] font-bold text-[#1a0a00] hover:bg-[#e25700] transition-colors"
+                className="rounded-lg bg-[#22c55e] px-4 py-2 text-[12px] font-bold text-black hover:bg-[#4ade80] transition-colors"
               >
                 Accept all
               </button>
