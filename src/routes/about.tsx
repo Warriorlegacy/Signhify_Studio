@@ -101,7 +101,7 @@ function AboutPage() {
 
           <div className="mt-12 grid sm:grid-cols-3 gap-4">
             {[
-              { icon: Rocket, k: "14+", v: "Shipped products" },
+              { icon: Rocket, k: "24", v: "Shipped products" },
               { icon: BadgeCheck, k: "MSME", v: "Registered with Govt. of India (UDYAM)" },
               { icon: MapPin, k: "India → World", v: "Remote-first, globally scoped" },
             ].map((s) => (

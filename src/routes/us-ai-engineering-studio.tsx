@@ -117,12 +117,6 @@ export const Route = createFileRoute("/us-ai-engineering-studio")({
             availability: "https://schema.org/OnlineOnly",
             url: "https://signhify.dpdns.org/pricing",
           },
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.95",
-            reviewCount: "38",
-            bestRating: "5",
-          },
         }),
       },
       {

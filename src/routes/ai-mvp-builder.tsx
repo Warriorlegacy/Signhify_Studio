@@ -61,12 +61,6 @@ export const Route = createFileRoute("/ai-mvp-builder")({
             availability: "https://schema.org/OnlineOnly",
             url: "https://signhify.dpdns.org/pricing",
           },
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.9",
-            bestRating: "5",
-            ratingCount: "12",
-          },
         }),
       },
       {
@@ -233,21 +227,27 @@ const FAQS = [
   },
 ];
 
-const TESTIMONIALS = [
+const OUTCOMES = [
   {
-    quote: "The BYOK feature alone closed 3 enterprise deals. They wouldn't sign without it.",
-    author: "Client, AI Analytics SaaS",
+    project: "Signhify AI",
+    result:
+      "AI workspace with 7 specialized agents, BYOK key vault and 10+ AI providers — shipped open source.",
+    slug: "signhify-ai",
     tier: "Studio ($799)",
   },
   {
-    quote: "I should have done this 3 months ago — I'd be 3 months ahead on revenue.",
-    author: "Client, E-commerce AI Platform",
+    project: "GymFlow",
+    result:
+      "Multi-tenant gym OS with memberships, attendance and Stripe billing — 5 gyms onboarded across 2 cities.",
+    slug: "gymflow-saas",
     tier: "Studio ($799)",
   },
   {
-    quote: "Full code ownership removed every vendor objection my board had.",
-    author: "Client, B2B SaaS Startup",
-    tier: "Studio ($799)",
+    project: "AutoReels AI",
+    result:
+      "End-to-end AI pipeline turning long-form video into publish-ready short-form reels with zero human edit.",
+    slug: "autoreels-ai",
+    tier: "Sprint ($299)",
   },
 ];
 
@@ -552,28 +552,29 @@ function AiMvpBuilderPage() {
         <div className="mt-24 max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono text-primary mb-3">
-              <Star size={12} /> Trusted by founders building AI startups
+              <Star size={12} /> Real builds from the Signhify portfolio
             </span>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold">What clients say</h2>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold">Shipped work, not slogans</h2>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Every claim below links to a live project you can open and inspect.
+            </p>
           </div>
           <div className="grid sm:grid-cols-3 gap-4">
-            {TESTIMONIALS.map((t, i) => (
+            {OUTCOMES.map((t, i) => (
               <motion.div
-                key={i}
+                key={t.slug}
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
                 className="rounded-xl border border-border bg-surface/50 p-5"
               >
-                <div className="flex gap-1 mb-3">
-                  {[...Array(5)].map((_, s) => (
-                    <Star key={s} size={14} className="fill-primary text-primary" />
-                  ))}
-                </div>
-                <p className="text-sm leading-relaxed">"{t.quote}"</p>
+                <div className="text-sm font-semibold text-primary">{t.project}</div>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t.result}</p>
                 <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-                  <span>{t.author}</span>
+                  <Link to="/projects/$slug" params={{ slug: t.slug }} className="hover:text-primary">
+                    View case study →
+                  </Link>
                   <span className="text-primary">{t.tier}</span>
                 </div>
               </motion.div>

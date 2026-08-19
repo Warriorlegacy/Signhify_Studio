@@ -453,13 +453,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               url: "https://signhify.dpdns.org/pricing",
             },
           ],
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.9",
-            bestRating: "5",
-            ratingCount: "22",
-            reviewCount: "22",
-          },
           applicationCategory: "DeveloperApplication",
           operatingSystem: "Web",
           featureList: [

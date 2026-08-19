@@ -100,21 +100,6 @@ export const Route = createFileRoute("/best-ai-engineering-studio")({
             availability: "https://schema.org/OnlineOnly",
             url: "https://signhify.dpdns.org/pricing",
           },
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.9",
-            bestRating: "5",
-            ratingCount: "47",
-          },
-          review: [
-            {
-              "@type": "Review",
-              author: { "@type": "Person", name: "Rahul Mehta" },
-              reviewRating: { "@type": "Rating", ratingValue: "5" },
-              reviewBody:
-                "Signhify shipped our AI SaaS MVP in under 2 weeks. The 6-agent swarm approach delivered production-grade code with auth, billing, and AI integration wired from day one.",
-            },
-          ],
         }),
       },
       {
