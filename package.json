@@ -9,7 +9,7 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "start": "vite preview",
-    "lint": "eslint .",
+    "lint": "eslint . --cache",
     "format": "prettier --write .",
     "test:unit": "bun test tests/unit/byok-encryption.test.ts",
     "guide:pdf": "node scripts/build-guide-pdf.mjs",

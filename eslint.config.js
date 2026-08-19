@@ -6,10 +6,36 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist", ".output", ".vinxi"] },
+  {
+    ignores: [
+      "dist/**",
+      ".output/**",
+      ".vinxi/**",
+      ".tanstack/**",
+      ".wrangler/**",
+      ".agents/**",
+      ".claude/**",
+      ".antigravitycli/**",
+      ".lovable/**",
+      ".kilo/**",
+      ".kilocode/**",
+      "hunter/**",
+      "ClientHunter/**",
+      "Signhify_assets/**",
+      "test-results/**",
+      "node_modules/**",
+      "coverage/**",
+      "public/**",
+      "supabase/**",
+      "seo-workspace/**",
+      "docs/**",
+      "*.md",
+      "*.json",
+    ],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ["**/*.{ts,tsx}"],
+    files: ["src/**/*.{ts,tsx}", "tests/**/*.{ts,tsx}", "scripts/**/*.{ts,js,mjs}"],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
@@ -36,5 +62,8 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
-  eslintPluginPrettier,
+  {
+    ...eslintPluginPrettier,
+    files: ["src/**/*.{ts,tsx}", "tests/**/*.{ts,tsx}"],
+  },
 );
