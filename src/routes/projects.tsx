@@ -21,7 +21,7 @@ export const Route = createFileRoute("/projects")({
       {
         name: "description",
         content:
-          "Explore 14+ live SaaS platforms, AI automation systems, and growth software engineered and shipped globally by Signhify AI Product Studio.",
+          "Explore 24 live SaaS platforms, AI automation systems, and growth software engineered and shipped globally by Signhify AI Product Studio.",
       },
       { property: "og:title", content: "AI Built Projects & SaaS Product Portfolio — Signhify" },
       {

@@ -102,21 +102,6 @@ export const Route = createFileRoute("/best-digital-marketing-studio")({
             availability: "https://schema.org/OnlineOnly",
             url: "https://signhify.dpdns.org/pricing",
           },
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.7",
-            bestRating: "5",
-            ratingCount: "38",
-          },
-          review: [
-            {
-              "@type": "Review",
-              author: { "@type": "Person", name: "Vikram Joshi" },
-              reviewRating: { "@type": "Rating", ratingValue: "5" },
-              reviewBody:
-                "Signhify is the best digital marketing studio we've worked with. They didn't just handle our SEO and ads — they rebuilt our entire landing page and wired analytics. 3x organic traffic in 60 days.",
-            },
-          ],
         }),
       },
       {
