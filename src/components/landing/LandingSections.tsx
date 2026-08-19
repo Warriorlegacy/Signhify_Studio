@@ -114,14 +114,22 @@ function PresetCard({ preset, delay }: { preset: (typeof PRESETS)[number]; delay
           <div className="flex flex-wrap gap-2 mt-auto">
             <Link
               to="/templates"
-              search={{ id: preset.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") }}
+              search={{
+                id: preset.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+                preview: undefined,
+                category: undefined,
+              }}
               className="btn-preset-cta agent-glass-shine flex-1 min-w-[120px] inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-[15px] text-[12px] md:text-[13px] font-bold transition-transform hover:scale-[1.02]"
             >
               Customize <WandSparkles size={11} />
             </Link>
             <Link
               to="/templates"
-              search={{ preview: preset.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") }}
+              search={{
+                preview: preset.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+                id: undefined,
+                category: undefined,
+              }}
               className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-[12px] font-semibold bg-white/[0.06] border border-white/[0.12] text-white hover:text-[#4ade80] hover:bg-white/[0.1] hover:border-[#22c55e]/40 transition-colors"
             >
               Preview <ArrowUpRight size={11} className="opacity-80" />
@@ -307,6 +315,7 @@ function PresetGallery() {
           <div className="flex justify-center mt-10">
             <Link
               to="/templates"
+              search={{ id: undefined, preview: undefined, category: undefined }}
               className="btn-preset-cta agent-glass-shine inline-flex items-center gap-2 px-7 py-3 rounded-[15px] text-[13px] font-bold"
             >
               Browse all presets & templates <ArrowRight size={12} />

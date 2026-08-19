@@ -24,8 +24,14 @@ import {
 } from "lucide-react";
 import { SignhifyLogo } from "@/components/SignhifyLogo";
 
+interface TemplatesSearch {
+  id?: string;
+  preview?: string;
+  category?: string;
+}
+
 export const Route = createFileRoute("/templates")({
-  validateSearch: (s: Record<string, unknown>) => ({
+  validateSearch: (s: Record<string, unknown>): TemplatesSearch => ({
     id: typeof s.id === "string" ? s.id : undefined,
     preview: typeof s.preview === "string" ? s.preview : undefined,
     category: typeof s.category === "string" ? s.category : undefined,
@@ -367,7 +373,11 @@ function TemplatesPage() {
     setScrubProgress(25);
     setIsPlaying(false);
     navigate({
-      search: (prev) => ({ ...prev, preview: template.id }),
+      search: (prev: TemplatesSearch) => ({
+        id: prev.id,
+        category: prev.category,
+        preview: template.id,
+      }),
     });
   };
 
@@ -375,10 +385,11 @@ function TemplatesPage() {
     setActivePreview(null);
     setIsPlaying(false);
     navigate({
-      search: (prev) => {
-        const { preview: _, ...rest } = prev;
-        return rest;
-      },
+      search: (prev: TemplatesSearch) => ({
+        id: prev.id,
+        category: prev.category,
+        preview: undefined,
+      }),
     });
   };
 
