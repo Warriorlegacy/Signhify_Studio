@@ -373,11 +373,12 @@ function TemplatesPage() {
     setScrubProgress(25);
     setIsPlaying(false);
     navigate({
-      search: (prev: TemplatesSearch) => ({
-        id: prev.id,
-        category: prev.category,
+      to: "/templates",
+      search: {
+        id: searchParams.id,
+        category: searchParams.category,
         preview: template.id,
-      }),
+      },
     });
   };
 
@@ -385,11 +386,12 @@ function TemplatesPage() {
     setActivePreview(null);
     setIsPlaying(false);
     navigate({
-      search: (prev: TemplatesSearch) => ({
-        id: prev.id,
-        category: prev.category,
+      to: "/templates",
+      search: {
+        id: searchParams.id,
+        category: searchParams.category,
         preview: undefined,
-      }),
+      },
     });
   };
 
