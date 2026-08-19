@@ -8,7 +8,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 
 const TRUST_SIGNALS = [
-  "14+ products shipped",
+  "24 products shipped",
   "Multi-tenant SaaS",
   "AI-first engineering",
   "Delivered in weeks",

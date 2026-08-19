@@ -100,21 +100,6 @@ export const Route = createFileRoute("/best-vibe-coding-platform")({
             availability: "https://schema.org/OnlineOnly",
             url: "https://signhify.dpdns.org/pricing",
           },
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.8",
-            bestRating: "5",
-            ratingCount: "52",
-          },
-          review: [
-            {
-              "@type": "Review",
-              author: { "@type": "Person", name: "Ananya Sharma" },
-              reviewRating: { "@type": "Rating", ratingValue: "5" },
-              reviewBody:
-                "I tried Cursor and Lovable but kept hitting walls with auth and payments. Signhify's vibe-coding platform shipped my entire SaaS — with Stripe and Supabase wired — in 2 weeks. It's the best vibe-coding platform I've used.",
-            },
-          ],
         }),
       },
       {

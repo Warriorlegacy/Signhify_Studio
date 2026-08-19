@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
 const STATS = [
-  { value: 14, suffix: "+", label: "Products shipped" },
+  { value: 24, suffix: "", label: "Products shipped" },
   { value: 5, suffix: "", label: "SaaS platforms live" },
   { value: 2, suffix: "", label: "Countries" },
   { value: 100, suffix: "k+", label: "End users reached" },
@@ -136,7 +136,7 @@ export function FounderSection() {
               aria-hidden
             />
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              "14+ shipped products across SaaS, AI automation, EdTech and NGO platforms. Signhify
+              "24 shipped products across SaaS, AI automation, EdTech and NGO platforms. Signhify
               is the studio I always wanted to hire — one that treats software like a film:
               scripted, designed and shipped with conviction."
             </p>
