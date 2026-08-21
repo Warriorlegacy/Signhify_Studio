@@ -8,6 +8,8 @@ import { useUser } from "@/hooks/useUser";
 
 const NAV = [
   { to: "/", label: "Studio" },
+  { to: "/templates", label: "Templates", badge: "3D" },
+  { to: "/pricing", label: "Pricing", badge: "$5" },
   { to: "/projects", label: "Projects" },
   { to: "/services", label: "Services" },
   { to: "/ai", label: "AI", badge: "New" },
@@ -15,7 +17,6 @@ const NAV = [
   { to: "/app/deploy", label: "Deploy" },
   { to: "/app", label: "Cloud" },
   { to: "/os", label: "OS" },
-  { to: "/best-ai-engineering-studio", label: "AI Studio" },
 ] as const;
 
 export function SiteHeader() {

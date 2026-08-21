@@ -65,9 +65,10 @@ const PLAN_COLORS: Record<string, string> = {
 };
 
 const CREDIT_PACKS = [
-  { label: "Starter Pack", credits: 10, price: 19, priceId: "price_test_signhify_credit_pack" },
-  { label: "Pro Pack", credits: 50, price: 79, priceId: "price_test_signhify_credit_pack_50" },
-  { label: "Ultra Pack", credits: 200, price: 249, priceId: "price_test_signhify_credit_pack_200" },
+  { label: "Starter Vibe", credits: 5, price: 5, priceId: "price_test_signhify_credit_pack_5" },
+  { label: "Pro Builder", credits: 75, price: 50, priceId: "price_test_signhify_credit_pack_50" },
+  { label: "Studio Scale", credits: 125, price: 100, priceId: "price_test_signhify_credit_pack_100" },
+  { label: "Enterprise Fleet", credits: 300, price: 200, priceId: "price_test_signhify_credit_pack_200" },
 ];
 
 const MOCK_PURCHASES = [
@@ -283,17 +284,14 @@ function BillingPage() {
                       </div>
                     )}
                     {tier === "free" && (
-                      <Button
-                        onClick={() =>
-                          checkoutFn({ data: { plan: "pro" } }).then(
-                            (r) => r.url && window.open(r.url, "_blank"),
-                          )
-                        }
-                        className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0"
-                      >
-                        <Sparkles className="w-4 h-4 mr-2" />
-                        Upgrade to Studio — $49/mo
-                      </Button>
+                      <Link to="/pricing">
+                        <Button
+                          className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold border-0 shadow-[0_0_15px_rgba(34,197,94,0.3)]"
+                        >
+                          <Sparkles className="w-4 h-4 mr-2" />
+                          View Plans &amp; Upgrade — Starting $5/mo
+                        </Button>
+                      </Link>
                     )}
                   </div>
                 )}

@@ -1,28 +1,35 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import {
   Layers,
   Search,
   WandSparkles,
   ArrowRight,
-  ArrowUpRight,
   Check,
   Laptop,
   Tablet,
   Smartphone,
-  Maximize2,
   X,
   Zap,
   Sliders,
   Eye,
-  FileCode,
-  Download,
   Boxes,
   Play,
+  Pause,
   RotateCcw,
   Sparkles,
+  Copy,
+  CheckCircle2,
+  Terminal,
+  Code2,
+  Cpu,
+  Orbit,
+  Maximize2,
 } from "lucide-react";
 import { SignhifyLogo } from "@/components/SignhifyLogo";
+import { TEMPLATES, TEMPLATE_CATEGORIES, type TemplateItem, type TemplateCategory } from "@/lib/templates-data";
+import { TemplateParticleCanvas } from "@/components/three/TemplateParticleCanvas";
+import { toast } from "sonner";
 
 interface TemplatesSearch {
   id?: string;
@@ -38,17 +45,17 @@ export const Route = createFileRoute("/templates")({
   }),
   head: () => ({
     meta: [
-      { title: "Templates & Live Previews — Signhify 3D Studio" },
+      { title: "3D Templates & God-Level Prompts Catalog — Signhify 3D Studio" },
       {
         name: "description",
         content:
-          "Explore cinematic 3D scroll templates, SaaS kits, and AI product starters. Preview interactively and customize in one click.",
+          "Explore over 18+ cinematic 3D scroll templates, SaaS kits, AI co-pilots, and god-level master prompts. Interactive real-time 3D preview simulator, responsive viewports, and 1-click builder fork.",
       },
-      { property: "og:title", content: "Templates & Live Previews — Signhify 3D Studio" },
+      { property: "og:title", content: "3D Templates & God-Level Prompts — Signhify 3D Studio" },
       {
         property: "og:description",
         content:
-          "Production-ready 3D scroll templates, SaaS starters, and interactive previews.",
+          "Production-ready 3D scroll templates, SaaS starters, and interactive god-level prompt previews.",
       },
       { property: "og:url", content: "https://signhify.dpdns.org/templates" },
     ],
@@ -57,282 +64,16 @@ export const Route = createFileRoute("/templates")({
   component: TemplatesPage,
 });
 
-/* ── Template Catalog ─────────────────────────────────────── */
-
-interface TemplateItem {
-  id: string;
-  name: string;
-  category: "3D Scroll" | "SaaS & AI" | "Cinematic Landing" | "E-Commerce" | "Dashboards";
-  tag: string;
-  gradient: string;
-  accent: string;
-  frames: number;
-  fps: number;
-  desc: string;
-  longDesc: string;
-  features: string[];
-  techStack: string[];
-  previewPrompt: string;
-  mockStats: { label: string; value: string }[];
-}
-
-const TEMPLATES: TemplateItem[] = [
-  {
-    id: "cyberpunk-kinetic-watch",
-    name: "Cyberpunk Kinetic Watch",
-    category: "3D Scroll",
-    tag: "3D Parallax",
-    gradient: "from-emerald-950 via-black to-zinc-950",
-    accent: "#22c55e",
-    frames: 480,
-    fps: 60,
-    desc: "Luxury kinetic timepiece with 360-degree rotation and micro-interactions on scroll.",
-    longDesc:
-      "A flagship scroll experience engineered for luxury and hardware products. Features exploded gear assembly, titanium case lighting reflections, and silky frame-by-frame parallax scrolling.",
-    features: [
-      "480-Frame Smooth Scroll Interpolation",
-      "Exploded Sub-Assembly Breakdowns",
-      "Reactive Light Beam Shaders",
-      "Zero Three.js Overhead — Pure Native Canvas",
-    ],
-    techStack: ["React 19", "HTML5 Canvas", "Tailwind CSS", "Cloudflare Pages"],
-    previewPrompt: "Luxury mechanical timepiece exploded view titanium bezel emerald accents",
-    mockStats: [
-      { label: "Frame Count", value: "480 frames" },
-      { label: "Scroll Latency", value: "< 4ms" },
-      { label: "Asset Footprint", value: "1.2 MB WebP" },
-    ],
-  },
-  {
-    id: "nova-ai-code-copilot",
-    name: "Nova AI Code Copilot",
-    category: "SaaS & AI",
-    tag: "Full-Stack SaaS",
-    gradient: "from-zinc-950 via-emerald-950/40 to-black",
-    accent: "#4ade80",
-    frames: 360,
-    fps: 60,
-    desc: "Autonomous developer platform with live playground, multi-tab IDE, and terminal streaming.",
-    longDesc:
-      "Engineered for devtools and agentic AI startups. Ships with built-in Monaco code editor, real-time SSE token stream visualizer, API key vault, and Stripe subscription checkout.",
-    features: [
-      "Streaming AI Code Generation Panel",
-      "Client-Side AES-256 Vault Encryption",
-      "Stripe Customer Portal & Webhooks",
-      "Supabase Auth & PostgreSQL Row-Level Security",
-    ],
-    techStack: ["TanStack Start", "Tailwind CSS", "Supabase", "Stripe API", "Monaco Editor"],
-    previewPrompt: "Modern dark developer IDE with neon green code syntax streaming terminal",
-    mockStats: [
-      { label: "Auth Ready", value: "Supabase RLS" },
-      { label: "Checkout", value: "Stripe Billing" },
-      { label: "Deployment", value: "Cloudflare Workers" },
-    ],
-  },
-  {
-    id: "orbital-quantum-compute",
-    name: "Orbital Quantum Compute",
-    category: "Cinematic Landing",
-    tag: "Deep Tech",
-    gradient: "from-black via-zinc-950 to-emerald-950",
-    accent: "#86efac",
-    frames: 520,
-    fps: 60,
-    desc: "Deep tech quantum simulator with particle physics and dark glassmorphic layout.",
-    longDesc:
-      "A high-conversion landing page crafted for deep tech, aerospace, and AI infrastructure ventures. Dynamic particles respond to mouse cursor acceleration with crisp monochrome typography.",
-    features: [
-      "GPU-Accelerated Particle Canvas",
-      "Interactive Qubit Coherence Graph",
-      "Interactive Benchmark Comparisons",
-      "High-Conversion Demo Request Funnel",
-    ],
-    techStack: ["React 19", "Framer Motion", "Tailwind CSS", "Vite"],
-    previewPrompt: "Quantum cryo-chamber floating qubits emerald glow dark deep tech laboratory",
-    mockStats: [
-      { label: "Lighthouse Score", value: "99/100" },
-      { label: "Frame Rate", value: "60 FPS Locked" },
-      { label: "SEO Ready", value: "Schema.org Json-LD" },
-    ],
-  },
-  {
-    id: "vortex-wireless-audio",
-    name: "Vortex Wireless Audio",
-    category: "E-Commerce",
-    tag: "Hardware / D2C",
-    gradient: "from-zinc-900 via-black to-emerald-950",
-    accent: "#22c55e",
-    frames: 420,
-    fps: 60,
-    desc: "High-fidelity acoustic hardware with exploded 3D component view and cart drawer.",
-    longDesc:
-      "D2C hardware product launch template. Includes 3D spatial acoustics demo, acoustic frequency response curve visualizer, variant swatch picker, and frictionless slide-out checkout.",
-    features: [
-      "Scroll-Controlled Driver & Diaphragm Reveal",
-      "Interactive Frequency Response Curve",
-      "Multi-Color Finish Swatch Switcher",
-      "Slide-Over Cart & Instant Apple Pay / UPI",
-    ],
-    techStack: ["TanStack Start", "Tailwind CSS", "Shopify / Stripe", "Web Audio API"],
-    previewPrompt: "Matte black noise canceling headphones floating acoustic sound waves green aura",
-    mockStats: [
-      { label: "Conversion Lift", value: "+38%" },
-      { label: "Interactive Drivers", value: "50mm Beryllium" },
-      { label: "Checkout", value: "Instant 1-Click" },
-    ],
-  },
-  {
-    id: "apex-swarm-ai-orchestrator",
-    name: "Apex Swarm AI Orchestrator",
-    category: "Dashboards",
-    tag: "Agent Control",
-    gradient: "from-black via-emerald-950/50 to-zinc-950",
-    accent: "#4ade80",
-    frames: 300,
-    fps: 60,
-    desc: "Real-time multi-agent supervisor dashboard with telemetry and token analytics.",
-    longDesc:
-      "Enterprise command center for multi-agent autonomous swarms. Track task execution trees, token burn rates, memory retrieval latency, and model cost allocation across your fleet.",
-    features: [
-      "Real-Time Agent DAG Graph Visualizer",
-      "Token Burn & Latency Telemetry Gauges",
-      "Multi-Tenant Workspace Permissions",
-      "Instant Human-in-the-Loop Interventions",
-    ],
-    techStack: ["React 19", "TanStack Table", "Tailwind CSS", "Recharts", "Lucide"],
-    previewPrompt: "Multi-agent AI supervisor dashboard real-time telemetry dark mode emerald graphs",
-    mockStats: [
-      { label: "Active Agents", value: "6 Swarms" },
-      { label: "Telemetry Latency", value: "< 15ms" },
-      { label: "Export Formats", value: "CSV / JSON / OpenTelemetry" },
-    ],
-  },
-  {
-    id: "zenith-spatial-headset",
-    name: "Zenith Spatial Headset",
-    category: "3D Scroll",
-    tag: "Vision Pro / AR",
-    gradient: "from-emerald-950 via-zinc-950 to-black",
-    accent: "#86efac",
-    frames: 540,
-    fps: 60,
-    desc: "Spatial AR computing headset with interactive layers and optical lens scroll effect.",
-    longDesc:
-      "Experience next-generation spatial computing interface. Users scroll to glide through micro-OLED optical layers, carbon fiber headband ergonomics, and spatial audio field diagrams.",
-    features: [
-      "540-Frame Dual Eye Micro-OLED Scrub",
-      "Spatial Mesh & LiDAR Depth Visuals",
-      "Interactive FOV & Resolution Slider",
-      "One-Click WebXR Browser Mode",
-    ],
-    techStack: ["React 19", "Tailwind CSS", "Canvas Scrub", "Cloudflare Pages"],
-    previewPrompt: "Futuristic spatial computing glass headset glowing green micro OLED displays",
-    mockStats: [
-      { label: "Display Spec", value: "4K Dual Micro-OLED" },
-      { label: "Weight Spec", value: "310g Carbon" },
-      { label: "Refresh Rate", value: "120Hz Spatial" },
-    ],
-  },
-  {
-    id: "hyperflow-fintech-cloud",
-    name: "HyperFlow Fintech Cloud",
-    category: "SaaS & AI",
-    tag: "Global Treasury",
-    gradient: "from-zinc-950 via-black to-emerald-950/60",
-    accent: "#22c55e",
-    frames: 340,
-    fps: 60,
-    desc: "Cross-border automated treasury management with dynamic currency conversions.",
-    longDesc:
-      "Automated treasury and multi-currency banking SaaS starter. Ships with automated ledger reconciliations, real-time FX rate streams, smart contractor payouts, and audit logs.",
-    features: [
-      "Dynamic Multi-Currency Ledger",
-      "Automated Split Payroll & Contractor Rail",
-      "Biometric Sign-In & Passkey Support",
-      "PDF & Excel Statement Generator",
-    ],
-    techStack: ["TanStack Start", "Tailwind CSS", "Supabase", "Stripe Connect", "Zod"],
-    previewPrompt: "Modern dark financial treasury dashboard glowing green crypto fiat exchange rates",
-    mockStats: [
-      { label: "Supported Rails", value: "USD / EUR / INR / Stablecoin" },
-      { label: "Compliance", value: "SOC2 Type II Ready" },
-      { label: "Settlement", value: "T+0 Instant" },
-    ],
-  },
-  {
-    id: "titanium-ev-supercar",
-    name: "Titanium EV Supercar",
-    category: "Cinematic Landing",
-    tag: "Automotive / 3D",
-    gradient: "from-black via-zinc-950 to-emerald-950",
-    accent: "#4ade80",
-    frames: 600,
-    fps: 60,
-    desc: "Electric hypercar launch page with chassis breakdown and acceleration curve graph.",
-    longDesc:
-      "A breathtaking automotive experience with 0-60 dynamic acceleration scrub, aero air tunnel simulation, carbon tub stress analysis, and custom config reservation builder.",
-    features: [
-      "600-Frame Aerodynamic Wind Tunnel Scrub",
-      "Interactive 0-60 MPH Acceleration Chart",
-      "Battery Pack & Dual Motor X-Ray",
-      "VIP Reservation & Stripe Deposit Flow",
-    ],
-    techStack: ["React 19", "Framer Motion", "Tailwind CSS", "Vite"],
-    previewPrompt: "Aerodynamic matte black electric hypercar green laser headlights dark wind tunnel",
-    mockStats: [
-      { label: "0-60 MPH", value: "1.89s" },
-      { label: "Range", value: "520 Miles" },
-      { label: "Aero Drag", value: "0.208 Cd" },
-    ],
-  },
-  {
-    id: "solaris-renewable-energy-grid",
-    name: "Solaris Renewable Energy Grid",
-    category: "Dashboards",
-    tag: "IoT & Utilities",
-    gradient: "from-zinc-950 via-emerald-950/40 to-black",
-    accent: "#86efac",
-    frames: 320,
-    fps: 60,
-    desc: "Live solar and wind grid monitoring console with power generation gauges.",
-    longDesc:
-      "Industrial clean energy monitoring panel. Connect to IoT sensor streams to visualize megawatts generated, battery storage charge state, and power grid balance across facilities.",
-    features: [
-      "Live MegaWatt Generation Streamer",
-      "Battery Storage Thermals & Depth-of-Discharge",
-      "Weather Satellite Cloud Cover Overlay",
-      "Substation Fault Prediction Alerts",
-    ],
-    techStack: ["TanStack Start", "Tailwind CSS", "Recharts", "WebSockets"],
-    previewPrompt: "Solar farm clean energy grid telemetry interface futuristic green dials and gauges",
-    mockStats: [
-      { label: "Total Capacity", value: "1.4 GW" },
-      { label: "Battery Reserve", value: "850 MWh" },
-      { label: "Uptime", value: "99.99%" },
-    ],
-  },
-];
-
-const CATEGORIES = [
-  "All",
-  "3D Scroll",
-  "SaaS & AI",
-  "Cinematic Landing",
-  "E-Commerce",
-  "Dashboards",
-] as const;
-
-/* ── Main Component ───────────────────────────────────────── */
-
 function TemplatesPage() {
   const navigate = Route.useNavigate();
   const searchParams = Route.useSearch();
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    searchParams.category || "All",
+  const [selectedCategory, setSelectedCategory] = useState<TemplateCategory>(
+    (searchParams.category as TemplateCategory) || "All",
   );
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedBadge, setSelectedBadge] = useState<string>("All");
 
-  // Preview Modal State
+  // Active Preview Modal
   const initialActiveTemplate = useMemo(() => {
     const targetId = searchParams.preview || searchParams.id;
     if (!targetId) return null;
@@ -345,28 +86,46 @@ function TemplatesPage() {
     );
   }, [searchParams.preview, searchParams.id]);
 
-  const [activePreview, setActivePreview] = useState<TemplateItem | null>(
-    initialActiveTemplate,
-  );
-  const [deviceViewport, setDeviceViewport] = useState<"desktop" | "tablet" | "mobile">(
-    "desktop",
-  );
+  const [activePreview, setActivePreview] = useState<TemplateItem | null>(initialActiveTemplate);
+  const [promptModalTemplate, setPromptModalTemplate] = useState<TemplateItem | null>(null);
+  const [deviceViewport, setDeviceViewport] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [scrubProgress, setScrubProgress] = useState(35);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [activeTab, setActiveTab] = useState<"preview" | "features" | "stack">("preview");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Auto-play scrub simulation
+  useMemo(() => {
+    if (!isPlaying) return;
+    const interval = setInterval(() => {
+      setScrubProgress((prev) => (prev >= 100 ? 0 : prev + 1));
+    }, 45);
+    return () => clearInterval(interval);
+  }, [isPlaying]);
 
   // Filter templates
   const filteredTemplates = useMemo(() => {
     return TEMPLATES.filter((t) => {
-      const matchesCategory =
-        selectedCategory === "All" || t.category === selectedCategory;
+      const matchesCategory = selectedCategory === "All" || t.category === selectedCategory;
+      const matchesBadge = selectedBadge === "All" || t.badge === selectedBadge;
+      const query = searchQuery.toLowerCase().trim();
       const matchesSearch =
-        t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        t.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        t.tag.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
+        !query ||
+        t.name.toLowerCase().includes(query) ||
+        t.desc.toLowerCase().includes(query) ||
+        t.tag.toLowerCase().includes(query) ||
+        t.techStack.some((tech) => tech.toLowerCase().includes(query)) ||
+        t.godLevelPrompt.toLowerCase().includes(query);
+      return matchesCategory && matchesBadge && matchesSearch;
     });
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, selectedBadge, searchQuery]);
+
+  const handleCopyPrompt = (template: TemplateItem, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    navigator.clipboard.writeText(template.godLevelPrompt);
+    setCopiedId(template.id);
+    toast.success(`God-Level Prompt for "${template.name}" copied to clipboard!`);
+    setTimeout(() => setCopiedId(null), 3000);
+  };
 
   const openPreview = (template: TemplateItem) => {
     setActivePreview(template);
@@ -396,58 +155,59 @@ function TemplatesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030712] text-white selection:bg-[#22c55e] selection:text-black pt-24 pb-20 relative overflow-hidden">
-      {/* Background Ambience */}
+    <div className="min-h-screen bg-[#030712] text-white selection:bg-[#22c55e] selection:text-black pt-24 pb-24 relative overflow-hidden">
+      {/* Background Ambience & Lighting */}
       <div className="fixed inset-0 pointer-events-none -z-10">
         <div
           className="absolute inset-0"
           style={{
             backgroundImage: "radial-gradient(rgba(255,255,255,0.06) 0.6px, transparent 0.9px)",
-            backgroundSize: "8px 8px",
+            backgroundSize: "12px 12px",
           }}
         />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#22c55e]/10 rounded-full blur-[140px]" />
-        <div className="absolute bottom-0 right-0 w-[500px] h-[300px] bg-[#4ade80]/5 rounded-full blur-[160px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[850px] h-[400px] bg-[#22c55e]/10 rounded-full blur-[150px]" />
+        <div className="absolute bottom-1/4 right-0 w-[600px] h-[350px] bg-[#4ade80]/5 rounded-full blur-[170px]" />
       </div>
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Breadcrumb & Badges */}
+        {/* Breadcrumbs & Badge */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-2 text-xs text-white/50 font-mono">
             <Link to="/" className="hover:text-white transition-colors">
               Home
             </Link>
             <span>/</span>
-            <span className="text-[#4ade80]">Templates &amp; Presets</span>
+            <span className="text-[#4ade80]">Templates &amp; God-Level Prompts</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#22c55e]/10 border border-[#22c55e]/30 text-[#4ade80]">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#22c55e]/10 border border-[#22c55e]/30 text-[#4ade80] shadow-[0_0_15px_rgba(34,197,94,0.2)]">
               <Sparkles size={11} className="text-[#22c55e]" />
-              9 Production Templates Ready
+              {TEMPLATES.length} Cinematic 3D Templates Ready
             </span>
           </div>
         </div>
 
-        {/* Page Hero Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        {/* Hero Header */}
+        <div className="text-center max-w-4xl mx-auto mb-12">
           <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4ade80] mb-4 bg-[#22c55e]/10 px-3.5 py-1.5 rounded-full border border-[#22c55e]/25">
-            <Layers size={11} className="text-[#22c55e]" /> Signhify Starter Kits
+            <Layers size={11} className="text-[#22c55e]" /> Vibe Coding &amp; 3D Scroll Library
           </span>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4">
-            Production Templates &amp; <span className="text-[#22c55e]">Live Previews</span>
+            Cinematic 3D Templates &amp; <span className="text-[#22c55e]">God-Level Prompts</span>
           </h1>
-          <p className="text-white/70 text-sm sm:text-base md:text-lg leading-relaxed">
-            Jumpstart your next cinematic 3D website or AI SaaS. Click any preset to test the
-            interactive scroll simulator, swap viewports, or customize directly in the 3D builder.
+          <p className="text-white/70 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+            Choose from an exhaustive collection of 3D scroll websites, AI co-pilots, telemetry
+            dashboards, and hardware stores. Copy production master prompts or test the real-time 3D
+            simulator in one click.
           </p>
         </div>
 
-        {/* Search & Category Filter Bar */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#080c16]/80 backdrop-blur-xl p-4 mb-10 shadow-[0_10px_40px_rgba(0,0,0,0.4)]">
-          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-            {/* Category Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
-              {CATEGORIES.map((category) => {
+        {/* Search, Categories & Quick Badges Bar */}
+        <div className="rounded-2xl border border-white/[0.08] bg-[#080c16]/80 backdrop-blur-xl p-4 sm:p-5 mb-10 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+          <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+            {/* Category Filter Pills */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-none">
+              {TEMPLATE_CATEGORIES.map((category) => {
                 const isActive = selectedCategory === category;
                 return (
                   <button
@@ -455,7 +215,7 @@ function TemplatesPage() {
                     onClick={() => setSelectedCategory(category)}
                     className={`whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                       isActive
-                        ? "bg-[#22c55e] text-black font-bold shadow-[0_0_16px_rgba(34,197,94,0.35)]"
+                        ? "bg-[#22c55e] text-black font-bold shadow-[0_0_16px_rgba(34,197,94,0.4)]"
                         : "bg-white/[0.04] hover:bg-white/[0.08] text-white/70 hover:text-white border border-white/[0.06]"
                     }`}
                   >
@@ -466,7 +226,7 @@ function TemplatesPage() {
             </div>
 
             {/* Search Input */}
-            <div className="relative min-w-[240px] md:min-w-[280px]">
+            <div className="relative min-w-[260px] md:min-w-[320px]">
               <Search
                 size={14}
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40"
@@ -475,8 +235,8 @@ function TemplatesPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search templates or tech..."
-                className="w-full pl-9 pr-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white text-xs outline-none focus:border-[#22c55e]/60 transition-colors"
+                placeholder="Search 18+ templates, prompts, tech stack..."
+                className="w-full pl-9 pr-8 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white text-xs outline-none focus:border-[#22c55e]/60 transition-colors"
               />
               {searchQuery && (
                 <button
@@ -488,41 +248,64 @@ function TemplatesPage() {
               )}
             </div>
           </div>
+
+          {/* Quick Badges Filter Bar */}
+          <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-white/[0.06]">
+            <span className="text-[11px] font-mono text-white/40 uppercase mr-1">Filter by:</span>
+            {["All", "God-Level Prompt", "Cinematic 3D", "Featured", "Trending", "New"].map(
+              (badge) => (
+                <button
+                  key={badge}
+                  onClick={() => setSelectedBadge(badge)}
+                  className={`text-[11px] px-3 py-1 rounded-lg transition-colors ${
+                    selectedBadge === badge
+                      ? "bg-[#22c55e]/20 text-[#4ade80] border border-[#22c55e]/40 font-bold"
+                      : "bg-white/[0.02] text-white/50 hover:text-white/80 border border-white/[0.04]"
+                  }`}
+                >
+                  {badge}
+                </button>
+              ),
+            )}
+          </div>
         </div>
 
         {/* Templates Grid */}
         {filteredTemplates.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch mb-20">
             {filteredTemplates.map((template) => (
               <article
                 key={template.id}
-                className="group relative rounded-3xl overflow-hidden border border-white/[0.08] bg-[#080c16] hover:border-[#22c55e]/40 transition-all duration-500 flex flex-col shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
+                className="group relative rounded-3xl overflow-hidden border border-white/[0.08] bg-[#080c16] hover:border-[#22c55e]/50 transition-all duration-500 flex flex-col shadow-[0_10px_40px_rgba(0,0,0,0.6)]"
               >
-                {/* Glow Overlay */}
+                {/* Ambient Card Hover Glow */}
                 <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
                   style={{
                     background:
-                      "radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.12) 0%, transparent 70%)",
+                      "radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.15) 0%, transparent 70%)",
                   }}
                 />
 
-                {/* Card Visual Header */}
+                {/* 3D Visual Preview Header with Interactive Particle Canvas */}
                 <div className="aspect-[16/10] w-full relative overflow-hidden bg-[#030712] border-b border-white/10 isolate">
                   <div
                     className={`absolute inset-0 bg-gradient-to-br ${template.gradient}`}
                     aria-hidden
                   />
-                  <div
-                    className="absolute inset-0 opacity-30"
-                    style={{
-                      backgroundImage:
-                        "radial-gradient(rgba(255,255,255,0.1) 1px, transparent 0)",
-                      backgroundSize: "16px 16px",
-                    }}
-                  />
 
-                  {/* Window Controls */}
+                  {/* Procedural 3D Canvas */}
+                  <div className="absolute inset-0 opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+                    <TemplateParticleCanvas
+                      mode={template.particleMode}
+                      accent={template.accent}
+                      secondaryAccent={template.secondaryAccent}
+                      scrubProgress={45}
+                      interactive={true}
+                    />
+                  </div>
+
+                  {/* Window Traffic Dots */}
                   <div className="absolute top-3.5 left-3.5 flex gap-1.5 z-10">
                     <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
                     <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
@@ -531,40 +314,44 @@ function TemplatesPage() {
 
                   {/* Badges */}
                   <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 z-10">
-                    <span className="text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/70 border border-[#22c55e]/40 text-[#4ade80] backdrop-blur-md">
-                      {template.tag}
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/75 border border-[#22c55e]/40 text-[#4ade80] backdrop-blur-md shadow-sm">
+                      {template.badge}
                     </span>
                   </div>
 
-                  {/* Center Visual Mockup */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                    <div className="w-12 h-12 rounded-2xl bg-white/[0.04] border border-white/[0.1] backdrop-blur-md flex items-center justify-center text-white mb-2 shadow-inner group-hover:scale-110 group-hover:text-[#22c55e] group-hover:border-[#22c55e]/40 transition-all duration-300">
-                      <WandSparkles size={20} />
-                    </div>
-                    <span className="text-xs font-mono text-white/50 tracking-wider">
-                      {template.frames} Frames · {template.fps} FPS Scrub
+                  {/* Middle Frame Scrub Indicator */}
+                  <div className="absolute bottom-3 left-3.5 z-10">
+                    <span className="text-[10px] font-mono text-white/60 bg-black/60 px-2 py-0.5 rounded-md border border-white/10 backdrop-blur-md">
+                      {template.frames} Frames · 60 FPS
                     </span>
                   </div>
 
-                  {/* Hover Quick Action */}
-                  <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 to-transparent flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {/* Quick Action Overlay */}
+                  <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex justify-center items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
                     <button
                       onClick={() => openPreview(template)}
-                      className="px-4 py-1.5 rounded-full bg-[#22c55e] text-black text-xs font-bold flex items-center gap-1.5 shadow-[0_0_16px_rgba(34,197,94,0.4)]"
+                      className="px-4 py-1.5 rounded-full bg-[#22c55e] text-black text-xs font-bold flex items-center gap-1.5 shadow-[0_0_16px_rgba(34,197,94,0.5)] hover:scale-105 transition-transform"
                     >
-                      <Eye size={12} /> Interactive Preview
+                      <Eye size={12} /> 3D Live Preview
+                    </button>
+                    <button
+                      onClick={(e) => handleCopyPrompt(template, e)}
+                      className="px-3 py-1.5 rounded-full bg-black/80 hover:bg-black text-white text-xs font-semibold flex items-center gap-1.5 border border-white/20 backdrop-blur-md"
+                    >
+                      {copiedId === template.id ? <CheckCircle2 size={12} className="text-[#22c55e]" /> : <Copy size={12} />}
+                      Prompt
                     </button>
                   </div>
                 </div>
 
-                {/* Card Content */}
+                {/* Card Content & Features */}
                 <div className="p-5 sm:p-6 flex flex-col gap-4 flex-1">
                   <div>
-                    <div className="flex items-center justify-between gap-2 mb-1">
-                      <h2 className="text-white font-bold text-lg tracking-tight group-hover:text-[#4ade80] transition-colors">
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <h2 className="text-white font-bold text-lg tracking-tight group-hover:text-[#4ade80] transition-colors line-clamp-1">
                         {template.name}
                       </h2>
-                      <span className="text-[10px] font-mono text-white/40 uppercase">
+                      <span className="text-[10px] font-mono text-white/40 uppercase shrink-0">
                         {template.category}
                       </span>
                     </div>
@@ -585,19 +372,27 @@ function TemplatesPage() {
                     ))}
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-2 mt-auto pt-3 border-t border-white/[0.06]">
+                  {/* Bottom Actions */}
+                  <div className="flex items-center gap-2 mt-auto pt-3.5 border-t border-white/[0.06]">
                     <button
                       onClick={() => openPreview(template)}
-                      className="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] text-white hover:text-[#4ade80] hover:border-[#22c55e]/40 transition-all flex items-center justify-center gap-1.5"
+                      className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-white/[0.05] hover:bg-white/[0.12] border border-white/[0.1] text-white hover:text-[#4ade80] hover:border-[#22c55e]/40 transition-all flex items-center justify-center gap-1.5"
                     >
                       <Eye size={13} />
                       Preview
                     </button>
+                    <button
+                      onClick={() => setPromptModalTemplate(template)}
+                      className="py-2.5 px-3 rounded-xl text-xs font-bold bg-white/[0.05] hover:bg-white/[0.12] border border-white/[0.1] text-white hover:text-white transition-all flex items-center justify-center gap-1.5"
+                      title="Inspect God-Level Prompt"
+                    >
+                      <Terminal size={13} className="text-[#22c55e]" />
+                      Prompt
+                    </button>
                     <Link
                       to="/scroll-studio"
-                      search={{ prompt: template.previewPrompt }}
-                      className="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black flex items-center justify-center gap-1.5 transition-transform hover:scale-[1.02]"
+                      search={{ prompt: template.godLevelPrompt }}
+                      className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black flex items-center justify-center gap-1.5 transition-transform hover:scale-[1.02]"
                     >
                       <WandSparkles size={12} />
                       Customize
@@ -612,34 +407,35 @@ function TemplatesPage() {
             <Layers size={36} className="text-white/30 mx-auto mb-3" />
             <h3 className="font-display text-lg font-bold text-white mb-1">No templates found</h3>
             <p className="text-white/50 text-xs mb-4">
-              Try adjusting your search terms or select another category filter.
+              Try adjusting your search terms or selecting another category filter.
             </p>
             <button
               onClick={() => {
                 setSelectedCategory("All");
+                setSelectedBadge("All");
                 setSearchQuery("");
               }}
               className="px-4 py-2 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-xs font-semibold text-white"
             >
-              Reset Filters
+              Reset All Filters
             </button>
           </div>
         )}
 
-        {/* Pro Banner Callout */}
-        <div className="rounded-3xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-xl p-8 sm:p-12 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#22c55e]/10 rounded-full blur-[140px] pointer-events-none" />
+        {/* Pricing / Pro Callout Banner */}
+        <div className="rounded-3xl border border-white/[0.08] bg-[#080c16]/90 backdrop-blur-xl p-8 sm:p-12 relative overflow-hidden shadow-[0_15px_50px_rgba(0,0,0,0.6)]">
+          <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-[#22c55e]/10 rounded-full blur-[140px] pointer-events-none" />
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
             <div>
               <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#4ade80] mb-2 bg-[#22c55e]/10 px-3 py-1 rounded-full border border-[#22c55e]/20">
-                <Zap size={10} className="text-[#22c55e]" /> Need a custom bespoke experience?
+                <Zap size={10} className="text-[#22c55e]" /> Starting from just $5/month (5 AI Credits)
               </span>
               <h2 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2">
-                Have a unique design or 3D 360° asset?
+                Need bespoke 3D assets or autonomous swarms?
               </h2>
               <p className="text-white/60 text-xs sm:text-sm max-w-xl leading-relaxed">
-                Describe your vision in Scroll Studio or hire our engineering studio to build,
-                render, and deploy your custom flagship website.
+                Describe your project prompt or scale up to our $50 (75 credits), $100 (125 credits),
+                or $200 (300 credits) dedicated tiers with full source code ownership.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3 shrink-0">
@@ -647,20 +443,20 @@ function TemplatesPage() {
                 to="/pricing"
                 className="px-6 py-3.5 rounded-xl text-xs font-bold bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] text-white hover:border-[#22c55e]/40 transition-colors"
               >
-                View Plans ($49/mo)
+                View Pricing ($5 - $200/mo)
               </Link>
               <Link
-                to="/builder"
-                className="px-6 py-3.5 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black flex items-center gap-2"
+                to="/scroll-studio"
+                className="px-6 py-3.5 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black flex items-center gap-2 shadow-[0_0_20px_rgba(34,197,94,0.3)]"
               >
-                Launch Builder <ArrowRight size={14} />
+                Open 3D Builder <ArrowRight size={14} />
               </Link>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Interactive Live Preview Modal ───────────────────────── */}
+      {/* ── Interactive Live 3D Preview Modal ───────────────────────── */}
       {activePreview && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6">
           {/* Backdrop */}
@@ -670,16 +466,15 @@ function TemplatesPage() {
           />
 
           {/* Modal Container */}
-          <div className="relative z-10 w-full max-w-6xl max-h-[95vh] rounded-3xl border border-white/[0.12] bg-[#080c16] shadow-[0_25px_80px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden animate-[scaleUp_0.25s_ease-out]">
+          <div className="relative z-10 w-full max-w-6xl max-h-[95vh] rounded-3xl border border-white/[0.12] bg-[#080c16] shadow-[0_25px_80px_rgba(0,0,0,0.95)] flex flex-col overflow-hidden animate-[scaleUp_0.25s_ease-out]">
             {/* Modal Header Bar */}
             <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-white/[0.08] bg-[#030712]/90">
-              {/* Title & Badge */}
               <div className="flex items-center gap-3">
-                <SignhifyLogo size={22} />
+                <SignhifyLogo size={24} />
                 <div>
                   <h3 className="text-white font-bold text-sm sm:text-base flex items-center gap-2">
                     {activePreview.name}
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#22c55e]/15 border border-[#22c55e]/40 text-[#4ade80]">
+                    <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#22c55e]/15 border border-[#22c55e]/40 text-[#4ade80]">
                       {activePreview.tag}
                     </span>
                   </h3>
@@ -695,7 +490,7 @@ function TemplatesPage() {
                       ? "bg-[#22c55e] text-black font-bold"
                       : "text-white/60 hover:text-white"
                   }`}
-                  title="Desktop (100% width)"
+                  title="Desktop (16:9)"
                 >
                   <Laptop size={14} />
                   <span className="hidden md:inline">Desktop</span>
@@ -707,7 +502,7 @@ function TemplatesPage() {
                       ? "bg-[#22c55e] text-black font-bold"
                       : "text-white/60 hover:text-white"
                   }`}
-                  title="Tablet (768px)"
+                  title="Tablet (4:3)"
                 >
                   <Tablet size={14} />
                   <span className="hidden md:inline">Tablet</span>
@@ -719,18 +514,29 @@ function TemplatesPage() {
                       ? "bg-[#22c55e] text-black font-bold"
                       : "text-white/60 hover:text-white"
                   }`}
-                  title="Mobile (375px)"
+                  title="Mobile (9:16)"
                 >
                   <Smartphone size={14} />
                   <span className="hidden md:inline">Mobile</span>
                 </button>
               </div>
 
-              {/* Close Button */}
+              {/* Actions & Close */}
               <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handleCopyPrompt(activePreview)}
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] text-white"
+                >
+                  {copiedId === activePreview.id ? (
+                    <CheckCircle2 size={13} className="text-[#22c55e]" />
+                  ) : (
+                    <Copy size={13} />
+                  )}
+                  <span>Copy Prompt</span>
+                </button>
                 <Link
                   to="/scroll-studio"
-                  search={{ prompt: activePreview.previewPrompt }}
+                  search={{ prompt: activePreview.godLevelPrompt }}
                   className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black"
                 >
                   <WandSparkles size={12} />
@@ -747,7 +553,7 @@ function TemplatesPage() {
 
             {/* Modal Body */}
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
-              {/* Responsive Simulated Viewport Container */}
+              {/* Responsive Simulated 3D Viewport */}
               <div className="w-full flex justify-center items-center py-2">
                 <div
                   className={`transition-all duration-300 rounded-2xl overflow-hidden border border-white/[0.1] bg-[#030712] shadow-2xl relative ${
@@ -758,38 +564,41 @@ function TemplatesPage() {
                         : "w-[360px] aspect-[9/16]"
                   }`}
                 >
-                  {/* Simulated 3D Background */}
+                  {/* Background Gradient */}
                   <div
                     className={`absolute inset-0 bg-gradient-to-br ${activePreview.gradient}`}
                   />
-                  <div
-                    className="absolute inset-0 opacity-25"
-                    style={{
-                      backgroundImage:
-                        "radial-gradient(rgba(255,255,255,0.15) 1px, transparent 0)",
-                      backgroundSize: "20px 20px",
-                    }}
-                  />
 
-                  {/* Traffic lights inside viewport */}
-                  <div className="absolute top-3 left-3 flex gap-1.5 z-20">
+                  {/* Live 3D Particle Canvas */}
+                  <div className="absolute inset-0">
+                    <TemplateParticleCanvas
+                      mode={activePreview.particleMode}
+                      accent={activePreview.accent}
+                      secondaryAccent={activePreview.secondaryAccent}
+                      scrubProgress={scrubProgress}
+                      interactive={true}
+                    />
+                  </div>
+
+                  {/* Window Controls Overlay */}
+                  <div className="absolute top-3.5 left-3.5 flex gap-1.5 z-20">
                     <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
                     <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
                     <div className="w-2.5 h-2.5 rounded-full bg-[#22c55e]" />
                   </div>
 
-                  {/* Simulated Frame Display */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-10">
-                    <div className="p-4 rounded-3xl bg-black/60 border border-white/[0.1] backdrop-blur-xl max-w-md">
+                  {/* Simulated Content Hero Overlay */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-10 pointer-events-none">
+                    <div className="p-5 rounded-3xl bg-black/65 border border-white/[0.12] backdrop-blur-xl max-w-lg shadow-[0_10px_40px_rgba(0,0,0,0.8)]">
                       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-mono text-[#4ade80] bg-[#22c55e]/10 border border-[#22c55e]/30 mb-3">
                         <Sparkles size={11} className="text-[#22c55e]" />
                         Frame {Math.round((scrubProgress / 100) * activePreview.frames)} of{" "}
                         {activePreview.frames} ({scrubProgress}%)
                       </div>
-                      <h4 className="font-display text-xl sm:text-2xl font-bold text-white mb-2">
+                      <h4 className="font-display text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight">
                         {activePreview.name}
                       </h4>
-                      <p className="text-white/60 text-xs leading-relaxed mb-4">
+                      <p className="text-white/70 text-xs leading-relaxed mb-4 line-clamp-3">
                         {activePreview.longDesc}
                       </p>
                       <div className="grid grid-cols-3 gap-2 text-left pt-3 border-t border-white/[0.08]">
@@ -804,8 +613,8 @@ function TemplatesPage() {
                   </div>
 
                   {/* Overlay Watermark */}
-                  <div className="absolute bottom-3 right-3 text-[10px] font-mono text-white/30 tracking-wider">
-                    Signhify 3D Engine · 60 FPS
+                  <div className="absolute bottom-3 right-3 text-[10px] font-mono text-white/40 tracking-wider bg-black/40 px-2.5 py-1 rounded-md border border-white/10 backdrop-blur-md">
+                    Signhify 3D Engine · 60 FPS Locked
                   </div>
                 </div>
               </div>
@@ -824,19 +633,51 @@ function TemplatesPage() {
                   onChange={(e) => setScrubProgress(Number(e.target.value))}
                   className="flex-1 w-full accent-[#22c55e] cursor-pointer"
                 />
-                <div className="flex items-center gap-2 text-xs font-mono text-[#4ade80] shrink-0">
-                  <span>{scrubProgress}% (Frame {Math.round((scrubProgress / 100) * activePreview.frames)})</span>
+                <div className="flex items-center gap-3 text-xs font-mono text-[#4ade80] shrink-0">
+                  <span>
+                    {scrubProgress}% (Frame {Math.round((scrubProgress / 100) * activePreview.frames)})
+                  </span>
+                  <button
+                    onClick={() => setIsPlaying(!isPlaying)}
+                    className="p-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.15] text-white transition-colors"
+                    title={isPlaying ? "Pause scrub animation" : "Auto-play scrub animation"}
+                  >
+                    {isPlaying ? <Pause size={13} /> : <Play size={13} />}
+                  </button>
                   <button
                     onClick={() => setScrubProgress(0)}
-                    className="p-1 rounded bg-white/[0.06] hover:bg-white/[0.12] text-white/60 hover:text-white"
-                    title="Reset to 0%"
+                    className="p-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.15] text-white/60 hover:text-white transition-colors"
+                    title="Reset to frame 0"
                   >
-                    <RotateCcw size={12} />
+                    <RotateCcw size={13} />
                   </button>
                 </div>
               </div>
 
-              {/* Specs & Features Grid */}
+              {/* God-Level Prompt Drawer */}
+              <div className="rounded-2xl border border-white/[0.08] bg-[#030712] p-5">
+                <div className="flex items-center justify-between gap-3 mb-3">
+                  <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-[#4ade80] flex items-center gap-2">
+                    <Terminal size={14} className="text-[#22c55e]" /> God-Level Master Prompt
+                  </h4>
+                  <button
+                    onClick={() => handleCopyPrompt(activePreview)}
+                    className="px-3 py-1 rounded-lg text-xs font-semibold bg-white/[0.06] hover:bg-white/[0.12] text-white flex items-center gap-1.5 transition-colors"
+                  >
+                    {copiedId === activePreview.id ? (
+                      <CheckCircle2 size={12} className="text-[#22c55e]" />
+                    ) : (
+                      <Copy size={12} />
+                    )}
+                    <span>{copiedId === activePreview.id ? "Copied!" : "Copy Full Prompt"}</span>
+                  </button>
+                </div>
+                <div className="p-3.5 rounded-xl bg-black/70 border border-white/[0.06] font-mono text-xs text-white/80 leading-relaxed max-h-40 overflow-y-auto whitespace-pre-wrap select-all">
+                  {activePreview.godLevelPrompt}
+                </div>
+              </div>
+
+              {/* Specs & Architecture Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5">
                   <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-[#4ade80] mb-3 flex items-center gap-2">
@@ -845,7 +686,7 @@ function TemplatesPage() {
                   <ul className="space-y-2">
                     {activePreview.features.map((feat) => (
                       <li key={feat} className="text-xs text-white/75 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] shrink-0" />
                         {feat}
                       </li>
                     ))}
@@ -853,9 +694,9 @@ function TemplatesPage() {
                 </div>
                 <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5">
                   <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-[#4ade80] mb-3 flex items-center gap-2">
-                    <Boxes size={14} className="text-[#22c55e]" /> Architecture &amp; Stack
+                    <Boxes size={14} className="text-[#22c55e]" /> Architecture &amp; Tech Stack
                   </h4>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mb-4">
                     {activePreview.techStack.map((tech) => (
                       <span
                         key={tech}
@@ -865,9 +706,9 @@ function TemplatesPage() {
                       </span>
                     ))}
                   </div>
-                  <p className="text-[11px] text-white/40 mt-4 leading-relaxed">
-                    100% full source code ownership. No lock-in, clean TypeScript, and deployable to
-                    Cloudflare, Vercel, or custom VPS.
+                  <p className="text-[11px] text-white/40 leading-relaxed">
+                    100% full source code ownership. Zero vendor lock-in. Clean TypeScript, MIT
+                    license, and one-click deployment ready for Cloudflare, Vercel, or custom VPS.
                   </p>
                 </div>
               </div>
@@ -884,13 +725,66 @@ function TemplatesPage() {
               <div className="flex items-center gap-3">
                 <Link
                   to="/scroll-studio"
-                  search={{ prompt: activePreview.previewPrompt }}
+                  search={{ prompt: activePreview.godLevelPrompt }}
                   className="px-6 py-2.5 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black flex items-center gap-2 shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:scale-[1.02] transition-transform"
                 >
                   <WandSparkles size={13} />
                   Customize in 3D Builder
                 </Link>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── God-Level Prompt Dedicated Modal ──────────────────────── */}
+      {promptModalTemplate && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            onClick={() => setPromptModalTemplate(null)}
+            className="absolute inset-0 bg-black/85 backdrop-blur-md"
+          />
+          <div className="relative z-10 w-full max-w-2xl rounded-3xl border border-white/[0.12] bg-[#080c16] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.9)]">
+            <div className="flex items-center justify-between gap-3 mb-4 pb-4 border-b border-white/[0.08]">
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#4ade80] bg-[#22c55e]/10 px-2.5 py-0.5 rounded-full border border-[#22c55e]/30">
+                  God-Level Master Prompt
+                </span>
+                <h3 className="text-white font-bold text-lg mt-1">{promptModalTemplate.name}</h3>
+              </div>
+              <button
+                onClick={() => setPromptModalTemplate(null)}
+                className="w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.15] text-white flex items-center justify-center"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-black/80 border border-white/[0.08] font-mono text-xs text-white/80 leading-relaxed max-h-96 overflow-y-auto whitespace-pre-wrap select-all mb-6">
+              {promptModalTemplate.godLevelPrompt}
+            </div>
+
+            <div className="flex items-center justify-between gap-3">
+              <button
+                onClick={() => handleCopyPrompt(promptModalTemplate)}
+                className="px-5 py-2.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-xs font-bold text-white flex items-center gap-2 transition-colors"
+              >
+                {copiedId === promptModalTemplate.id ? (
+                  <CheckCircle2 size={14} className="text-[#22c55e]" />
+                ) : (
+                  <Copy size={14} />
+                )}
+                <span>{copiedId === promptModalTemplate.id ? "Copied to Clipboard" : "Copy Prompt"}</span>
+              </button>
+              <Link
+                to="/scroll-studio"
+                search={{ prompt: promptModalTemplate.godLevelPrompt }}
+                onClick={() => setPromptModalTemplate(null)}
+                className="px-6 py-2.5 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black flex items-center gap-2"
+              >
+                <WandSparkles size={13} />
+                Open in 3D Builder
+              </Link>
             </div>
           </div>
         </div>

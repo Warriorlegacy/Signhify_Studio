@@ -44,8 +44,18 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link to="/templates" className="hover:text-foreground">
+                3D Templates & Prompts
+              </Link>
+            </li>
+            <li>
+              <Link to="/scroll-studio" className="hover:text-foreground">
+                Scroll Studio Builder
+              </Link>
+            </li>
+            <li>
               <Link to="/pricing" className="hover:text-foreground">
-                Pricing
+                Pricing & Credits ($5-$200)
               </Link>
             </li>
             <li>

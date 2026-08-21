@@ -1,15 +1,12 @@
 import {
   LayoutTemplate,
   Sparkles,
-  ShoppingCart,
-  Briefcase,
   Plus,
-  Bot,
-  Wallet,
-  Truck,
-  Mail,
   ChevronRight,
   Eye,
+  Copy,
+  CheckCircle2,
+  Terminal,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useServerFn } from "@tanstack/react-start";
@@ -17,126 +14,22 @@ import { createScrollStudioProject } from "@/lib/scroll-studio-projects.function
 import { useUser } from "@/hooks/useUser";
 import { toast } from "sonner";
 import { useState } from "react";
-
-const TEMPLATES = [
-  {
-    id: "saas-dark",
-    name: "SaaS Dark",
-    description:
-      "Cinematic dark mode landing for software products with hero video and feature cards.",
-    icon: LayoutTemplate,
-    gradient: "from-blue-600/20 to-purple-600/20",
-    tags: ["SaaS", "Dark", "3D"],
-    category: "SaaS",
-    prompt:
-      "Create a cinematic dark SaaS landing page with a full-screen hero video, liquid-glass navbar, feature cards with icons, pricing section, and CTA. Use deep navy background with teal accents.",
-  },
-  {
-    id: "power-ai",
-    name: "Power AI",
-    description:
-      "Full-screen dark AI landing with hero video, gradient headline, and logo marquee.",
-    icon: Bot,
-    gradient: "from-indigo-600/20 via-purple-600/20 to-amber-500/20",
-    tags: ["AI", "Dark", "Video Hero"],
-    category: "AI",
-    prompt:
-      "Build a full-screen dark AI landing page with CloudFront hero video, 220px headline with indigo-to-purple-to-amber AI gradient, liquid-glass navbar, logo marquee, and requestAnimationFrame fade loop.",
-  },
-  {
-    id: "ecommerce-light",
-    name: "E-Commerce Light",
-    description: "Clean, high-end product showcase with smooth scroll transitions.",
-    icon: ShoppingCart,
-    gradient: "from-emerald-500/20 to-teal-400/20",
-    tags: ["E-Commerce", "Light", "Minimal"],
-    category: "E-Commerce",
-    prompt:
-      "Create a clean high-end e-commerce landing with product showcase cards, smooth scroll transitions, pastel color scheme, 3D object highlights, and a checkout CTA section.",
-  },
-  {
-    id: "halo-usd",
-    name: "Halo — Fintech",
-    description:
-      "Premium fintech stablecoin landing with hero video, savings cards, and backers marquee.",
-    icon: Wallet,
-    gradient: "from-cyan-500/20 to-blue-400/20",
-    tags: ["Fintech", "Premium", "Stablecoin"],
-    category: "Fintech",
-    prompt:
-      "Build a premium fintech stablecoin landing on light background with TT Norms Pro typography, hero video, savings feature cards, backers/partner marquee, and commerce use-case panel.",
-  },
-  {
-    id: "targo-logistics",
-    name: "Targo — Logistics",
-    description:
-      "Logistics hero with bold typography, brand red on black, fullscreen video, and glass consultation card.",
-    icon: Truck,
-    gradient: "from-red-500/20 to-orange-500/20",
-    tags: ["Logistics", "Bold", "Video"],
-    category: "Logistics",
-    prompt:
-      "Create a logistics hero page with Rubik typography, brand red #EE3F2C on black, fullscreen CloudFront video without overlay, clipped-corner CTAs, and a glass consultation card.",
-  },
-  {
-    id: "mindloop-newsletter",
-    name: "Mindloop — Newsletter",
-    description:
-      "Black monochrome newsletter landing with liquid-glass UI, scroll word reveal, and platform cards.",
-    icon: Mail,
-    gradient: "from-gray-600/20 to-zinc-500/20",
-    tags: ["Newsletter", "Monochrome", "Glass"],
-    category: "Newsletter",
-    prompt:
-      "Build a black monochrome newsletter landing with liquid-glass UI, scroll word reveal animation, platform integration cards, and HLS CTA video section.",
-  },
-  {
-    id: "portfolio-creative",
-    name: "Creative Portfolio",
-    description: "Vibrant and interactive gallery for designers and agencies.",
-    icon: Briefcase,
-    gradient: "from-orange-500/20 to-pink-500/20",
-    tags: ["Portfolio", "Creative", "Colorful"],
-    category: "Portfolio",
-    prompt:
-      "Create a vibrant creative portfolio with interactive gallery, scroll-triggered animations, project case studies, and a contact form. Use warm gradients and bold typography.",
-  },
-  {
-    id: "auto-machines",
-    name: "Auto Machines",
-    description:
-      "Full-viewport black hero with lazy 3D, gradient headline, technical specs card, and mono pill badges.",
-    icon: Bot,
-    gradient: "from-violet-600/20 to-fuchsia-500/20",
-    tags: ["Automation", "Dark", "Technical"],
-    category: "AI",
-    prompt:
-      "Build a full-viewport black hero with lazy Spline 3D, Orbitron gradient headline, technical specs card, mono pill badges, and a request specs section.",
-  },
-];
-
-const CATEGORIES = [
-  "All",
-  "SaaS",
-  "AI",
-  "E-Commerce",
-  "Fintech",
-  "Logistics",
-  "Newsletter",
-  "Portfolio",
-];
+import { TEMPLATES, TEMPLATE_CATEGORIES, type TemplateCategory, type TemplateItem } from "@/lib/templates-data";
 
 export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: string) => void }) {
   const { user } = useUser();
   const createProjectFn = useServerFn(createScrollStudioProject);
   const [isCreating, setIsCreating] = useState<string | null>(null);
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [previewTemplate, setPreviewTemplate] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<TemplateCategory>("All");
+  const [previewTemplate, setPreviewTemplate] = useState<TemplateItem | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const filteredTemplates =
-    activeCategory === "All" ? TEMPLATES : TEMPLATES.filter((t) => t.category === activeCategory);
+    activeCategory === "All"
+      ? TEMPLATES
+      : TEMPLATES.filter((t) => t.category === activeCategory);
 
-  const handleSelectTemplate = async (template: (typeof TEMPLATES)[number]) => {
+  const handleSelectTemplate = async (template: TemplateItem) => {
     if (!user) {
       toast.error("You must be logged in to create a project.");
       return;
@@ -147,10 +40,10 @@ export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: str
       const project = await createProjectFn({
         data: {
           title: `${template.name} Site`,
-          initialPrompt: template.prompt,
+          initialPrompt: template.godLevelPrompt,
         },
       });
-      toast.success("Project created!");
+      toast.success(`Project created with ${template.name}!`);
       onSelectProject(project.id);
     } catch (error) {
       console.error(error);
@@ -170,11 +63,11 @@ export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: str
     try {
       const project = await createProjectFn({
         data: {
-          title: "Blank Project",
-          initialPrompt: "Start with a blank cinematic canvas.",
+          title: "Blank 3D Canvas",
+          initialPrompt: "Start with a blank cinematic 3D scroll canvas.",
         },
       });
-      toast.success("Project created!");
+      toast.success("Blank project created!");
       onSelectProject(project.id);
     } catch (error) {
       console.error(error);
@@ -184,31 +77,42 @@ export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: str
     }
   };
 
+  const handleCopyPrompt = (template: TemplateItem, e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(template.godLevelPrompt);
+    setCopiedId(template.id);
+    toast.success("God-Level Prompt copied to clipboard!");
+    setTimeout(() => setCopiedId(null), 3000);
+  };
+
   return (
-    <div className="w-full h-full p-12 overflow-y-auto">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="w-full h-full p-6 sm:p-10 lg:p-12 overflow-y-auto bg-[#030712] text-white">
+      <div className="max-w-7xl mx-auto space-y-8">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
-            <Sparkles className="w-3.5 h-3.5" />
-            Preset Gallery
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#22c55e]/30 bg-[#22c55e]/10 px-3 py-1.5 text-xs font-semibold text-[#4ade80]">
+            <Sparkles className="w-3.5 h-3.5 text-[#22c55e]" />
+            3D Preset &amp; God-Level Prompt Gallery
           </div>
-          <h2 className="text-3xl font-display font-bold">Start from a proven design</h2>
-          <p className="text-muted-foreground max-w-2xl">
-            Every preset is inspired by a real customer — their brief, their industry, their visual
-            taste. Pick one, make it yours, ship it.
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tight">
+            Start from a proven 3D cinematic template
+          </h2>
+          <p className="text-white/60 text-sm max-w-3xl leading-relaxed">
+            Every template includes an exhaustive god-level prompt, 3D particle shaders, 60 FPS
+            scroll scrub interpolation, and production architecture. Pick any template to customize
+            or start from scratch.
           </p>
         </div>
 
         {/* Category Filter */}
         <div className="flex flex-wrap gap-2">
-          {CATEGORIES.map((cat) => (
+          {TEMPLATE_CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                 activeCategory === cat
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  ? "bg-[#22c55e] text-black font-bold shadow-[0_0_12px_rgba(34,197,94,0.35)]"
+                  : "bg-white/[0.04] text-white/70 hover:text-white hover:bg-white/[0.08] border border-white/[0.06]"
               }`}
             >
               {cat}
@@ -219,22 +123,25 @@ export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: str
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {/* Blank Canvas Card */}
           <div
-            className="group relative rounded-2xl border border-border/50 bg-background/50 hover:bg-muted/50 p-6 flex flex-col justify-between cursor-pointer transition-all hover:border-primary/50"
+            className="group relative rounded-2xl border border-white/[0.08] bg-[#080c16] hover:bg-white/[0.04] p-6 flex flex-col justify-between cursor-pointer transition-all hover:border-[#22c55e]/50 shadow-md"
             onClick={handleCreateBlank}
           >
-            <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-6">
-              <Plus className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+            <div className="w-12 h-12 rounded-xl bg-white/[0.06] border border-white/[0.1] flex items-center justify-center mb-6">
+              <Plus className="w-6 h-6 text-white/70 group-hover:text-[#22c55e] transition-colors" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2">Blank Canvas</h3>
-              <p className="text-sm text-muted-foreground">
-                Start from scratch and describe what you want.
+              <div className="inline-block text-[10px] font-mono uppercase tracking-wider text-[#4ade80] mb-1">
+                Custom Build
+              </div>
+              <h3 className="text-lg font-semibold text-white mb-2">Blank 3D Canvas</h3>
+              <p className="text-xs text-white/50 leading-relaxed">
+                Start from an empty canvas and write your own custom prompt.
               </p>
             </div>
             {isCreating === "blank" && (
-              <div className="absolute inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center rounded-2xl">
-                <div className="flex items-center text-sm font-medium text-primary">
-                  <Sparkles className="w-4 h-4 mr-2 animate-spin" /> Creating...
+              <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center rounded-2xl z-20">
+                <div className="flex items-center text-sm font-medium text-[#4ade80]">
+                  <Sparkles className="w-4 h-4 mr-2 animate-spin text-[#22c55e]" /> Creating canvas...
                 </div>
               </div>
             )}
@@ -243,48 +150,64 @@ export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: str
           {filteredTemplates.map((template) => (
             <div
               key={template.id}
-              className="group relative rounded-2xl border border-border/50 bg-background/50 hover:bg-muted/50 p-6 flex flex-col justify-between cursor-pointer transition-all hover:border-primary/50 overflow-hidden"
+              className="group relative rounded-2xl border border-white/[0.08] bg-[#080c16] hover:bg-white/[0.03] p-5 flex flex-col justify-between cursor-pointer transition-all hover:border-[#22c55e]/50 overflow-hidden shadow-lg"
+              onClick={() => handleSelectTemplate(template)}
             >
+              {/* Background gradient hint */}
               <div
                 className={`absolute top-0 left-0 w-full h-32 bg-gradient-to-br ${template.gradient} opacity-20 transition-opacity group-hover:opacity-40`}
               />
 
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-background border border-border flex items-center justify-center mb-6 shadow-sm">
-                  <template.icon className="w-5 h-5 text-foreground" />
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-black/60 border border-white/[0.1] flex items-center justify-center shadow-sm">
+                    <LayoutTemplate className="w-5 h-5 text-[#4ade80]" />
+                  </div>
+                  <span className="text-[9px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-black/60 border border-[#22c55e]/40 text-[#4ade80]">
+                    {template.frames}f · 60fps
+                  </span>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{template.name}</h3>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                  {template.description}
+
+                <div className="flex items-center gap-1.5 mb-1">
+                  <span className="text-[10px] font-mono text-white/40 uppercase">{template.category}</span>
+                </div>
+                <h3 className="text-base font-bold text-white mb-1.5 group-hover:text-[#4ade80] transition-colors line-clamp-1">
+                  {template.name}
+                </h3>
+                <p className="text-xs text-white/60 mb-4 line-clamp-2 leading-relaxed">
+                  {template.desc}
                 </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {template.tags.map((tag) => (
+
+                <div className="flex flex-wrap gap-1.5 mb-2">
+                  {template.features.slice(0, 2).map((feat) => (
                     <span
-                      key={tag}
-                      className="text-[10px] px-2 py-0.5 rounded-md bg-muted text-muted-foreground"
+                      key={feat}
+                      className="text-[10px] px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.06] text-white/60 line-clamp-1"
                     >
-                      {tag}
+                      {feat}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <div className="relative z-10 mt-4 flex gap-2">
+              <div className="relative z-10 mt-4 pt-3 border-t border-white/[0.06] flex gap-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex-1 h-8 text-xs"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPreviewTemplate(previewTemplate === template.id ? null : template.id);
-                  }}
+                  className="flex-1 h-8 text-xs bg-white/[0.04] hover:bg-white/[0.1] border-white/[0.1] text-white"
+                  onClick={(e) => handleCopyPrompt(template, e)}
+                  title="Copy God-Level Prompt"
                 >
-                  <Eye className="w-3 h-3 mr-1" />
-                  Preview
+                  {copiedId === template.id ? (
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#22c55e] mr-1" />
+                  ) : (
+                    <Terminal className="w-3.5 h-3.5 text-[#22c55e] mr-1" />
+                  )}
+                  Prompt
                 </Button>
                 <Button
                   size="sm"
-                  className="flex-1 h-8 text-xs"
+                  className="flex-1 h-8 text-xs btn-moonlit agent-glass-shine text-black font-bold"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleSelectTemplate(template);
@@ -292,18 +215,18 @@ export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: str
                   disabled={isCreating === template.id}
                 >
                   {isCreating === template.id ? (
-                    <Sparkles className="w-3 h-3 mr-1 animate-spin" />
+                    <Sparkles className="w-3.5 h-3.5 mr-1 animate-spin" />
                   ) : (
-                    <ChevronRight className="w-3 h-3 mr-1" />
+                    <ChevronRight className="w-3.5 h-3.5 mr-1" />
                   )}
-                  Use This
+                  Use Template
                 </Button>
               </div>
 
               {isCreating === template.id && (
-                <div className="absolute inset-0 z-20 bg-background/50 backdrop-blur-sm flex items-center justify-center rounded-2xl">
-                  <div className="flex items-center text-sm font-medium text-primary">
-                    <Sparkles className="w-4 h-4 mr-2 animate-spin" /> Generating {template.name}...
+                <div className="absolute inset-0 z-20 bg-black/85 backdrop-blur-sm flex items-center justify-center rounded-2xl">
+                  <div className="flex items-center text-sm font-bold text-[#4ade80]">
+                    <Sparkles className="w-4 h-4 mr-2 animate-spin text-[#22c55e]" /> Initializing {template.name}...
                   </div>
                 </div>
               )}

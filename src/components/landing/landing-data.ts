@@ -1,33 +1,33 @@
 export const PRESETS = [
   {
-    name: "Aether — Deep Field Survey",
-    desc: "Deep-space planetary survey — a planet parked below the fold scales past the viewport and you fall through into a scroll-scrubbed orbital flyover, with four worlds and hard wipes between.",
-    gradient: "from-rose-950/40 via-[#0a0a0c] to-orange-950/30",
+    name: "Cyberpunk Kinetic Watch",
+    desc: "Luxury mechanical timepiece with 360-degree exploded gear assembly, titanium case reflections, and micro-interactions on scroll.",
+    gradient: "from-emerald-950 via-[#050b14] to-zinc-950",
   },
   {
-    name: "Volta — Electric Moped",
-    desc: "Six-page light studio product site for an electric moped brand — floating UI cards, a scroll-scrubbed 360° turntable, an exploded parts sequence, a live finish picker and curtain-wiped page transitions.",
-    gradient: "from-blue-950/45 via-[#0a0a0c] to-brand-tertiary/10",
+    name: "Zenith Spatial Headset",
+    desc: "Spatial AR computing headset with interactive micro-OLED optical layers, LiDAR mesh, and spatial audio field depth maps.",
+    gradient: "from-emerald-950 via-zinc-950 to-[#020617]",
   },
   {
-    name: "The Obsidian Assembly",
-    desc: "Warm editorial artefact archive — a display serif splits apart, artefact cards fly into the gap, then collapse into a scroll-driven stacked deck of seven objects before a full-bleed architectural close.",
-    gradient: "from-cyan-950/40 via-[#0a0a0c] to-slate-950/50",
+    name: "Titanium EV Supercar",
+    desc: "Electric hypercar launch page with wind-tunnel aerodynamics, 0-60 dynamic acceleration curve, and chassis X-ray.",
+    gradient: "from-[#020d08] via-zinc-950 to-black",
   },
   {
-    name: "Vanta — Model 03 Nocturne",
-    desc: "Cinematic automotive launch — a silk dust sheet lifts off the car under scroll, then a desert run where the car passes in front of and behind a wordmark the size of the screen.",
-    gradient: "from-blue-950/45 via-[#0a0a0c] to-brand-tertiary/10",
+    name: "Nova AI Code Copilot",
+    desc: "Autonomous developer platform with live playground, multi-tab IDE, terminal streaming, and Stripe subscription billing.",
+    gradient: "from-zinc-950 via-emerald-950/40 to-black",
   },
   {
-    name: "Threshold — Six Worlds",
-    desc: "A stone portal onto six worlds — the arch never moves while the world beyond it changes through an arch-shaped mask that opens inside the archway, then floods past the stone to full bleed.",
-    gradient: "from-cyan-950/40 via-[#0a0a0c] to-slate-950/50",
+    name: "Orbital Quantum Compute",
+    desc: "Deep tech quantum compute platform with particle physics, cryo-chamber 3D visuals, and dark glassmorphic layout.",
+    gradient: "from-black via-zinc-950 to-emerald-950",
   },
   {
-    name: "Helix Mini — Micro-Drone",
-    desc: "Product launch for an autonomous micro-drone — the product lands inside a sandwich of giant type, unfolds under scroll-scrub with annotated callouts, and the page inverts dark-to-light mid-scroll.",
-    gradient: "from-blue-950/45 via-[#0a0a0c] to-brand-tertiary/10",
+    name: "Vortex Wireless Audio",
+    desc: "High-fidelity acoustic hardware with exploded 3D component view, acoustic frequency response curve, and instant checkout drawer.",
+    gradient: "from-zinc-900 via-black to-emerald-950",
   },
 ];
 

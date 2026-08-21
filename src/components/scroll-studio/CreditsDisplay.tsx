@@ -63,20 +63,16 @@ export function CreditsDisplay() {
       <Progress value={percent} className="h-1.5 mb-3 bg-muted" />
 
       {data.tier === "free" && (
-        <Button
-          variant="default"
-          size="sm"
-          className="w-full text-xs h-8 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0"
-          onClick={handleUpgrade}
-          disabled={upgrading}
-        >
-          {upgrading ? (
-            <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />
-          ) : (
+        <Link to="/pricing" className="block w-full">
+          <Button
+            variant="default"
+            size="sm"
+            className="w-full text-xs h-8 bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold border-0 shadow-[0_0_12px_rgba(34,197,94,0.3)]"
+          >
             <CreditCard className="w-3.5 h-3.5 mr-2" />
-          )}
-          Upgrade to Pro ($49/mo)
-        </Button>
+            Upgrade Plan ($5 - $200/mo)
+          </Button>
+        </Link>
       )}
     </div>
   );

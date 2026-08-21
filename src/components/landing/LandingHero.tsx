@@ -49,7 +49,7 @@ function LogoMark() {
 function PricingPillCta() {
   return (
     <a
-      aria-label="Signhify Studio — $49/mo — Get started"
+      aria-label="Signhify AI Plans — Starting $5/mo — Get started"
       className="group relative block overflow-hidden rounded-full bg-[#080c16]/95 backdrop-blur-xl pl-3 pr-1.5 py-1.5 sm:pl-4 sm:pr-2 sm:py-2 shadow-[0_14px_40px_rgba(0,0,0,0.55),0_0_0_1.5px_rgba(34,197,94,0.95),0_0_48px_rgba(34,197,94,0.36)] transition-all duration-300 hover:shadow-[0_18px_48px_rgba(0,0,0,0.6),0_0_0_1.5px_rgba(74,222,128,1),0_0_64px_rgba(34,197,94,0.5)] hover:scale-[1.015] focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22c55e]/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
       href="/pricing"
     >
@@ -67,10 +67,10 @@ function PricingPillCta() {
           </span>
           <span className="min-w-0 flex flex-col gap-0.5 sm:gap-1">
             <span className="text-[13px] sm:text-[14px] font-extrabold tracking-[-0.02em] text-white leading-tight">
-              Signhify Studio — $49/mo
+              AI Plans Starting at $5/mo · 5 to 300 Credits
             </span>
             <span className="text-[11px] sm:text-[11.5px] font-medium text-white/90 leading-snug truncate">
-              Unlimited AI generations · 6-agent swarm · cancel anytime
+              3D scroll studio · 6-agent swarm · 100% MIT code ownership
             </span>
           </span>
         </span>
