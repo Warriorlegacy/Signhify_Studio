@@ -1,28 +1,44 @@
-<svg width="64" height="64" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
   <defs>
-    <linearGradient id="sh-glow" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-      <stop stopColor="#22C55E" />
-      <stop offset="1" stopColor="#4ADE80" />
+    <linearGradient id="sig-main" x1="12" y1="12" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22C55E" />
+      <stop offset="100%" stop-color="#4ADE80" />
     </linearGradient>
-    <linearGradient id="sh-border" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
-      <stop stopColor="#22C55E" stopOpacity="0.75" />
-      <stop offset="1" stopColor="#4ADE80" stopOpacity="0.25" />
+    <linearGradient id="sig-stroke" x1="4" y1="4" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22C55E" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#4ADE80" stop-opacity="0.3" />
     </linearGradient>
-    <filter id="neon-blur" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="1.5" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
+    <radialGradient id="sig-bg-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#22C55E" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#080C16" stop-opacity="0" />
+    </radialGradient>
   </defs>
-  
-  <!-- Outer Rounded Tile -->
-  <rect x="2.5" y="2.5" width="43" height="43" rx="13" fill="#080C16" stroke="url(#sh-border)" stroke-width="1.5" />
-  
-  <!-- Flowing Ribbon 'S' with Neon Glow -->
-  <path d="M15.5 13 A 9 9 0 0 1 31 19.5 L 27.5 25.5 A 7.5 7.5 0 0 1 17 31" stroke="url(#sh-glow)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#neon-blur)" />
-  
-  <!-- Center Spark Dot -->
-  <circle cx="14.5" cy="16" r="2.4" fill="#FFFFFF" />
-  
-  <!-- Orbit Ring -->
-  <ellipse cx="14.5" cy="16" rx="6.5" ry="2.4" stroke="url(#sh-glow)" stroke-width="1.3" transform="rotate(-20 14.5 16)" opacity="0.75" />
+
+  <!-- Deep Obsidian Rounded Base Tile -->
+  <rect x="3" y="3" width="58" height="58" rx="16" fill="#080C16" stroke="url(#sig-stroke)" stroke-width="2" />
+  <rect x="3" y="3" width="58" height="58" rx="16" fill="url(#sig-bg-glow)" />
+
+  <!-- Flowing Ribbon 'S' Architecture -->
+  <path
+    d="M20 18 C26 10, 42 16, 42 26 C42 34, 22 30, 22 38 C22 46, 38 52, 44 44"
+    stroke="url(#sig-main)"
+    stroke-width="5.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- High-Precision Center White Spark Core -->
+  <circle cx="19" cy="22" r="3.5" fill="#FFFFFF" />
+
+  <!-- Dynamic Orbit Halo -->
+  <ellipse
+    cx="19"
+    cy="22"
+    rx="8.5"
+    ry="3.2"
+    stroke="url(#sig-main)"
+    stroke-width="1.8"
+    transform="rotate(-25 19 22)"
+    opacity="0.85"
+  />
 </svg>
