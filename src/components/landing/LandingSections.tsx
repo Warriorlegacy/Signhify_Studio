@@ -19,6 +19,7 @@ import {
   Video,
   WandSparkles,
 } from "lucide-react";
+import { TemplateThumbnail } from "@/components/templates/TemplateThumbnail";
 import { PIPELINE, PRESETS, PRO_TOOLS, STATS, TESTIMONIALS } from "./landing-data";
 import { Reveal } from "./LandingShared";
 
@@ -84,24 +85,25 @@ function SectionBadge({
 /* ── Preset card ─────────────────────────────────────────── */
 
 function PresetCard({ preset, delay }: { preset: (typeof PRESETS)[number]; delay: number }) {
+  const presetId = preset.id || preset.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   return (
     <Reveal from="up" delay={delay} className="h-full">
       <article className="group relative rounded-2xl xl:rounded-3xl overflow-hidden border border-white/[0.08] bg-[#080c16] hover:border-[#22c55e]/40 transition-all duration-500 h-full flex flex-col shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.1) 0%, transparent 70%)" }} />
-        <div className="aspect-video w-full relative overflow-hidden bg-[#030712] border-b border-white/10 isolate z-0">
-          <div className={`absolute inset-0 bg-gradient-to-br ${preset.gradient}`} aria-hidden />
-          <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1px, transparent 0)", backgroundSize: "16px 16px" }} />
-          <div className="absolute top-3 left-3 flex gap-1.5 z-10">
-            <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
-            <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
-            <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
-          </div>
-          <div className="absolute top-3 right-3 z-10">
-            <span className="text-[9px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-black/60 border border-[#22c55e]/40 text-[#4ade80]">
-              3D Parallax
-            </span>
-          </div>
-        </div>
+        
+        {/* Rich 3D Visual Preset Thumbnail */}
+        <TemplateThumbnail
+          id={presetId}
+          name={preset.name}
+          thumbnail={preset.thumbnail}
+          gradient={preset.gradient}
+          category={preset.category}
+          frames={preset.frames}
+          badge={preset.badge}
+          aspectRatio="video"
+          interactive={true}
+        />
+
         <div className="p-4 md:p-5 flex flex-col gap-3 flex-1">
           <div>
             <h3 className="text-white font-semibold text-base md:text-lg tracking-tight line-clamp-1 group-hover:text-[#4ade80] transition-colors">

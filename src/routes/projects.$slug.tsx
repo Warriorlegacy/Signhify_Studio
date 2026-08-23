@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ExternalLink, Layers, Sparkles } from "lucide-react";
+import { ArrowLeft, ExternalLink, Github, Layers, Send, Sparkles } from "lucide-react";
 import { getPublicProjectBySlug } from "@/lib/projects-list.functions";
 import { ThreeDDevicePreview } from "@/components/three/ThreeDDevicePreview";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -208,6 +208,7 @@ function ProjectDetailPage() {
         </div>
 
         <div className="mt-12 flex flex-wrap items-center gap-3">
+          {/* Primary CTA */}
           <a
             href={p.url}
             target="_blank"
@@ -216,6 +217,21 @@ function ProjectDetailPage() {
           >
             Visit live site <ExternalLink size={14} />
           </a>
+          {/* Additional project-specific links */}
+          {p.links && p.links.map((link: { label: string; url: string; icon?: string }) => (
+            <a
+              key={link.url}
+              href={link.url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-5 py-3 text-sm font-semibold hover:border-primary/60 transition"
+            >
+              {link.icon === "github" && <Github size={14} />}
+              {link.icon === "telegram" && <Send size={14} />}
+              {link.icon === "external" && <ExternalLink size={14} />}
+              {link.label}
+            </a>
+          ))}
           <Link
             to="/contact"
             className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-5 py-3 text-sm font-semibold hover:border-primary/60 transition"

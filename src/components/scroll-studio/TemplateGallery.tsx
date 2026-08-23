@@ -14,6 +14,7 @@ import { createScrollStudioProject } from "@/lib/scroll-studio-projects.function
 import { useUser } from "@/hooks/useUser";
 import { toast } from "sonner";
 import { useState } from "react";
+import { TemplateThumbnail } from "@/components/templates/TemplateThumbnail";
 import { TEMPLATES, TEMPLATE_CATEGORIES, type TemplateCategory, type TemplateItem } from "@/lib/templates-data";
 
 export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: string) => void }) {
@@ -150,33 +151,34 @@ export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: str
           {filteredTemplates.map((template) => (
             <div
               key={template.id}
-              className="group relative rounded-2xl border border-white/[0.08] bg-[#080c16] hover:bg-white/[0.03] p-5 flex flex-col justify-between cursor-pointer transition-all hover:border-[#22c55e]/50 overflow-hidden shadow-lg"
+              className="group relative rounded-2xl border border-white/[0.08] bg-[#080c16] hover:bg-white/[0.03] flex flex-col justify-between cursor-pointer transition-all hover:border-[#22c55e]/50 overflow-hidden shadow-lg"
               onClick={() => handleSelectTemplate(template)}
             >
-              {/* Background gradient hint */}
-              <div
-                className={`absolute top-0 left-0 w-full h-32 bg-gradient-to-br ${template.gradient} opacity-20 transition-opacity group-hover:opacity-40`}
+              {/* Template Thumbnail Visual */}
+              <TemplateThumbnail
+                id={template.id}
+                name={template.name}
+                thumbnail={template.thumbnail}
+                gradient={template.gradient}
+                category={template.category}
+                frames={template.frames}
+                badge={template.badge}
+                aspectRatio="video"
+                interactive={true}
               />
 
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-black/60 border border-white/[0.1] flex items-center justify-center shadow-sm">
-                    <LayoutTemplate className="w-5 h-5 text-[#4ade80]" />
+              <div className="relative z-10 p-5 flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <span className="text-[10px] font-mono text-white/40 uppercase">{template.category}</span>
                   </div>
-                  <span className="text-[9px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-black/60 border border-[#22c55e]/40 text-[#4ade80]">
-                    {template.frames}f · 60fps
-                  </span>
+                  <h3 className="text-base font-bold text-white mb-1.5 group-hover:text-[#4ade80] transition-colors line-clamp-1">
+                    {template.name}
+                  </h3>
+                  <p className="text-xs text-white/60 mb-4 line-clamp-2 leading-relaxed">
+                    {template.desc}
+                  </p>
                 </div>
-
-                <div className="flex items-center gap-1.5 mb-1">
-                  <span className="text-[10px] font-mono text-white/40 uppercase">{template.category}</span>
-                </div>
-                <h3 className="text-base font-bold text-white mb-1.5 group-hover:text-[#4ade80] transition-colors line-clamp-1">
-                  {template.name}
-                </h3>
-                <p className="text-xs text-white/60 mb-4 line-clamp-2 leading-relaxed">
-                  {template.desc}
-                </p>
 
                 <div className="flex flex-wrap gap-1.5 mb-2">
                   {template.features.slice(0, 2).map((feat) => (

@@ -14,6 +14,7 @@ export interface TemplateItem {
   name: string;
   category: "3D Scroll" | "SaaS & AI" | "Cinematic Landing" | "E-Commerce" | "Dashboards" | "Web3 & Crypto" | "Creative Agency" | "Spatial OS";
   tag: string;
+  thumbnail?: string;
   gradient: string;
   accent: string;
   secondaryAccent: string;

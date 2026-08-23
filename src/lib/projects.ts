@@ -26,6 +26,11 @@ export type Project = {
   image?: string;
   story?: string;
   gallery?: string[];
+  links?: {
+    label: string;
+    url: string;
+    icon?: "github" | "telegram" | "external";
+  }[];
 };
 
 /**
@@ -68,6 +73,57 @@ export const projects: Project[] = [
       signhifyAiUi5.url,
       signhifyAiUi3.url,
       signhifyAiUi4.url,
+    ],
+  },
+  {
+    slug: "nexusvip-sports-exchange",
+    name: "NexusVIP — Sports Betting Exchange",
+    category: "Fintech",
+    url: "https://nexusvipexch.vercel.app",
+    blurb:
+      "Enterprise peer-to-peer sports betting exchange with sub-millisecond in-memory order matching, dynamic worst-case liability calculation, 5-tier agent downlines, and 1-tap Telegram Bot OTP verification — 36/36 invariant tests passing.",
+    tags: [
+      "React 18",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL",
+      "WebSockets",
+      "Telegram Bot API",
+      "Jest",
+      "High Concurrency",
+      "RBAC",
+    ],
+    stack: [
+      "React 18",
+      "TypeScript",
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Supabase",
+      "WebSockets",
+      "Tailwind CSS",
+      "Telegram Bot API",
+      "Jest",
+      "Vercel",
+    ],
+    metric: "36/36 Tests Passed · Sub-ms Order Matching · 5-Tier RBAC",
+    size: "lg",
+    featured: true,
+    year: 2026,
+    image: "/images/projects/nexusvip-sports-exchange.png",
+    story: [
+      "Traditional sportsbooks impose high margins and put the house against the player. Building a real P2P exchange is a different problem entirely.",
+      "It requires sub-millisecond order book crossing, multi-runner liability risk management, and hierarchical agent credit accounting — all without double-spending vulnerabilities.",
+      "I designed an in-memory FIFO matching engine that pairs Back and Lay positions at exact market odds and auto-settles with 2% net commission deduction.",
+      "The worst-case liability engine calculates exposure across every runner in a fixture simultaneously — locking only the net required credit, not the gross sum of all stakes.",
+      "A 5-tier RBAC hierarchy (Global Admin → Super Master → Master → Agent → Player) enforces complete subtree data isolation so every agent sees only their branch.",
+      "On top of that, I engineered a 1-tap Telegram Bot (@nexusvip_verify_bot) verification system that delivers OTPs through deep-linked /start commands — zero SMS cost, instant delivery.",
+      "36 Jest test suites. 36 passing. 100% coverage on every financial invariant.",
+    ].join("\n\n"),
+    links: [
+      { label: "Agent Backoffice", url: "https://nexusvipagent.vercel.app", icon: "external" },
+      { label: "View Source", url: "https://github.com/Warriorlegacy/Sports_Betting_Specifications", icon: "github" },
+      { label: "Telegram Bot", url: "https://t.me/nexusvip_verify_bot", icon: "telegram" },
     ],
   },
   {

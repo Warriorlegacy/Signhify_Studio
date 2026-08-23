@@ -1,44 +1,98 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
   <defs>
-    <linearGradient id="sig-main" x1="12" y1="12" x2="52" y2="52" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#22C55E" />
-      <stop offset="100%" stop-color="#4ADE80" />
+    <!-- Core Electric Emerald-to-Lime Gradient -->
+    <linearGradient id="sig-fav-main" x1="10" y1="12" x2="54" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4ADE80" />
+      <stop offset="45%" stop-color="#22C55E" />
+      <stop offset="100%" stop-color="#10B981" />
     </linearGradient>
-    <linearGradient id="sig-stroke" x1="4" y1="4" x2="60" y2="60" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#22C55E" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="#4ADE80" stop-opacity="0.3" />
+
+    <!-- Secondary Cyan-Mint Shading Gradient -->
+    <linearGradient id="sig-fav-accent" x1="14" y1="48" x2="50" y2="16" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2DD4BF" />
+      <stop offset="50%" stop-color="#22C55E" />
+      <stop offset="100%" stop-color="#86EFAC" />
     </linearGradient>
-    <radialGradient id="sig-bg-glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#22C55E" stop-opacity="0.15" />
-      <stop offset="100%" stop-color="#080C16" stop-opacity="0" />
+
+    <!-- Deep Underlay Gradient -->
+    <linearGradient id="sig-fav-dark" x1="20" y1="20" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#14532D" />
+      <stop offset="100%" stop-color="#052E16" />
+    </linearGradient>
+
+    <!-- Border Gradient -->
+    <linearGradient id="sig-fav-border" x1="4" y1="4" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4ADE80" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#22C55E" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0.15" />
+    </linearGradient>
+
+    <!-- Radial Tile Background Glow -->
+    <radialGradient id="sig-fav-tile" cx="32" cy="30" r="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22C55E" stop-opacity="0.22" />
+      <stop offset="65%" stop-color="#080C16" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#040711" />
     </radialGradient>
   </defs>
 
-  <!-- Deep Obsidian Rounded Base Tile -->
-  <rect x="3" y="3" width="58" height="58" rx="16" fill="#080C16" stroke="url(#sig-stroke)" stroke-width="2" />
-  <rect x="3" y="3" width="58" height="58" rx="16" fill="url(#sig-bg-glow)" />
+  <!-- Dark Obsidian Squircle Tile -->
+  <rect x="3.5" y="3.5" width="57" height="57" rx="17" fill="url(#sig-fav-tile)" stroke="url(#sig-fav-border)" stroke-width="1.8" />
+  <path d="M 12 5.5 Q 32 4.5 52 5.5" stroke="#FFFFFF" stroke-width="0.8" stroke-opacity="0.25" stroke-linecap="round" />
 
-  <!-- Flowing Ribbon 'S' Architecture -->
+  <!-- Under-Ribbon Shadow -->
   <path
-    d="M20 18 C26 10, 42 16, 42 26 C42 34, 22 30, 22 38 C22 46, 38 52, 44 44"
-    stroke="url(#sig-main)"
-    stroke-width="5.5"
+    d="M 23 27 C 27 21 37 21 41 27 C 43 30 42 34 39 37 L 27 46 C 23 49 22 52 25 54"
+    stroke="url(#sig-fav-dark)"
+    stroke-width="6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    opacity="0.6"
+  />
+
+  <!-- Lower Sweeping Arc -->
+  <path
+    d="M 23 35 C 23 35 29 32 35 34 C 42 36 47 41 44 47 C 41 53 32 55 24 51 C 18 48 16 43 18 39"
+    stroke="url(#sig-fav-accent)"
+    stroke-width="5"
     stroke-linecap="round"
     stroke-linejoin="round"
   />
 
-  <!-- High-Precision Center White Spark Core -->
-  <circle cx="19" cy="22" r="3.5" fill="#FFFFFF" />
+  <!-- Upper Sweeping Arc -->
+  <path
+    d="M 46 25 C 48 21 46 16 40 13 C 32 9 23 11 20 17 C 17 23 22 28 29 30 C 35 32 41 35 41 35"
+    stroke="url(#sig-fav-main)"
+    stroke-width="5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
 
-  <!-- Dynamic Orbit Halo -->
+  <!-- Diagonal Dynamic Energy Bridge -->
+  <path
+    d="M 40 21 L 24 43"
+    stroke="url(#sig-fav-main)"
+    stroke-width="5.5"
+    stroke-linecap="round"
+  />
+
+  <!-- Specular Gleam Highlights -->
+  <path d="M 24 14.5 C 29 12 36 12.5 41 15.5" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.9" />
+  <path d="M 25 51.5 C 31 54 39 53 43 48.5" stroke="#86EFAC" stroke-width="1.4" stroke-linecap="round" opacity="0.8" />
+
+  <!-- Center Plasma Spark Core -->
+  <circle cx="32" cy="32" r="3.4" fill="#FFFFFF" />
+  <circle cx="32" cy="32" r="5.2" stroke="url(#sig-fav-main)" stroke-width="1.2" opacity="0.8" />
+
+  <!-- Energy Orbit Ring -->
   <ellipse
-    cx="19"
-    cy="22"
-    rx="8.5"
-    ry="3.2"
-    stroke="url(#sig-main)"
-    stroke-width="1.8"
-    transform="rotate(-25 19 22)"
-    opacity="0.85"
+    cx="32"
+    cy="32"
+    rx="11"
+    ry="4"
+    stroke="url(#sig-fav-accent)"
+    stroke-width="1.2"
+    transform="rotate(-30 32 32)"
+    opacity="0.8"
+    stroke-dasharray="18 4"
   />
 </svg>

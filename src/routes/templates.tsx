@@ -27,6 +27,7 @@ import {
   Maximize2,
 } from "lucide-react";
 import { SignhifyLogo } from "@/components/SignhifyLogo";
+import { TemplateThumbnail } from "@/components/templates/TemplateThumbnail";
 import { TEMPLATES, TEMPLATE_CATEGORIES, type TemplateItem, type TemplateCategory } from "@/lib/templates-data";
 import { TemplateParticleCanvas } from "@/components/three/TemplateParticleCanvas";
 import { toast } from "sonner";
@@ -287,47 +288,22 @@ function TemplatesPage() {
                   }}
                 />
 
-                {/* 3D Visual Preview Header with Interactive Particle Canvas */}
-                <div className="aspect-[16/10] w-full relative overflow-hidden bg-[#030712] border-b border-white/10 isolate">
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${template.gradient}`}
-                    aria-hidden
-                  />
-
-                  {/* Procedural 3D Canvas */}
-                  <div className="absolute inset-0 opacity-70 group-hover:opacity-100 transition-opacity duration-500">
-                    <TemplateParticleCanvas
-                      mode={template.particleMode}
-                      accent={template.accent}
-                      secondaryAccent={template.secondaryAccent}
-                      scrubProgress={45}
-                      interactive={true}
-                    />
-                  </div>
-
-                  {/* Window Traffic Dots */}
-                  <div className="absolute top-3.5 left-3.5 flex gap-1.5 z-10">
-                    <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
-                  </div>
-
-                  {/* Badges */}
-                  <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 z-10">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/75 border border-[#22c55e]/40 text-[#4ade80] backdrop-blur-md shadow-sm">
-                      {template.badge}
-                    </span>
-                  </div>
-
-                  {/* Middle Frame Scrub Indicator */}
-                  <div className="absolute bottom-3 left-3.5 z-10">
-                    <span className="text-[10px] font-mono text-white/60 bg-black/60 px-2 py-0.5 rounded-md border border-white/10 backdrop-blur-md">
-                      {template.frames} Frames · 60 FPS
-                    </span>
-                  </div>
-
-                  {/* Quick Action Overlay */}
-                  <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex justify-center items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                {/* 3D Visual Preview Header with High-Res Thumbnail & Overlay Actions */}
+                <TemplateThumbnail
+                  id={template.id}
+                  name={template.name}
+                  thumbnail={template.thumbnail}
+                  gradient={template.gradient}
+                  accent={template.accent}
+                  category={template.category}
+                  tag={template.tag}
+                  frames={template.frames}
+                  badge={template.badge}
+                  aspectRatio="16/10"
+                  interactive={true}
+                >
+                  {/* Quick Action Overlay on Hover */}
+                  <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex justify-center items-center gap-2 opacity-0 group-hover/thumb:opacity-100 group-hover:opacity-100 transition-opacity duration-300 z-20">
                     <button
                       onClick={() => openPreview(template)}
                       className="px-4 py-1.5 rounded-full bg-[#22c55e] text-black text-xs font-bold flex items-center gap-1.5 shadow-[0_0_16px_rgba(34,197,94,0.5)] hover:scale-105 transition-transform"
@@ -342,7 +318,7 @@ function TemplatesPage() {
                       Prompt
                     </button>
                   </div>
-                </div>
+                </TemplateThumbnail>
 
                 {/* Card Content & Features */}
                 <div className="p-5 sm:p-6 flex flex-col gap-4 flex-1">
