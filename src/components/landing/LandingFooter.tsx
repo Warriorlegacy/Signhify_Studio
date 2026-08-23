@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Mail, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { SignhifyLogo } from "@/components/SignhifyLogo";
 
 const FOOTER_COLS: { title: string; links: { label: string; to: string }[] }[] = [
