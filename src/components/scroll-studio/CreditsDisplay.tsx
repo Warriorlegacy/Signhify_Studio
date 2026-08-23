@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { getUserCredits, createCheckoutSession } from "@/lib/monetization.functions";
 import { useEffect, useState } from "react";
