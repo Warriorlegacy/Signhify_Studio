@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ExternalLink, Github, Layers, Send, Sparkles } from "lucide-react";
+import { ArrowLeft, Code2, ExternalLink, Layers, Send, Sparkles } from "lucide-react";
 import { getPublicProjectBySlug } from "@/lib/projects-list.functions";
 import { ThreeDDevicePreview } from "@/components/three/ThreeDDevicePreview";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -226,7 +226,7 @@ function ProjectDetailPage() {
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-5 py-3 text-sm font-semibold hover:border-primary/60 transition"
             >
-              {link.icon === "github" && <Github size={14} />}
+              {link.icon === "github" && <Code2 size={14} />}
               {link.icon === "telegram" && <Send size={14} />}
               {link.icon === "external" && <ExternalLink size={14} />}
               {link.label}
