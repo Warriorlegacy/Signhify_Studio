@@ -74,7 +74,6 @@ const InstagramIcon = (
 );
 
 const SOCIALS = [
-  { label: "Twitter", href: "https://x.com/Piyush_Sxt", icon: XIcon },
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/piyushraj-singh",
@@ -85,7 +84,6 @@ const SOCIALS = [
     href: "https://www.instagram.com/piyushrajsingh.golu",
     icon: InstagramIcon,
   },
-  { label: "Email", href: "mailto:piyushrajsingh092@gmail.com", icon: <Mail size={13} /> },
 ];
 
 export function LandingFooter() {
