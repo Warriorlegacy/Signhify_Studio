@@ -226,7 +226,7 @@ function ProjectDetailPage() {
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-md border border-border bg-surface/60 px-5 py-3 text-sm font-semibold hover:border-primary/60 transition"
             >
-              {link.icon === "github" && <Github size={14} />}
+              {link.icon === "github" && <Code2 size={14} />}
               {link.icon === "telegram" && <Send size={14} />}
               {link.icon === "external" && <ExternalLink size={14} />}
               {link.label}
