@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ExternalLink, Github, Layers, Send, Sparkles } from "lucide-react";
+import { ArrowLeft, Code2, ExternalLink, Layers, Send, Sparkles } from "lucide-react";
 import { getPublicProjectBySlug } from "@/lib/projects-list.functions";
 import { ThreeDDevicePreview } from "@/components/three/ThreeDDevicePreview";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
