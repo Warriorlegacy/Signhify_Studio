@@ -95,7 +95,7 @@ function TemplatesPage() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   // Auto-play scrub simulation
-  useMemo(() => {
+  useEffect(() => {
     if (!isPlaying) return;
     const interval = setInterval(() => {
       setScrubProgress((prev) => (prev >= 100 ? 0 : prev + 1));
