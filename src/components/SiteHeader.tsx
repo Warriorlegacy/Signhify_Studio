@@ -8,6 +8,7 @@ import { useUser } from "@/hooks/useUser";
 
 const NAV = [
   { to: "/", label: "Studio" },
+  { to: "/ventures", label: "Ventures", badge: "10 Live" },
   { to: "/templates", label: "Templates", badge: "3D" },
   { to: "/pricing", label: "Pricing", badge: "$5" },
   { to: "/projects", label: "Projects" },

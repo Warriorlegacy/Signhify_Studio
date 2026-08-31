@@ -40,6 +40,192 @@ export type Project = {
  */
 export const projects: Project[] = [
   {
+    slug: "auditmind-ai",
+    name: "AuditMind AI",
+    category: "Fintech",
+    url: "https://auditmind-ai-red.vercel.app",
+    blurb:
+      "Instant IRS Section 41 qualification engine with ASC 730 R&D wage allocation and automated audit risk redlining in the browser.",
+    tags: ["Fintech", "Tax AI", "IRS Section 41", "Client-Side Compute", "Groq AI"],
+    stack: ["React 19", "Groq Llama-3.3", "jsPDF", "Canvas", "Tailwind CSS"],
+    metric: "Avg Claim Identified: $42,500 · 0 Server Latency",
+    size: "lg",
+    featured: true,
+    year: 2026,
+    story: [
+      "Traditional R&D tax credit studies cost $30,000+ and take CPAs months of manual spreadsheet review.",
+      "We engineered AuditMind AI to execute deterministic statutory qualification rules and ASC 730 wage allocation directly in client browser memory.",
+      "Sensitive payroll ledgers and 1099 disbursements never touch cloud servers — guaranteeing zero data retention while delivering instant IRS Form 6765 audit binders.",
+    ].join("\n\n"),
+    links: [
+      { label: "Launch Live App", url: "https://auditmind-ai-red.vercel.app", icon: "external" },
+    ],
+  },
+  {
+    slug: "contractsentinel-ai",
+    name: "ContractSentinel AI",
+    category: "LegalTech",
+    url: "https://contractsentinel-ai.vercel.app",
+    blurb:
+      "Autonomous contract risk assessment and non-destructive DOCX redlining with zero server data transfer.",
+    tags: ["LegalTech", "OOXML", "DOCX Redliner", "Privacy", "WASM"],
+    stack: ["React 19", "JSZip", "OOXML Parser", "Groq AI", "Tailwind CSS"],
+    metric: "Review Latency < 2.4s · 0ms Cloud Retention",
+    size: "lg",
+    featured: true,
+    year: 2026,
+    story: [
+      "Enterprise legal teams cannot upload confidential MSAs and NDAs to external servers.",
+      "ContractSentinel AI performs non-destructive OOXML XML manipulation in-browser, injecting native Microsoft Word track-changes markup (<w:ins> and <w:del>) with zero cloud data retention.",
+    ].join("\n\n"),
+    links: [
+      { label: "Launch Live App", url: "https://contractsentinel-ai.vercel.app", icon: "external" },
+    ],
+  },
+  {
+    slug: "codevortex-sre",
+    name: "CodeVortex SRE",
+    category: "DevOps",
+    url: "https://codevortex-sre.vercel.app",
+    blurb:
+      "Zero-latency incident triage engine converting messy Kubernetes stack traces into verified syntax-valid code diffs.",
+    tags: ["DevOps", "SRE", "AST Diffs", "Incident Triage", "Kubernetes"],
+    stack: ["React 19", "AST Engine", "Groq AI", "Tailwind CSS v4"],
+    metric: "MTTR Reduction 78% · AST Verified Diffs",
+    size: "md",
+    featured: true,
+    year: 2026,
+    story: [
+      "When Kubernetes microservices panic at 3 AM, parsing thousands of log lines burns precious uptime.",
+      "CodeVortex SRE isolates fault paths and generates verified syntax-valid AST git diffs in under 2 seconds.",
+    ].join("\n\n"),
+    links: [
+      { label: "Launch Live App", url: "https://codevortex-sre.vercel.app", icon: "external" },
+    ],
+  },
+  {
+    slug: "synthmed-ai",
+    name: "SynthMed AI",
+    category: "HealthTech",
+    url: "https://synthmed-ai.vercel.app",
+    blurb:
+      "Clinical scribe transforming raw patient dialogue into structured SOAP clinical notes with verified ICD-10 and CPT billing codes.",
+    tags: ["HealthTech", "HIPAA", "Medical AI", "SOAP Notes", "ICD-10"],
+    stack: ["React 19", "Web Speech API", "Medical Ontology Engine", "Tailwind CSS"],
+    metric: "99.4% Coding Accuracy · 0 Bytes Cloud Storage",
+    size: "lg",
+    featured: true,
+    year: 2026,
+    story: [
+      "Doctors spend 3+ hours charting after hours. SynthMed AI listens to consultations and formats EHR-ready SOAP notes and ICD-10 codes with 100% in-browser HIPAA compliance.",
+    ].join("\n\n"),
+    links: [
+      { label: "Launch Live App", url: "https://synthmed-ai.vercel.app", icon: "external" },
+    ],
+  },
+  {
+    slug: "adgenesis-ai",
+    name: "AdGenesis AI",
+    category: "MarTech",
+    url: "https://adgenesis-ai.vercel.app",
+    blurb:
+      "Instantly generates 50+ optimized ad variations across Meta, Google, TikTok, and LinkedIn with dynamic ROAS budget allocation.",
+    tags: ["MarTech", "ROAS Optimization", "Multi-Armed Bandit", "Ad Matrix"],
+    stack: ["React 19", "Bandit Reinforcement Engine", "Recharts", "Tailwind CSS"],
+    metric: "+3.4x ROAS Uplift · 50+ Ad Matrix Variations",
+    size: "md",
+    featured: true,
+    year: 2026,
+    links: [
+      { label: "Launch Live App", url: "https://adgenesis-ai.vercel.app", icon: "external" },
+    ],
+  },
+  {
+    slug: "tenderbot-global",
+    name: "TenderBot Global",
+    category: "GovTech",
+    url: "https://tenderbot-global.vercel.app",
+    blurb:
+      "Government contracting intelligence platform extracting RFP requirements, scoring win probabilities, and drafting compliant proposals.",
+    tags: ["GovTech", "GovCon", "FAR/DFARS", "RFP Automation"],
+    stack: ["React 19", "FAR Matrix Scanner", "Groq AI", "Tailwind CSS"],
+    metric: "Proposal Drafting: 45 Mins · 100% FAR Compliance",
+    size: "md",
+    featured: true,
+    year: 2026,
+    links: [
+      { label: "Launch Live App", url: "https://tenderbot-global.vercel.app", icon: "external" },
+    ],
+  },
+  {
+    slug: "qualicheck-ai",
+    name: "QualiCheck AI",
+    category: "QualityAI",
+    url: "https://qualicheck-ai.vercel.app",
+    blurb:
+      "In-browser computer vision metrology detecting microscopic micro-scratches, solder voids, and component misalignments at 60 FPS.",
+    tags: ["Computer Vision", "HTML5 Canvas", "Edge AI", "Metrology"],
+    stack: ["React 19", "HTML5 Canvas Metrology", "Web Workers", "Tailwind CSS"],
+    metric: "16ms/frame Inference · 60 FPS Locked Edge Vision",
+    size: "md",
+    featured: true,
+    year: 2026,
+    links: [
+      { label: "Launch Live App", url: "https://qualicheck-ai.vercel.app", icon: "external" },
+    ],
+  },
+  {
+    slug: "talentpulse-ai",
+    name: "TalentPulse AI",
+    category: "HRTech",
+    url: "https://talentpulse-ai-nine.vercel.app",
+    blurb:
+      "Executes candidate Python code directly in the browser via Pyodide WebAssembly with AST anti-cheat telemetry and code quality scoring.",
+    tags: ["HRTech", "Pyodide", "WebAssembly", "WASM", "Anti-Cheat"],
+    stack: ["React 19", "Pyodide WASM", "Monaco Editor", "Tailwind CSS"],
+    metric: "0ms Sandbox Latency · 99.7% Anti-Cheat Fidelity",
+    size: "md",
+    featured: true,
+    year: 2026,
+    links: [
+      { label: "Launch Live App", url: "https://talentpulse-ai-nine.vercel.app", icon: "external" },
+    ],
+  },
+  {
+    slug: "datalightning-ai",
+    name: "DataLightning AI",
+    category: "BigData",
+    url: "https://datalightning-ai.vercel.app",
+    blurb:
+      "Ultra-fast SQL analytics processing million-row Parquet and CSV files in browser memory with natural language Text-to-SQL generation.",
+    tags: ["BigData", "DuckDB-WASM", "Text-to-SQL", "Columnar"],
+    stack: ["React 19", "DuckDB-WASM", "Recharts", "Tailwind CSS"],
+    metric: "10M rows/s Scan Speed · $0.00 Cloud Server Cost",
+    size: "lg",
+    featured: true,
+    year: 2026,
+    links: [
+      { label: "Launch Live App", url: "https://datalightning-ai.vercel.app", icon: "external" },
+    ],
+  },
+  {
+    slug: "hyperlocalize-ai",
+    name: "HyperLocalize AI",
+    category: "Media",
+    url: "https://hyperlocalize-ai.vercel.app",
+    blurb:
+      "Localizes video subtitles across 12+ international markets with automated millisecond audio-timing preservation and cultural idiom adaptation.",
+    tags: ["Media", "SRT Parser", "Cultural Localization", "Audio Sync"],
+    stack: ["React 19", "SRT Engine", "Web Audio API", "Tailwind CSS"],
+    metric: "0.00ms Timing Drift · 12+ Global Markets",
+    size: "md",
+    featured: true,
+    year: 2026,
+    links: [
+      { label: "Launch Live App", url: "https://hyperlocalize-ai.vercel.app", icon: "external" },
+    ],
+  },
+  {
     slug: "signhify-ai",
     name: "Signhify AI",
     category: "AI Workspace",

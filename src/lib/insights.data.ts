@@ -887,6 +887,317 @@ The fastest path to revenue is a focused Sprint. See [Signhify's pricing](https:
 
 **Bottom line:** You can have a deployed, revenue-ready AI product in 2 weeks. The only question is what you're waiting for. [Book a sprint](https://signhify.dpdns.org/book) today.`,
   },
+
+  "auditmind-ai-architecture": {
+    id: "auditmind-ai-architecture",
+    title: "How We Built AuditMind AI: In-Browser Section 41 Tax Scanning with Zero Server Overhead",
+    summary:
+      "Engineering an IRS Section 41 qualification engine and ASC 730 R&D wage allocation matrix that runs 100% client-side with zero cloud compute cost.",
+    category: "Architecture",
+    readTime: "8 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["Fintech", "Client-Side Compute", "Groq Llama-3.3", "Tax AI"],
+    content: `## The Zero-Server Fintech Architecture
+
+Most enterprise fintech platforms route sensitive financial ledgers through centralized cloud servers, incurring high infrastructure costs and regulatory compliance hurdles. With [AuditMind AI](https://auditmind-ai-red.vercel.app), we engineered an autonomous IRS Section 41 R&D tax credit scanner that executes 100% client-side in browser memory.
+
+### 1. In-Browser Ledger Rules Engine
+
+Rather than shipping CSV ledgers to an external backend, AuditMind AI implements a deterministic wage allocation parser directly in JavaScript:
+- **ASC 730 Wage Classifier**: Filters W-2 box 1 wages, subcontractor 1099 disbursements, and cloud compute invoices against IRS qualification thresholds.
+- **The 4-Part Statutory Test**: Evaluates Section 174 elimination of uncertainty, technological in nature, process of experimentation, and qualified purpose.
+- **Instant Audit Risk Redlining**: Detects high-risk non-qualifying titles (e.g., QA, sales engineering, routine maintenance) with sub-millisecond execution.
+
+### 2. Client-Side Groq Inference
+
+For nuanced qualification rationales, AuditMind AI calls Groq's high-speed Llama-3.3-70B endpoints directly from the browser using streaming token responses. Latency remains below 400ms per section analysis.
+
+### 3. Multi-Year Audit Binder Export
+
+Using client-side \`jsPDF\` and \`jspdf-autotable\`, AuditMind AI compiles IRS Form 6765 calculation schedules, project narratives, and time-tracking nexus binders directly into downloadable PDF documents without touching a remote disk.
+
+**Bottom line:** Pure in-browser compute eliminates server egress bills, guarantees zero financial data retention, and delivers an average identified claim of $42,500 in seconds.`,
+  },
+
+  "contractsentinel-ai-docx-redline": {
+    id: "contractsentinel-ai-docx-redline",
+    title: "Non-Destructive DOCX Redlining: Engineering ContractSentinel AI with WebAssembly & Groq",
+    summary:
+      "How we implemented pure in-browser OOXML parsing, JSZip compression, and non-destructive track-changes injection with zero data retention.",
+    category: "Security",
+    readTime: "7 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["LegalTech", "OOXML", "DOCX", "Privacy", "WASM"],
+    content: `## The Engineering Behind Non-Destructive Contract Redlining
+
+Enterprise legal teams refuse to upload sensitive MSAs, NDAs, and licensing agreements to third-party cloud servers. [ContractSentinel AI](https://contractsentinel-ai.vercel.app) solves this with client-side OOXML (Open Packaging Conventions) manipulation.
+
+### 1. The Anatomy of an OOXML Redline
+
+Word documents (\`.docx\`) are zip archives containing structured XML files (\`word/document.xml\`). Traditional AI tools convert DOCX to plaintext, call an LLM, and output markdown — destroying header styles, numbered outlines, and institutional formatting.
+
+ContractSentinel AI operates directly on the XML AST:
+- **JSZip in Browser Memory**: Unpacks the DOCX container into memory buffers.
+- **w:ins and w:del Node Insertion**: Injects native Microsoft Word track-changes markup (\`<w:ins>\` and \`<w:del>\`) directly into paragraph runs.
+- **Author Attribution**: Sets revision author (\`ContractSentinel AI\`) and ISO timestamp metadata.
+
+### 2. Zero-Retention Risk Assessment
+
+Contract risk clauses (uncapped indemnification, non-standard IP assignment, consequential damage waivers) are evaluated in real time. Because all processing happens inside the user's browser, data retention is strictly 0.00 seconds.
+
+### 3. Sub-2.4s Latency
+
+By pairing client-side XML manipulation with ultra-fast Groq Llama-3.3 inference, a 40-page master services agreement is audited, redlined, and re-zipped into a native DOCX file in under 2.4 seconds.`,
+  },
+
+  "codevortex-sre-ast-diffs": {
+    id: "codevortex-sre-ast-diffs",
+    title: "From K8s Stack Traces to Syntax-Valid AST Diffs: Inside CodeVortex SRE",
+    summary:
+      "Designing an incident triage engine that converts chaotic distributed trace exceptions into verified syntax-valid code diffs in sub-2-second latency.",
+    category: "AI Agents",
+    readTime: "9 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["DevOps", "SRE", "AST Diffs", "Incident Triage", "Kubernetes"],
+    content: `## Transforming Chaotic Stack Traces into Production Code Diffs
+
+When production microservices fail in Kubernetes, on-call engineers spend 45+ minutes piecing together multi-line Java, Go, or Python stack traces across OpenTelemetry logs. [CodeVortex SRE](https://codevortex-sre.vercel.app) reduces Mean Time to Resolution (MTTR) by 78%.
+
+### 1. Distributed Log Classification
+
+CodeVortex SRE ingests raw container logs and extracts the critical fault path:
+- Isolates panic points, NullPointerExceptions, deadlock cycles, and out-of-memory cascades.
+- Correlates microservice invocation spans across downstream database queries and RPC timeouts.
+
+### 2. In-Browser AST Diff Generation
+
+Rather than hallucinating pseudocode, CodeVortex parses the target source file into an Abstract Syntax Tree (AST), identifies the exact function boundary, and computes a minimal unified diff (\`git diff\` format):
+- Verifies syntax validity before displaying the patch.
+- Prevents breaking changes to surrounding control flow.
+- Generates reproducible unit tests that reproduce the specific stack trace trigger.
+
+### 3. Synthetic Chaos Injection
+
+To ensure resilience, SRE teams can trigger one-click synthetic error injection (gRPC timeouts, corrupted JSON payloads, connection pool exhaustion) to validate automated failover before production outages occur.`,
+  },
+
+  "synthmed-ai-hipaa-in-browser": {
+    id: "synthmed-ai-hipaa-in-browser",
+    title: "HIPAA-Safe Clinical Scribing: Why SynthMed AI Runs 100% In-Browser",
+    summary:
+      "Why client-side in-memory Web Speech API and medical ontology mapping solves HIPAA compliance by never storing patient data on cloud servers.",
+    category: "Security",
+    readTime: "8 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["HealthTech", "HIPAA", "Medical AI", "SOAP Notes", "ICD-10"],
+    content: `## Eliminating PHI Liability in Clinical AI
+
+Health systems and private practices face immense HIPAA liability when transmitting Protected Health Information (PHI) to cloud storage. [SynthMed AI](https://synthmed-ai.vercel.app) was designed with a zero-cloud architectural mandate: patient dialogues exist solely in transient device memory.
+
+### 1. In-Browser Clinical Scribing
+
+- Uses the browser's native speech recognition pipelines for real-time consultation transcription.
+- Structures raw spoken dialogue into formal SOAP (Subjective, Objective, Assessment, Plan) clinical notes.
+
+### 2. Automated ICD-10 & CPT Billing Extraction
+
+SynthMed AI integrates a client-side medical ontology mapper:
+- Automatically maps clinical assessments to primary and secondary ICD-10-CM diagnosis codes.
+- Extracts procedural CPT codes for evaluation and management (E/M) billing level accuracy.
+- Flags differential diagnoses with confidence scoring matrices.
+
+### 3. EHR Integration Ready
+
+Clinicians can copy structured SOAP notes into Epic, Cerner, or AthenaHealth with a single click, saving an estimated 3.2 hours of administrative charting per day.`,
+  },
+
+  "adgenesis-ai-multi-armed-bandit": {
+    id: "adgenesis-ai-multi-armed-bandit",
+    title: "Beating the Ad Matrix: How AdGenesis AI Implemented Multi-Armed Bandit ROAS Optimization",
+    summary:
+      "Architecting an Epsilon-Greedy multi-armed bandit algorithm for ad creative budget allocation across Meta, TikTok, and Google Ads.",
+    category: "Architecture",
+    readTime: "7 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["MarTech", "Multi-Armed Bandit", "ROAS", "Reinforcement Learning"],
+    content: `## Algorithmic Ad Creative Optimization
+
+Traditional growth teams manually create 3-4 ad variations and wait 7 days to evaluate cost-per-click. [AdGenesis AI](https://adgenesis-ai.vercel.app) flips this paradigm with high-velocity matrix generation and reinforcement learning.
+
+### 1. 50+ Multi-Platform Creative Matrix
+
+From a single product URL or value proposition, AdGenesis generates:
+- Direct-response hooks, pain-point agitation, and social proof copy.
+- Native aspect-ratio formats tailored for TikTok (9:16 vertical urgency), Meta (1:1 feed carousels), and Google Search (responsive headlines).
+
+### 2. The Epsilon-Greedy Bandit Optimizer
+
+To eliminate ad spend waste on losing variations, AdGenesis incorporates an Epsilon-Greedy multi-armed bandit algorithm:
+- **Exploration (ε = 0.15)**: Allocates 15% of daily budget across newly generated creative hooks.
+- **Exploitation (1 - ε = 0.85)**: Channels 85% of budget to the highest-converting statistical performers based on simulated or live ROAS data.
+
+### 3. Dynamic Export Pipelines
+
+Marketers can export production CSV campaign manifests formatted for direct upload to Meta Ads Manager and Google Ads Editor in seconds.`,
+  },
+
+  "tenderbot-global-rfp-compliance": {
+    id: "tenderbot-global-rfp-compliance",
+    title: "Automating $20M GovCon RFPs: The Architecture Behind TenderBot Global",
+    summary:
+      "How we architected an autonomous FAR/DFARS compliance engine that parses 500-page federal solicitations and drafts winning proposals in 45 minutes.",
+    category: "AI Agents",
+    readTime: "9 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["GovTech", "GovCon", "FAR/DFARS", "RFP Automation"],
+    content: `## Inside Federal Contracting AI Automation
+
+Federal and defense contractors spend hundreds of thousands of dollars reviewing complex 300+ page Requests for Proposals (RFPs). [TenderBot Global](https://tenderbot-global.vercel.app) automates compliance scoring and proposal generation.
+
+### 1. FAR & DFARS Clause Compliance Scanner
+
+Government bids are instantly disqualified if mandatory Federal Acquisition Regulation (FAR) and Defense FAR Supplement (DFARS) requirements are omitted. TenderBot:
+- Parses solicitation documents to build a complete Requirements Traceability Matrix (RTM).
+- Audits cyber hygiene requirements (NIST SP 800-171, CMMC Level 2), small business subcontracting goals, and Buy American Act provisions.
+
+### 2. Algorithmic Win-Probability Scoring
+
+Evaluates contractor past performance, NAICS code alignment, and pricing structure against historical government award data to output a statistical P(Win) probability score before committing proposal resources.
+
+### 3. Executive Proposal Drafting
+
+Drafts section-compliant Volume I (Technical Approach), Volume II (Management & Staffing), and Volume III (Past Performance) briefs in 45 minutes, ready for final human review and SAM.gov submission.`,
+  },
+
+  "qualicheck-ai-canvas-metrology": {
+    id: "qualicheck-ai-canvas-metrology",
+    title: "60 FPS Computer Vision Metrology in Pure HTML5 Canvas: Deep-Dive into QualiCheck AI",
+    summary:
+      "Implementing edge computer vision algorithms for microscopic defect detection and surface metrology at 16ms per frame in the browser.",
+    category: "Frontend",
+    readTime: "8 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["Computer Vision", "HTML5 Canvas", "Edge AI", "Metrology"],
+    content: `## High-Speed Computer Vision in Pure JavaScript
+
+Industrial manufacturing quality assurance demands sub-millimeter defect detection at assembly-line speeds. [QualiCheck AI](https://qualicheck-ai.vercel.app) executes computer vision metrology directly on client HTML5 Canvas at 60 FPS without sending video feeds to cloud GPUs.
+
+### 1. Direct Pixel Array Metrology
+
+Using \`CanvasRenderingContext2D.getImageData\` and typed \`Uint8ClampedArray\` buffers:
+- Computes Sobel edge detection gradients and Otsu thresholding in web worker threads.
+- Identifies micro-scratches, solder joint voids, silicon wafer cracks, and connector misalignments.
+- Bounds defects with sub-pixel bounding boxes and classifies defect severity (Critical, Major, Minor).
+
+### 2. Real-Time Yield Telemetry
+
+Maintains live rolling yield percentages, defect heatmaps, and First Pass Yield (FPY) analytics with zero frame drops (16ms latency budget).
+
+### 3. Edge Privacy & Bandwidth Savings
+
+Because continuous 4K camera streams never leave the factory floor's local browser instance, facilities save terabytes of network bandwidth while safeguarding proprietary component CAD designs.`,
+  },
+
+  "talentpulse-ai-pyodide-wasm": {
+    id: "talentpulse-ai-pyodide-wasm",
+    title: "Running Sandboxed Python Code In-Browser with Pyodide: Inside TalentPulse AI",
+    summary:
+      "How Pyodide WebAssembly enables zero-latency Python code execution, AST anti-cheat telemetry, and instant rubric grading without backend infrastructure.",
+    category: "Full Stack",
+    readTime: "8 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["Pyodide", "WebAssembly", "WASM", "HRTech", "Coding Sandbox"],
+    content: `## Building a Backend-Free Technical Interview Platform
+
+Traditional coding assessment platforms (HackerRank, LeetCode) rely on expensive remote container execution clusters (Docker/AWS Lambda) with cold-start latency and security container escape risks. [TalentPulse AI](https://talentpulse-ai-nine.vercel.app) runs the entire Python runtime directly inside the candidate's browser via Pyodide WebAssembly.
+
+### 1. Pyodide WebAssembly Architecture
+
+- Bootstraps a full CPython 3.12 interpreter compiled to WebAssembly in a dedicated Web Worker.
+- Executes candidate algorithms with zero network latency (0ms roundtrip) against custom unit tests.
+- Captures \`stdout\`, \`stderr\`, execution time, and peak memory consumption directly in-memory.
+
+### 2. AST Anti-Cheat Telemetry
+
+TalentPulse monitors code construction mechanics using Abstract Syntax Tree diffing:
+- Tracks keystroke cadence, sudden massive clipboard pastes, and tab-switch blurs.
+- Detects non-human code injection patterns with 99.7% statistical confidence.
+
+### 3. Automated Rubric Grading
+
+Evaluates time complexity (O(N) vs O(N²)), cyclomatic complexity, PEP8 style adherence, and edge case coverage, generating instant interview scorecards for hiring managers.`,
+  },
+
+  "datalightning-ai-duckdb-wasm": {
+    id: "datalightning-ai-duckdb-wasm",
+    title: "Querying Millions of Rows in 16ms: Building DataLightning AI with DuckDB-WASM",
+    summary:
+      "Inside the columnar in-browser database engine that processes gigabyte Parquet files and executes Natural Language Text-to-SQL at 10M rows/sec.",
+    category: "Database",
+    readTime: "10 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["BigData", "DuckDB-WASM", "Text-to-SQL", "Columnar"],
+    content: `## The Rise of the In-Browser Columnar Analytics Engine
+
+Traditional business intelligence stacks require provisioning Snowflake or BigQuery warehouses, costing thousands of dollars per month. [DataLightning AI](https://datalightning-ai.vercel.app) embeds the powerhouse DuckDB-WASM engine directly in client browsers.
+
+### 1. Columnar Vectorized Execution
+
+DuckDB-WASM runs compiled C++ columnar execution engines inside browser WebAssembly:
+- Ingests raw CSV and Apache Parquet files directly into virtual memory.
+- Performs aggregations (\`GROUP BY\`, \`SUM\`, \`AVG\`, \`WINDOW\`) across millions of rows in 16 to 45 milliseconds.
+- Scans data at over 10,000,000 rows per second on modern laptops.
+
+### 2. In-Browser Natural Language Text-to-SQL
+
+Users type questions in plain English (*"Show monthly recurring revenue by enterprise customer tier with churn rate above 5%"*):
+- Generates optimized SQL dialect queries.
+- Executes against the in-memory DuckDB table with instant chart visualization.
+
+### 3. Complete Data Isolation
+
+Because confidential financial and customer records never leave the user's local device, enterprise compliance teams approve deployment in minutes.`,
+  },
+
+  "hyperlocalize-ai-srt-localization": {
+    id: "hyperlocalize-ai-srt-localization",
+    title: "Zero Drift Subtitle Localization: The Math Behind HyperLocalize AI's SRT Engine",
+    summary:
+      "Preserving millisecond audio timing accuracy while culturally localizing video subtitles and reading speed WPM across 12+ international markets.",
+    category: "Frontend",
+    readTime: "7 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["Media", "SRT Parser", "Cultural Localization", "Audio Sync"],
+    content: `## High-Precision Multilingual Subtitle Engineering
+
+Video content creators and global streaming platforms struggle with automated translation that breaks subtitle synchronization or uses awkward literal translations. [HyperLocalize AI](https://hyperlocalize-ai.vercel.app) solves both timing drift and cultural nuance.
+
+### 1. Millisecond-Accurate Timestamp Parsing
+
+Subtitles depend on strict \`HH:MM:SS,mmm\` time codes:
+- HyperLocalize parses SubRip (\`.srt\`) and WebVTT (\`.vtt\`) structures into indexed timeline arrays.
+- Guarantees 0.00ms timing drift across frame-rate conversions (23.976 fps to 29.97 fps).
+
+### 2. Cultural Nuance & Idiom Adaptation
+
+Rather than word-for-word machine translation:
+- Replaces colloquial idioms with culturally equivalent expressions in Spanish, German, Japanese, Hindi, French, and Mandarin.
+- Enforces reading speed constraints (maximum 17–20 characters per second and 160 words per minute) to ensure viewer readability.
+
+### 3. Real-Time Multilingual Studio Preview
+
+Creators can toggle international subtitle ribbons dynamically over video previews and export broadcast-compliant subtitle files ready for YouTube, Netflix, or Premiere Pro.`,
+  },
 };
 
 export const ARTICLES_LIST = Object.values(ARTICLES_MAP);

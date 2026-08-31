@@ -31,6 +31,11 @@ export function SiteFooter() {
           <div className="text-sm font-semibold mb-4">Studio</div>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
+              <Link to="/ventures" className="hover:text-foreground text-emerald-400 font-medium">
+                Ventures Lab (10 Live Apps)
+              </Link>
+            </li>
+            <li>
               <Link to="/services" className="hover:text-foreground">
                 Services
               </Link>

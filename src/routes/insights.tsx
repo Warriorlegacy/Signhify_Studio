@@ -11,7 +11,7 @@ export const Route = createFileRoute("/insights")({
       {
         name: "description",
         content:
-          "Explore 17 technical guides on AI SaaS development, autonomous agents, BYOK encryption, TanStack Start architecture, and AEO optimization by Signhify.",
+          "Explore 27 technical guides and venture case studies on AI SaaS development, client-side compute, WebAssembly, DuckDB-WASM, autonomous agents, and AEO optimization by Signhify.",
       },
       { property: "og:title", content: "AI Engineering Insights & SaaS Development — Signhify" },
       {
@@ -231,6 +231,116 @@ const ARTICLES = [
     author: "Piyush Raj Singh",
     date: "July 2026",
     tags: ["MVP", "Timeline", "Sprint", "Development"],
+  },
+  {
+    id: "auditmind-ai-architecture",
+    title: "How We Built AuditMind AI: In-Browser Section 41 Tax Scanning with Zero Server Overhead",
+    summary:
+      "Engineering an IRS Section 41 qualification engine and ASC 730 R&D wage allocation matrix that runs 100% client-side with zero cloud compute cost.",
+    category: "Architecture",
+    readTime: "8 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["Fintech", "Client-Side Compute", "Groq Llama-3.3", "Tax AI"],
+  },
+  {
+    id: "contractsentinel-ai-docx-redline",
+    title: "Non-Destructive DOCX Redlining: Engineering ContractSentinel AI with WebAssembly & Groq",
+    summary:
+      "How we implemented pure in-browser OOXML parsing, JSZip compression, and non-destructive track-changes injection with zero data retention.",
+    category: "Security",
+    readTime: "7 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["LegalTech", "OOXML", "DOCX", "Privacy", "WASM"],
+  },
+  {
+    id: "codevortex-sre-ast-diffs",
+    title: "From K8s Stack Traces to Syntax-Valid AST Diffs: Inside CodeVortex SRE",
+    summary:
+      "Designing an incident triage engine that converts chaotic distributed trace exceptions into verified syntax-valid code diffs in sub-2-second latency.",
+    category: "AI Agents",
+    readTime: "9 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["DevOps", "SRE", "AST Diffs", "Incident Triage", "Kubernetes"],
+  },
+  {
+    id: "synthmed-ai-hipaa-in-browser",
+    title: "HIPAA-Safe Clinical Scribing: Why SynthMed AI Runs 100% In-Browser",
+    summary:
+      "Why client-side in-memory Web Speech API and medical ontology mapping solves HIPAA compliance by never storing patient data on cloud servers.",
+    category: "Security",
+    readTime: "8 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["HealthTech", "HIPAA", "Medical AI", "SOAP Notes", "ICD-10"],
+  },
+  {
+    id: "adgenesis-ai-multi-armed-bandit",
+    title: "Beating the Ad Matrix: How AdGenesis AI Implemented Multi-Armed Bandit ROAS Optimization",
+    summary:
+      "Architecting an Epsilon-Greedy multi-armed bandit algorithm for ad creative budget allocation across Meta, TikTok, and Google Ads.",
+    category: "Architecture",
+    readTime: "7 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["MarTech", "Multi-Armed Bandit", "ROAS", "Reinforcement Learning"],
+  },
+  {
+    id: "tenderbot-global-rfp-compliance",
+    title: "Automating $20M GovCon RFPs: The Architecture Behind TenderBot Global",
+    summary:
+      "How we architected an autonomous FAR/DFARS compliance engine that parses 500-page federal solicitations and drafts winning proposals in 45 minutes.",
+    category: "AI Agents",
+    readTime: "9 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["GovTech", "GovCon", "FAR/DFARS", "RFP Automation"],
+  },
+  {
+    id: "qualicheck-ai-canvas-metrology",
+    title: "60 FPS Computer Vision Metrology in Pure HTML5 Canvas: Deep-Dive into QualiCheck AI",
+    summary:
+      "Implementing edge computer vision algorithms for microscopic defect detection and surface metrology at 16ms per frame in the browser.",
+    category: "Frontend",
+    readTime: "8 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["Computer Vision", "HTML5 Canvas", "Edge AI", "Metrology"],
+  },
+  {
+    id: "talentpulse-ai-pyodide-wasm",
+    title: "Running Sandboxed Python Code In-Browser with Pyodide: Inside TalentPulse AI",
+    summary:
+      "How Pyodide WebAssembly enables zero-latency Python code execution, AST anti-cheat telemetry, and instant rubric grading without backend infrastructure.",
+    category: "Full Stack",
+    readTime: "8 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["Pyodide", "WebAssembly", "WASM", "HRTech", "Coding Sandbox"],
+  },
+  {
+    id: "datalightning-ai-duckdb-wasm",
+    title: "Querying Millions of Rows in 16ms: Building DataLightning AI with DuckDB-WASM",
+    summary:
+      "Inside the columnar in-browser database engine that processes gigabyte Parquet files and executes Natural Language Text-to-SQL at 10M rows/sec.",
+    category: "Database",
+    readTime: "10 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["BigData", "DuckDB-WASM", "Text-to-SQL", "Columnar"],
+  },
+  {
+    id: "hyperlocalize-ai-srt-localization",
+    title: "Zero Drift Subtitle Localization: The Math Behind HyperLocalize AI's SRT Engine",
+    summary:
+      "Preserving millisecond audio timing accuracy while culturally localizing video subtitles and reading speed WPM across 12+ international markets.",
+    category: "Frontend",
+    readTime: "7 min read",
+    author: "Piyush Raj Singh",
+    date: "August 2026",
+    tags: ["Media", "SRT Parser", "Cultural Localization", "Audio Sync"],
   },
 ];
 

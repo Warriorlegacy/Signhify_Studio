@@ -20,6 +20,7 @@ import {
   WandSparkles,
 } from "lucide-react";
 import { TemplateThumbnail } from "@/components/templates/TemplateThumbnail";
+import { VenturesShowcase } from "@/components/VenturesShowcase";
 import { PIPELINE, PRESETS, PRO_TOOLS, STATS, TESTIMONIALS } from "./landing-data";
 import { Reveal } from "./LandingShared";
 
@@ -615,6 +616,10 @@ export function LandingSections() {
       <ZeroCodeSection />
       <Divider />
       <ProToolsSection />
+      <Divider />
+      <div id="ventures-lab" className="scroll-mt-20">
+        <VenturesShowcase showTitle={true} />
+      </div>
       <Divider />
       <CtaStatsSection />
       <Divider />
