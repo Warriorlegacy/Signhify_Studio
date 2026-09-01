@@ -43,3 +43,4 @@ Signhify_assets/*.mp4
 .eslintcache
 
 nul
+.vercel

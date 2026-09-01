@@ -16,8 +16,13 @@ import {
   Zap,
   ShoppingCart,
   Key,
+  MessageSquare,
+  LayoutGrid,
 } from "lucide-react";
 import AiKeyQuickConfig from "@/components/ai/AiKeyQuickConfig";
+import { OnboardingTourLauncher, SIGNHIFY_AI_STUDIO_STEPS } from "@/components/ui/OnboardingTour";
+import { AuroraGlow } from "@/components/ui/ReactBits";
+import { AssistantChat } from "@/components/ai/AssistantChat";
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { generatePlan, savePlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
@@ -95,6 +100,7 @@ const AGENT_META = [
 type PipelineStage = (typeof AGENT_META)[number]["stage"];
 
 function AiPage() {
+  const [activeView, setActiveView] = useState<"blueprint" | "assistant">("blueprint");
   const [prompt, setPrompt] = useState("");
   const [stage, setStage] = useState<"idle" | "running" | "done" | "error">("idle");
   const [activeAgent, setActiveAgent] = useState(0);
@@ -405,6 +411,7 @@ function AiPage() {
 
   return (
     <section className="relative isolate min-h-[100svh] pt-32 pb-24 overflow-hidden">
+      <AuroraGlow opacity={0.25} />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: "var(--gradient-ember)" }}
@@ -412,109 +419,153 @@ function AiPage() {
       <div className="absolute inset-0 bg-grid mask-fade-edges opacity-40 pointer-events-none" />
 
       <div className="relative mx-auto max-w-5xl px-6">
-        <Breadcrumbs items={[{ label: "AI Generator", to: "/ai" }]} />
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary flex-wrap"
-        >
-          <Sparkles size={14} /> Signhify AI · powered by Claude
-          <span className="mx-1.5 w-px h-3 bg-primary/20" />
-          {creditsData ? (
-            <span className="inline-flex items-center gap-1">
-              <Zap size={12} className="text-amber-400" />
-              {isUnlimited ? (
-                <span className="text-emerald-400">∞ credits</span>
-              ) : (
-                <span className={creditsLow ? "text-amber-400" : ""}>
-                  {creditsData.creditsRemaining} / {creditsData.maxCredits} credits
-                </span>
-              )}
-            </span>
-          ) : (
-            <span className="text-muted-foreground/50">loading…</span>
-          )}
-          {creditsLow && (
-            <button
-              onClick={() =>
-                checkoutFn({ data: { plan: "pro" } }).then(
-                  (r) => r.url && window.open(r.url, "_blank"),
-                )
-              }
-              className="inline-flex items-center gap-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-amber-400 hover:bg-amber-500/30 transition"
-            >
-              <ShoppingCart size={11} /> Buy credits
-            </button>
-          )}
-        </motion.div>
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <Breadcrumbs items={[{ label: "AI Generator", to: "/ai" }]} />
+          
+          <div className="flex items-center gap-3">
+            {/* View Switcher */}
+            <div className="inline-flex p-1 rounded-full bg-zinc-900/80 border border-white/10 backdrop-blur-xl">
+              <button
+                onClick={() => setActiveView("blueprint")}
+                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+                  activeView === "blueprint"
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                <LayoutGrid size={13} />
+                <span>Blueprint Swarm</span>
+              </button>
+              <button
+                onClick={() => setActiveView("assistant")}
+                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+                  activeView === "assistant"
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                <MessageSquare size={13} />
+                <span>Assistant UI</span>
+              </button>
+            </div>
 
-        <h1 className="mt-6 font-display text-5xl sm:text-7xl font-black leading-[0.95]">
-          Describe anything. <span className="text-gradient">Signhify builds it.</span>
-        </h1>
-        <p className="mt-5 max-w-2xl text-lg text-muted-foreground">
-          One prompt. Six AI agents collaborate to turn it into a real product plan, stack and
-          starter build.
-        </p>
-
-        {/* Inline BYOK config for free-tier users */}
-        <div className="mt-8">
-          <AiKeyQuickConfig />
-        </div>
-
-        {/* Prompt box */}
-        <div className="mt-6 rounded-2xl border border-border bg-card/80 backdrop-blur p-2 shadow-[var(--shadow-card)]">
-          <div className="flex flex-col sm:flex-row gap-2">
-            <input
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && run()}
-              placeholder="Build me a…"
-              className="flex-1 bg-transparent px-4 py-4 text-base outline-none placeholder:text-muted-foreground/60"
+            {/* Guided Tour Launcher */}
+            <OnboardingTourLauncher
+              tourId="signhify_ai_studio"
+              steps={SIGNHIFY_AI_STUDIO_STEPS}
+              label="Studio Tour"
             />
-            <button
-              onClick={() => run()}
-              disabled={stage === "running"}
-              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110 disabled:opacity-60 transition"
-            >
-              {stage === "running" ? (
-                <>
-                  <Loader2 size={16} className="animate-spin" /> Building
-                </>
-              ) : (
-                <>
-                  Generate plan{" "}
-                  <ArrowRight size={16} className="group-hover:translate-x-0.5 transition" />
-                </>
-              )}
-            </button>
           </div>
         </div>
 
-        {/* Builder Mode toggle (admin) */}
-        <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
-          <label className="inline-flex items-center gap-2 cursor-pointer select-none">
-            <span
-              role="switch"
-              aria-checked={builderMode}
-              onClick={toggleBuilderMode}
-              className={`relative inline-block w-9 h-5 rounded-full transition ${
-                builderMode ? "bg-primary" : "bg-border"
-              }`}
+        {activeView === "assistant" ? (
+          <div className="mt-8">
+            <AssistantChat />
+          </div>
+        ) : (
+          <>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary flex-wrap"
             >
-              <span
-                className={`absolute top-0.5 h-4 w-4 rounded-full bg-background transition ${
-                  builderMode ? "left-[18px]" : "left-0.5"
-                }`}
-              />
-            </span>
-            <span className="font-medium text-foreground">Builder Mode</span>
-            <span className="text-muted-foreground/70">
-              {builderMode
-                ? "auto-builds the live product after planning"
-                : "plan first, build on demand"}
-            </span>
-          </label>
-        </div>
+              <Sparkles size={14} /> Signhify AI · powered by Claude
+              <span className="mx-1.5 w-px h-3 bg-primary/20" />
+              {creditsData ? (
+                <span className="inline-flex items-center gap-1">
+                  <Zap size={12} className="text-amber-400" />
+                  {isUnlimited ? (
+                    <span className="text-emerald-400">∞ credits</span>
+                  ) : (
+                    <span className={creditsLow ? "text-amber-400" : ""}>
+                      {creditsData.creditsRemaining} / {creditsData.maxCredits} credits
+                    </span>
+                  )}
+                </span>
+              ) : (
+                <span className="text-muted-foreground/50">loading…</span>
+              )}
+              {creditsLow && (
+                <button
+                  onClick={() =>
+                    checkoutFn({ data: { plan: "pro" } }).then(
+                      (r) => r.url && window.open(r.url, "_blank"),
+                    )
+                  }
+                  className="inline-flex items-center gap-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-amber-400 hover:bg-amber-500/30 transition"
+                >
+                  <ShoppingCart size={11} /> Buy credits
+                </button>
+              )}
+            </motion.div>
+
+            <h1 className="mt-6 font-display text-5xl sm:text-7xl font-black leading-[0.95]">
+              Describe anything. <span className="text-gradient">Signhify builds it.</span>
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg text-muted-foreground">
+              One prompt. Six AI agents collaborate to turn it into a real product plan, stack and
+              starter build.
+            </p>
+
+            {/* Inline BYOK config for free-tier users */}
+            <div id="byok-security-badge" className="mt-8">
+              <AiKeyQuickConfig />
+            </div>
+
+            {/* Prompt box */}
+            <div id="prompt-input-box" className="mt-6 rounded-2xl border border-border bg-card/80 backdrop-blur p-2 shadow-[var(--shadow-card)]">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && run()}
+                  placeholder="Build me a…"
+                  className="flex-1 bg-transparent px-4 py-4 text-base outline-none placeholder:text-muted-foreground/60"
+                />
+                <button
+                  onClick={() => run()}
+                  disabled={stage === "running"}
+                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110 disabled:opacity-60 transition"
+                >
+                  {stage === "running" ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" /> Building
+                    </>
+                  ) : (
+                    <>
+                      Generate plan{" "}
+                      <ArrowRight size={16} className="group-hover:translate-x-0.5 transition" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Builder Mode toggle (admin) */}
+            <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
+              <label className="inline-flex items-center gap-2 cursor-pointer select-none">
+                <span
+                  role="switch"
+                  aria-checked={builderMode}
+                  onClick={toggleBuilderMode}
+                  className={`relative inline-block w-9 h-5 rounded-full transition ${
+                    builderMode ? "bg-primary" : "bg-border"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-0.5 h-4 w-4 rounded-full bg-background transition ${
+                      builderMode ? "left-[18px]" : "left-0.5"
+                    }`}
+                  />
+                </span>
+                <span className="font-medium text-foreground">Builder Mode</span>
+                <span className="text-muted-foreground/70">
+                  {builderMode
+                    ? "auto-builds the live product after planning"
+                    : "plan first, build on demand"}
+                </span>
+              </label>
+            </div>
 
         {/* Examples */}
         {stage === "idle" && (
@@ -535,6 +586,7 @@ function AiPage() {
         <AnimatePresence>
           {stage !== "idle" && (
             <motion.div
+              id="agent-pipeline-tracker"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -703,7 +755,7 @@ function AiPage() {
               </div>
             )}
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div id="export-download-btn" className="mt-6 flex flex-wrap gap-3">
               <button
                 onClick={() => handleBuild()}
                 disabled={buildState === "building"}
@@ -848,6 +900,8 @@ function AiPage() {
               </div>
             )}
           </motion.div>
+        )}
+        </>
         )}
       </div>
     </section>
