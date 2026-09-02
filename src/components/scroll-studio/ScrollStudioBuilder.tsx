@@ -11,8 +11,11 @@ import {
   getScrollStudioProject,
 } from "@/lib/scroll-studio-projects.functions";
 
-// We keep a global non-reactive reference to avoid React state lag with massive base64 arrays
-(window as any)._signhifyScrollFrames = [];
+// We keep a global non-reactive reference to avoid React state lag with massive base64 arrays.
+// Guarded: this module is also evaluated during SSR where `window` is undefined.
+if (typeof window !== "undefined") {
+  (window as any)._signhifyScrollFrames = (window as any)._signhifyScrollFrames ?? [];
+}
 
 const STORAGE_KEY = "sh_studio_project";
 
