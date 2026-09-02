@@ -185,7 +185,7 @@ export function ScrollStudioBuilder() {
         {hasFrames && projectId && (
           <div className="absolute bottom-4 right-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 px-3 py-1.5 rounded-full text-xs font-mono backdrop-blur-md flex items-center shadow-lg">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2 animate-pulse" />
-            {(window as any)._signhifyScrollFrames?.length} frames ready for canvas
+            {frameCount} frames ready for canvas
           </div>
         )}
       </main>
