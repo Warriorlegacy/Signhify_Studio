@@ -41,6 +41,7 @@ import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as TemplatesRouteImport } from './routes/templates'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as UsAiEngineeringStudioRouteImport } from './routes/us-ai-engineering-studio'
+import { Route as VenturesRouteImport } from './routes/ventures'
 import { Route as VisionRouteImport } from './routes/vision'
 import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as AppSettingsRouteImport } from './routes/app/settings'
@@ -234,6 +235,11 @@ const UsAiEngineeringStudioRoute = UsAiEngineeringStudioRouteImport.update({
   path: '/us-ai-engineering-studio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VenturesRoute = VenturesRouteImport.update({
+  id: '/ventures',
+  path: '/ventures',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VisionRoute = VisionRouteImport.update({
   id: '/vision',
   path: '/vision',
@@ -423,6 +429,7 @@ export interface FileRoutesByFullPath {
   '/templates': typeof TemplatesRoute
   '/terms': typeof TermsRoute
   '/us-ai-engineering-studio': typeof UsAiEngineeringStudioRoute
+  '/ventures': typeof VenturesRoute
   '/vision': typeof VisionRoute
   '/app/settings': typeof AppSettingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
@@ -487,6 +494,7 @@ export interface FileRoutesByTo {
   '/templates': typeof TemplatesRoute
   '/terms': typeof TermsRoute
   '/us-ai-engineering-studio': typeof UsAiEngineeringStudioRoute
+  '/ventures': typeof VenturesRoute
   '/vision': typeof VisionRoute
   '/app/settings': typeof AppSettingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
@@ -553,6 +561,7 @@ export interface FileRoutesById {
   '/templates': typeof TemplatesRoute
   '/terms': typeof TermsRoute
   '/us-ai-engineering-studio': typeof UsAiEngineeringStudioRoute
+  '/ventures': typeof VenturesRoute
   '/vision': typeof VisionRoute
   '/app/settings': typeof AppSettingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
@@ -620,6 +629,7 @@ export interface FileRouteTypes {
     | '/templates'
     | '/terms'
     | '/us-ai-engineering-studio'
+    | '/ventures'
     | '/vision'
     | '/app/settings'
     | '/insights/$slug'
@@ -684,6 +694,7 @@ export interface FileRouteTypes {
     | '/templates'
     | '/terms'
     | '/us-ai-engineering-studio'
+    | '/ventures'
     | '/vision'
     | '/app/settings'
     | '/insights/$slug'
@@ -749,6 +760,7 @@ export interface FileRouteTypes {
     | '/templates'
     | '/terms'
     | '/us-ai-engineering-studio'
+    | '/ventures'
     | '/vision'
     | '/app/settings'
     | '/insights/$slug'
@@ -815,6 +827,7 @@ export interface RootRouteChildren {
   TemplatesRoute: typeof TemplatesRoute
   TermsRoute: typeof TermsRoute
   UsAiEngineeringStudioRoute: typeof UsAiEngineeringStudioRoute
+  VenturesRoute: typeof VenturesRoute
   VisionRoute: typeof VisionRoute
   AppSettingsRoute: typeof AppSettingsRoute
   StudioSpikeRoute: typeof StudioSpikeRoute
@@ -1058,6 +1071,13 @@ declare module '@tanstack/react-router' {
       path: '/us-ai-engineering-studio'
       fullPath: '/us-ai-engineering-studio'
       preLoaderRoute: typeof UsAiEngineeringStudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ventures': {
+      id: '/ventures'
+      path: '/ventures'
+      fullPath: '/ventures'
+      preLoaderRoute: typeof VenturesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/vision': {
@@ -1397,6 +1417,7 @@ const rootRouteChildren: RootRouteChildren = {
   TemplatesRoute: TemplatesRoute,
   TermsRoute: TermsRoute,
   UsAiEngineeringStudioRoute: UsAiEngineeringStudioRoute,
+  VenturesRoute: VenturesRoute,
   VisionRoute: VisionRoute,
   AppSettingsRoute: AppSettingsRoute,
   StudioSpikeRoute: StudioSpikeRoute,
