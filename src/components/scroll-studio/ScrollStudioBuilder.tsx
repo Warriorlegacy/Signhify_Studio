@@ -93,6 +93,7 @@ export function ScrollStudioBuilder() {
   const handleFramesExtracted = (frames: string[]) => {
     (window as any)._signhifyScrollFrames = frames;
     setHasFrames(true);
+    setFrameCount(frames.length);
 
     // Auto-inject a payload if we have previewData
     if (previewData) {
