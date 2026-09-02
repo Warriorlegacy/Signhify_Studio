@@ -30,6 +30,7 @@ export function ScrollStudioBuilder() {
     null,
   );
   const [hasFrames, setHasFrames] = useState(false);
+  const [frameCount, setFrameCount] = useState(0);
   const [creating, setCreating] = useState(false);
 
   const selectProject = useCallback((id: string | null) => {
