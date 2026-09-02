@@ -23,13 +23,13 @@ function validate(input: unknown): ChatInput {
     messages.push({ role: role === "assistant" ? "assistant" : "user", content });
   }
   const trimmed = messages.slice(-20);
-  if (messages.length === 0 || messages[messages.length - 1].role !== "user") {
+  if (trimmed.length === 0 || trimmed[trimmed.length - 1].role !== "user") {
     throw new Error("A user message is required.");
   }
-  if (messages.some((m) => m.content.length > 8000)) {
+  if (trimmed.some((m) => m.content.length > 8000)) {
     throw new Error("Message is too long.");
   }
-  return { messages };
+  return { messages: trimmed };
 }
 
 export const assistantChat = createServerFn({ method: "POST" })
