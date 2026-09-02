@@ -11,8 +11,11 @@ import {
   getScrollStudioProject,
 } from "@/lib/scroll-studio-projects.functions";
 
-// We keep a global non-reactive reference to avoid React state lag with massive base64 arrays
-(window as any)._signhifyScrollFrames = [];
+// We keep a global non-reactive reference to avoid React state lag with massive base64 arrays.
+// Guarded: this module is also evaluated during SSR where `window` is undefined.
+if (typeof window !== "undefined") {
+  (window as any)._signhifyScrollFrames = (window as any)._signhifyScrollFrames ?? [];
+}
 
 const STORAGE_KEY = "sh_studio_project";
 
@@ -27,6 +30,7 @@ export function ScrollStudioBuilder() {
     null,
   );
   const [hasFrames, setHasFrames] = useState(false);
+  const [frameCount, setFrameCount] = useState(0);
   const [creating, setCreating] = useState(false);
 
   const selectProject = useCallback((id: string | null) => {
@@ -89,6 +93,7 @@ export function ScrollStudioBuilder() {
   const handleFramesExtracted = (frames: string[]) => {
     (window as any)._signhifyScrollFrames = frames;
     setHasFrames(true);
+    setFrameCount(frames.length);
 
     // Auto-inject a payload if we have previewData
     if (previewData) {
@@ -180,7 +185,7 @@ export function ScrollStudioBuilder() {
         {hasFrames && projectId && (
           <div className="absolute bottom-4 right-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 px-3 py-1.5 rounded-full text-xs font-mono backdrop-blur-md flex items-center shadow-lg">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2 animate-pulse" />
-            {(window as any)._signhifyScrollFrames?.length} frames ready for canvas
+            {frameCount} frames ready for canvas
           </div>
         )}
       </main>
