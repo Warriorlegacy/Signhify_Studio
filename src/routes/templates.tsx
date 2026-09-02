@@ -193,7 +193,7 @@ function TemplatesPage() {
           <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4ade80] mb-4 bg-[#22c55e]/10 px-3.5 py-1.5 rounded-full border border-[#22c55e]/25">
             <Layers size={11} className="text-[#22c55e]" /> Vibe Coding &amp; 3D Scroll Library
           </span>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4">
+          <h1 className="font-stylish text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.035em] text-white mb-4 interactive-heading">
             Cinematic 3D Templates &amp; <span className="text-[#22c55e]">God-Level Prompts</span>
           </h1>
           <p className="text-white/70 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto">

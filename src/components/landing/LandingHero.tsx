@@ -257,10 +257,10 @@ function StatsBar() {
         >
           <s.icon size={14} className="text-[#22c55e]/80" />
           <div className="flex flex-col">
-            <span className="text-[16px] sm:text-[18px] font-bold text-white tracking-tight leading-none">
+            <span className="font-stylish text-[16px] sm:text-[18px] font-extrabold text-white tracking-[-0.02em] leading-none interactive-text">
               {s.value}
             </span>
-            <span className="text-[10px] sm:text-[11px] text-white/50 font-medium tracking-wide uppercase">
+            <span className="text-[10px] sm:text-[11px] text-white/50 font-semibold tracking-wider uppercase font-sans">
               {s.label}
             </span>
           </div>
@@ -513,18 +513,18 @@ export function LandingHero() {
         >
           {/* Headline */}
           <div className="text-center max-w-4xl px-2 mb-6 sm:mb-8" style={fadeIn(0)}>
-            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4ade80] mb-5 bg-[#22c55e]/10 px-3.5 py-1.5 rounded-full border border-[#22c55e]/25 shadow-[0_0_20px_rgba(34,197,94,0.15)]">
-              <Zap size={11} className="text-[#22c55e]" />
+            <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.22em] text-[#4ade80] mb-5 bg-[#22c55e]/10 px-4 py-1.5 rounded-full border border-[#22c55e]/30 shadow-[0_0_24px_rgba(34,197,94,0.2)] hover:border-[#4ade80] hover:scale-105 transition-all duration-300">
+              <Zap size={12} className="text-[#22c55e] animate-pulse" />
               AI 3D Website Builder
             </span>
-            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-[70px] font-bold text-white tracking-tight leading-[1.06] mb-5">
+            <h2 className="font-stylish text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-extrabold text-white tracking-[-0.035em] leading-[1.04] mb-5 interactive-heading">
               Cinematic Scroll Websites
               <br />
-              <span className="bg-gradient-to-r from-[#22c55e] via-[#4ade80] to-[#ffffff] bg-clip-text text-transparent">
+              <span className="text-shimmer-interactive">
                 from a Single Prompt
               </span>
             </h2>
-            <p className="text-white/70 text-[15px] sm:text-[17px] md:text-[18px] max-w-2xl mx-auto leading-relaxed">
+            <p className="text-white/80 text-[15px] sm:text-[17px] md:text-[18px] max-w-2xl mx-auto leading-relaxed font-sans font-normal tracking-[-0.01em]">
               Type a prompt. AI generates a complete scroll-reactive site with cinematic video,
               imagery, and motion — publish to a live URL in minutes.
             </p>

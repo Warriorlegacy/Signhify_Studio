@@ -49,8 +49,10 @@
   --color-obsidian-2: var(--surface);
   --color-slate-soft: var(--muted-foreground);
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Outfit", "Space Grotesk", "Plus Jakarta Sans", sans-serif;
+  --font-stylish: "Syne", "Outfit", "Space Grotesk", sans-serif;
+  --font-catchy: "Syne", "Outfit", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
@@ -82,6 +84,7 @@
   --input: rgba(255, 255, 255, 0.1);
   --ring: rgba(34, 197, 94, 0.6);
   --gradient-brand: linear-gradient(135deg, #22c55e, #4ade80, #ffffff);
+  --gradient-stylish: linear-gradient(135deg, #ffffff 0%, #86efac 40%, #22c55e 80%, #4ade80 100%);
   --gradient-ember: radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.25), transparent 60%);
   --shadow-glow: 0 0 60px -10px rgba(34, 197, 94, 0.45);
   --shadow-card: 0 20px 60px -20px rgba(0, 0, 0, 0.8);
@@ -96,11 +99,33 @@
 @layer base {
   * { border-color: var(--color-border); }
   html { background-color: var(--color-background); color-scheme: dark; scroll-behavior: smooth; }
-  body { background-color: var(--color-background); color: var(--color-foreground); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; font-feature-settings: "ss01", "cv11"; }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    letter-spacing: -0.012em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01", "ss02";
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    font-weight: 700;
+  }
 }
 
+@utility font-sans { font-family: var(--font-sans); }
+@utility font-display { font-family: var(--font-display); }
+@utility font-stylish { font-family: var(--font-stylish); }
+@utility font-catchy { font-family: var(--font-catchy); }
+@utility font-mono { font-family: var(--font-mono); }
+
 @utility text-gradient { background: var(--gradient-brand); -webkit-background-clip: text; background-clip: text; color: transparent; }
+@utility text-gradient-stylish { background: var(--gradient-stylish); -webkit-background-clip: text; background-clip: text; color: transparent; }
+@utility text-glow { text-shadow: 0 0 24px rgba(34, 197, 94, 0.45); }
+@utility text-glow-strong { text-shadow: 0 0 32px rgba(34, 197, 94, 0.7), 0 0 8px rgba(74, 222, 128, 0.5); }
 @utility bg-grid { background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 56px 56px; }
 @utility mask-fade-edges { mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%); }
 
@@ -110,6 +135,41 @@
 .text-brand-primary { color: var(--brand-primary); }
 .text-brand-secondary { color: var(--brand-secondary); }
 .text-brand-tertiary { color: var(--brand-tertiary); }
+
+/* Interactive Stylist Typography Effects */
+.interactive-text {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.interactive-text:hover {
+  letter-spacing: -0.01em;
+  color: #4ade80;
+  text-shadow: 0 0 16px rgba(74, 222, 128, 0.4);
+}
+
+.interactive-heading {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.35s ease;
+}
+.interactive-heading:hover {
+  transform: translateY(-1px);
+  text-shadow: 0 4px 24px rgba(34, 197, 94, 0.35);
+}
+
+.text-shimmer-interactive {
+  background: linear-gradient(90deg, #ffffff 0%, #4ade80 25%, #ffffff 50%, #86efac 75%, #ffffff 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: text-shine-sweep 8s linear infinite;
+}
+.text-shimmer-interactive:hover {
+  animation-duration: 3s;
+}
+
+@keyframes text-shine-sweep {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
 
 /* ============ Keyframes ============ */
 @keyframes ember-pulse { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.08); } }

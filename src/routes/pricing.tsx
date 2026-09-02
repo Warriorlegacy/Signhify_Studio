@@ -345,7 +345,7 @@ function PricingPage() {
           <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4ade80] mb-4 bg-[#22c55e]/10 px-3.5 py-1.5 rounded-full border border-[#22c55e]/25 shadow-[0_0_20px_rgba(34,197,94,0.15)]">
             <Zap size={11} className="text-[#22c55e]" /> $5 to $200/mo · Best Vibe Coding Value Guaranteed
           </span>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.08] mb-5">
+          <h1 className="font-stylish text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-[-0.035em] leading-[1.08] mb-5 interactive-heading">
             Transparent pricing starting from <span className="text-[#22c55e]">$5/month</span>
           </h1>
           <p className="text-white/70 text-sm sm:text-base md:text-lg leading-relaxed">

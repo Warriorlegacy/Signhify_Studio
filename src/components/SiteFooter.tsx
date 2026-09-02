@@ -11,8 +11,8 @@ export function SiteFooter() {
           <div className="flex items-center gap-3">
             <SignhifyLogo size={40} showTile className="shrink-0" />
             <div>
-              <div className="font-display font-bold text-lg">Signhify</div>
-              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              <div className="font-stylish font-extrabold text-lg tracking-[-0.03em] text-foreground">Signhify</div>
+              <div className="text-xs uppercase tracking-[0.2em] font-semibold text-muted-foreground">
                 AI Engineering Studio
               </div>
             </div>

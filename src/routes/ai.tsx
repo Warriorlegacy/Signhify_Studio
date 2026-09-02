@@ -499,7 +499,7 @@ function AiPage() {
               )}
             </motion.div>
 
-            <h1 className="mt-6 font-display text-5xl sm:text-7xl font-black leading-[0.95]">
+            <h1 className="mt-6 font-stylish text-5xl sm:text-7xl font-extrabold tracking-[-0.035em] leading-[0.95] interactive-heading">
               Describe anything. <span className="text-gradient">Signhify builds it.</span>
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-muted-foreground">

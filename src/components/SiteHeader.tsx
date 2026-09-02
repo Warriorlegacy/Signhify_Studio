@@ -41,8 +41,8 @@ export function SiteHeader() {
           to="/"
           className="pointer-events-auto group inline-flex items-center gap-2 rounded-full border border-white/10 bg-background/80 backdrop-blur-xl pl-1.5 pr-4 py-1.5 shadow-[0_10px_30px_-10px_oklch(0_0_0/0.6)] hover:border-primary/40 transition"
         >
-          <SignhifyLogo size={28} className="shrink-0" />
-          <span className="font-display font-bold tracking-tight text-sm text-foreground">Signhify</span>
+          <SignhifyLogo size={28} className="shrink-0 group-hover:scale-105 transition-transform" />
+          <span className="font-stylish font-extrabold tracking-[-0.03em] text-sm text-foreground group-hover:text-[#4ade80] transition-colors">Signhify</span>
         </Link>
 
         {/* Floating pill nav */}

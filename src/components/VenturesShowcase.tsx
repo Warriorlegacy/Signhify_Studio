@@ -44,7 +44,7 @@ export function VenturesShowcase({ showTitle = true, limit, initialCategory = 'A
             <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
             <span>SIGNHIFY VENTURE LAB · 10 LIVE APPS</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">
+          <h2 className="font-stylish text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-[-0.035em] text-white mb-4 interactive-heading">
             Production AI Platforms <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-cyan-300 to-indigo-400">
               Shipped &amp; Scaled with Signhify

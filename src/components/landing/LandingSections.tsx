@@ -299,7 +299,7 @@ function PresetGallery() {
                 Featured Previews
               </span>
             </div>
-            <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.05]">
+            <h2 className="font-stylish text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-[-0.035em] leading-[1.05] interactive-heading">
               Best Previews
             </h2>
             <p className="text-white/70 text-[14px] md:text-[16px] mt-4 max-w-2xl mx-auto leading-relaxed">
@@ -358,7 +358,7 @@ function PipelineSection() {
       <div className="max-w-[1400px] mx-auto px-5 md:px-6 relative z-10">
         <Reveal className="text-center mb-16 md:mb-24">
           <SectionBadge icon={Sparkles} label="The Pipeline" />
-          <h2 className="font-display text-4xl md:text-6xl lg:text-[72px] font-bold text-white tracking-tight leading-[1.05] mb-6">
+          <h2 className="font-stylish text-4xl md:text-6xl lg:text-[72px] font-extrabold text-white tracking-[-0.035em] leading-[1.05] mb-6 interactive-heading">
             From prompt to <span className="text-[#22c55e]">production</span>
           </h2>
           <p className="text-white/70 text-[16px] md:text-[18px] max-w-2xl mx-auto leading-relaxed">
@@ -417,7 +417,7 @@ function ZeroCodeSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <Reveal from="left">
             <SectionBadge icon={WandSparkles} label="Zero Code" />
-            <h2 className="font-display text-4xl md:text-5xl lg:text-[56px] font-bold text-white tracking-tight leading-[1.05] mb-6">
+            <h2 className="font-stylish text-4xl md:text-5xl lg:text-[56px] font-extrabold text-white tracking-[-0.035em] leading-[1.05] mb-6 interactive-heading">
               Your video becomes
               <br className="hidden md:block" />
               <span className="text-[#22c55e]">a scroll experience</span>
@@ -483,7 +483,7 @@ function ProToolsSection() {
       <div className="max-w-[1400px] mx-auto px-5 md:px-6">
         <Reveal className="text-center mb-16 md:mb-24">
           <SectionBadge icon={Box} label="Pro Tools" />
-          <h2 className="font-display text-4xl md:text-6xl lg:text-[72px] font-bold text-white tracking-tight leading-[1.05] mb-6">
+          <h2 className="font-stylish text-4xl md:text-6xl lg:text-[72px] font-extrabold text-white tracking-[-0.035em] leading-[1.05] mb-6 interactive-heading">
             Built for <span className="text-[#22c55e]">serious websites</span>
           </h2>
           <p className="text-white/70 text-[16px] md:text-[18px] max-w-2xl mx-auto leading-relaxed">
@@ -541,7 +541,7 @@ function CtaStatsSection() {
           <div className="absolute bottom-0 right-0 w-[420px] h-[420px] bg-[#4ade80]/10 rounded-full blur-[120px] pointer-events-none translate-x-1/3 translate-y-1/3" />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
             <Reveal from="left">
-              <h2 className="font-display text-4xl md:text-5xl lg:text-[64px] font-bold text-white tracking-tight leading-[1.05] mb-6">
+              <h2 className="font-stylish text-4xl md:text-5xl lg:text-[64px] font-extrabold text-white tracking-[-0.035em] leading-[1.05] mb-6 interactive-heading">
                 Build 3D websites
                 <br />
                 <span className="text-[#22c55e]">10x faster</span> with AI
