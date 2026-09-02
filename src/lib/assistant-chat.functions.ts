@@ -14,15 +14,15 @@ If you do not know something, say so — never invent fake results.`;
 function validate(input: unknown): ChatInput {
   const obj = input as Record<string, unknown>;
   const raw = Array.isArray(obj?.messages) ? obj.messages : [];
-  const messages: AssistantChatMessage[] = raw
-    .filter(
-      (m): m is { role: string; content: string } =>
-        !!m &&
-        typeof (m as { role?: unknown }).role === "string" &&
-        typeof (m as { content?: unknown }).content === "string",
-    )
-    .map((m) => ({ role: m.role === "assistant" ? "assistant" : "user", content: m.content }))
-    .slice(-20);
+  const messages: AssistantChatMessage[] = [];
+  for (const m of raw) {
+    if (!m || typeof m !== "object") continue;
+    const role = (m as { role?: unknown }).role;
+    const content = (m as { content?: unknown }).content;
+    if (typeof content !== "string") continue;
+    messages.push({ role: role === "assistant" ? "assistant" : "user", content });
+  }
+  const trimmed = messages.slice(-20);
   if (messages.length === 0 || messages[messages.length - 1].role !== "user") {
     throw new Error("A user message is required.");
   }
