@@ -183,3 +183,41 @@ export const confirmPlanCheckout = createServerFn({ method: "POST" })
     logger.info(`[stripe-plan] unlocked ${planId} for user ${context.userId}`);
     return { paid: true, plan: planId, credits };
   });
+
+/**
+ * One-off credit top-up checkout. Amount and credit count are read from the
+ * server-side pack catalogue so the client can never tamper with either.
+ */
+export const createCreditPackCheckout = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => {
+    const packId = String((input as any)?.packId ?? "");
+    if (!(packId in CREDIT_PACKS)) throw new Error("Unknown credit pack.");
+    return { packId: packId as CreditPackId };
+  })
+  .handler(async ({ data, context }) => {
+    const pack = CREDIT_PACKS[data.packId];
+    const { SITE_URL: site } = await import("@/lib/site-url");
+
+    const form = new URLSearchParams();
+    form.set("mode", "payment");
+    form.set("success_url", `${site}/pricing?checkout=success&session_id={CHECKOUT_SESSION_ID}`);
+    form.set("cancel_url", `${site}/pricing?checkout=cancelled`);
+    form.set("client_reference_id", context.userId as string);
+    form.set("metadata[pack_id]", data.packId);
+    form.set("metadata[user_id]", context.userId as string);
+    form.set("metadata[credits]", String(pack.credits));
+    form.set("line_items[0][quantity]", "1");
+    form.set("line_items[0][price_data][currency]", "usd");
+    form.set("line_items[0][price_data][unit_amount]", String(pack.cents));
+    form.set(
+      "line_items[0][price_data][product_data][name]",
+      `Signhify ${pack.name} — ${pack.credits} AI credits`,
+    );
+    const email = (context as any)?.claims?.email;
+    if (email) form.set("customer_email", email);
+
+    const session = await stripeCall("/checkout/sessions", form);
+    logger.info(`[stripe-plan] credit pack checkout ${data.packId} user ${context.userId}`);
+    return { url: session.url as string };
+  });
