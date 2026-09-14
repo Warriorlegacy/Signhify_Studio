@@ -120,6 +120,8 @@ function AiPage() {
   });
   const [completedStages, setCompletedStages] = useState<PipelineStage[]>([]);
   const { user } = useUser();
+  const [freePlanUsed, setFreePlanUsed] = useState(false);
+  const [signInRequired, setSignInRequired] = useState(false);
   const [sharing, setSharing] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
