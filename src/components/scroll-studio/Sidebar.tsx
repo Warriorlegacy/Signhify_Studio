@@ -81,14 +81,17 @@ function ProjectSwitcher({
 export function Sidebar({
   projectId,
   onProjectSelect,
+  onProjectCreated,
   onUpdatePreview,
   onFramesExtracted,
 }: {
   projectId: string | null;
   onProjectSelect: (id: string | null) => void;
+  onProjectCreated?: (id: string) => void;
   onUpdatePreview: (data: { html: string; css: string; js: string }) => void;
   onFramesExtracted?: (frames: string[]) => void;
 }) {
+
   return (
     <div className="w-[350px] flex flex-col h-full bg-background border-r border-border">
       <div className="p-4 border-b border-border flex items-center justify-between gap-2">
