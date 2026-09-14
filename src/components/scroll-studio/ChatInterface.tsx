@@ -96,8 +96,22 @@ export function ChatInterface({
     setIsLoading(true);
 
     try {
+      // Starting from a blank studio: create a project so the work is saved.
+      let activeId = projectId;
+      if (!activeId) {
+        try {
+          const project = await createFn({
+            data: { title: "New Scroll Site", initialPrompt: userMsg.content },
+          });
+          activeId = project.id;
+          onProjectCreated?.(project.id);
+        } catch (createError) {
+          console.error("Failed to create project:", createError);
+        }
+      }
+
       const data = await chatFn({
-        data: { projectId, message: userMsg.content },
+        data: { projectId: activeId, message: userMsg.content },
       });
 
       const assistantMsg: Message = {
@@ -117,17 +131,18 @@ export function ChatInterface({
         });
       }
 
-      if (projectId) {
+      if (activeId) {
         const updates: Record<string, unknown> = { conversation_history: history };
         if (hasCode) {
           updates.current_html = data.html || "";
           updates.current_css = data.css || "";
           updates.current_js = data.js || "";
         }
-        updateFn({ data: { id: projectId, updates } }).catch((error) => {
+        updateFn({ data: { id: activeId, updates } }).catch((error) => {
           console.error("Failed to persist project:", error);
         });
       }
+
     } catch (error) {
       console.error(error);
       setMessages((prev) => [
