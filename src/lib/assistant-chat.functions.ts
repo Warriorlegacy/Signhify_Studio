@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { generateAIResponseFor } from "./ai-gateway.server";
+import { resolveAssistantAIAccess } from "./ai-access.server";
+import { robustAIService } from "./robust-ai-service";
 import { withByokKeys } from "./byok-middleware";
 
 export type AssistantChatMessage = { role: "user" | "assistant"; content: string };
