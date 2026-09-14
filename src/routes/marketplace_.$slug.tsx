@@ -1,10 +1,17 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { ArrowLeft, CheckCircle2, Loader2, MessageSquare, ShoppingBag } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Loader2, MessageSquare, ShoppingBag, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { fetchListingDetail } from "@/lib/marketplace-listings.functions";
 import { createManualPayment } from "@/lib/manual-payments.functions";
+import {
+  deleteMyListingReview,
+  listListingReviews,
+  upsertListingReview,
+  type PublicReview,
+} from "@/lib/listing-reviews.functions";
+import { StarRating } from "@/components/marketplace/StarRating";
 import { useUser } from "@/hooks/useUser";
 import { UPI_ID, USD_TO_INR, upiIntentLink, whatsappLink } from "@/lib/payment-contact";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -12,7 +19,15 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 export const Route = createFileRoute("/marketplace_/$slug")({
   loader: async ({ params }) => {
     const { listing } = await fetchListingDetail({ data: { slug: params.slug } });
-    return { listing };
+    let reviews: PublicReview[] = [];
+    if (listing?.id) {
+      try {
+        reviews = (await listListingReviews({ data: { listingId: listing.id } })).reviews;
+      } catch {
+        reviews = [];
+      }
+    }
+    return { listing, reviews };
   },
   head: ({ loaderData }) => {
     const l = loaderData?.listing;
