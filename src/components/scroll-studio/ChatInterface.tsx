@@ -6,9 +6,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useServerFn } from "@tanstack/react-start";
 import { scrollStudioChat } from "@/lib/scroll-studio.functions";
 import {
+  createScrollStudioProject,
   getScrollStudioProject,
   updateScrollStudioProject,
 } from "@/lib/scroll-studio-projects.functions";
+
 
 interface Message {
   id: string;
