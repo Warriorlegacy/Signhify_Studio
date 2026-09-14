@@ -6,9 +6,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useServerFn } from "@tanstack/react-start";
 import { scrollStudioChat } from "@/lib/scroll-studio.functions";
 import {
+  createScrollStudioProject,
   getScrollStudioProject,
   updateScrollStudioProject,
 } from "@/lib/scroll-studio-projects.functions";
+
 
 interface Message {
   id: string;
@@ -24,11 +26,14 @@ const WELCOME: Message = {
 
 export function ChatInterface({
   projectId,
+  onProjectCreated,
   onUpdatePreview,
 }: {
   projectId: string | null;
+  onProjectCreated?: (id: string) => void;
   onUpdatePreview: (data: { html: string; css: string; js: string }) => void;
 }) {
+
   const [messages, setMessages] = useState<Message[]>([WELCOME]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +42,8 @@ export function ChatInterface({
   const chatFn = useServerFn(scrollStudioChat);
   const getFn = useServerFn(getScrollStudioProject);
   const updateFn = useServerFn(updateScrollStudioProject);
+  const createFn = useServerFn(createScrollStudioProject);
+
 
   useEffect(() => {
     messagesRef.current = messages;
@@ -89,8 +96,22 @@ export function ChatInterface({
     setIsLoading(true);
 
     try {
+      // Starting from a blank studio: create a project so the work is saved.
+      let activeId = projectId;
+      if (!activeId) {
+        try {
+          const project = await createFn({
+            data: { title: "New Scroll Site", initialPrompt: userMsg.content },
+          });
+          activeId = project.id;
+          onProjectCreated?.(project.id);
+        } catch (createError) {
+          console.error("Failed to create project:", createError);
+        }
+      }
+
       const data = await chatFn({
-        data: { projectId, message: userMsg.content },
+        data: { projectId: activeId, message: userMsg.content },
       });
 
       const assistantMsg: Message = {
@@ -110,17 +131,18 @@ export function ChatInterface({
         });
       }
 
-      if (projectId) {
+      if (activeId) {
         const updates: Record<string, unknown> = { conversation_history: history };
         if (hasCode) {
           updates.current_html = data.html || "";
           updates.current_css = data.css || "";
           updates.current_js = data.js || "";
         }
-        updateFn({ data: { id: projectId, updates } }).catch((error) => {
+        updateFn({ data: { id: activeId, updates } }).catch((error) => {
           console.error("Failed to persist project:", error);
         });
       }
+
     } catch (error) {
       console.error(error);
       setMessages((prev) => [

@@ -81,14 +81,17 @@ function ProjectSwitcher({
 export function Sidebar({
   projectId,
   onProjectSelect,
+  onProjectCreated,
   onUpdatePreview,
   onFramesExtracted,
 }: {
   projectId: string | null;
   onProjectSelect: (id: string | null) => void;
+  onProjectCreated?: (id: string) => void;
   onUpdatePreview: (data: { html: string; css: string; js: string }) => void;
   onFramesExtracted?: (frames: string[]) => void;
 }) {
+
   return (
     <div className="w-[350px] flex flex-col h-full bg-background border-r border-border">
       <div className="p-4 border-b border-border flex items-center justify-between gap-2">
@@ -118,7 +121,12 @@ export function Sidebar({
         </div>
 
         <TabsContent value="chat" className="flex-1 overflow-hidden m-0 p-0">
-          <ChatInterface projectId={projectId} onUpdatePreview={onUpdatePreview} />
+          <ChatInterface
+            projectId={projectId}
+            onProjectCreated={onProjectCreated}
+            onUpdatePreview={onUpdatePreview}
+          />
+
         </TabsContent>
 
         <TabsContent value="settings" className="flex-1 overflow-y-auto m-0 p-0">
