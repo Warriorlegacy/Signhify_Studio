@@ -375,22 +375,14 @@ function PricingPage() {
     setSubmitted(false);
   };
 
-  const handleBuyPlan = async (planId: string, tierName: string) => {
-    if (authLoading || checkoutPlan) return;
+  const handleBuyPlan = (planId: string, tierName: string) => {
+    if (authLoading) return;
     if (!user) {
       toast.info("Sign in to activate your plan.");
       navigate({ to: "/login", search: { redirect: "/pricing" } });
       return;
     }
-    setCheckoutPlan(planId);
-    try {
-      const { url } = await startCheckout({ data: { planId, annual } });
-      window.location.href = url;
-    } catch {
-      // Card checkout unavailable — fall back to the UPI / WhatsApp flow.
-      openUpi(planId, tierName);
-      setCheckoutPlan(null);
-    }
+    openUpi(planId, tierName);
   };
 
   const handleReportUpi = async (e: React.FormEvent) => {
