@@ -27,7 +27,7 @@ import {
   confirmPlanCheckout,
   PLAN_CATALOG,
 } from "@/lib/stripe-plan-checkout.functions";
-import { CREDIT_PACK_LIST } from "@/lib/credit-packs";
+import { CREDIT_PACK_LIST, CREDIT_PACKS } from "@/lib/credit-packs";
 import { getMyEntitlements } from "@/lib/entitlements.functions";
 import { createManualPayment } from "@/lib/manual-payments.functions";
 
