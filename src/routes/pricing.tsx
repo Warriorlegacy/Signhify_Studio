@@ -319,6 +319,49 @@ function PricingPage() {
   const [checkoutPlan, setCheckoutPlan] = useState<string | null>(null);
   const [unlocked, setUnlocked] = useState<string | null>(null);
 
+  // Credit balance + top-up packs
+  const loadEntitlements = useServerFn(getMyEntitlements);
+  const startPackCheckout = useServerFn(createCreditPackCheckout);
+  const [balance, setBalance] = useState<{ credits: number; plan: string } | null>(null);
+  const [packBusy, setPackBusy] = useState<string | null>(null);
+
+  const refreshBalance = useMemo(
+    () => async () => {
+      try {
+        const ent = await loadEntitlements({});
+        setBalance({ credits: ent.credits, plan: ent.plan });
+      } catch {
+        setBalance(null);
+      }
+    },
+    [loadEntitlements],
+  );
+
+  useEffect(() => {
+    if (authLoading || !user) return;
+    void refreshBalance();
+  }, [authLoading, user, refreshBalance]);
+
+  const handleBuyCredits = async (packId: string, packName: string, usd: number) => {
+    if (packBusy) return;
+    if (!user) {
+      toast.info("Sign in to buy extra credits.");
+      navigate({ to: "/login", search: { redirect: "/pricing" } });
+      return;
+    }
+    setPackBusy(packId);
+    try {
+      const { url } = await startPackCheckout({ data: { packId } });
+      window.location.href = url;
+    } catch {
+      // Card checkout unavailable — fall back to the UPI / WhatsApp flow.
+      setUpiPlan({ id: packId, name: `${packName} credit pack`, usd });
+      setUpiRef("");
+      setUpiReported(false);
+      setPackBusy(null);
+    }
+  };
+
   // UPI / manual payment state
   const reportPayment = useServerFn(createManualPayment);
   const [upiPlan, setUpiPlan] = useState<{ id: string; name: string; usd: number } | null>(null);
