@@ -437,8 +437,15 @@ function PricingPage() {
       .then((res) => {
         if (!active) return;
         if (res.paid) {
-          setUnlocked(res.plan ?? "your plan");
-          toast.success("Payment confirmed — your plan is unlocked.");
+          const pack = (res as { pack?: string | null }).pack ?? null;
+          const credits = (res as { credits?: number }).credits;
+          setUnlocked(pack ? `${credits} extra credits` : (res.plan ?? "your plan"));
+          toast.success(
+            pack
+              ? `Payment confirmed — ${credits} credits added to your balance.`
+              : "Payment confirmed — your plan is unlocked.",
+          );
+          void refreshBalance();
         } else {
           toast.info("Payment is still processing. We'll unlock your plan shortly.");
         }
