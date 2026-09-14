@@ -26,8 +26,11 @@ import { submitLead } from "@/lib/leads.functions";
 import {
   createPlanCheckout,
   confirmPlanCheckout,
+  createCreditPackCheckout,
   PLAN_CATALOG,
 } from "@/lib/stripe-plan-checkout.functions";
+import { CREDIT_PACK_LIST } from "@/lib/credit-packs";
+import { getMyEntitlements } from "@/lib/entitlements.functions";
 import { createManualPayment } from "@/lib/manual-payments.functions";
 
 import { useUser } from "@/hooks/useUser";
