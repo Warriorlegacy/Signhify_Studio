@@ -136,6 +136,18 @@ export function AssistantChat({ className = "" }: { className?: string }) {
       setMessages((prev) => [...prev, assistantMsg]);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "The assistant is unavailable right now.";
+      if (msg.toLowerCase().includes("unauthorized") || msg.toLowerCase().includes("invalid token")) {
+        toast.error("Please sign in to use the Assistant.");
+        const authMsg: ChatMessage = {
+          id: "ast_err_" + Date.now(),
+          role: "assistant",
+          content:
+            "You need to be signed in to chat with the Signhify Assistant. Please sign in or create an account, then try again.",
+          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        };
+        setMessages((prev) => [...prev, authMsg]);
+        return;
+      }
       if (msg.includes("Signhify AI is available on paid plans") || msg.includes("decrypted")) {
         toast.error(msg);
       } else {
