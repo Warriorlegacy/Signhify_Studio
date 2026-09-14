@@ -932,12 +932,14 @@ function AiPage() {
             <div className="mt-4 flex flex-wrap gap-3">
               <Link
                 to="/signup"
+                search={{ redirect: "/ai" }}
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground"
               >
                 Create free account <ArrowRight size={12} />
               </Link>
               <Link
                 to="/login"
+                search={{ redirect: "/ai" }}
                 className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-xs font-semibold"
               >
                 Sign in
