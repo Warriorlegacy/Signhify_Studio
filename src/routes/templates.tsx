@@ -30,6 +30,9 @@ import { SignhifyLogo } from "@/components/SignhifyLogo";
 import { TemplateThumbnail } from "@/components/templates/TemplateThumbnail";
 import { TEMPLATES, TEMPLATE_CATEGORIES, type TemplateItem, type TemplateCategory } from "@/lib/templates-data";
 import { TemplateParticleCanvas } from "@/components/three/TemplateParticleCanvas";
+import { useServerFn } from "@tanstack/react-start";
+import { useUser } from "@/hooks/useUser";
+import { getMyEntitlements } from "@/lib/entitlements.functions";
 import { toast } from "sonner";
 
 interface TemplatesSearch {
@@ -94,6 +97,29 @@ function TemplatesPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
+  // Paid customers unlock the full master prompts; everyone else sees a teaser.
+  const { user, loading: authLoading } = useUser();
+  const loadEntitlements = useServerFn(getMyEntitlements);
+  const [isPaid, setIsPaid] = useState(false);
+
+  useEffect(() => {
+    if (authLoading || !user) {
+      setIsPaid(false);
+      return;
+    }
+    let active = true;
+    loadEntitlements({})
+      .then((ent) => {
+        if (active) setIsPaid(Boolean(ent.isPaid));
+      })
+      .catch(() => {
+        if (active) setIsPaid(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [authLoading, user, loadEntitlements]);
+
   // Auto-play scrub simulation
   useEffect(() => {
     if (!isPlaying) return;
@@ -122,11 +148,18 @@ function TemplatesPage() {
 
   const handleCopyPrompt = (template: TemplateItem, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
+    if (!isPaid) {
+      toast.info("Full master prompts unlock with any paid plan.");
+      navigate({ to: "/pricing" });
+      return;
+    }
     navigator.clipboard.writeText(template.godLevelPrompt);
     setCopiedId(template.id);
     toast.success(`God-Level Prompt for "${template.name}" copied to clipboard!`);
     setTimeout(() => setCopiedId(null), 3000);
   };
+
+  const promptPreview = (text: string) => (isPaid ? text : `${text.slice(0, 220)}…`);
 
   const openPreview = (template: TemplateItem) => {
     setActivePreview(template);
@@ -367,7 +400,7 @@ function TemplatesPage() {
                     </button>
                     <Link
                       to="/scroll-studio"
-                      search={{ prompt: template.godLevelPrompt }}
+                      search={{ prompt: promptPreview(template.godLevelPrompt) }}
                       className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black flex items-center justify-center gap-1.5 transition-transform hover:scale-[1.02]"
                     >
                       <WandSparkles size={12} />
@@ -512,7 +545,7 @@ function TemplatesPage() {
                 </button>
                 <Link
                   to="/scroll-studio"
-                  search={{ prompt: activePreview.godLevelPrompt }}
+                  search={{ prompt: promptPreview(activePreview.godLevelPrompt) }}
                   className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black"
                 >
                   <WandSparkles size={12} />
@@ -649,7 +682,15 @@ function TemplatesPage() {
                   </button>
                 </div>
                 <div className="p-3.5 rounded-xl bg-black/70 border border-white/[0.06] font-mono text-xs text-white/80 leading-relaxed max-h-40 overflow-y-auto whitespace-pre-wrap select-all">
-                  {activePreview.godLevelPrompt}
+                  {promptPreview(activePreview.godLevelPrompt)}
+                  {!isPaid && (
+                    <Link
+                      to="/pricing"
+                      className="mt-3 block text-[#4ade80] font-bold not-italic"
+                    >
+                      Unlock the full master prompt with any paid plan →
+                    </Link>
+                  )}
                 </div>
               </div>
 
@@ -701,7 +742,7 @@ function TemplatesPage() {
               <div className="flex items-center gap-3">
                 <Link
                   to="/scroll-studio"
-                  search={{ prompt: activePreview.godLevelPrompt }}
+                  search={{ prompt: promptPreview(activePreview.godLevelPrompt) }}
                   className="px-6 py-2.5 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black flex items-center gap-2 shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:scale-[1.02] transition-transform"
                 >
                   <WandSparkles size={13} />
@@ -737,7 +778,12 @@ function TemplatesPage() {
             </div>
 
             <div className="p-4 rounded-2xl bg-black/80 border border-white/[0.08] font-mono text-xs text-white/80 leading-relaxed max-h-96 overflow-y-auto whitespace-pre-wrap select-all mb-6">
-              {promptModalTemplate.godLevelPrompt}
+              {promptPreview(promptModalTemplate.godLevelPrompt)}
+              {!isPaid && (
+                <Link to="/pricing" className="mt-3 block text-[#4ade80] font-bold">
+                  Unlock the full master prompt with any paid plan →
+                </Link>
+              )}
             </div>
 
             <div className="flex items-center justify-between gap-3">
@@ -754,7 +800,7 @@ function TemplatesPage() {
               </button>
               <Link
                 to="/scroll-studio"
-                search={{ prompt: promptModalTemplate.godLevelPrompt }}
+                search={{ prompt: promptPreview(promptModalTemplate.godLevelPrompt) }}
                 onClick={() => setPromptModalTemplate(null)}
                 className="px-6 py-2.5 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black flex items-center gap-2"
               >
