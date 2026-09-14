@@ -111,3 +111,41 @@ export async function notifyNewLead(lead: {
     replyTo: lead.email,
   });
 }
+
+/** Alerts the studio inbox when someone reports a manual (UPI / bank / PayPal) payment. */
+export async function notifyManualPayment(payment: {
+  email: string;
+  amount: number;
+  currency: string;
+  method: string;
+  description?: string | null;
+  transactionRef: string;
+}) {
+  const rows: Array<[string, string]> = [
+    ["From", payment.email],
+    ["Amount", `${payment.currency} ${payment.amount}`],
+    ["Method", payment.method],
+    ["Plan / note", payment.description || "—"],
+    ["Reference", payment.transactionRef],
+  ];
+
+  const html = `
+    <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:#050810;padding:28px;color:#e8edf7">
+      <h2 style="margin:0 0 6px;color:#4ade80">Payment reported — confirm to activate</h2>
+      <p style="margin:0 0 18px;color:#96a0b5;font-size:13px">Verify the transfer, then confirm the subscription.</p>
+      <table style="border-collapse:collapse;width:100%;font-size:13px">
+        ${rows
+          .map(
+            ([k, v]) =>
+              `<tr><td style="padding:6px 10px;color:#8792a8;border-bottom:1px solid #1b2333;white-space:nowrap">${k}</td><td style="padding:6px 10px;border-bottom:1px solid #1b2333">${escapeHtml(String(v))}</td></tr>`,
+          )
+          .join("")}
+      </table>
+    </div>`;
+
+  return sendEmail({
+    subject: `Payment reported — ${payment.currency} ${payment.amount} (${payment.method})`,
+    html,
+    replyTo: payment.email,
+  });
+}
