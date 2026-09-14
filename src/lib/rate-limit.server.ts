@@ -113,16 +113,26 @@ export async function consumeFreeTrial(
   clientIP?: string | null,
 ): Promise<{ success: boolean; message?: string }> {
   try {
-    const { data, error } = await supabase.rpc("consume_free_trial", {
-      p_user_id: userId,
-      p_ip: clientIP || null,
-    });
-    if (!error && data) {
-      return data;
+    // `consume_free_trial` is SECURITY DEFINER and EXECUTE is granted to
+    // service_role only, so call it with the admin client, not the user client.
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (supabaseUrl && serviceKey) {
+      const adminClient = createClient(supabaseUrl, serviceKey, {
+        auth: { persistSession: false },
+      });
+      const { data, error } = await adminClient.rpc("consume_free_trial" as any, {
+        p_user_id: userId,
+        p_ip: clientIP || null,
+      } as any);
+      if (!error && data) {
+        return data as { success: boolean; message?: string };
+      }
     }
   } catch {
     /* Fallback below if stored procedure is not yet applied */
   }
+
 
   // Graceful direct-table fallback
   try {
