@@ -513,16 +513,38 @@ function PricingPage() {
 
                 <div>
                   <button
-                    onClick={() => handleOpenModal(tier.name)}
-                    className={`w-full py-3.5 px-5 rounded-2xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
+                    disabled={checkoutPlan === tier.id}
+                    onClick={() =>
+                      tier.id === "enterprise"
+                        ? handleOpenModal(tier.name)
+                        : handleBuyPlan(tier.id, tier.name)
+                    }
+                    className={`w-full py-3.5 px-5 rounded-2xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-60 ${
                       tier.featured
                         ? "btn-moonlit agent-glass-shine text-black hover:scale-[1.02] shadow-[0_0_20px_rgba(34,197,94,0.35)]"
                         : "bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.12] text-white hover:border-[#22c55e]/40"
                     }`}
                   >
-                    <span>{tier.cta}</span>
-                    <ArrowRight size={13} />
+                    {checkoutPlan === tier.id ? (
+                      <>
+                        <Loader2 size={13} className="animate-spin" />
+                        <span>Opening secure checkout…</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>{tier.cta}</span>
+                        <ArrowRight size={13} />
+                      </>
+                    )}
                   </button>
+                  {tier.id !== "enterprise" && (
+                    <button
+                      onClick={() => handleOpenModal(tier.name)}
+                      className="mt-2 w-full text-[11px] text-white/45 hover:text-white/75 transition-colors"
+                    >
+                      Prefer to talk first? Notify me
+                    </button>
+                  )}
                 </div>
               </div>
             );
