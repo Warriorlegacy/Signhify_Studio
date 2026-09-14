@@ -106,7 +106,7 @@ async function loadDriver() {
 
     // Dynamic ESM Import from CDN (variable specifier so bundlers/TS don't resolve it)
     const driverUrl = "https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.mjs";
-    const module = (await import(/* @vite-ignore */ driverUrl)) as { driver: unknown };
+    const module = (await import(/* @vite-ignore */ driverUrl)) as { driver: any };
     return module.driver;
   } catch (err) {
     console.error("[useTour] Failed to load driver.js", err);

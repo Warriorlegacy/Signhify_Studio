@@ -42,7 +42,9 @@ export function SiteHeader() {
           className="pointer-events-auto group inline-flex items-center gap-2 rounded-full border border-white/10 bg-background/80 backdrop-blur-xl pl-1.5 pr-4 py-1.5 shadow-[0_10px_30px_-10px_oklch(0_0_0/0.6)] hover:border-primary/40 transition"
         >
           <SignhifyLogo size={28} className="shrink-0 group-hover:scale-105 transition-transform" />
-          <span className="font-stylish font-extrabold tracking-[-0.03em] text-sm text-foreground group-hover:text-[#4ade80] transition-colors">Signhify</span>
+          <span className="font-stylish font-extrabold tracking-[-0.03em] text-sm text-foreground group-hover:text-[#4ade80] transition-colors">
+            Signhify
+          </span>
         </Link>
 
         {/* Floating pill nav */}
@@ -83,7 +85,10 @@ export function SiteHeader() {
         </nav>
 
         {keyOpen && (
-          <div className="pointer-events-auto fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" onClick={() => setKeyOpen(false)}>
+          <div
+            className="pointer-events-auto fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+            onClick={() => setKeyOpen(false)}
+          >
             <div
               className="absolute top-[72px] left-1/2 -translate-x-1/2 w-full max-w-lg mx-4"
               onClick={(e) => e.stopPropagation()}

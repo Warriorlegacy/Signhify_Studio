@@ -1,6 +1,7 @@
 import {
   generateAIResponse as robustGenerateAIResponse,
   robustAIService,
+  type AIGatewayOptions,
 } from "./robust-ai-service";
 import { resolveAIAccess, type AICtx } from "./ai-access.server";
 
@@ -9,12 +10,7 @@ export type Message = {
   content: string;
 };
 
-export type AIGatewayOptions = {
-  messages: Message[];
-  temperature?: number;
-  response_format?: { type: "json_object" };
-  max_tokens?: number;
-};
+export type { AIGatewayOptions };
 
 /**
  * Managed-only helper — DO NOT call from user-facing server functions.
@@ -44,7 +40,11 @@ export async function generateAIResponseFor(
 ): Promise<{ content: string; providerUsed: string }> {
   const access = await resolveAIAccess(ctx);
   if (access.mode === "managed") {
-    return robustGenerateAIResponse(options);
+    return robustGenerateAIResponse({
+      ...options,
+      tier: access.tier,
+      preferredCluster: access.tier === "free_trial" ? "free_coding" : (options.preferredCluster || "auto"),
+    });
   }
   return robustAIService.generateAIResponseWithKeys(
     options,

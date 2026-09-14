@@ -10,6 +10,7 @@
 ## 1. Cold Outreach to Startup Founders (Incubators / Accelerators)
 
 ### Target Segment
+
 - Founders who recently launched on ProductHunt
 - Participants in incubator demo days (YC, Techstars, 500 Global, Antler)
 - Indie Hackers building in public
@@ -186,6 +187,7 @@ Piyush
 ## 3. Partnership Outreach — Dev Agencies (White-Label)
 
 ### Target Segment
+
 - Digital agencies with design clients who need development
 - Web dev agencies that want to offer AI/SaaS services
 - Branding studios whose clients ask for "the app too"
@@ -414,28 +416,28 @@ P.S. — The AI blueprint generator is still free if you want to explore your ne
 
 ## Quick Reference: Best Sending Times
 
-| Email Type | Best Day | Best Time (Recipient TZ) |
-|------------|----------|--------------------------|
-| Cold outreach #1 | Tuesday | 8:00 AM |
-| Cold outreach #2 | Friday | 10:00 AM |
-| Cold outreach #3 | Tuesday (next week) | 11:00 AM |
-| Follow-up #1 | Next day after reply | 9:00 AM |
-| Follow-up #2 | Day 4 | 10:00 AM |
-| Follow-up #3 (breakup) | Day 10 | 11:00 AM |
-| Partnership outreach | Wednesday | 9:00 AM |
-| PH launch announcement | Day before launch | 10:00 AM |
-| PH launch day | Launch day | 6:00 AM PT |
-| Referral request | Tuesday | 10:00 AM |
+| Email Type             | Best Day             | Best Time (Recipient TZ) |
+| ---------------------- | -------------------- | ------------------------ |
+| Cold outreach #1       | Tuesday              | 8:00 AM                  |
+| Cold outreach #2       | Friday               | 10:00 AM                 |
+| Cold outreach #3       | Tuesday (next week)  | 11:00 AM                 |
+| Follow-up #1           | Next day after reply | 9:00 AM                  |
+| Follow-up #2           | Day 4                | 10:00 AM                 |
+| Follow-up #3 (breakup) | Day 10               | 11:00 AM                 |
+| Partnership outreach   | Wednesday            | 9:00 AM                  |
+| PH launch announcement | Day before launch    | 10:00 AM                 |
+| PH launch day          | Launch day           | 6:00 AM PT               |
+| Referral request       | Tuesday              | 10:00 AM                 |
 
 ## Subject Line Testing A/B
 
-| Use Case | Variant A | Variant B |
-|----------|-----------|-----------|
-| Cold (tech founders) | `[Company] — 2-week AI SaaS slot` | `Quick question re: [Company]'s roadmap` |
-| Cold (indie hackers) | `Built your MVP in 5 days` | `$299 sprint for [Idea Name]` |
-| Partnership | `White-label dev partner for [Agency]` | `[Agency] — 2-week dev backend` |
-| Follow-up | `Re: [Original] + free architecture sample` | `Re: [Original] — one more thing` |
-| Referral | `Checking in on [Project] + a question` | `How's [Project] going?` |
+| Use Case             | Variant A                                   | Variant B                                |
+| -------------------- | ------------------------------------------- | ---------------------------------------- |
+| Cold (tech founders) | `[Company] — 2-week AI SaaS slot`           | `Quick question re: [Company]'s roadmap` |
+| Cold (indie hackers) | `Built your MVP in 5 days`                  | `$299 sprint for [Idea Name]`            |
+| Partnership          | `White-label dev partner for [Agency]`      | `[Agency] — 2-week dev backend`          |
+| Follow-up            | `Re: [Original] + free architecture sample` | `Re: [Original] — one more thing`        |
+| Referral             | `Checking in on [Project] + a question`     | `How's [Project] going?`                 |
 
 ## Deliverability Checklist
 

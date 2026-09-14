@@ -53,28 +53,28 @@ Phrases that assume the reader needs a teacher. Cut them.
 
 Replace with plain language.
 
-| Avoid | Use instead |
-|-------|-------------|
-| Navigate (challenges) | Handle, address |
-| Unpack (analysis) | Explain, examine |
-| Lean into | Accept, embrace |
-| Landscape (context) | Situation, field |
-| Game-changer | Significant, important |
-| Double down | Commit, increase |
-| Deep dive | Analysis, examination |
-| Take a step back | Reconsider |
-| Moving forward | Next, from now |
-| Circle back | Return to, revisit |
-| On the same page | Aligned, agreed |
-| Leverage (verb) | Use |
-| Utilize | Use |
-| Robust | Strong, solid |
-| Streamline | Simplify |
-| Harness | Use, apply |
-| Paradigm | Model, approach |
-| Synergy | Cooperation, combined effect |
-| Ecosystem | System, field, community |
-| Framework | Structure, approach |
+| Avoid                 | Use instead                  |
+| --------------------- | ---------------------------- |
+| Navigate (challenges) | Handle, address              |
+| Unpack (analysis)     | Explain, examine             |
+| Lean into             | Accept, embrace              |
+| Landscape (context)   | Situation, field             |
+| Game-changer          | Significant, important       |
+| Double down           | Commit, increase             |
+| Deep dive             | Analysis, examination        |
+| Take a step back      | Reconsider                   |
+| Moving forward        | Next, from now               |
+| Circle back           | Return to, revisit           |
+| On the same page      | Aligned, agreed              |
+| Leverage (verb)       | Use                          |
+| Utilize               | Use                          |
+| Robust                | Strong, solid                |
+| Streamline            | Simplify                     |
+| Harness               | Use, apply                   |
+| Paradigm              | Model, approach              |
+| Synergy               | Cooperation, combined effect |
+| Ecosystem             | System, field, community     |
+| Framework             | Structure, approach          |
 
 ## AI Vocabulary Tells
 
@@ -90,12 +90,12 @@ Words that became dramatically overrepresented in AI-generated text. Avoid or re
 
 AI replaces simple "is" or "are" with pompous alternatives. Use the simple verb.
 
-| Avoid | Use instead |
-|-------|-------------|
-| serves as | is |
-| stands as | is |
-| marks (when meaning "is") | is |
-| represents (when meaning "is") | is |
+| Avoid                          | Use instead |
+| ------------------------------ | ----------- |
+| serves as                      | is          |
+| stands as                      | is          |
+| marks (when meaning "is")      | is          |
+| represents (when meaning "is") | is          |
 
 ## Adverbs
 
@@ -199,12 +199,12 @@ Avoid phrases that announce the writer's honesty instead of making the claim pre
 
 Do not mechanically replace "honest" with "realistic," "candid," or another unsupported self-certification such as "clearest" or "most reliable." State the evidence, limitation, or uncertainty directly. When a modifier is necessary, use one that names the basis of the claim: "first-party," "directional," "modeled," "bounded," or "based on stated assumptions." Keep ordinary uses that describe a person's conduct or testimony, such as "she gave an honest account."
 
-| Avoid | Use instead |
-|-------|-------------|
-| "The honest framing is that ranking and traffic have come apart." | "Ranking and traffic have come apart." |
-| "The honest answer lives between the scenarios." | "The likely outcome falls between the scenarios." |
-| "This is the most honest signal available." | "Treat this as a directional signal, not direct attribution." |
-| "Use an honest forecast." | "Build the forecast from stated assumptions." |
+| Avoid                                                             | Use instead                                                   |
+| ----------------------------------------------------------------- | ------------------------------------------------------------- |
+| "The honest framing is that ranking and traffic have come apart." | "Ranking and traffic have come apart."                        |
+| "The honest answer lives between the scenarios."                  | "The likely outcome falls between the scenarios."             |
+| "This is the most honest signal available."                       | "Treat this as a directional signal, not direct attribution." |
+| "Use an honest forecast."                                         | "Build the forecast from stated assumptions."                 |
 
 ## Vague Declaratives
 

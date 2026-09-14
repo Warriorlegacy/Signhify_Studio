@@ -127,7 +127,7 @@ ${PAYLOADS.map(
 - **Pricing**: ${p.pricingModel}
 - **US Timezone SLA**: ${p.usTimezoneSla}
 - **File**: \`scripts/us-directory-payloads/${p.platform.toLowerCase().replace(/[^a-z0-9]/g, "_")}_payload.json\`
-`
+`,
 ).join("\n")}
 `;
 

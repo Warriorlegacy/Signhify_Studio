@@ -11,7 +11,7 @@
     "start": "vite preview",
     "lint": "eslint . --cache",
     "format": "prettier --write .",
-    "test:unit": "bun test tests/unit/byok-encryption.test.ts",
+    "test:unit": "bun test tests/unit/",
     "guide:pdf": "node scripts/build-guide-pdf.mjs",
     "guide:check": "node scripts/build-guide-pdf.mjs --check",
     "prepublish:check": "node scripts/build-guide-pdf.mjs && node scripts/prepublish.mjs"

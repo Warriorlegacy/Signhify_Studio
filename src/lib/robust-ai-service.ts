@@ -11,6 +11,8 @@ export type AIGatewayOptions = {
   temperature?: number;
   response_format?: { type: "json_object" };
   max_tokens?: number;
+  tier?: "free_trial" | "paid" | "byok";
+  preferredCluster?: "free_coding" | "frontier" | "auto";
 };
 
 type ProviderConfig = {
@@ -44,6 +46,22 @@ class RobustAIService {
 
     // Define all available providers with their priorities
     const allProviders: ProviderConfig[] = [
+      // 0. Kilo / OpenCode local headless daemon (if kilo serve or opencode serve is running)
+      {
+        name: "KiloEngine",
+        url:
+          env("KILO_DAEMON_URL") ||
+          env("OPENCODE_DAEMON_URL") ||
+          "http://127.0.0.1:4000/v1/chat/completions",
+        model: "kilo-auto/free",
+        apiKey: env("KILO_API_KEY") || "kilo-local",
+        isAnthropic: false,
+        priority: 0.5,
+        enabled: !!(env("KILO_DAEMON_URL") || env("OPENCODE_DAEMON_URL")),
+        failureCount: 0,
+        lastFailureTime: null,
+        cooldownPeriod: this.defaultCooldownPeriod,
+      },
       // 0. Lovable AI Gateway (auto-provisioned, billed via workspace credits) — most reliable
       {
         name: "LovableAI",
@@ -419,7 +437,16 @@ class RobustAIService {
     options: AIGatewayOptions,
   ): Promise<{ content: string; providerUsed: string }> {
     // Filter to only enabled providers
-    const availableProviders = this.providers.filter((p) => p.enabled);
+    let availableProviders = this.providers.filter((p) => p.enabled);
+
+    // If free trial or free coding cluster requested, prioritize free coding engines
+    if (options.preferredCluster === "free_coding" || options.tier === "free_trial") {
+      const freeProviders = new Set(["KiloEngine", "Groq", "OpenRouter", "Cerebras", "NVIDIA", "Gemini"]);
+      availableProviders = [
+        ...availableProviders.filter((p) => freeProviders.has(p.name)),
+        ...availableProviders.filter((p) => !freeProviders.has(p.name)),
+      ];
+    }
 
     if (availableProviders.length === 0) {
       throw new Error(

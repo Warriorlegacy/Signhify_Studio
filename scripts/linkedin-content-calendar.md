@@ -350,30 +350,30 @@ Or just DM me. Happy to help.
 
 ## Quick Reference: Post Schedule
 
-| Week | Day | Post Type | Topic |
-|------|-----|-----------|-------|
-| 1 | Tue (Day 2) | Founder Story | Origin story, mission, pricing |
-| 1 | Thu (Day 4) | Technical | 6-agent AI pipeline deep-dive |
-| 2 | Tue (Day 9) | Client Results | Case study + testimonial |
-| 2 | Thu (Day 11) | Industry Insight | BYOK enterprise trend |
-| 3 | Tue (Day 16) | Founder Insight | How I sell without a sales team |
-| 3 | Thu (Day 18) | Comparison | Agency vs Sprint side-by-side |
-| 4 | Tue (Day 23) | Tech Stack | TanStack Start vs Next.js |
-| 4 | Thu (Day 25) | Reflection | Learnings + what's next |
+| Week | Day          | Post Type        | Topic                           |
+| ---- | ------------ | ---------------- | ------------------------------- |
+| 1    | Tue (Day 2)  | Founder Story    | Origin story, mission, pricing  |
+| 1    | Thu (Day 4)  | Technical        | 6-agent AI pipeline deep-dive   |
+| 2    | Tue (Day 9)  | Client Results   | Case study + testimonial        |
+| 2    | Thu (Day 11) | Industry Insight | BYOK enterprise trend           |
+| 3    | Tue (Day 16) | Founder Insight  | How I sell without a sales team |
+| 3    | Thu (Day 18) | Comparison       | Agency vs Sprint side-by-side   |
+| 4    | Tue (Day 23) | Tech Stack       | TanStack Start vs Next.js       |
+| 4    | Thu (Day 25) | Reflection       | Learnings + what's next         |
 
 ## Content Type Distribution
 
-| Type | Count | Best For |
-|------|-------|----------|
-| Text + image | 5 | Engagement, shares |
-| Text only | 2 | Thought leadership |
-| Carousel/document | 1 (Post 2) | Saves, reposts |
+| Type              | Count      | Best For           |
+| ----------------- | ---------- | ------------------ |
+| Text + image      | 5          | Engagement, shares |
+| Text only         | 2          | Thought leadership |
+| Carousel/document | 1 (Post 2) | Saves, reposts     |
 
 ## Engagement Targets
 
-| Metric | Target |
-|--------|--------|
-| Impressions per post | 500-2,000 (organic, first month) |
-| Engagement rate | > 3% (likes + comments + shares / impressions) |
-| DM conversions | 2-5 per post (qualified leads) |
-| Website clicks | 20-100 per post |
+| Metric               | Target                                         |
+| -------------------- | ---------------------------------------------- |
+| Impressions per post | 500-2,000 (organic, first month)               |
+| Engagement rate      | > 3% (likes + comments + shares / impressions) |
+| DM conversions       | 2-5 per post (qualified leads)                 |
+| Website clicks       | 20-100 per post                                |

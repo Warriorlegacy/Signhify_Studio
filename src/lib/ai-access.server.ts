@@ -24,8 +24,18 @@ export const BYOK_PROVIDERS = [
 export type BYOKProvider = (typeof BYOK_PROVIDERS)[number];
 
 export type AIAccess =
-  | { mode: "managed" }
-  | { mode: "byok"; userKeys: Record<string, string>; customEndpoints: Record<string, string> };
+  | { mode: "managed"; tier: "paid" | "free_trial" }
+  | { mode: "byok"; tier: "byok"; userKeys: Record<string, string>; customEndpoints: Record<string, string> };
+
+export class FreeTrialExpiredError extends Error {
+  code = "FREE_TRIAL_EXPIRED";
+  constructor() {
+    super(
+      "You have used your 1 free trial. Upgrade to Studio at /pricing for 50 daily builds, or add your own API key in Settings → AI Keys.",
+    );
+    this.name = "FreeTrialExpiredError";
+  }
+}
 
 export class BYOKRequiredError extends Error {
   code = "BYOK_REQUIRED";
@@ -47,11 +57,11 @@ export type AICtx = {
 
 export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
   // Admins always use managed keys.
-  if (isAdminEmail(ctx.email)) return { mode: "managed" };
+  if (isAdminEmail(ctx.email)) return { mode: "managed", tier: "paid" };
 
   const { data: prof } = await (ctx.supabase as any)
     .from("profiles")
-    .select("subscription_plan, subscription_status")
+    .select("subscription_plan, subscription_status, free_trial_used")
     .eq("id", ctx.userId)
     .maybeSingle();
 
@@ -59,7 +69,12 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
   const status = String(prof?.subscription_status ?? "").toLowerCase();
   const paid =
     PAID_PLANS.has(plan) && (status === "" || status === "active" || status === "trialing");
-  if (paid) return { mode: "managed" };
+  if (paid) return { mode: "managed", tier: "paid" };
+
+  // 1 Free Trial for Free Tier users if not yet used
+  if (!prof?.free_trial_used) {
+    return { mode: "managed", tier: "free_trial" };
+  }
 
   // Free plan → require BYOK. Read keys through the user-scoped client (RLS).
   const { data: keys } = await (ctx.supabase as any)
@@ -125,7 +140,7 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
       (error as { code?: string }).code = "BYOK_DECRYPT_FAILED";
       throw error;
     }
-    throw new BYOKRequiredError();
+    throw new FreeTrialExpiredError();
   }
-  return { mode: "byok", userKeys, customEndpoints };
+  return { mode: "byok", tier: "byok", userKeys, customEndpoints };
 }

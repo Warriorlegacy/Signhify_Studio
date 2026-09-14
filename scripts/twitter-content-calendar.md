@@ -470,14 +470,14 @@ https://signhify.dpdns.org
 Honest numbers from our first 3 engagements:
 
 → Sprint 1 ($299): MVPs, 5 days, client pivoted after user testing
-  (Result: saved $10k+ building the wrong thing)
+(Result: saved $10k+ building the wrong thing)
 
 → Sprint 2 ($299): MVPs, 6 days, client raised pre-seed based on prototype
-  (Result: validation in a week, not 3 months)
+(Result: validation in a week, not 3 months)
 
 → Studio 1 ($799): Full platform, 12 days, closed 3 enterprise deals using
-  the BYOK feature
-  (Result: 2-week investment, 6-figure pipeline)
+the BYOK feature
+(Result: 2-week investment, 6-figure pipeline)
 
 Not every idea works. That's the point of building fast and cheap.
 
@@ -511,32 +511,32 @@ Thanks for reading. Now go build.
 
 ## Quick Reference: Weekly Post Mix
 
-| Day | Type | Focus |
-|-----|------|-------|
-| Mon | Tip Post | Process advice, positioning |
-| Tue | Technical Tip | Stack insight, architecture |
-| Wed | Thread (weekly) | Deep-dive: pipeline, stack, process |
-| Thu | Portfolio / Client | Case study, result, testimonial |
-| Fri | Engagement / Hot Take | Poll, opinion, CTA |
+| Day | Type                  | Focus                               |
+| --- | --------------------- | ----------------------------------- |
+| Mon | Tip Post              | Process advice, positioning         |
+| Tue | Technical Tip         | Stack insight, architecture         |
+| Wed | Thread (weekly)       | Deep-dive: pipeline, stack, process |
+| Thu | Portfolio / Client    | Case study, result, testimonial     |
+| Fri | Engagement / Hot Take | Poll, opinion, CTA                  |
 
 ## Media Strategy
 
-| Post Type | Suggested Media |
-|-----------|----------------|
-| Tip Post | Clean text card (canva) with key stat |
-| Technical | Code snippet screenshot or diagram |
-| Thread | Architecture flow chart |
-| Portfolio | Dashboard screenshot, testimonial quote card |
-| Engagement | Simple poll or question graphic |
+| Post Type  | Suggested Media                              |
+| ---------- | -------------------------------------------- |
+| Tip Post   | Clean text card (canva) with key stat        |
+| Technical  | Code snippet screenshot or diagram           |
+| Thread     | Architecture flow chart                      |
+| Portfolio  | Dashboard screenshot, testimonial quote card |
+| Engagement | Simple poll or question graphic              |
 
 ## Engagement Targets (30 days)
 
-| Metric | Target |
-|--------|--------|
-| Followers gained | 50-150 |
-| Avg impressions/post | 300-1,000 |
-| Avg engagement rate | > 2% |
-| Thread impressions | 1,000-3,000 |
-| Profile visits | 200-500 |
-| Website clicks | 50-200 |
-| DM conversations | 10-25 |
+| Metric               | Target      |
+| -------------------- | ----------- |
+| Followers gained     | 50-150      |
+| Avg impressions/post | 300-1,000   |
+| Avg engagement rate  | > 2%        |
+| Thread impressions   | 1,000-3,000 |
+| Profile visits       | 200-500     |
+| Website clicks       | 50-200      |
+| DM conversations     | 10-25       |

@@ -1,8 +1,14 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { generateAIResponse } from "./ai-gateway.server";
 import { resolveAIAccess } from "./ai-access.server";
 import { withByokKeys } from "./byok-middleware";
+import {
+  checkFreeTrialIP,
+  consumeFreeTrial,
+  enforceTierRateLimit,
+} from "./rate-limit.server";
 import JSZip from "jszip";
 
 export const buildFullStackApp = createServerFn({ method: "POST" })
@@ -22,9 +28,27 @@ export const buildFullStackApp = createServerFn({ method: "POST" })
       claims?: { email?: string | null };
     };
     const byokClientKeys = (context as { byokClientKeys?: Record<string, string> }).byokClientKeys;
-    // Gate before doing any AI work: free users must BYOK, paid/admin proceed.
-    // BYOKRequiredError bubbles up to the client with an actionable message.
-    await resolveAIAccess({ supabase, userId, email: claims?.email ?? null, byokClientKeys });
+    const access = await resolveAIAccess({ supabase, userId, email: claims?.email ?? null, byokClientKeys });
+
+    const request = getRequest();
+    const cfConnectingIP = request?.headers?.get("cf-connecting-ip") ?? null;
+    const xForwardedFor = request?.headers?.get("x-forwarded-for") ?? null;
+
+    if (access.tier === "free_trial") {
+      const ipCheck = await checkFreeTrialIP(cfConnectingIP, xForwardedFor);
+      if (!ipCheck.allowed) {
+        const err = new Error(ipCheck.reason || "Free trial limit reached for this network IP.");
+        (err as { code?: string }).code = "FREE_TRIAL_EXPIRED";
+        throw err;
+      }
+    }
+
+    await enforceTierRateLimit({
+      cfConnectingIP,
+      xForwardedFor,
+      userId,
+      tier: access.tier,
+    });
 
     // We'll generate the file tree step by step
     const zip = new JSZip();
@@ -75,9 +99,14 @@ export const buildFullStackApp = createServerFn({ method: "POST" })
     const zipBase64 = await zip.generateAsync({ type: "base64" });
     const downloadUrl = `data:application/zip;base64,${zipBase64}`;
 
+    if (access.tier === "free_trial") {
+      await consumeFreeTrial(supabase, userId, cfConnectingIP || xForwardedFor);
+    }
+
     return {
       success: true,
       downloadUrl,
+      tier: access.tier,
       fileSizeMb: (zipBase64.length * 0.75) / (1024 * 1024),
       expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
     };

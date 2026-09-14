@@ -54,7 +54,7 @@ export const submitLead = createServerFn({ method: "POST" })
       timeline: data.timeline,
       goals: data.goals,
       message: data.message || null,
-      source: "studio-wizard",  // override per-form
+      source: "studio-wizard", // override per-form
     });
     return { ok: true as const };
   });
@@ -64,12 +64,12 @@ export const submitLead = createServerFn({ method: "POST" })
 
 When called from different pages, override the `source` field:
 
-| Page | Source value |
-|------|-------------|
-| `/contact` | `studio-wizard` |
-| `/ai-mvp-builder` | `ai-mvp-campaign` |
-| `/free-consultation` | `free-consult` |
-| `/sprint` | `sprint-page` |
+| Page                 | Source value      |
+| -------------------- | ----------------- |
+| `/contact`           | `studio-wizard`   |
+| `/ai-mvp-builder`    | `ai-mvp-campaign` |
+| `/free-consultation` | `free-consult`    |
+| `/sprint`            | `sprint-page`     |
 
 ### Implementation — pass source from the client
 
@@ -99,9 +99,10 @@ serve(async (req) => {
   const RESEND_KEY = Deno.env.get("RESEND_API_KEY");
   if (!RESEND_KEY) return new Response("no key", { status: 500 });
 
-  const subject = source === "ai-mvp-campaign"
-    ? "Your AI MVP builder blueprint is ready"
-    : "Thanks for reaching out to Signhify";
+  const subject =
+    source === "ai-mvp-campaign"
+      ? "Your AI MVP builder blueprint is ready"
+      : "Thanks for reaching out to Signhify";
 
   const text = `Hi ${name},
 
@@ -148,7 +149,9 @@ try {
     headers: { Authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}` },
     body: JSON.stringify({ email: data.email, name: data.name, source: data.source }),
   });
-} catch { /* non-blocking */ }
+} catch {
+  /* non-blocking */
+}
 ```
 
 ### Option B: Resend API directly from the server function
@@ -166,14 +169,17 @@ try {
       body: JSON.stringify({
         from: "Piyush <piyush@signhify.dpdns.org>",
         to: data.email,
-        subject: data.source === "ai-mvp-campaign"
-          ? "Your AI MVP Builder blueprint is ready"
-          : "Thanks for reaching out to Signhify",
+        subject:
+          data.source === "ai-mvp-campaign"
+            ? "Your AI MVP Builder blueprint is ready"
+            : "Thanks for reaching out to Signhify",
         text: `...`,
       }),
     });
   }
-} catch { /* non-blocking — lead is already saved */ }
+} catch {
+  /* non-blocking — lead is already saved */
+}
 ```
 
 ---
@@ -183,7 +189,9 @@ try {
 Run these rules when a lead arrives:
 
 ### Hot lead
+
 All of:
+
 - Budget: `$2,000+` or `$500-$2,000` + clear scope
 - Timeline: `This week` or `2-4 weeks`
 - Scope: `Brand-new build` or `MVP / first version`
@@ -193,7 +201,9 @@ All of:
 → **Email template**: "Quick turnaround" variant — personal, fast, direct.
 
 ### Warm lead
+
 Any of:
+
 - Budget: `$500-$2,000` or `$2,000-$5,000`
 - Timeline: `2-4 weeks` or `1-3 months`
 - Goals ≥ 3 selected
@@ -203,6 +213,7 @@ Any of:
 → **Email template**: Studio/Sprint overview + link to blueprint generator.
 
 ### Cold lead
+
 None of the above — `Just exploring`, no budget, no timeline.
 
 → **Action**: Nurture with newsletter. No immediate call.
@@ -218,19 +229,29 @@ Simple webhook. Add to the server function after insert:
 if (process.env.SLACK_WEBHOOK_URL) {
   const blocks = [
     { type: "header", text: { type: "plain_text", text: `📥 New lead: ${data.name}` } },
-    { type: "section", fields: [
-      { type: "mrkdwn", text: `*Company:* ${data.company || "—"}` },
-      { type: "mrkdwn", text: `*Email:* ${data.email}` },
-      { type: "mrkdwn", text: `*Budget:* ${data.budget}` },
-      { type: "mrkdwn", text: `*Timeline:* ${data.timeline}` },
-      { type: "mrkdwn", text: `*Type:* ${data.type}` },
-      { type: "mrkdwn", text: `*Source:* ${data.source || "website"}` },
-    ]},
+    {
+      type: "section",
+      fields: [
+        { type: "mrkdwn", text: `*Company:* ${data.company || "—"}` },
+        { type: "mrkdwn", text: `*Email:* ${data.email}` },
+        { type: "mrkdwn", text: `*Budget:* ${data.budget}` },
+        { type: "mrkdwn", text: `*Timeline:* ${data.timeline}` },
+        { type: "mrkdwn", text: `*Type:* ${data.type}` },
+        { type: "mrkdwn", text: `*Source:* ${data.source || "website"}` },
+      ],
+    },
   ];
-  if (data.message) blocks.push({ type: "section", text: { type: "mrkdwn", text: `*Message:* ${data.message}` } });
+  if (data.message)
+    blocks.push({ type: "section", text: { type: "mrkdwn", text: `*Message:* ${data.message}` } });
   blocks.push({
     type: "actions",
-    elements: [{ type: "button", text: { type: "plain_text", text: "Contact lead" }, url: `mailto:${data.email}` }],
+    elements: [
+      {
+        type: "button",
+        text: { type: "plain_text", text: "Contact lead" },
+        url: `mailto:${data.email}`,
+      },
+    ],
   });
 
   await fetch(process.env.SLACK_WEBHOOK_URL, {
@@ -311,7 +332,9 @@ try {
     prev.push({ ...result.data, at: new Date().toISOString() });
     localStorage.setItem(key, JSON.stringify(prev));
   }
-} catch { /* noop */ }
+} catch {
+  /* noop */
+}
 ```
 
 Manual recovery: check `localStorage.getItem("signhify_pending_leads")` in the browser console and forward to Piyush's email.
@@ -379,15 +402,15 @@ await submitLead({ data: { ...result.data, source: utmSource } });
 
 Use these links in outreach:
 
-| Campaign | URL | UTM tag |
-|----------|-----|---------|
-| ProductHunt launch | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=producthunt` | `producthunt` |
-| LinkedIn post | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=linkedin` | `linkedin` |
-| Twitter/X thread | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=twitter` | `twitter` |
-| Cold email | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=email` | `email` |
-| Indie Hackers | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=indiehackers` | `indiehackers` |
-| GitHub README | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=github` | `github` |
-| Directory listing | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=directory` | `directory` |
+| Campaign           | URL                                                                 | UTM tag        |
+| ------------------ | ------------------------------------------------------------------- | -------------- |
+| ProductHunt launch | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=producthunt`  | `producthunt`  |
+| LinkedIn post      | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=linkedin`     | `linkedin`     |
+| Twitter/X thread   | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=twitter`      | `twitter`      |
+| Cold email         | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=email`        | `email`        |
+| Indie Hackers      | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=indiehackers` | `indiehackers` |
+| GitHub README      | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=github`       | `github`       |
+| Directory listing  | `https://signhify.dpdns.org/ai-mvp-builder?utm_source=directory`    | `directory`    |
 
 ---
 
@@ -436,4 +459,4 @@ Track `status` in the `leads` table. Update manually after each interaction.
 
 ---
 
-*Last updated: July 2026*
+_Last updated: July 2026_

@@ -24,7 +24,11 @@ async function main() {
     const trimmed = line.trim();
     buffer += line + "\n";
 
-    if (trimmed.startsWith("CREATE TABLE") || trimmed.startsWith("CREATE UNIQUE INDEX") || trimmed.startsWith("CREATE INDEX")) {
+    if (
+      trimmed.startsWith("CREATE TABLE") ||
+      trimmed.startsWith("CREATE UNIQUE INDEX") ||
+      trimmed.startsWith("CREATE INDEX")
+    ) {
       inCreate = true;
     }
 

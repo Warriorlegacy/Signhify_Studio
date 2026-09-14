@@ -24,7 +24,10 @@ import { VenturesShowcase } from "@/components/VenturesShowcase";
 import { PIPELINE, PRESETS, PRO_TOOLS, STATS, TESTIMONIALS } from "./landing-data";
 import { Reveal } from "./LandingShared";
 
-const ICONS: Record<string, ComponentType<{ size?: number; className?: string; strokeWidth?: number }>> = {
+const ICONS: Record<
+  string,
+  ComponentType<{ size?: number; className?: string; strokeWidth?: number }>
+> = {
   sparkles: Sparkles,
   terminal: Terminal,
   image: Image,
@@ -90,8 +93,14 @@ function PresetCard({ preset, delay }: { preset: (typeof PRESETS)[number]; delay
   return (
     <Reveal from="up" delay={delay} className="h-full">
       <article className="group relative rounded-2xl xl:rounded-3xl overflow-hidden border border-white/[0.08] bg-[#080c16] hover:border-[#22c55e]/40 transition-all duration-500 h-full flex flex-col shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.1) 0%, transparent 70%)" }} />
-        
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.1) 0%, transparent 70%)",
+          }}
+        />
+
         {/* Rich 3D Visual Preset Thumbnail */}
         <TemplateThumbnail
           id={presetId}
@@ -373,7 +382,13 @@ function PipelineSection() {
             return (
               <Reveal key={step.n} from="up" delay={i * 90} className="relative z-10 h-full">
                 <div className="relative bg-white/[0.02] rounded-3xl border border-white/[0.04] p-6 md:p-8 h-full group hover:bg-[#22c55e]/5 hover:border-[#22c55e]/30 transition-all duration-500 backdrop-blur-md shadow-[0_10px_40px_rgba(0,0,0,0.3)]">
-                  <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(34,197,94,0.08) 0%, transparent 60%)" }} />
+                  <div
+                    className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                    style={{
+                      background:
+                        "radial-gradient(ellipse at 50% 100%, rgba(34,197,94,0.08) 0%, transparent 60%)",
+                    }}
+                  />
                   <div className="relative z-10 flex flex-col h-full items-center text-center">
                     <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center mb-6 text-white group-hover:text-[#22c55e] transition-all duration-500 shadow-inner group-hover:scale-110 group-hover:shadow-[0_0_24px_rgba(34,197,94,0.2)]">
                       <Icon size={24} />

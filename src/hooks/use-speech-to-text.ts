@@ -6,7 +6,9 @@ type SpeechRecognitionLike = {
   lang: string;
   continuous: boolean;
   interimResults: boolean;
-  onresult: ((event: { results?: { [k: number]: { [k: number]: { transcript?: string } } } }) => void) | null;
+  onresult:
+    | ((event: { results?: { [k: number]: { [k: number]: { transcript?: string } } } }) => void)
+    | null;
   onend: (() => void) | null;
   onerror: (() => void) | null;
 };

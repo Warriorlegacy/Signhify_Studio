@@ -31,6 +31,8 @@ import { readByokSessionKeys } from "@/lib/byok-client";
 import { buildProduct, buildMultiProduct } from "@/lib/build-product.functions";
 import { buildFullStackApp } from "@/lib/build-full-stack.functions";
 import { getUserCredits, createCheckoutSession } from "@/lib/monetization.functions";
+import { createOrchestratorRun, getOrchestratorRun, getOrchestratorStreamConfig, getOrchestratorArtifacts, type OrchestratorRunStatus } from "@/lib/orchestrator.functions";
+import { exportArtifactsToGitHub } from "@/lib/github.functions";
 import JSZip from "jszip";
 import { joinWaitlist } from "@/lib/waitlist.functions";
 import { useUser } from "@/hooks/useUser";
@@ -125,9 +127,23 @@ function AiPage() {
   const checkoutFn = useServerFn(createCheckoutSession);
   const [creditsData, setCreditsData] = useState<{
     tier: string;
+    isPaid?: boolean;
+    freeTrialAvailable?: boolean;
+    freeTrialUsed?: boolean;
     creditsRemaining: number;
     maxCredits: number;
   } | null>(null);
+
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeReason, setUpgradeReason] = useState<string | null>(null);
+
+  const handleTrialExhausted = (msg?: string) => {
+    setUpgradeReason(
+      msg ||
+        "You have completed your 1 free trial for code generation & web app builds. Upgrade to Studio for 50 daily builds or connect your own API key in Settings.",
+    );
+    setShowUpgradeModal(true);
+  };
 
   useEffect(() => {
     getCreditsFn()
@@ -136,7 +152,10 @@ function AiPage() {
   }, []);
 
   const isUnlimited =
-    creditsData?.tier === "studio" || creditsData?.tier === "scale" || creditsData?.tier === "pro";
+    creditsData?.tier === "studio" ||
+    creditsData?.tier === "scale" ||
+    creditsData?.tier === "pro" ||
+    creditsData?.isPaid;
   const creditsLow = creditsData && !isUnlimited && creditsData.creditsRemaining <= 1;
 
   const generate = useServerFn(generatePlan);
@@ -160,6 +179,12 @@ function AiPage() {
   const [fullStackUrl, setFullStackUrl] = useState<string | null>(null);
   const [fullStackError, setFullStackError] = useState<string | null>(null);
   const [builderMode, setBuilderMode] = useState(false);
+  const [orchestratorMode, setOrchestratorMode] = useState(false);
+  const [orchRunId, setOrchRunId] = useState<string | null>(null);
+  const [orchStatus, setOrchStatus] = useState<OrchestratorRunStatus | null>(null);
+  const [orchError, setOrchError] = useState<string | null>(null);
+  const [orchPushing, setOrchPushing] = useState(false);
+  const [orchPushResult, setOrchPushResult] = useState<{ repoUrl: string; prUrl?: string } | null>(null);
 
   // Restore admin builder-mode preference
   useEffect(() => {
@@ -178,6 +203,72 @@ function AiPage() {
     });
   };
 
+  const toggleOrchestratorMode = () => {
+    setOrchestratorMode((v) => {
+      const next = !v;
+      if (next) setBuilderMode(false);
+      return next;
+    });
+  };
+
+  const runOrchestrator = async (text?: string) => {
+    const value = (text ?? prompt).trim();
+    if (!value) return;
+    setPrompt(value);
+    setOrchError(null);
+    setOrchPushResult(null);
+    setOrchStatus(null);
+    try {
+      const projectId = ""; // TODO: map prompt to project or create default
+      const created = await createOrchestratorRun({ data: { projectId, prompt: value } });
+      setOrchRunId(created.runId);
+      setOrchStatus({
+        runId: created.runId,
+        traceId: created.traceId,
+        status: "queued",
+        currentAgent: null,
+        agents: [],
+        artifacts: [],
+      });
+      pollOrchestrator(created.runId);
+    } catch (e) {
+      setOrchError(e instanceof Error ? e.message : "Orchestrator failed.");
+    }
+  };
+
+  const pollOrchestrator = async (runId: string) => {
+    try {
+      const status = await getOrchestratorRun({ data: { runId } });
+      if (!status) {
+        setOrchError("Run not found.");
+        return;
+      }
+      setOrchStatus(status);
+      if (status.status === "running" || status.status === "queued") {
+        setTimeout(() => pollOrchestrator(runId), 1500);
+      }
+    } catch {
+      setTimeout(() => pollOrchestrator(runId), 2000);
+    }
+  };
+
+  const handlePushToGitHub = async () => {
+    if (!orchRunId || !orchStatus) return;
+    setOrchPushing(true);
+    setOrchPushResult(null);
+    try {
+      const files = await getOrchestratorArtifacts({ data: { runId: orchRunId } });
+      const res = await exportArtifactsToGitHub({
+        data: { projectId: "", files: (files ?? []).map((f: any) => ({ path: f.path, content: f.content })), prompt: prompt },
+      });
+      setOrchPushResult({ repoUrl: res.repoUrl, prUrl: res.prUrl });
+    } catch (e) {
+      setOrchError(e instanceof Error ? e.message : "GitHub export failed.");
+    } finally {
+      setOrchPushing(false);
+    }
+  };
+
   const handleBuild = async (overridePlan?: GeneratedPlan, overridePrompt?: string) => {
     const activePlan = overridePlan ?? plan;
     const activePrompt = overridePrompt ?? prompt;
@@ -192,8 +283,13 @@ function AiPage() {
       const res = await build({ data: { prompt: activePrompt, planText } });
       setProductHtml(res.html);
       setBuildState("done");
+      void getCreditsFn().then(setCreditsData).catch(() => {});
     } catch (e) {
-      setBuildError(e instanceof Error ? e.message : "Build failed.");
+      const msg = e instanceof Error ? e.message : "Build failed.";
+      if (/FREE_TRIAL_EXPIRED|free trial|used your 1 free trial|BYOK/i.test(msg)) {
+        handleTrialExhausted(msg);
+      }
+      setBuildError(msg);
       setBuildState("error");
     }
   };
@@ -213,6 +309,7 @@ function AiPage() {
       const blob = await zip.generateAsync({ type: "blob" });
       setZipBlob(blob);
       setZipBuildState("done");
+      void getCreditsFn().then(setCreditsData).catch(() => {});
       // Trigger download
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -223,7 +320,11 @@ function AiPage() {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } catch (e) {
-      setZipError(e instanceof Error ? e.message : "Build failed.");
+      const msg = e instanceof Error ? e.message : "Build failed.";
+      if (/FREE_TRIAL_EXPIRED|free trial|used your 1 free trial|BYOK/i.test(msg)) {
+        handleTrialExhausted(msg);
+      }
+      setZipError(msg);
       setZipBuildState("error");
     }
   };
@@ -241,6 +342,7 @@ function AiPage() {
       const res = await buildFullStack({ data: { prompt: activePrompt, planText } });
       setFullStackUrl(res.downloadUrl);
       setFullStackState("done");
+      void getCreditsFn().then(setCreditsData).catch(() => {});
       // Trigger download
       const link = document.createElement("a");
       link.href = res.downloadUrl;
@@ -249,7 +351,11 @@ function AiPage() {
       link.click();
       document.body.removeChild(link);
     } catch (e) {
-      setFullStackError(e instanceof Error ? e.message : "Build failed.");
+      const msg = e instanceof Error ? e.message : "Build failed.";
+      if (/FREE_TRIAL_EXPIRED|free trial|used your 1 free trial|BYOK/i.test(msg)) {
+        handleTrialExhausted(msg);
+      }
+      setFullStackError(msg);
       setFullStackState("error");
     }
   };
@@ -382,8 +488,16 @@ function AiPage() {
         const msg =
           (fallbackErr instanceof Error && fallbackErr.message) ||
           (e instanceof Error ? e.message : "Something went wrong. Try again.");
-        // BYOK gate: show a clear CTA instead of a generic error.
-        if (/BYOK|paid plan|your own API key/i.test(msg)) {
+        // BYOK or Free Trial Expiry gate
+        if (/FREE_TRIAL_EXPIRED|free trial|used your 1 free trial/i.test(msg)) {
+          handleTrialExhausted(
+            "You have used your 1 free trial. Upgrade to Studio ($29/mo) for 50 daily builds, or add your own API key in Settings → AI Keys.",
+          );
+          setError("Free trial used. Upgrade to Studio or add your own API key.");
+        } else if (/BYOK|paid plan|your own API key/i.test(msg)) {
+          handleTrialExhausted(
+            "Signhify AI requires either an active subscription, your 1 free trial, or your own BYOK API key in Settings.",
+          );
           setError(
             "Signhify AI is a paid feature. Add your own API key in Settings → AI Keys, or upgrade at /pricing.",
           );
@@ -467,35 +581,43 @@ function AiPage() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary flex-wrap"
+              className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-xs font-medium text-primary flex-wrap"
             >
-              <Sparkles size={14} /> Signhify AI · powered by Claude
+              <Sparkles size={14} className="text-primary" /> Signhify AI · Free Coding Cluster
               <span className="mx-1.5 w-px h-3 bg-primary/20" />
               {creditsData ? (
-                <span className="inline-flex items-center gap-1">
-                  <Zap size={12} className="text-amber-400" />
+                <span className="inline-flex items-center gap-1.5">
+                  <Zap
+                    size={12}
+                    className={
+                      isUnlimited || creditsData.freeTrialAvailable ? "text-emerald-400" : "text-amber-400"
+                    }
+                  />
                   {isUnlimited ? (
-                    <span className="text-emerald-400">∞ credits</span>
+                    <span className="text-emerald-400 font-semibold">Studio · ∞ Daily Builds</span>
+                  ) : creditsData.freeTrialAvailable ? (
+                    <span className="inline-flex items-center gap-1 text-emerald-400 font-semibold">
+                      <span>1 Free Trial Available</span>
+                      <span className="text-[10px] text-zinc-400 font-normal">· (Full App & Web Build)</span>
+                    </span>
                   ) : (
-                    <span className={creditsLow ? "text-amber-400" : ""}>
-                      {creditsData.creditsRemaining} / {creditsData.maxCredits} credits
+                    <span className="inline-flex items-center gap-1 text-amber-400">
+                      <span>Free Trial Used</span>
+                      <span className="text-[10px] text-zinc-400">· BYOK or Upgrade</span>
                     </span>
                   )}
                 </span>
               ) : (
                 <span className="text-muted-foreground/50">loading…</span>
               )}
-              {creditsLow && (
-                <button
-                  onClick={() =>
-                    checkoutFn({ data: { plan: "pro" } }).then(
-                      (r) => r.url && window.open(r.url, "_blank"),
-                    )
-                  }
-                  className="inline-flex items-center gap-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-amber-400 hover:bg-amber-500/30 transition"
+              {creditsData && !isUnlimited && (
+                <Link
+                  to="/pricing"
+                  className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-amber-500/20 to-primary/20 border border-amber-500/30 px-2.5 py-0.5 text-amber-300 hover:brightness-125 transition text-[11px] font-semibold"
                 >
-                  <ShoppingCart size={11} /> Buy credits
-                </button>
+                  <ShoppingCart size={11} />{" "}
+                  {creditsData.freeTrialAvailable ? "Upgrade for 50/day" : "Upgrade to Studio"}
+                </Link>
               )}
             </motion.div>
 
@@ -518,23 +640,22 @@ function AiPage() {
                 <input
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && run()}
-                  placeholder="Build me a…"
+                  onKeyDown={(e) => e.key === "Enter" && (orchestratorMode ? runOrchestrator() : run())}
+                  placeholder={orchestratorMode ? "Describe a full-stack app to build autonomously…" : "Build me a…"}
                   className="flex-1 bg-transparent px-4 py-4 text-base outline-none placeholder:text-muted-foreground/60"
                 />
                 <button
-                  onClick={() => run()}
-                  disabled={stage === "running"}
+                  onClick={() => (orchestratorMode ? runOrchestrator() : run())}
+                  disabled={orchestratorMode ? !!orchRunId && orchStatus?.status === "running" : stage === "running"}
                   className="group inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_-6px_var(--primary-glow)] hover:brightness-110 disabled:opacity-60 transition"
                 >
-                  {stage === "running" ? (
+                  {(orchestratorMode ? !!orchRunId && orchStatus?.status === "running" : stage === "running") ? (
                     <>
-                      <Loader2 size={16} className="animate-spin" /> Building
+                      <Loader2 size={16} className="animate-spin" /> {orchestratorMode ? "Building…" : "Building"}
                     </>
                   ) : (
                     <>
-                      Generate plan{" "}
-                      <ArrowRight size={16} className="group-hover:translate-x-0.5 transition" />
+                      {orchestratorMode ? "Build autonomously" : "Generate plan"} <ArrowRight size={16} className="group-hover:translate-x-0.5 transition" />
                     </>
                   )}
                 </button>
@@ -542,7 +663,7 @@ function AiPage() {
             </div>
 
             {/* Builder Mode toggle (admin) */}
-            <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
+            <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
               <label className="inline-flex items-center gap-2 cursor-pointer select-none">
                 <span
                   role="switch"
@@ -565,10 +686,30 @@ function AiPage() {
                     : "plan first, build on demand"}
                 </span>
               </label>
+              <label className="inline-flex items-center gap-2 cursor-pointer select-none">
+                <span
+                  role="switch"
+                  aria-checked={orchestratorMode}
+                  onClick={toggleOrchestratorMode}
+                  className={`relative inline-block w-9 h-5 rounded-full transition ${
+                    orchestratorMode ? "bg-emerald-500" : "bg-border"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-0.5 h-4 w-4 rounded-full bg-background transition ${
+                      orchestratorMode ? "left-[18px]" : "left-0.5"
+                    }`}
+                  />
+                </span>
+                <span className="font-medium text-foreground">Autonomous Swarm</span>
+                <span className="text-muted-foreground/70">
+                  {orchestratorMode ? "6 agents build real artifacts" : "plan only"}
+                </span>
+              </label>
             </div>
 
         {/* Examples */}
-        {stage === "idle" && (
+        {stage === "idle" && !orchestratorMode && (
           <div className="mt-6 flex flex-wrap gap-2">
             {EXAMPLES.map((ex) => (
               <button
@@ -582,9 +723,107 @@ function AiPage() {
           </div>
         )}
 
+        {/* Orchestrator results */}
+        {orchestratorMode && orchStatus && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-8 rounded-2xl border border-emerald-500/30 bg-card/80 backdrop-blur p-6"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-emerald-400 mb-1">Autonomous Build Engine</div>
+                <div className="font-display text-xl font-bold">Run {orchStatus.runId.slice(0, 8)}</div>
+                <div className="text-xs text-muted-foreground">Trace: {orchStatus.traceId}</div>
+              </div>
+              <div className="text-xs">
+                <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 ${
+                  orchStatus.status === "completed" ? "bg-emerald-500/20 text-emerald-300" :
+                  orchStatus.status === "failed" ? "bg-red-500/20 text-red-300" :
+                  "bg-amber-500/20 text-amber-300"
+                }`}>
+                  {orchStatus.status === "running" && <Loader2 size={10} className="animate-spin" />}
+                  {orchStatus.status.toUpperCase()}
+                </span>
+              </div>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {AGENT_META.map((a, i) => {
+                const agentStatus = orchStatus.agents.find((ag) => ag.name === a.stage) ?? { status: "pending", error: null, latencyMs: null, tokensUsed: 0 };
+                const state = agentStatus.status === "done" ? "done" : agentStatus.status === "error" ? "error" : agentStatus.status === "running" ? "active" : "pending";
+                return (
+                  <div
+                    key={a.name}
+                    className={`rounded-xl border bg-surface/40 p-4 transition ${
+                      state === "active" ? "border-emerald-500/50 shadow-[0_0_20px_-8px_var(--primary-glow)]" :
+                      state === "done" ? "border-emerald-500/30" :
+                      state === "error" ? "border-red-500/40 bg-red-500/5" :
+                      "border-border opacity-60"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className={`flex h-8 w-8 items-center justify-center rounded-lg border ${
+                        state === "pending" ? "border-border text-muted-foreground" : "border-emerald-500/40 text-emerald-400 bg-emerald-500/10"
+                      }`}>
+                        <a.icon size={14} />
+                      </div>
+                      <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Agent {i + 1}</span>
+                    </div>
+                    <div className="mt-3 font-display text-sm font-semibold">{a.name}</div>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {state === "active" ? "Running…" : state === "done" ? `Done · ${agentStatus.latencyMs ?? 0}ms` : state === "error" ? (agentStatus.error ?? "Error") : "Pending"}
+                    </div>
+                    {agentStatus.tokensUsed > 0 && (
+                      <div className="text-[10px] text-muted-foreground mt-1">{agentStatus.tokensUsed} tokens</div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {orchStatus.artifacts.length > 0 && (
+              <div className="mt-6">
+                <div className="text-[10px] uppercase tracking-[0.22em] text-emerald-400 mb-2">Generated Artifacts</div>
+                <div className="flex flex-wrap gap-2">
+                  {orchStatus.artifacts.map((art) => (
+                    <span key={art.path} className="text-xs rounded-full border border-border bg-surface px-2 py-1 text-foreground font-mono">
+                      {art.path}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {orchStatus.status === "completed" && (
+              <div className="mt-6 flex flex-wrap gap-3">
+                <button
+                  onClick={handlePushToGitHub}
+                  disabled={orchPushing}
+                  className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-5 py-3 text-sm font-semibold text-white hover:brightness-110 transition disabled:opacity-60"
+                >
+                  {orchPushing ? <><Loader2 size={16} className="animate-spin" /> Pushing…</> : <>Push to GitHub <ArrowRight size={16} /></>}
+                </button>
+                {orchPushResult?.prUrl && (
+                  <a href={orchPushResult.prUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-5 py-3 text-sm font-semibold hover:border-primary/60 transition">
+                    View PR <ArrowRight size={16} />
+                  </a>
+                )}
+              </div>
+            )}
+
+            {orchError && (
+              <div className="mt-4 rounded-xl border border-red-500/40 bg-red-500/5 p-4 text-sm text-red-200">
+                {orchError}
+                <button onClick={() => { setOrchError(null); setOrchRunId(null); setOrchStatus(null); }} className="ml-3 text-xs underline">Dismiss</button>
+              </div>
+            )}
+          </motion.div>
+        )}
+
         {/* Agent pipeline */}
         <AnimatePresence>
-          {stage !== "idle" && (
+          {stage !== "idle" && !orchestratorMode && (
             <motion.div
               id="agent-pipeline-tracker"
               initial={{ opacity: 0, y: 16 }}
@@ -904,6 +1143,113 @@ function AiPage() {
         </>
         )}
       </div>
+
+      {/* Free Trial Expired / Upgrade Dialog */}
+      <AnimatePresence>
+        {showUpgradeModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+            onClick={() => setShowUpgradeModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 15 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-zinc-950 p-6 sm:p-8 shadow-2xl overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-primary to-orange-500" />
+              <div className="flex items-center gap-3 text-amber-400 mb-3">
+                <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                  <Sparkles size={22} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white">1-Time Free Trial Consumed</h3>
+                  <p className="text-xs text-zinc-400">Unlock high-volume coding or connect your keys</p>
+                </div>
+              </div>
+
+              <p className="text-sm text-zinc-300 mb-6 leading-relaxed">
+                {upgradeReason ||
+                  "You have completed your 1 free trial for full-stack code generation. Choose how you'd like to continue building:"}
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                <div className="rounded-xl border border-primary/30 bg-primary/5 p-4 flex flex-col justify-between">
+                  <div>
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-primary mb-1">
+                      Recommended
+                    </div>
+                    <div className="text-base font-bold text-white">Studio Plan</div>
+                    <div className="text-xl font-extrabold text-white mt-1">
+                      $29<span className="text-xs font-normal text-zinc-400">/mo</span>
+                    </div>
+                    <ul className="text-xs text-zinc-400 space-y-1.5 mt-3">
+                      <li className="flex items-center gap-1.5">
+                        <Check size={12} className="text-emerald-400" /> 50 App builds / day
+                      </li>
+                      <li className="flex items-center gap-1.5">
+                        <Check size={12} className="text-emerald-400" /> Priority frontier models
+                      </li>
+                      <li className="flex items-center gap-1.5">
+                        <Check size={12} className="text-emerald-400" /> Direct GitHub sync
+                      </li>
+                    </ul>
+                  </div>
+                  <Link
+                    to="/pricing"
+                    className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:brightness-110 transition shadow-sm"
+                  >
+                    Upgrade to Studio <ArrowRight size={13} />
+                  </Link>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-zinc-900/60 p-4 flex flex-col justify-between">
+                  <div>
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 mb-1">
+                      Free Tier
+                    </div>
+                    <div className="text-base font-bold text-white">Bring Your Own Key</div>
+                    <div className="text-xl font-extrabold text-white mt-1">
+                      $0<span className="text-xs font-normal text-zinc-400"> platform fee</span>
+                    </div>
+                    <ul className="text-xs text-zinc-400 space-y-1.5 mt-3">
+                      <li className="flex items-center gap-1.5">
+                        <Check size={12} className="text-emerald-400" /> Use free Groq/Gemini keys
+                      </li>
+                      <li className="flex items-center gap-1.5">
+                        <Check size={12} className="text-emerald-400" /> Zero Signhify subscription
+                      </li>
+                      <li className="flex items-center gap-1.5">
+                        <Check size={12} className="text-emerald-400" /> Client AES-256 encryption
+                      </li>
+                    </ul>
+                  </div>
+                  <a
+                    href="#byok-security-badge"
+                    onClick={() => setShowUpgradeModal(false)}
+                    className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 px-3 py-2 text-xs font-semibold text-white transition"
+                  >
+                    <Key size={13} /> Add Free API Keys
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setShowUpgradeModal(false)}
+                  className="text-xs text-zinc-400 hover:text-white px-3 py-1.5 transition"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

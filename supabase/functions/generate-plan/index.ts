@@ -463,7 +463,7 @@ serve(async (req) => {
   } else {
     const { data: prof } = await supabase
       .from("profiles")
-      .select("subscription_plan, subscription_status")
+      .select("subscription_plan, subscription_status, free_trial_used")
       .eq("id", user.id)
       .maybeSingle();
 
@@ -472,8 +472,18 @@ serve(async (req) => {
     const isPaid =
       PAID_PLANS.has(plan) && (status === "" || status === "active" || status === "trialing");
 
+    let isFreeTrial = false;
+
     if (isPaid) {
       providers = getManagedProviders();
+    } else if (!prof?.free_trial_used) {
+      // 1-time free trial: prioritize fast free coding models
+      isFreeTrial = true;
+      const allManaged = getManagedProviders();
+      const freeList = allManaged.filter((p) =>
+        ["Groq", "OpenRouter", "Cerebras", "NVIDIA", "Gemini"].includes(p.name),
+      );
+      providers = freeList.length > 0 ? freeList : allManaged;
     } else {
       // Free plan: Read BYOK keys from database and decrypt
       const { data: keyRows } = await supabase
@@ -528,9 +538,9 @@ serve(async (req) => {
         }
         return new Response(
           JSON.stringify({
-            error: "BYOK_REQUIRED",
+            error: "FREE_TRIAL_EXPIRED",
             message:
-              "Signhify AI is available on paid plans. Free users must add their own API key in Settings → AI Keys, or upgrade at /pricing.",
+              "You have used your 1 free trial. Upgrade to Studio at /pricing for 50 daily builds, or add your own API key in Settings → AI Keys.",
           }),
           { status: 402, headers: { ...corsHeaders, "content-type": "application/json" } },
         );
@@ -564,6 +574,19 @@ serve(async (req) => {
         activeRes = res;
         activeProvider = p;
         attempts.push(`${p.name}:ok`);
+
+        if (isFreeTrial) {
+          supabase
+            .from("profiles")
+            .update({ free_trial_used: true, free_trial_claimed_at: new Date().toISOString() })
+            .eq("id", user.id)
+            .then(() => {});
+          supabase
+            .from("user_credits")
+            .update({ credits_remaining: 0, updated_at: new Date().toISOString() })
+            .eq("user_id", user.id)
+            .then(() => {});
+        }
         break;
       }
       attempts.push(`${p.name}:${res.status}`);

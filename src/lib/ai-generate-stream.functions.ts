@@ -23,5 +23,9 @@ export const getGeneratePlanStreamConfig = createServerFn({ method: "POST" })
     const fallbackBearer = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY;
     const bearer = userToken || fallbackBearer;
     if (!base || !bearer) throw new Error("Missing Supabase Edge Function configuration.");
-    return { url: `${base.replace(/\/$/, "")}/functions/v1/generate-plan`, bearer, token: userToken };
+    return {
+      url: `${base.replace(/\/$/, "")}/functions/v1/generate-plan`,
+      bearer,
+      token: userToken,
+    };
   });

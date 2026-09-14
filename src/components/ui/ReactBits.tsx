@@ -75,12 +75,7 @@ export function DitherWaves({
     };
   }, [waveColor, dotColor, speed, density]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className={`w-full h-full pointer-events-none ${className}`}
-    />
-  );
+  return <canvas ref={canvasRef} className={`w-full h-full pointer-events-none ${className}`} />;
 }
 
 // ==========================================

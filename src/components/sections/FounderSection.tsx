@@ -136,9 +136,9 @@ export function FounderSection() {
               aria-hidden
             />
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              "24 shipped products across SaaS, AI automation, EdTech and NGO platforms. Signhify
-              is the studio I always wanted to hire — one that treats software like a film:
-              scripted, designed and shipped with conviction."
+              "24 shipped products across SaaS, AI automation, EdTech and NGO platforms. Signhify is
+              the studio I always wanted to hire — one that treats software like a film: scripted,
+              designed and shipped with conviction."
             </p>
             <div className="mt-5 flex items-center justify-center gap-3">
               <div className="h-px w-8 bg-primary/60" />

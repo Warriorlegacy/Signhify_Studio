@@ -3,11 +3,9 @@ import { createClient } from "@supabase/supabase-js";
 import fs from "node:fs";
 import path from "node:path";
 
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SECRET_KEY!,
-  { auth: { persistSession: false } },
-);
+const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!, {
+  auth: { persistSession: false },
+});
 
 async function main() {
   const outreachDir = path.join(process.cwd(), "scripts", "generated-outreach");
@@ -36,7 +34,9 @@ async function main() {
     else campaignId = created.id;
   }
 
-  const files = fs.readdirSync(outreachDir).filter((f) => f.endsWith(".txt") && !f.includes("summary"));
+  const files = fs
+    .readdirSync(outreachDir)
+    .filter((f) => f.endsWith(".txt") && !f.includes("summary"));
   const prospects = new Map<string, { cold?: string; followup?: string; partnership?: string }>();
 
   for (const file of files) {
@@ -101,7 +101,11 @@ async function main() {
       { onConflict: "platform" },
     );
 
-    if (error) console.error(`Directory listing failed for ${listing.name ?? listing.platform}:`, error.message);
+    if (error)
+      console.error(
+        `Directory listing failed for ${listing.name ?? listing.platform}:`,
+        error.message,
+      );
   }
 
   const linkedinJson = JSON.parse(
@@ -114,7 +118,11 @@ async function main() {
       : [];
 
   for (const post of posts) {
-    const scheduledAt = post.scheduledAt ?? post.scheduled_at ?? post.date ?? new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString();
+    const scheduledAt =
+      post.scheduledAt ??
+      post.scheduled_at ??
+      post.date ??
+      new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString();
     const { error } = await supabase.from("content_schedule").insert({
       title: post.topic ?? post.title ?? "Untitled",
       body: post.content ?? post.body ?? post.copy ?? "",

@@ -9,6 +9,7 @@
 Add these 15–20 topics to the repository (Settings → Topics). They improve discoverability across GitHub search, GitHub Explore, and external SEO.
 
 ### Primary (must-add)
+
 1. `ai-saas`
 2. `ai-agent`
 3. `ai-product-studio`
@@ -21,6 +22,7 @@ Add these 15–20 topics to the repository (Settings → Topics). They improve d
 10. `tailwindcss`
 
 ### Secondary (strongly recommended)
+
 11. `ai-saas-builder`
 12. `mvp-builder`
 13. `agent-swarm`
@@ -33,6 +35,7 @@ Add these 15–20 topics to the repository (Settings → Topics). They improve d
 20. `no-code`
 
 ### How to add them
+
 ```bash
 # Using GitHub CLI
 gh repo edit Warriorlegacy/Signhify_Studio --add-topic "ai-saas,ai-agent,saas-boilerplate,tanstack-start,supabase,react,typescript,tailwindcss,cloudflare-workers,stripe"
@@ -47,12 +50,15 @@ gh repo edit Warriorlegacy/Signhify_Studio --add-topic "ai-saas,ai-agent,saas-bo
 Your description is the **second most indexed text** after the title on GitHub and Google.
 
 ### Current
+
 > Turn plain-English prompts into production-grade AI SaaS apps in 2-week sprints.
 
 ### Optimized (shorter, keyword-rich, action-oriented)
+
 > 🚀 Open-source AI SaaS builder: describe your idea in plain English → 6 AI agents scaffold, test & deploy a full-stack app in 2 weeks. React, Supabase, Stripe, BYOK.
 
 **Why this works:**
+
 - Starts with an emoji (stands out in search results)
 - Contains high-value keywords: "AI SaaS builder", "open-source", "full-stack"
 - Communicates the unique value in under 160 characters
@@ -67,26 +73,30 @@ Add this in: GitHub repo → Settings → Description field (and update `package
 GitHub Trending ranks repos on **velocity** (stars/hour, forks/hour) within a language/tech category. Here's the playbook:
 
 ### ⏰ Timing
+
 - **Best day to post**: Tuesday–Thursday (highest developer traffic)
 - **Best time**: 8–10 AM UTC (covers EU morning + US East Coast overlap)
 - **Trending cycle resets every ~24 hours** — aim for a burst within 6 hours
 
 ### 📈 Velocity Requirements (approximate)
-| Category | Stars in first 24h to trend |
-| :--- | :--- |
-| **TypeScript** | 80–150 |
-| **JavaScript** | 100–200 |
-| **All languages** | 200–500 |
+
+| Category          | Stars in first 24h to trend |
+| :---------------- | :-------------------------- |
+| **TypeScript**    | 80–150                      |
+| **JavaScript**    | 100–200                     |
+| **All languages** | 200–500                     |
 
 ### 🔥 Launch Sequence
 
 #### Week Before
+
 - [ ] Tease on X/Twitter: "Building something open-source that turns prompts into SaaS apps. Star to follow along →"
 - [ ] Share in relevant Reddit communities: r/SaaS, r/reactjs, r/webdev, r/typescript (not a link post — a "building in public" post)
 - [ ] Post in Hacker News "Show HN: ..." draft (prepare 2–3 versions)
 - [ ] Join Discord communities: Reactiflux, TanStack, Supabase, indie.dev
 
 #### Launch Day
+
 - [ ] Push a significant update or a polished README refresh (like this one)
 - [ ] Share on **X/Twitter** with a GIF of the product + clear CTA to star
 - [ ] Post on **LinkedIn** with longer-form value proposition
@@ -95,6 +105,7 @@ GitHub Trending ranks repos on **velocity** (stars/hour, forks/hour) within a la
 - [ ] Ask 5–10 friends/followers to star within the same hour window
 
 #### Velocity Sustainment
+
 - Reply to every GitHub Issue within 2 hours on launch day
 - Engage with every comment on social — engagement feeds visibility
 - Post a "Day 1 update" thread on X with star count milestone
@@ -106,7 +117,9 @@ GitHub Trending ranks repos on **velocity** (stars/hour, forks/hour) within a la
 Create these `.github/ISSUE_TEMPLATE/` files for consistent community contributions.
 
 ### Template: Bug Report
+
 **File**: `.github/ISSUE_TEMPLATE/bug_report.yml`
+
 ```yaml
 name: Bug Report
 description: Report something that isn't working
@@ -147,7 +160,9 @@ body:
 ```
 
 ### Template: Feature Request
+
 **File**: `.github/ISSUE_TEMPLATE/feature_request.yml`
+
 ```yaml
 name: Feature Request
 description: Suggest an idea for Signhify
@@ -179,7 +194,9 @@ body:
 ```
 
 ### Template: Config Request (New)
+
 **File**: `.github/ISSUE_TEMPLATE/config.yml`
+
 ```yaml
 blank_issues_enabled: false
 contact_links:
@@ -199,6 +216,7 @@ contact_links:
 ## 5. Community Engagement Strategy
 
 ### First PR Program
+
 - Label 5–10 issues as `good-first-issue` with clear scoping
 - Each good-first-issue includes:
   - Expected behavior and acceptance criteria
@@ -208,6 +226,7 @@ contact_links:
 - Thank every first PR within the merge message
 
 ### Hacktoberfest Preparation
+
 - [ ] Register repo as Hacktoberfest-participating (October 1 deadline)
 - [ ] Add `hacktoberfest` label to 10+ issues by September 15
 - [ ] Write a "Hacktoberfest 2026: How to Contribute to Signhify" blog post
@@ -215,24 +234,26 @@ contact_links:
 - [ ] Create a dedicated `hacktoberfest-2026` milestone
 
 ### Issue Triage SLA
-| Priority | First Response | Resolution Target |
-| :--- | :--- | :--- |
-| 🔴 Critical | < 2 hours | < 24 hours |
-| 🟡 High | < 8 hours | < 72 hours |
-| 🟢 Medium | < 24 hours | < 1 week |
-| 🔵 Low / Good First | < 48 hours | < 2 weeks |
+
+| Priority            | First Response | Resolution Target |
+| :------------------ | :------------- | :---------------- |
+| 🔴 Critical         | < 2 hours      | < 24 hours        |
+| 🟡 High             | < 8 hours      | < 72 hours        |
+| 🟢 Medium           | < 24 hours     | < 1 week          |
+| 🔵 Low / Good First | < 48 hours     | < 2 weeks         |
 
 ### Community Channels to Monitor
 
-| Channel | Action | Frequency |
-| :--- | :--- | :--- |
-| GitHub Issues | Respond, label, triage | Daily |
-| GitHub Discussions (if enabled) | Engage, collect feedback | 3× week |
-| X/Twitter mentions (@Warriorlegacy) | Thank, reshare, answer | Daily |
-| Stack Overflow (tagged `signhify`) | Monitor and answer | Weekly |
-| Reddit (r/SaaS, r/reactjs, r/webdev) | Participate authentically | Weekly |
+| Channel                              | Action                    | Frequency |
+| :----------------------------------- | :------------------------ | :-------- |
+| GitHub Issues                        | Respond, label, triage    | Daily     |
+| GitHub Discussions (if enabled)      | Engage, collect feedback  | 3× week   |
+| X/Twitter mentions (@Warriorlegacy)  | Thank, reshare, answer    | Daily     |
+| Stack Overflow (tagged `signhify`)   | Monitor and answer        | Weekly    |
+| Reddit (r/SaaS, r/reactjs, r/webdev) | Participate authentically | Weekly    |
 
 ### Automation
+
 - **Welcome bot**: Auto-comment on first PR/Issue with a thank-you + links to CONTRIBUTING.md
 - **Stale bot**: Close issues with no activity after 60 days (ping at 30 days)
 - **Label bot**: Auto-label PRs based on file paths changed
@@ -241,14 +262,14 @@ contact_links:
 
 ## 6. Quick Reference: SEO & Search Metadata
 
-| Property | Value |
-| :--- | :--- |
-| Repo name | `Signhify_Studio` |
-| Short description | Open-source AI SaaS builder: describe your idea → 6 AI agents ship it in 2 weeks. |
-| Topics | ai-saas, ai-agent, saas-boilerplate, tanstack-start, supabase, react, typescript, tailwindcss, cloudflare-workers, stripe, mvp-builder, agent-swarm |
-| Website | https://signhify.dpdns.org |
-| License | MIT |
+| Property          | Value                                                                                                                                               |
+| :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Repo name         | `Signhify_Studio`                                                                                                                                   |
+| Short description | Open-source AI SaaS builder: describe your idea → 6 AI agents ship it in 2 weeks.                                                                   |
+| Topics            | ai-saas, ai-agent, saas-boilerplate, tanstack-start, supabase, react, typescript, tailwindcss, cloudflare-workers, stripe, mvp-builder, agent-swarm |
+| Website           | https://signhify.dpdns.org                                                                                                                          |
+| License           | MIT                                                                                                                                                 |
 
 ---
 
-*Generated by the Developer Advocate Agent — update quarterly as the repo grows.*
+_Generated by the Developer Advocate Agent — update quarterly as the repo grows._

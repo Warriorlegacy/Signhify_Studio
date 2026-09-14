@@ -1,8 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { generateAIResponseFor } from "./ai-gateway.server";
-import { BYOKRequiredError } from "./ai-access.server";
+import { BYOKRequiredError, FreeTrialExpiredError } from "./ai-access.server";
 import { withByokKeys } from "./byok-middleware";
+import { buildAIRunFields, aiThrottleExceeded } from "./ai-observability";
 
 type GenerateInput = { prompt: string };
 
@@ -14,6 +15,7 @@ export type GeneratedPlan = {
   stack: string[];
   providerUsed?: string;
   tokensUsed?: number;
+  latencyMs?: number;
 };
 
 function validate(input: unknown): GenerateInput {
@@ -40,6 +42,17 @@ export const generatePlan = createServerFn({ method: "POST" })
     const { supabase, userId, claims } = context;
     const email = (claims as { email?: string | null } | undefined)?.email ?? null;
     const byokClientKeys = (context as { byokClientKeys?: Record<string, string> }).byokClientKeys;
+    const started = Date.now();
+    // ponytail: per-user throttle reuses ai_sessions as the counter — no new infra.
+    const windowStart = new Date(Date.now() - 60_000).toISOString();
+    const { count: recentCount } = await (supabase as any)
+      .from("ai_sessions")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .gte("created_at", windowStart);
+    if (aiThrottleExceeded(recentCount ?? 0)) {
+      throw new Error("AI rate limit exceeded (10 plans/min). Try again shortly.");
+    }
     try {
       const { content, providerUsed } = await generateAIResponseFor(
         {
@@ -56,6 +69,7 @@ export const generatePlan = createServerFn({ method: "POST" })
       const parsed = JSON.parse(content) as GeneratedPlan;
       parsed.providerUsed = providerUsed;
       parsed.tokensUsed = 0;
+      parsed.latencyMs = Date.now() - started;
 
       if (
         parsed?.productName &&
@@ -68,15 +82,27 @@ export const generatePlan = createServerFn({ method: "POST" })
 
       throw new Error("Incomplete plan returned by AI.");
     } catch (e) {
-      // BYOK gate must surface to the UI — never silently fall back to mock.
-      if (e instanceof BYOKRequiredError || (e as { code?: string })?.code === "BYOK_REQUIRED") {
+      // BYOK or Trial Expiry gate must surface to the UI — never silently fall back to mock.
+      if (
+        e instanceof BYOKRequiredError ||
+        e instanceof FreeTrialExpiredError ||
+        (e as { code?: string })?.code === "BYOK_REQUIRED" ||
+        (e as { code?: string })?.code === "FREE_TRIAL_EXPIRED"
+      ) {
         throw e;
       }
-      console.warn(
-        "[ai] AI Gateway failed or returned invalid JSON. Falling back to local mock generator.",
-        e,
-      );
-      return generateLocalMockPlan(data.prompt);
+      const latencyMs = Date.now() - started;
+      console.warn("[ai.generate.fallback]", {
+        latencyMs,
+        error: (e as Error)?.message ?? String(e),
+      });
+      // ponytail: mock keeps the demo alive but is labeled — never silent.
+      return {
+        ...generateLocalMockPlan(data.prompt),
+        providerUsed: "mock",
+        tokensUsed: 0,
+        latencyMs,
+      };
     }
   });
 
@@ -213,14 +239,16 @@ export const savePlan = createServerFn({ method: "POST" })
     const { supabase, userId } = context;
     const { prompt, plan } = data;
 
+    const run = buildAIRunFields({ providerUsed: plan.providerUsed, latencyMs: plan.latencyMs });
     const { data: row, error } = await (supabase as any)
       .from("ai_sessions")
       .insert({
         prompt,
         response: plan as any,
         user_id: userId,
-        provider_used: plan.providerUsed ?? null,
-        tokens_used: plan.tokensUsed ?? null,
+        provider_used: run.provider_used,
+        latency_ms: run.latency_ms,
+        status: run.status,
       })
       .select("id")
       .single();

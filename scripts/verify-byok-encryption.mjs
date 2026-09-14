@@ -16,9 +16,7 @@ const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const masterKey = process.env.SECRETS_MASTER_KEY;
 
 if (!url || !serviceKey || !masterKey) {
-  console.error(
-    "Missing env. Need SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SECRETS_MASTER_KEY.",
-  );
+  console.error("Missing env. Need SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SECRETS_MASTER_KEY.");
   process.exit(2);
 }
 
@@ -33,10 +31,9 @@ function decrypt(ct) {
     Buffer.from(ivHex, "hex"),
   );
   decipher.setAuthTag(Buffer.from(tagHex, "hex"));
-  return Buffer.concat([
-    decipher.update(Buffer.from(encHex, "hex")),
-    decipher.final(),
-  ]).toString("utf8");
+  return Buffer.concat([decipher.update(Buffer.from(encHex, "hex")), decipher.final()]).toString(
+    "utf8",
+  );
 }
 
 const CIPHERTEXT_SHAPE = /^[0-9a-f]{24}:[0-9a-f]{32}:[0-9a-f]+$/i;

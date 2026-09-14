@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { supabaseAdmin as _supabaseAdmin } from "@/integrations/supabase/client.server";
 import { STRIPE_PRICE_IDS } from "@/lib/stripe-prices.server";
+import {
+  priceIdToPlan,
+  safeEqualHex,
+  isDuplicateStripeEvent,
+} from "@/lib/stripe-webhook-helpers";
 import logger from "@/lib/logger";
 
 // Cast to any: this webhook writes to extended tables/columns (marketplace_purchases,
@@ -8,15 +13,8 @@ import logger from "@/lib/logger";
 // in the generated Database types.
 const supabaseAdmin: any = _supabaseAdmin;
 
-// ─── Price-to-plan mapping ───────────────────────────────────────────────────
-type PlanTier = "free" | "studio" | "scale";
-
-function priceIdToPlan(priceId: string | undefined | null): PlanTier {
-  if (!priceId) return "free";
-  if (priceId === STRIPE_PRICE_IDS.studioMonthly) return "studio";
-  if (priceId === STRIPE_PRICE_IDS.scaleMonthly) return "scale";
-  return "free";
-}
+// ponytail: plan mapping + sig compare live in stripe-webhook-helpers so unit
+// tests cover them without importing this route.
 
 // ─── Stripe signature verification (no SDK needed) ───────────────────────────
 // Manually verify Stripe-Signature header using HMAC-SHA256 so we stay
@@ -57,7 +55,7 @@ async function verifyStripeSignature(
       .map((b) => b.toString(16).padStart(2, "0"))
       .join("");
 
-    return expected === v1;
+    return safeEqualHex(expected, v1);
   } catch (err) {
     logger.error(`[stripe/webhook] Signature verification error: ${err}`);
     return false;
@@ -140,7 +138,7 @@ async function handleSubscriptionCreated(event: any) {
 
   const customerId = subscription.customer as string;
   const priceId = subscription.items.data[0]?.price?.id;
-  const plan = priceIdToPlan(priceId);
+  const plan = priceIdToPlan(priceId, STRIPE_PRICE_IDS);
 
   // Find user by Stripe customer ID
   const { data: profile, error: lookupError } = await supabaseAdmin
@@ -183,7 +181,7 @@ async function handleSubscriptionUpdated(event: any) {
 
   const customerId = subscription.customer as string;
   const priceId = subscription.items.data[0]?.price?.id;
-  const plan = priceIdToPlan(priceId);
+  const plan = priceIdToPlan(priceId, STRIPE_PRICE_IDS);
 
   const { data: profile } = await supabaseAdmin
     .from("profiles")
@@ -293,6 +291,27 @@ async function handleInvoicePaid(event: any) {
   }
 }
 
+// ─── Idempotency: claim-first, not handler-guarded ──────────────────────────
+// Stripe retries every event until 2xx. Claiming here covers all six handlers
+// at once — a guard per handler leaves every sibling broken on redelivery.
+async function claimStripeEvent(eventId: string, type: string): Promise<"claimed" | "duplicate"> {
+  const { error } = await supabaseAdmin.from("stripe_events").insert({
+    event_id: eventId,
+    type,
+  });
+  if (!error) return "claimed";
+  if (isDuplicateStripeEvent(error)) {
+    logger.info(`[stripe/webhook] Duplicate delivery ignored: ${type} (${eventId})`);
+    return "duplicate";
+  }
+  if ((error as { code?: string })?.code === "42P01") {
+    // ponytail: migration not applied yet — fail open loudly. Add hard-fail when table guaranteed.
+    logger.error("[stripe/webhook] stripe_events table missing — skipping idempotency. Apply migrations.");
+    return "claimed";
+  }
+  throw error;
+}
+
 // ─── Route ───────────────────────────────────────────────────────────────────
 export const Route = createFileRoute("/api/stripe/webhook")({
   server: {
@@ -327,6 +346,23 @@ export const Route = createFileRoute("/api/stripe/webhook")({
         }
 
         logger.info(`[stripe/webhook] Received event: ${event.type} (${event.id})`);
+
+        if (!event.id || !event.type) {
+          return new Response("Malformed event", { status: 400 });
+        }
+
+        // Claim first so a retry/double-delivery can never double-apply.
+        try {
+          if ((await claimStripeEvent(event.id, event.type)) === "duplicate") {
+            return new Response(JSON.stringify({ received: true, duplicate: true }), {
+              status: 200,
+              headers: { "content-type": "application/json" },
+            });
+          }
+        } catch (err) {
+          logger.error(`[stripe/webhook] Idempotency claim failed: ${err}`);
+          return new Response("Handler error", { status: 500 });
+        }
 
         // ── Dispatch ────────────────────────────────────────────────────────
         try {

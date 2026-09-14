@@ -7,6 +7,7 @@
 **URL**: linkedin.com/in/piyushraj-singh
 
 ### Headline (max 220 chars)
+
 ```
 Founder & Lead AI Engineer @ Signhify AI Studio | Ship SaaS MVPs in 2-Week Sprints | TanStack Start, Supabase, BYOK Encryption | MSME Registered
 ```
@@ -57,6 +58,7 @@ Want to ship your idea in 14 days? → https://signhify.dpdns.org
 ### Experience Section
 
 **Current Role**:
+
 ```
 Founder & Lead AI Engineer
 Signhify AI Studio · Full-time
@@ -104,12 +106,12 @@ Jul 2025 - Present · Noida, Uttar Pradesh, India
 
 ### Activity Guidelines (Weekly)
 
-| Type | Frequency | Content |
-|------|-----------|---------|
-| Original posts | 2x/week | Technical insights, client stories, founder reflections |
-| Comments | 3-5x/week | Engage on relevant posts in SaaS, AI, startup communities |
-| Shares | 1x/week | Industry news with your take (not just reposting) |
-| DMs | 5-10x/week | Outreach to warm prospects, past connections |
+| Type           | Frequency  | Content                                                   |
+| -------------- | ---------- | --------------------------------------------------------- |
+| Original posts | 2x/week    | Technical insights, client stories, founder reflections   |
+| Comments       | 3-5x/week  | Engage on relevant posts in SaaS, AI, startup communities |
+| Shares         | 1x/week    | Industry news with your take (not just reposting)         |
+| DMs            | 5-10x/week | Outreach to warm prospects, past connections              |
 
 ---
 
@@ -162,11 +164,11 @@ Start your project: https://signhify.dpdns.org
 
 ### Posting Strategy (Company Page)
 
-| Frequency | Content Type | Advantage |
-|-----------|-------------|-----------|
-| 1x/week | Case study / client result | Social proof |
-| 1x/2 weeks | Technical blog cross-post | Authority building |
-| 1x/month | Product update / new feature | Keep followers engaged |
+| Frequency  | Content Type                 | Advantage              |
+| ---------- | ---------------------------- | ---------------------- |
+| 1x/week    | Case study / client result   | Social proof           |
+| 1x/2 weeks | Technical blog cross-post    | Authority building     |
+| 1x/month   | Product update / new feature | Keep followers engaged |
 
 **Note**: Company pages get lower organic reach than personal profiles.
 Focus energy on Piyush's personal profile for engagement. Use company page
@@ -206,24 +208,24 @@ Try the free AI blueprint generator: signhify.dpdns.org/ai
 
 ### Content Pillars (for 5 posts/week)
 
-| Pillar | % of Posts | Examples |
-|--------|-----------|---------|
-| Technical tips | 30% | Code snippets, architecture decisions, tool comparisons |
-| Founder insights | 20% | Building in public, revenue lessons, solo founder reality |
-| Portfolio / client results | 20% | "Shipped X in Y days" with screenshot |
-| Industry takes | 15% | AI trends, SaaS opinions, agency critiques |
-| Engagement | 15% | Polls, questions, replies to builders |
+| Pillar                     | % of Posts | Examples                                                  |
+| -------------------------- | ---------- | --------------------------------------------------------- |
+| Technical tips             | 30%        | Code snippets, architecture decisions, tool comparisons   |
+| Founder insights           | 20%        | Building in public, revenue lessons, solo founder reality |
+| Portfolio / client results | 20%        | "Shipped X in Y days" with screenshot                     |
+| Industry takes             | 15%        | AI trends, SaaS opinions, agency critiques                |
+| Engagement                 | 15%        | Polls, questions, replies to builders                     |
 
 ### Hashtag Strategy
 
 Use 1-3 relevant hashtags per post. Go for niche over broad.
 
-| Category | Hashtags |
-|----------|----------|
-| Broad | #SaaS #AI #IndieHacker #Startup |
+| Category  | Hashtags                                     |
+| --------- | -------------------------------------------- |
+| Broad     | #SaaS #AI #IndieHacker #Startup              |
 | Technical | #TanStack #Supabase #React #BYOK #Cloudflare |
-| Community | #BuildInPublic #ShipFast #MVP #FullStack |
-| Location | #MadeInIndia #Noida #StartupIndia |
+| Community | #BuildInPublic #ShipFast #MVP #FullStack     |
+| Location  | #MadeInIndia #Noida #StartupIndia            |
 
 ### Engagement Rules
 
@@ -260,11 +262,11 @@ Full code ownership on day 1. No lock-in. Open source (MIT).
 
 ### Repository Organization
 
-| Repository | Visibility | Description |
-|-----------|-----------|-------------|
-| `Signhify_Studio` | Public (⭐ star target) | Main product studio — open source |
-| `Warriorlegacy` profile | Public | Profile README with links |
-| Personal projects | Public / Private as needed | |
+| Repository              | Visibility                 | Description                       |
+| ----------------------- | -------------------------- | --------------------------------- |
+| `Signhify_Studio`       | Public (⭐ star target)    | Main product studio — open source |
+| `Warriorlegacy` profile | Public                     | Profile README with links         |
+| Personal projects       | Public / Private as needed |                                   |
 
 ### Pin Repos (max 6)
 
@@ -311,16 +313,17 @@ Ship your idea: https://signhify.dpdns.org
 
 ### Video Content Strategy
 
-| Video Type | Frequency | Length | Examples |
-|-----------|-----------|--------|----------|
-| Tutorial / How-to | 1x/month | 10-20 min | "Build a SaaS with TanStack Start + Supabase in 30 min" |
-| Build in Public | 1x/month | 5-10 min | "Shipping a client SaaS in 14 days — week 1 recap" |
-| Architecture deep-dive | 1x/2 months | 15-25 min | "BYOK encryption architecture explained" |
-| Client case study | 1x/quarter | 3-5 min | "How we built X in 12 days" |
+| Video Type             | Frequency   | Length    | Examples                                                |
+| ---------------------- | ----------- | --------- | ------------------------------------------------------- |
+| Tutorial / How-to      | 1x/month    | 10-20 min | "Build a SaaS with TanStack Start + Supabase in 30 min" |
+| Build in Public        | 1x/month    | 5-10 min  | "Shipping a client SaaS in 14 days — week 1 recap"      |
+| Architecture deep-dive | 1x/2 months | 15-25 min | "BYOK encryption architecture explained"                |
+| Client case study      | 1x/quarter  | 3-5 min   | "How we built X in 12 days"                             |
 
 ### First 3 Videos (Launch Sequence)
 
 **Video 1 — Channel Intro / Demo**
+
 ```
 Title: Signhify AI Studio — Ship AI SaaS in 2-Week Sprints
 Description: See how our 6-agent AI pipeline turns one sentence into a full architecture plan, and how we ship production apps in 14 days.
@@ -328,12 +331,14 @@ Link: signhify.dpdns.org
 ```
 
 **Video 2 — Technical Tutorial**
+
 ```
 Title: Full SaaS Stack with TanStack Start + Supabase + BYOK Encryption
 Description: Walk through the architecture that powers Signhify's client projects. From SSR setup to client-side encryption to edge deployment.
 ```
 
 **Video 3 — Build in Public**
+
 ```
 Title: Shipping a Client SaaS in 14 Days — The Full Process
 Description: Behind the scenes of a real Studio engagement. How the AI blueprint generator works, sprint planning, deployment.
@@ -343,6 +348,7 @@ Description: Behind the scenes of a real Studio engagement. How the AI blueprint
 
 - **Title format**: [Main Keyword] — [Value Prop] | Signhify AI Studio
 - **Description template**:
+
   ```
   [Brief summary of video content]
 
@@ -357,6 +363,7 @@ Description: Behind the scenes of a real Studio engagement. How the AI blueprint
 
   #SaaS #TanStack #Supabase #AI #WebDev
   ```
+
 - **Tags**: Include "SaaS development," "TanStack tutorial," "Supabase tutorial,"
   "AI development," "build a SaaS," "MVP development"
 
@@ -364,23 +371,23 @@ Description: Behind the scenes of a real Studio engagement. How the AI blueprint
 
 ## Cross-Platform Consistency Checklist
 
-| Element | LinkedIn (Personal) | LinkedIn (Company) | Twitter/X | GitHub | YouTube |
-|---------|-------------------|-------------------|-----------|--------|---------|
-| Profile photo | ✅ Same | ✅ Logo | ✅ Logo | ✅ Same as personal | ✅ Logo |
-| Tagline | ✅ Present | ✅ Present | ✅ Bio | ✅ Bio | ✅ Channel desc |
-| Website link | ✅ signhify.dpdns.org | ✅ signhify.dpdns.org | ✅ signhify.dpdns.org | ✅ signhify.dpdns.org | ✅ signhify.dpdns.org |
-| GitHub link | ✅ In featured | ✅ In about | ✅ In pinned | N/A | ✅ In description |
-| Contact email | ✅ In about | ✅ In about | ✅ In bio | ✅ In profile | ✅ In about |
-| MSME credential | ✅ In headline | ✅ In about | ✅ In bio | ✅ In bio | ✅ In description |
+| Element         | LinkedIn (Personal)   | LinkedIn (Company)    | Twitter/X             | GitHub                | YouTube               |
+| --------------- | --------------------- | --------------------- | --------------------- | --------------------- | --------------------- |
+| Profile photo   | ✅ Same               | ✅ Logo               | ✅ Logo               | ✅ Same as personal   | ✅ Logo               |
+| Tagline         | ✅ Present            | ✅ Present            | ✅ Bio                | ✅ Bio                | ✅ Channel desc       |
+| Website link    | ✅ signhify.dpdns.org | ✅ signhify.dpdns.org | ✅ signhify.dpdns.org | ✅ signhify.dpdns.org | ✅ signhify.dpdns.org |
+| GitHub link     | ✅ In featured        | ✅ In about           | ✅ In pinned          | N/A                   | ✅ In description     |
+| Contact email   | ✅ In about           | ✅ In about           | ✅ In bio             | ✅ In profile         | ✅ In about           |
+| MSME credential | ✅ In headline        | ✅ In about           | ✅ In bio             | ✅ In bio             | ✅ In description     |
 
 ## Weekly Cross-Promotion Schedule
 
-| Day | Action |
-|-----|--------|
-| Monday | Post on Twitter/X (tip) |
-| Tuesday | Post on LinkedIn (insight or case study) |
-| Wednesday | Post thread on Twitter/X |
-| Thursday | Post on LinkedIn (technical) |
-| Friday | Post engagement on Twitter/X |
-| Saturday | Reply to all comments across platforms |
-| Sunday | Plan next week's content + engage with GitHub issues |
+| Day       | Action                                               |
+| --------- | ---------------------------------------------------- |
+| Monday    | Post on Twitter/X (tip)                              |
+| Tuesday   | Post on LinkedIn (insight or case study)             |
+| Wednesday | Post thread on Twitter/X                             |
+| Thursday  | Post on LinkedIn (technical)                         |
+| Friday    | Post engagement on Twitter/X                         |
+| Saturday  | Reply to all comments across platforms               |
+| Sunday    | Plan next week's content + engage with GitHub issues |

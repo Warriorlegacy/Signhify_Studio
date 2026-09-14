@@ -86,7 +86,7 @@ export function TemplateParticleCanvas({
 
         ctx.font = "12px monospace";
         particles.forEach((p, i) => {
-          p.y += (i % 3 + 1) * 2;
+          p.y += ((i % 3) + 1) * 2;
           if (p.y > height) {
             p.y = 0;
             p.x = Math.random() * width;
@@ -161,7 +161,8 @@ export function TemplateParticleCanvas({
 
         ctx.beginPath();
         for (let a = 0; a <= Math.PI * 2; a += 0.05) {
-          const wave = Math.sin(a * 8 + time * 3 + scrubFactor) * 14 + Math.cos(a * 4 - time * 2) * 8;
+          const wave =
+            Math.sin(a * 8 + time * 3 + scrubFactor) * 14 + Math.cos(a * 4 - time * 2) * 8;
           const r = radius + wave;
           const x = cx + Math.cos(a) * r + (mouseX - cx) * 0.05;
           const y = cy + Math.sin(a) * r + (mouseY - cy) * 0.05;
@@ -214,7 +215,15 @@ export function TemplateParticleCanvas({
         ctx.lineWidth = 0.8;
         ctx.globalAlpha = 0.2;
         ctx.beginPath();
-        ctx.ellipse(0, 0, width * 0.38, height * 0.25, -(scrubProgress / 100) * 0.8, 0, Math.PI * 2);
+        ctx.ellipse(
+          0,
+          0,
+          width * 0.38,
+          height * 0.25,
+          -(scrubProgress / 100) * 0.8,
+          0,
+          Math.PI * 2,
+        );
         ctx.stroke();
         ctx.restore();
 

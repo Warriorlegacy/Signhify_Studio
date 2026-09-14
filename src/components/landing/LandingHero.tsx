@@ -507,10 +507,8 @@ export function LandingHero() {
         style={{ zIndex: 10 }}
       >
         <HeroBackground />
-        
-        <div
-          className="relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center"
-        >
+
+        <div className="relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center">
           {/* Headline */}
           <div className="text-center max-w-4xl px-2 mb-6 sm:mb-8" style={fadeIn(0)}>
             <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.22em] text-[#4ade80] mb-5 bg-[#22c55e]/10 px-4 py-1.5 rounded-full border border-[#22c55e]/30 shadow-[0_0_24px_rgba(34,197,94,0.2)] hover:border-[#4ade80] hover:scale-105 transition-all duration-300">
@@ -520,9 +518,7 @@ export function LandingHero() {
             <h2 className="font-stylish text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-extrabold text-white tracking-[-0.035em] leading-[1.04] mb-5 interactive-heading">
               Cinematic Scroll Websites
               <br />
-              <span className="text-shimmer-interactive">
-                from a Single Prompt
-              </span>
+              <span className="text-shimmer-interactive">from a Single Prompt</span>
             </h2>
             <p className="text-white/80 text-[15px] sm:text-[17px] md:text-[18px] max-w-2xl mx-auto leading-relaxed font-sans font-normal tracking-[-0.01em]">
               Type a prompt. AI generates a complete scroll-reactive site with cinematic video,
@@ -573,9 +569,7 @@ export function LandingHero() {
           </div>
         </div>
 
-        <div
-          className="relative mt-8 flex flex-col items-center gap-2 z-20 pointer-events-none"
-        >
+        <div className="relative mt-8 flex flex-col items-center gap-2 z-20 pointer-events-none">
           <span className="text-white/30 text-[10px] font-mono tracking-widest uppercase">
             Scroll
           </span>

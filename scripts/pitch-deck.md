@@ -19,16 +19,17 @@
 
 ## Slide 1 — The Problem (Why this exists)
 
-| What founders do today | The cost |
-|---|---|
-| Hire a dev agency | 3-6 months, $15k-$25k for an MVP |
-| Hire a freelancer | 2-4 months, $8k-$15k, no accountability |
-| Build solo | 6-12 months, burnout risk, no expert guidance |
-| Use no-code | Hits limits fast, can't customize backend |
+| What founders do today | The cost                                      |
+| ---------------------- | --------------------------------------------- |
+| Hire a dev agency      | 3-6 months, $15k-$25k for an MVP              |
+| Hire a freelancer      | 2-4 months, $8k-$15k, no accountability       |
+| Build solo             | 6-12 months, burnout risk, no expert guidance |
+| Use no-code            | Hits limits fast, can't customize backend     |
 
-**The core frustration**: founders spend 80% of their time and budget on *building* and only 20% on *validating*. That should be flipped.
+**The core frustration**: founders spend 80% of their time and budget on _building_ and only 20% on _validating_. That should be flipped.
 
 **Real data**:
+
 - 70% of agency-built MVPs are delivered late (Clutch, 2025)
 - 45% of founders report not getting full source code after paying
 - Average agency MVP costs $18k and takes 4.2 months
@@ -41,13 +42,14 @@
 
 Three engagement models:
 
-| Tier | Price | Timeline | What you get |
-|------|-------|----------|-------------|
-| **Sprint** | $299 | 5-7 days | Core UI + Supabase backend + custom domain + responsive mobile + CI/CD deploy |
-| **Studio** | $799+ | 14 days | Full SaaS + AI agents + BYOK vault + Stripe billing + admin dashboard + 30-day support |
-| **Platform** | Custom | Tailored | Multi-agent orchestration, custom LLM fine-tuning, dedicated infrastructure |
+| Tier         | Price  | Timeline | What you get                                                                           |
+| ------------ | ------ | -------- | -------------------------------------------------------------------------------------- |
+| **Sprint**   | $299   | 5-7 days | Core UI + Supabase backend + custom domain + responsive mobile + CI/CD deploy          |
+| **Studio**   | $799+  | 14 days  | Full SaaS + AI agents + BYOK vault + Stripe billing + admin dashboard + 30-day support |
+| **Platform** | Custom | Tailored | Multi-agent orchestration, custom LLM fine-tuning, dedicated infrastructure            |
 
 **Every engagement includes**:
+
 - ✅ Full source code to your GitHub on day 1 (MIT license)
 - ✅ BYOK AES-256 encryption vault (client-side, enterprise-grade)
 - ✅ Stripe subscription billing with metering
@@ -117,16 +119,16 @@ User's API key ──► AES-256 GCM encrypt (browser)
 
 ## Slide 4 — Technology Stack
 
-| Layer | Technology | Why |
-|-------|-----------|-----|
-| Framework | TanStack Start + React 19 SSR | Zero-latency, file-based routing, no lock-in |
-| AI Pipeline | Claude 3.5 Sonnet / GPT-4o multi-agent | 6 specialized agents, auto-fallback, circuit breakers |
-| Database | Supabase PostgreSQL + RLS + Edge Functions | Auth, schema, real-time, row-level security |
-| Encryption | AES-256 GCM (client-side BYOK) | Enterprise-grade, key never touches server |
-| Deployment | Cloudflare Workers (Nitro) | Edge global, ~50ms cold start, multi-region |
-| Billing | Stripe Checkout + metered webhooks | Subscriptions, credits, usage-based |
-| Auth | Supabase Auth (email + OAuth) | Built-in, session management, MFA ready |
-| UI | TailwindCSS + Framer Motion | Responsive, animated, premium feel |
+| Layer       | Technology                                 | Why                                                   |
+| ----------- | ------------------------------------------ | ----------------------------------------------------- |
+| Framework   | TanStack Start + React 19 SSR              | Zero-latency, file-based routing, no lock-in          |
+| AI Pipeline | Claude 3.5 Sonnet / GPT-4o multi-agent     | 6 specialized agents, auto-fallback, circuit breakers |
+| Database    | Supabase PostgreSQL + RLS + Edge Functions | Auth, schema, real-time, row-level security           |
+| Encryption  | AES-256 GCM (client-side BYOK)             | Enterprise-grade, key never touches server            |
+| Deployment  | Cloudflare Workers (Nitro)                 | Edge global, ~50ms cold start, multi-region           |
+| Billing     | Stripe Checkout + metered webhooks         | Subscriptions, credits, usage-based                   |
+| Auth        | Supabase Auth (email + OAuth)              | Built-in, session management, MFA ready               |
+| UI          | TailwindCSS + Framer Motion                | Responsive, animated, premium feel                    |
 
 ---
 
@@ -134,11 +136,11 @@ User's API key ──► AES-256 GCM encrypt (browser)
 
 ### Projects shipped: 20+
 
-| Project | Type | Sprint | Timeline |
-|---------|------|--------|----------|
-| KickbacksAI | Affiliate AI SaaS | Studio | 12 days |
-| Sprint ($299) MVP | SaaS validation | Sprint | 5 days |
-| [Client NDA] | AI analytics platform | Studio | 14 days |
+| Project           | Type                  | Sprint | Timeline |
+| ----------------- | --------------------- | ------ | -------- |
+| KickbacksAI       | Affiliate AI SaaS     | Studio | 12 days  |
+| Sprint ($299) MVP | SaaS validation       | Sprint | 5 days   |
+| [Client NDA]      | AI analytics platform | Studio | 14 days  |
 
 ### What clients say:
 
@@ -149,6 +151,7 @@ User's API key ──► AES-256 GCM encrypt (browser)
 > "Full code ownership removed every vendor objection my board had."
 
 ### Company credentials:
+
 - 🏛️ Govt. MSME registered (UDYAM-UP-30-0081308)
 - 📦 Open source (MIT) — inspect the code quality yourself
 - 🌐 Edge-deployed on Cloudflare Workers
@@ -159,11 +162,11 @@ User's API key ──► AES-256 GCM encrypt (browser)
 
 ## Slide 6 — Pricing (Transparent)
 
-| Tier | Price | Best for | Details |
-|------|-------|----------|---------|
-| 🚀 Sprint | **$299** | Validating an idea | 5-7 day MVP, full stack, deploy |
-| 🏗️ Studio | **$799+** | Launch-ready SaaS | 14-day full platform with AI + billing |
-| 🏢 Platform | Custom | Enterprise / Scale | Multi-agent, custom LLM, dedicated infra |
+| Tier        | Price     | Best for           | Details                                  |
+| ----------- | --------- | ------------------ | ---------------------------------------- |
+| 🚀 Sprint   | **$299**  | Validating an idea | 5-7 day MVP, full stack, deploy          |
+| 🏗️ Studio   | **$799+** | Launch-ready SaaS  | 14-day full platform with AI + billing   |
+| 🏢 Platform | Custom    | Enterprise / Scale | Multi-agent, custom LLM, dedicated infra |
 
 **Refund policy**: If we don't deliver on time, your next sprint is free.
 **No lock-in**: Full code to your GitHub on day 1. You can walk at any time.
@@ -173,12 +176,14 @@ User's API key ──► AES-256 GCM encrypt (browser)
 ## Slide 7 — Ideal Client Profile
 
 ### Who we work with best:
+
 - **Pre-seed / Seed founders** — need an MVP fast to validate and fundraise
 - **Indie hackers** — building in public, need quality code on a budget
 - **Agency owners** — want to offer AI SaaS development white-labeled
 - **Enterprise teams** — need BYOK security and fast iteration
 
 ### Who we don't work with:
+
 - Teams that don't have a clear product idea
 - Projects requiring SOC2/HIPAA compliance (not yet)
 - Clients who want ongoing maintenance (we build, not babysit)
@@ -187,14 +192,14 @@ User's API key ──► AES-256 GCM encrypt (browser)
 
 ## Slide 8 — Comparison: Signhify vs. Alternatives
 
-| Factor | Traditional Agency | Freelancer | No-Code | **Signhify** |
-|--------|-------------------|-----------|--------:|:-------------|
-| Time to MVP | 3-6 months | 2-4 months | 1-4 weeks | **5-14 days** |
-| Cost | $15k-$25k+ | $8k-$15k | $0-$500/mo | **$299-$799** |
-| Code ownership | Rarely (hostage) | Usually | Never | **Full (MIT)** |
-| Security (BYOK) | Custom quote | Rarely | Impossible | **Built-in** |
-| Fixed price? | Rarely | Sometimes | Yes | **Always** |
-| White-label? | No | Maybe | No | **Yes (Studio)** |
+| Factor          | Traditional Agency | Freelancer |    No-Code | **Signhify**     |
+| --------------- | ------------------ | ---------- | ---------: | :--------------- |
+| Time to MVP     | 3-6 months         | 2-4 months |  1-4 weeks | **5-14 days**    |
+| Cost            | $15k-$25k+         | $8k-$15k   | $0-$500/mo | **$299-$799**    |
+| Code ownership  | Rarely (hostage)   | Usually    |      Never | **Full (MIT)**   |
+| Security (BYOK) | Custom quote       | Rarely     | Impossible | **Built-in**     |
+| Fixed price?    | Rarely             | Sometimes  |        Yes | **Always**       |
+| White-label?    | No                 | Maybe      |         No | **Yes (Studio)** |
 
 ---
 
@@ -224,6 +229,7 @@ User's API key ──► AES-256 GCM encrypt (browser)
 4. **Check pricing** → https://signhify.dpdns.org
 
 ### What happens on the call:
+
 - You describe your idea (15 min)
 - I share the recommended architecture (10 min)
 - I send a fixed-price proposal within 24 hours (if fit)
@@ -257,13 +263,13 @@ User's API key ──► AES-256 GCM encrypt (browser)
 
 ## Appendix — Pricing Negotiation Playbook
 
-| Their response | What to say |
-|---|---|
-| "$299 is too much" | "What would work for you? I can start with a paid blueprint ($49) that gives you the full architecture — you can build it yourself or come back when you're ready." |
-| "Can you do $X?" | "I'm firm on Sprint pricing because it's already at cost. For Studio, I can offer a payment plan: 50% upfront, 50% on delivery." |
-| "Match competitor's price" | "I don't compete on price. I compete on delivery speed and code ownership. If their price is lower, ask them if you get MIT-licensed code on day 1 with BYOK included." |
-| "What if I refer you clients?" | "Happy to do a referral discount: 15% off your engagement for every client you refer who signs up." |
+| Their response                 | What to say                                                                                                                                                             |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "$299 is too much"             | "What would work for you? I can start with a paid blueprint ($49) that gives you the full architecture — you can build it yourself or come back when you're ready."     |
+| "Can you do $X?"               | "I'm firm on Sprint pricing because it's already at cost. For Studio, I can offer a payment plan: 50% upfront, 50% on delivery."                                        |
+| "Match competitor's price"     | "I don't compete on price. I compete on delivery speed and code ownership. If their price is lower, ask them if you get MIT-licensed code on day 1 with BYOK included." |
+| "What if I refer you clients?" | "Happy to do a referral discount: 15% off your engagement for every client you refer who signs up."                                                                     |
 
 ---
 
-*Last updated: July 2026*
+_Last updated: July 2026_

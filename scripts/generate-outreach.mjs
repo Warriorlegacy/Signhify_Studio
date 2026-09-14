@@ -6,14 +6,62 @@ const TEMPLATE_FILE = path.resolve("scripts/outreach-email-templates.md");
 const OUTPUT_DIR = path.resolve("scripts/generated-outreach");
 
 const PROSPECTS = [
-  { name: "Alex", company: "TechStart", platform: "IndieHackers", email: "founder@techstart.com", pain: "building an AI-powered CRM" },
-  { name: "Sarah", company: "NextGen SaaS", platform: "LinkedIn", email: "sarah@nextgensaas.com", pain: "MVP for their SaaS idea" },
-  { name: "Mike", company: "DataFlow", platform: "Twitter/X", email: "mike@dataflow.io", pain: "AI agent automation workflow" },
-  { name: "Priya", company: "CloudKit", platform: "IndieHackers", email: "priya@cloudkit.dev", pain: "full-stack app with auth and billing" },
-  { name: "James", company: "ScaleUp", platform: "LinkedIn", email: "james@scaleup.co", pain: "BYOK encryption for enterprise clients" },
-  { name: "Emma", company: "LaunchPad", platform: "ProductHunt", email: "emma@launchpad.ai", pain: "SaaS MVP in 2 weeks" },
-  { name: "Raj", company: "CodeBase", platform: "Twitter/X", email: "raj@codebase.dev", pain: "AI pipeline integration" },
-  { name: "Lisa", company: "GrowthHub", platform: "LinkedIn", email: "lisa@growthhub.io", pain: "marketing automation tool" },
+  {
+    name: "Alex",
+    company: "TechStart",
+    platform: "IndieHackers",
+    email: "founder@techstart.com",
+    pain: "building an AI-powered CRM",
+  },
+  {
+    name: "Sarah",
+    company: "NextGen SaaS",
+    platform: "LinkedIn",
+    email: "sarah@nextgensaas.com",
+    pain: "MVP for their SaaS idea",
+  },
+  {
+    name: "Mike",
+    company: "DataFlow",
+    platform: "Twitter/X",
+    email: "mike@dataflow.io",
+    pain: "AI agent automation workflow",
+  },
+  {
+    name: "Priya",
+    company: "CloudKit",
+    platform: "IndieHackers",
+    email: "priya@cloudkit.dev",
+    pain: "full-stack app with auth and billing",
+  },
+  {
+    name: "James",
+    company: "ScaleUp",
+    platform: "LinkedIn",
+    email: "james@scaleup.co",
+    pain: "BYOK encryption for enterprise clients",
+  },
+  {
+    name: "Emma",
+    company: "LaunchPad",
+    platform: "ProductHunt",
+    email: "emma@launchpad.ai",
+    pain: "SaaS MVP in 2 weeks",
+  },
+  {
+    name: "Raj",
+    company: "CodeBase",
+    platform: "Twitter/X",
+    email: "raj@codebase.dev",
+    pain: "AI pipeline integration",
+  },
+  {
+    name: "Lisa",
+    company: "GrowthHub",
+    platform: "LinkedIn",
+    email: "lisa@growthhub.io",
+    pain: "marketing automation tool",
+  },
 ];
 
 function generateEmail(prospect, templateType) {
@@ -105,10 +153,7 @@ function generateAll() {
       const email = generateEmail(prospect, type);
       const filename = `${prospect.company.toLowerCase().replace(/\s+/g, "-")}-${type}.txt`;
       const filepath = path.join(OUTPUT_DIR, filename);
-      fs.writeFileSync(
-        filepath,
-        `To: ${email.to}\nSubject: ${email.subject}\n\n${email.body}`,
-      );
+      fs.writeFileSync(filepath, `To: ${email.to}\nSubject: ${email.subject}\n\n${email.body}`);
       results.push({ prospect: prospect.name, company: prospect.company, type, filename });
     }
   }

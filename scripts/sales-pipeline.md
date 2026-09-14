@@ -18,24 +18,24 @@
 
 ## Stage 1 — Lead Sourced
 
-| Field | Detail |
-|---|---|
-| **Trigger** | Prospect enters pipeline via any channel |
-| **Owner** | Piyush |
-| **Expected duration** | < 24 hours before first contact |
-| **Exit criteria** | First outreach sent (email/DM/LinkedIn) |
+| Field                 | Detail                                   |
+| --------------------- | ---------------------------------------- |
+| **Trigger**           | Prospect enters pipeline via any channel |
+| **Owner**             | Piyush                                   |
+| **Expected duration** | < 24 hours before first contact          |
+| **Exit criteria**     | First outreach sent (email/DM/LinkedIn)  |
 
 ### Lead sources (ranked by conversion probability)
 
-| Source | Est. conversion | How to source | Tools |
-|--------|---------------|--------------|-------|
-| 🔥 ProductHunt launches | 8-15% | Monitor PH daily for new AI/SaaS launches; DM founders within 24h of their launch | producthunt.com |
-| 🔥 Indie Hackers posts | 5-12% | Search "building", "MVP", "agency problems" on IH; engage in comments before DM | indiehackers.com |
-| 🔥 GitHub trending | 3-8% | Starred new repos in ai/llm/saas categories; DM maintainers | github.com/trending |
-| 🟡 LinkedIn outreach | 2-5% | Founders posting about technical challenges, fundraising, or building | LinkedIn Sales Nav |
-| 🟡 Warm referral | 20-40% | Past clients or network contacts | Email/WhatsApp |
-| 🟢 Website contact form | 3-10% | Inbound via signhify.dpdns.org/contact | Supabase `leads` table |
-| 🔵 Cold email | 1-3% | Manual research + personalized outreach | HubSpot/Brevo |
+| Source                  | Est. conversion | How to source                                                                     | Tools                  |
+| ----------------------- | --------------- | --------------------------------------------------------------------------------- | ---------------------- |
+| 🔥 ProductHunt launches | 8-15%           | Monitor PH daily for new AI/SaaS launches; DM founders within 24h of their launch | producthunt.com        |
+| 🔥 Indie Hackers posts  | 5-12%           | Search "building", "MVP", "agency problems" on IH; engage in comments before DM   | indiehackers.com       |
+| 🔥 GitHub trending      | 3-8%            | Starred new repos in ai/llm/saas categories; DM maintainers                       | github.com/trending    |
+| 🟡 LinkedIn outreach    | 2-5%            | Founders posting about technical challenges, fundraising, or building             | LinkedIn Sales Nav     |
+| 🟡 Warm referral        | 20-40%          | Past clients or network contacts                                                  | Email/WhatsApp         |
+| 🟢 Website contact form | 3-10%           | Inbound via signhify.dpdns.org/contact                                            | Supabase `leads` table |
+| 🔵 Cold email           | 1-3%            | Manual research + personalized outreach                                           | HubSpot/Brevo          |
 
 ### Priority scoring (assign before Stage 2)
 
@@ -52,33 +52,33 @@ Score each lead 1-3:
 
 ## Stage 2 — Initial Contact
 
-| Field | Detail |
-|---|---|
-| **Trigger** | Lead scored ≥ 6, first message drafted |
-| **Owner** | Piyush |
-| **Expected duration** | 1-3 days |
-| **Exit criteria** | Prospect replies with interest, or 3 touches sent without reply (move to cold nurture) |
+| Field                 | Detail                                                                                 |
+| --------------------- | -------------------------------------------------------------------------------------- |
+| **Trigger**           | Lead scored ≥ 6, first message drafted                                                 |
+| **Owner**             | Piyush                                                                                 |
+| **Expected duration** | 1-3 days                                                                               |
+| **Exit criteria**     | Prospect replies with interest, or 3 touches sent without reply (move to cold nurture) |
 
 ### Channel selection
 
-| Lead source | Primary channel | Secondary |
-|---|---|---|
-| ProductHunt | Twitter/X DM | Email (from PH profile) |
-| Indie Hackers | Indie Hackers DM | Email |
-| GitHub | GitHub discussion | Email (from GitHub profile) |
-| LinkedIn | LinkedIn DM | Email |
-| Referral | Email (warm intro) | WhatsApp |
-| Website form | Email (auto-responder first) | Phone |
-| Cold email | Email | LinkedIn |
+| Lead source   | Primary channel              | Secondary                   |
+| ------------- | ---------------------------- | --------------------------- |
+| ProductHunt   | Twitter/X DM                 | Email (from PH profile)     |
+| Indie Hackers | Indie Hackers DM             | Email                       |
+| GitHub        | GitHub discussion            | Email (from GitHub profile) |
+| LinkedIn      | LinkedIn DM                  | Email                       |
+| Referral      | Email (warm intro)           | WhatsApp                    |
+| Website form  | Email (auto-responder first) | Phone                       |
+| Cold email    | Email                        | LinkedIn                    |
 
 ### Outreach templates to use (from outreach-email-templates.md)
 
-| Segment | Template | Subject line |
-|---|---|---|
-| SaaS founder (PH) | Cold #1 | `Quick question re: [Company]'s AI product plans` |
-| Indie hacker | Cold #1 (indie variant) | `Built your MVP in 5 days — $299` |
-| Agency owner | Partnership #1 | `White-label dev partner for [Agency]` |
-| Referral | Warm intro | `[Referrer] suggested I reach out` |
+| Segment           | Template                | Subject line                                      |
+| ----------------- | ----------------------- | ------------------------------------------------- |
+| SaaS founder (PH) | Cold #1                 | `Quick question re: [Company]'s AI product plans` |
+| Indie hacker      | Cold #1 (indie variant) | `Built your MVP in 5 days — $299`                 |
+| Agency owner      | Partnership #1          | `White-label dev partner for [Agency]`            |
+| Referral          | Warm intro              | `[Referrer] suggested I reach out`                |
 
 ### If they reply → move to Stage 3. If no reply → two more touches (Day 4, Day 8) → then cold nurture.
 
@@ -86,12 +86,12 @@ Score each lead 1-3:
 
 ## Stage 3 — Discovery Call
 
-| Field | Detail |
-|---|---|
-| **Trigger** | Prospect replies with interest, asks for more info, or agrees to a call |
-| **Owner** | Piyush |
-| **Expected duration** | 3-7 days (from reply → call completed) |
-| **Exit criteria** | Call completed AND mutual agreement to proceed to a blueprint |
+| Field                 | Detail                                                                  |
+| --------------------- | ----------------------------------------------------------------------- |
+| **Trigger**           | Prospect replies with interest, asks for more info, or agrees to a call |
+| **Owner**             | Piyush                                                                  |
+| **Expected duration** | 3-7 days (from reply → call completed)                                  |
+| **Exit criteria**     | Call completed AND mutual agreement to proceed to a blueprint           |
 
 ### Pre-call preparation (15 min)
 
@@ -103,13 +103,13 @@ Score each lead 1-3:
 
 ### Call structure
 
-| Time | Topic | Your goal |
-|------|-------|-----------|
-| 0-3 min | Rapport + context | "What's the problem you're solving?" |
-| 3-12 min | Deep discovery (70% listening) | Understand pain, budget, timeline, authority |
-| 12-18 min | Demo the AI blueprint generator | Show, don't tell |
-| 18-22 min | Pricing + next steps | Propose a Sprint or Studio |
-| 22-25 min | Close + schedule blueprint call | Book it before hanging up |
+| Time      | Topic                           | Your goal                                    |
+| --------- | ------------------------------- | -------------------------------------------- |
+| 0-3 min   | Rapport + context               | "What's the problem you're solving?"         |
+| 3-12 min  | Deep discovery (70% listening)  | Understand pain, budget, timeline, authority |
+| 12-18 min | Demo the AI blueprint generator | Show, don't tell                             |
+| 18-22 min | Pricing + next steps            | Propose a Sprint or Studio                   |
+| 22-25 min | Close + schedule blueprint call | Book it before hanging up                    |
 
 ### Discovery questions (always ask)
 
@@ -130,18 +130,19 @@ Score each lead 1-3:
 - [ ] No disqualifiers (sounds like a bad fit for our model)
 
 ### If qualified → Book blueprint call (Stage 4)
+
 ### If not qualified → Send "not a fit" email with referral to resources
 
 ---
 
 ## Stage 4 — Blueprint Call
 
-| Field | Detail |
-|---|---|
-| **Trigger** | Discovery completed, mutual fit confirmed |
-| **Owner** | Piyush |
-| **Expected duration** | 1-5 days |
-| **Exit criteria** | Blueprint delivered + pricing shared + prospect requests proposal |
+| Field                 | Detail                                                            |
+| --------------------- | ----------------------------------------------------------------- |
+| **Trigger**           | Discovery completed, mutual fit confirmed                         |
+| **Owner**             | Piyush                                                            |
+| **Expected duration** | 1-5 days                                                          |
+| **Exit criteria**     | Blueprint delivered + pricing shared + prospect requests proposal |
 
 ### What happens on the blueprint call
 
@@ -165,19 +166,21 @@ After the call, within 24 hours:
 - ✅ Fixed-price proposal (or refer to Stage 5)
 
 ### If they say yes → send formal proposal (Stage 5)
+
 ### If they need time → set follow-up in 7 days
+
 ### If they say no → document reason, tag for re-engagement in 6 months
 
 ---
 
 ## Stage 5 — Proposal Sent
 
-| Field | Detail |
-|---|---|
-| **Trigger** | Prospect requests formal proposal after blueprint call |
-| **Owner** | Piyush |
-| **Expected duration** | 3-14 days (under review) |
-| **Exit criteria** | Verbal yes (→ Stage 6) or no (→ Stage 7 lost) |
+| Field                 | Detail                                                 |
+| --------------------- | ------------------------------------------------------ |
+| **Trigger**           | Prospect requests formal proposal after blueprint call |
+| **Owner**             | Piyush                                                 |
+| **Expected duration** | 3-14 days (under review)                               |
+| **Exit criteria**     | Verbal yes (→ Stage 6) or no (→ Stage 7 lost)          |
 
 ### Proposal structure
 
@@ -194,34 +197,34 @@ Sent as a 1-page Google Doc or PDF. Contains:
 
 ### Follow-up cadence
 
-| Day | Action |
-|-----|--------|
-| 0 | Send proposal + schedule 24h check-in |
-| 1 | Check in: "Did you have any questions?" |
-| 4 | Follow-up: share a relevant case study or testimonial |
-| 7 | Follow-up: "Any blockers I can help with?" |
-| 14 | Breakup: "I'll close this out — reach out when timing is right" |
+| Day | Action                                                          |
+| --- | --------------------------------------------------------------- |
+| 0   | Send proposal + schedule 24h check-in                           |
+| 1   | Check in: "Did you have any questions?"                         |
+| 4   | Follow-up: share a relevant case study or testimonial           |
+| 7   | Follow-up: "Any blockers I can help with?"                      |
+| 14  | Breakup: "I'll close this out — reach out when timing is right" |
 
 ---
 
 ## Stage 6 — Negotiation
 
-| Field | Detail |
-|---|---|
-| **Trigger** | Prospect says "yes in principle" but has conditions |
-| **Owner** | Piyush |
-| **Expected duration** | 1-7 days |
-| **Exit criteria** | Signed agreement (→ Stage 7 won) or walk away (→ Stage 7 lost) |
+| Field                 | Detail                                                         |
+| --------------------- | -------------------------------------------------------------- |
+| **Trigger**           | Prospect says "yes in principle" but has conditions            |
+| **Owner**             | Piyush                                                         |
+| **Expected duration** | 1-7 days                                                       |
+| **Exit criteria**     | Signed agreement (→ Stage 7 won) or walk away (→ Stage 7 lost) |
 
 ### Common negotiation points
 
-| Their ask | Your response |
-|---|---|
-| "Can you lower the price?" | "I can offer a payment plan: 50% upfront, 50% on delivery. The price is fixed because scope is fixed." |
-| "We need more features" | "Let's split: v1 as proposed (on time). V2 in a second sprint (separate proposal)." |
+| Their ask                    | Your response                                                                                                                |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| "Can you lower the price?"   | "I can offer a payment plan: 50% upfront, 50% on delivery. The price is fixed because scope is fixed."                       |
+| "We need more features"      | "Let's split: v1 as proposed (on time). V2 in a second sprint (separate proposal)."                                          |
 | "Add a maintenance retainer" | "We don't do retainers. You'll have the full code and CI/CD pipeline. If you need changes, you can commission a new sprint." |
-| "We need it faster" | "I can prioritize your project for a rush fee (50% of sprint price)." |
-| "Can you sign an NDA?" | "Yes, but the conversation is worth more than the NDA. I'm happy to review yours or use mine (standard mutual NDA)." |
+| "We need it faster"          | "I can prioritize your project for a rush fee (50% of sprint price)."                                                        |
+| "Can you sign an NDA?"       | "Yes, but the conversation is worth more than the NDA. I'm happy to review yours or use mine (standard mutual NDA)."         |
 
 ### Walk-away triggers
 
@@ -236,25 +239,26 @@ Sent as a 1-page Google Doc or PDF. Contains:
 
 ### Won
 
-| Field | Detail |
-|---|---|
-| **Trigger** | Signed proposal + 50% payment received |
-| **Owner** | Piyush |
-| **Expected duration** | N/A (project starts) |
-| **Next action** | Create GitHub repo, share with client, set up project board |
+| Field                 | Detail                                                      |
+| --------------------- | ----------------------------------------------------------- |
+| **Trigger**           | Signed proposal + 50% payment received                      |
+| **Owner**             | Piyush                                                      |
+| **Expected duration** | N/A (project starts)                                        |
+| **Next action**       | Create GitHub repo, share with client, set up project board |
 
 **Celebration**: Send a thank-you message. Share the private repo link within 1 hour of payment.
 
 ### Lost
 
-| Field | Detail |
-|---|---|
-| **Trigger** | Prospect declines or ghosts after Stage 5 |
-| **Owner** | Piyush |
-| **Expected duration** | 30 min to document |
-| **Next action** | Log reason, set 6-month re-engagement reminder |
+| Field                 | Detail                                         |
+| --------------------- | ---------------------------------------------- |
+| **Trigger**           | Prospect declines or ghosts after Stage 5      |
+| **Owner**             | Piyush                                         |
+| **Expected duration** | 30 min to document                             |
+| **Next action**       | Log reason, set 6-month re-engagement reminder |
 
 **Re-engagement triggers** (set calendar reminders):
+
 - 3 months: Share a case study or new feature
 - 6 months: "We're still here — any change in priorities?"
 - Trigger event: If they launch a product, get funding, or post about building
@@ -263,12 +267,12 @@ Sent as a 1-page Google Doc or PDF. Contains:
 
 ## Stage 8 — Delivered
 
-| Field | Detail |
-|---|---|
-| **Trigger** | Full code transferred + deployment live |
-| **Owner** | Piyush |
-| **Expected duration** | Sprint: 5-7 days. Studio: 14 days. |
-| **Exit criteria** | Client confirms acceptance + final payment received |
+| Field                 | Detail                                              |
+| --------------------- | --------------------------------------------------- |
+| **Trigger**           | Full code transferred + deployment live             |
+| **Owner**             | Piyush                                              |
+| **Expected duration** | Sprint: 5-7 days. Studio: 14 days.                  |
+| **Exit criteria**     | Client confirms acceptance + final payment received |
 
 ### Delivery checklist
 
@@ -296,12 +300,12 @@ Sent as a 1-page Google Doc or PDF. Contains:
 
 ## Stage 9 — Referral Request
 
-| Field | Detail |
-|---|---|
-| **Trigger** | 30-60 days after delivery (wait for them to feel the value) |
-| **Owner** | Piyush |
-| **Expected duration** | 1 day to send. Lifetime value: referrals. |
-| **Exit criteria** | Referral made, or explicit "not right now" |
+| Field                 | Detail                                                      |
+| --------------------- | ----------------------------------------------------------- |
+| **Trigger**           | 30-60 days after delivery (wait for them to feel the value) |
+| **Owner**             | Piyush                                                      |
+| **Expected duration** | 1 day to send. Lifetime value: referrals.                   |
+| **Exit criteria**     | Referral made, or explicit "not right now"                  |
 
 ### Referral request email (from outreach-email-templates.md)
 
@@ -322,15 +326,15 @@ Send 30-60 days after project completion. Template in `scripts/outreach-email-te
 
 ## Pipeline Health Metrics
 
-| Metric | Healthy | Warning | Critical |
-|--------|---------|---------|----------|
-| Leads in Stage 1 | > 20 | 10-20 | < 10 |
-| Conversion Stage 2→3 | > 30% | 15-30% | < 15% |
-| Conversion Stage 3→4 | > 60% | 40-60% | < 40% |
-| Conversion Stage 4→5 | > 80% | 60-80% | < 60% |
-| Conversion Stage 5→7 (won) | > 50% | 30-50% | < 30% |
-| Avg time Stage 1→7 | < 30 days | 30-60 days | > 60 days |
-| Active proposals out | 3-5 | 1-2 | 0 |
+| Metric                     | Healthy   | Warning    | Critical  |
+| -------------------------- | --------- | ---------- | --------- |
+| Leads in Stage 1           | > 20      | 10-20      | < 10      |
+| Conversion Stage 2→3       | > 30%     | 15-30%     | < 15%     |
+| Conversion Stage 3→4       | > 60%     | 40-60%     | < 40%     |
+| Conversion Stage 4→5       | > 80%     | 60-80%     | < 60%     |
+| Conversion Stage 5→7 (won) | > 50%     | 30-50%     | < 30%     |
+| Avg time Stage 1→7         | < 30 days | 30-60 days | > 60 days |
+| Active proposals out       | 3-5       | 1-2        | 0         |
 
 ---
 
@@ -352,4 +356,4 @@ Copy this into a Google Sheet or Notion:
 
 ---
 
-*Last updated: July 2026*
+_Last updated: July 2026_

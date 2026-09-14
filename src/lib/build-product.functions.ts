@@ -1,9 +1,15 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { generateAIResponseFor } from "./ai-gateway.server";
-import type { AICtx } from "./ai-access.server";
+import { resolveAIAccess, type AICtx } from "./ai-access.server";
 import { withByokKeys } from "./byok-middleware";
 import logger from "./logger";
-import { rateLimitMiddleware } from "./rate-limit.server";
+import {
+  rateLimitMiddleware,
+  checkFreeTrialIP,
+  consumeFreeTrial,
+  enforceTierRateLimit,
+} from "./rate-limit.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 function extractHtml(text: string): string | null {
@@ -885,9 +891,16 @@ function aiCtxFrom(context: Record<string, unknown>): AICtx {
   };
 }
 
-// Gate/decrypt errors must surface to the user, not be swallowed by mock fallback.
+// Gate/decrypt/trial errors must surface to the user, not be swallowed by mock fallback.
 function isByokGateError(error: unknown): boolean {
-  return String((error as { code?: string })?.code ?? "").startsWith("BYOK");
+  const code = String((error as { code?: string })?.code ?? "");
+  const msg = String((error as { message?: string })?.message ?? "");
+  return (
+    code.startsWith("BYOK") ||
+    code === "FREE_TRIAL_EXPIRED" ||
+    code === "RATE_LIMIT_EXCEEDED" ||
+    /free trial|upgrade to studio|Settings → AI Keys/i.test(msg)
+  );
 }
 
 export const buildProduct = createServerFn({ method: "POST" })
@@ -901,8 +914,30 @@ export const buildProduct = createServerFn({ method: "POST" })
   })
   .handler(async ({ context, data }) => {
     try {
+      const access = await resolveAIAccess(aiCtxFrom(context));
+
+      const request = getRequest();
+      const cfConnectingIP = request?.headers?.get("cf-connecting-ip") ?? null;
+      const xForwardedFor = request?.headers?.get("x-forwarded-for") ?? null;
+
+      if (access.tier === "free_trial") {
+        const ipCheck = await checkFreeTrialIP(cfConnectingIP, xForwardedFor);
+        if (!ipCheck.allowed) {
+          const err = new Error(ipCheck.reason || "Free trial limit reached for this network IP.");
+          (err as { code?: string }).code = "FREE_TRIAL_EXPIRED";
+          throw err;
+        }
+      }
+
+      await enforceTierRateLimit({
+        cfConnectingIP,
+        xForwardedFor,
+        userId: context.userId as string,
+        tier: access.tier,
+      });
+
       const user = `Product prompt:\n${data.prompt}\n\n${data.planText ? `Plan / spec to implement:\n${data.planText}\n` : ""}Now output the complete standalone HTML for this product. Start with <!doctype html>.`;
-      const { content } = await generateAIResponseFor(
+      const { content, providerUsed } = await generateAIResponseFor(
         {
           messages: [
             { role: "system", content: SYSTEM },
@@ -910,12 +945,20 @@ export const buildProduct = createServerFn({ method: "POST" })
           ],
           temperature: 0.65,
           max_tokens: 8000,
+          tier: access.tier,
+          preferredCluster: access.tier === "free_trial" ? "free_coding" : "auto",
         },
         aiCtxFrom(context),
       );
       const html = extractHtml(content);
       if (!html) throw new Error("AI returned no usable HTML. Try a more specific prompt.");
-      return { html };
+
+      // Consume free trial atomically on successful generation
+      if (access.tier === "free_trial") {
+        await consumeFreeTrial(context.supabase, context.userId as string, cfConnectingIP || xForwardedFor);
+      }
+
+      return { html, providerUsed, tier: access.tier };
     } catch (error) {
       if (isByokGateError(error)) throw error;
       // Fallback to mock product generation when AI is unavailable
@@ -995,8 +1038,30 @@ export const buildMultiProduct = createServerFn({ method: "POST" })
   })
   .handler(async ({ context, data }) => {
     try {
+      const access = await resolveAIAccess(aiCtxFrom(context));
+
+      const request = getRequest();
+      const cfConnectingIP = request?.headers?.get("cf-connecting-ip") ?? null;
+      const xForwardedFor = request?.headers?.get("x-forwarded-for") ?? null;
+
+      if (access.tier === "free_trial") {
+        const ipCheck = await checkFreeTrialIP(cfConnectingIP, xForwardedFor);
+        if (!ipCheck.allowed) {
+          const err = new Error(ipCheck.reason || "Free trial limit reached for this network IP.");
+          (err as { code?: string }).code = "FREE_TRIAL_EXPIRED";
+          throw err;
+        }
+      }
+
+      await enforceTierRateLimit({
+        cfConnectingIP,
+        xForwardedFor,
+        userId: context.userId as string,
+        tier: access.tier,
+      });
+
       const user = `Product prompt:\n${data.prompt}\n\nOutput the multi-file project JSON now.`;
-      const { content } = await generateAIResponseFor(
+      const { content, providerUsed } = await generateAIResponseFor(
         {
           messages: [
             { role: "system", content: MULTI_SYSTEM },
@@ -1005,6 +1070,8 @@ export const buildMultiProduct = createServerFn({ method: "POST" })
           temperature: 0.6,
           max_tokens: 8000,
           response_format: { type: "json_object" },
+          tier: access.tier,
+          preferredCluster: access.tier === "free_trial" ? "free_coding" : "auto",
         },
         aiCtxFrom(context),
       );
@@ -1012,7 +1079,13 @@ export const buildMultiProduct = createServerFn({ method: "POST" })
       const files = sanitizeFiles(parsed);
       if (!files.find((f) => f.path === "index.html"))
         throw new Error("AI returned no index.html.");
-      return { files };
+
+      // Consume free trial atomically on successful generation
+      if (access.tier === "free_trial") {
+        await consumeFreeTrial(context.supabase, context.userId as string, cfConnectingIP || xForwardedFor);
+      }
+
+      return { files, providerUsed, tier: access.tier };
     } catch (error) {
       if (isByokGateError(error)) throw error;
       // Fallback to mock multi-file product generation when AI is unavailable

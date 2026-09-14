@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { FLEET_VENTURES, type VentureItem } from '@/data/ventures';
-import { ExternalLink, Sparkles, Zap, Eye, X, Shield, Cpu, Activity } from 'lucide-react';
+import { useState } from "react";
+import { FLEET_VENTURES, type VentureItem } from "@/data/ventures";
+import { ExternalLink, Sparkles, Zap, Eye, X, Shield, Cpu, Activity } from "lucide-react";
 
 interface VenturesShowcaseProps {
   showTitle?: boolean;
@@ -8,27 +8,32 @@ interface VenturesShowcaseProps {
   initialCategory?: string;
 }
 
-export function VenturesShowcase({ showTitle = true, limit, initialCategory = 'All' }: VenturesShowcaseProps) {
+export function VenturesShowcase({
+  showTitle = true,
+  limit,
+  initialCategory = "All",
+}: VenturesShowcaseProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
   const [previewVenture, setPreviewVenture] = useState<VentureItem | null>(null);
 
   const categories = [
-    'All',
-    'Fintech',
-    'LegalTech',
-    'DevOps',
-    'HealthTech',
-    'MarTech',
-    'GovTech',
-    'QualityAI',
-    'HRTech',
-    'BigData',
-    'Media',
+    "All",
+    "Fintech",
+    "LegalTech",
+    "DevOps",
+    "HealthTech",
+    "MarTech",
+    "GovTech",
+    "QualityAI",
+    "HRTech",
+    "BigData",
+    "Media",
   ];
 
-  const filtered = selectedCategory === 'All' 
-    ? FLEET_VENTURES 
-    : FLEET_VENTURES.filter(v => v.category === selectedCategory);
+  const filtered =
+    selectedCategory === "All"
+      ? FLEET_VENTURES
+      : FLEET_VENTURES.filter((v) => v.category === selectedCategory);
 
   const displayedVentures = limit ? filtered.slice(0, limit) : filtered;
 
@@ -51,7 +56,8 @@ export function VenturesShowcase({ showTitle = true, limit, initialCategory = 'A
             </span>
           </h2>
           <p className="text-slate-400 text-sm sm:text-base md:text-lg leading-relaxed">
-            Explore 10 enterprise-grade AI SaaS ventures engineered with pure client-side compute, WebAssembly sandboxes, DuckDB columnar analytics, and agentic copilots.
+            Explore 10 enterprise-grade AI SaaS ventures engineered with pure client-side compute,
+            WebAssembly sandboxes, DuckDB columnar analytics, and agentic copilots.
           </p>
 
           {/* Category Pills */}
@@ -62,8 +68,8 @@ export function VenturesShowcase({ showTitle = true, limit, initialCategory = 'A
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
                   selectedCategory === cat
-                    ? 'bg-gradient-to-r from-emerald-500 to-cyan-600 text-white shadow-lg shadow-emerald-500/25 border border-emerald-400/50'
-                    : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5'
+                    ? "bg-gradient-to-r from-emerald-500 to-cyan-600 text-white shadow-lg shadow-emerald-500/25 border border-emerald-400/50"
+                    : "bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5"
                 }`}
               >
                 {cat}
@@ -81,17 +87,17 @@ export function VenturesShowcase({ showTitle = true, limit, initialCategory = 'A
             className="group relative flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-white/10 bg-[#090a10]/85 backdrop-blur-xl p-6 hover:border-emerald-500/50 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300"
           >
             {/* Top Glow on Hover */}
-            <div 
+            <div
               className="absolute inset-0 rounded-2xl sm:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
               style={{
-                background: `radial-gradient(ellipse at 50% 0%, ${venture.accentColor}18 0%, transparent 70%)`
+                background: `radial-gradient(ellipse at 50% 0%, ${venture.accentColor}18 0%, transparent 70%)`,
               }}
             />
 
             {/* Top Bar */}
             <div className="relative z-10">
               <div className="flex items-center justify-between gap-3 mb-4">
-                <span 
+                <span
                   className="px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase border border-white/10 bg-white/5"
                   style={{ borderColor: `${venture.accentColor}40`, color: venture.accentColor }}
                 >
@@ -99,7 +105,9 @@ export function VenturesShowcase({ showTitle = true, limit, initialCategory = 'A
                 </span>
                 <div className="flex items-center gap-1.5 text-xs text-slate-300 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
                   <Zap className="w-3 h-3 text-amber-400 shrink-0" />
-                  <span className="font-mono font-semibold text-white">{venture.metrics.value}</span>
+                  <span className="font-mono font-semibold text-white">
+                    {venture.metrics.value}
+                  </span>
                 </div>
               </div>
 
@@ -107,9 +115,7 @@ export function VenturesShowcase({ showTitle = true, limit, initialCategory = 'A
               <h3 className="text-xl font-bold text-white group-hover:text-emerald-300 transition-colors mb-1.5">
                 {venture.name}
               </h3>
-              <p className="text-xs font-medium text-emerald-400/90 mb-3">
-                {venture.tagline}
-              </p>
+              <p className="text-xs font-medium text-emerald-400/90 mb-3">{venture.tagline}</p>
               <p className="text-slate-400 text-xs leading-relaxed mb-4 line-clamp-3">
                 {venture.description}
               </p>
@@ -123,7 +129,10 @@ export function VenturesShowcase({ showTitle = true, limit, initialCategory = 'A
               {/* Feature Chips */}
               <div className="flex flex-wrap gap-1.5 mb-6">
                 {venture.features.map((feat, i) => (
-                  <span key={i} className="text-[10px] px-2 py-0.5 rounded bg-white/5 border border-white/5 text-slate-300">
+                  <span
+                    key={i}
+                    className="text-[10px] px-2 py-0.5 rounded bg-white/5 border border-white/5 text-slate-300"
+                  >
                     ✓ {feat}
                   </span>
                 ))}

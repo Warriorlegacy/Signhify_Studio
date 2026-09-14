@@ -890,7 +890,8 @@ The fastest path to revenue is a focused Sprint. See [Signhify's pricing](https:
 
   "auditmind-ai-architecture": {
     id: "auditmind-ai-architecture",
-    title: "How We Built AuditMind AI: In-Browser Section 41 Tax Scanning with Zero Server Overhead",
+    title:
+      "How We Built AuditMind AI: In-Browser Section 41 Tax Scanning with Zero Server Overhead",
     summary:
       "Engineering an IRS Section 41 qualification engine and ASC 730 R&D wage allocation matrix that runs 100% client-side with zero cloud compute cost.",
     category: "Architecture",
@@ -922,7 +923,8 @@ Using client-side \`jsPDF\` and \`jspdf-autotable\`, AuditMind AI compiles IRS F
 
   "contractsentinel-ai-docx-redline": {
     id: "contractsentinel-ai-docx-redline",
-    title: "Non-Destructive DOCX Redlining: Engineering ContractSentinel AI with WebAssembly & Groq",
+    title:
+      "Non-Destructive DOCX Redlining: Engineering ContractSentinel AI with WebAssembly & Groq",
     summary:
       "How we implemented pure in-browser OOXML parsing, JSZip compression, and non-destructive track-changes injection with zero data retention.",
     category: "Security",
@@ -1017,7 +1019,8 @@ Clinicians can copy structured SOAP notes into Epic, Cerner, or AthenaHealth wit
 
   "adgenesis-ai-multi-armed-bandit": {
     id: "adgenesis-ai-multi-armed-bandit",
-    title: "Beating the Ad Matrix: How AdGenesis AI Implemented Multi-Armed Bandit ROAS Optimization",
+    title:
+      "Beating the Ad Matrix: How AdGenesis AI Implemented Multi-Armed Bandit ROAS Optimization",
     summary:
       "Architecting an Epsilon-Greedy multi-armed bandit algorithm for ad creative budget allocation across Meta, TikTok, and Google Ads.",
     category: "Architecture",

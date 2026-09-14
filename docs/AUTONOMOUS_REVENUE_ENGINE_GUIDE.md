@@ -21,6 +21,7 @@ POST /api/cron/revenue
 ## Components
 
 ### 1. Outreach Automation
+
 - **Location**: `src/lib/revenue/outreach.ts`
 - **Purpose**: Sends personalized emails to prospects
 - **How it works**:
@@ -30,6 +31,7 @@ POST /api/cron/revenue
   - Logs events to `outreach_events` table
 
 ### 2. Lead Scoring
+
 - **Location**: `src/lib/revenue/lead-score.ts`
 - **Purpose**: Automatically scores leads based on budget, timeline, goals, scope, and company
 - **Tiers**:
@@ -44,6 +46,7 @@ POST /api/cron/revenue
   - Company: +10pts if provided and >2 chars
 
 ### 3. Auto Proposals
+
 - **Location**: `src/lib/revenue/auto-proposal.ts`
 - **Purpose**: Generates tailored Sprint/Studio/Platform proposals automatically
 - **Offer Selection**:
@@ -57,6 +60,7 @@ POST /api/cron/revenue
   - Next steps
 
 ### 4. Content Scheduler
+
 - **Location**: `src/lib/revenue/content-scheduler.ts`
 - **Purpose**: Schedules and tracks social media content
 - **Platforms**: LinkedIn, Twitter, Instagram, YouTube
@@ -67,6 +71,7 @@ POST /api/cron/revenue
   - `POST /api/revenue/content/published` — mark as published
 
 ### 5. Directory Listings
+
 - **Location**: `src/lib/revenue/directory-listings.ts`
 - **Purpose**: Tracks directory submissions and review status
 - **Tracked Platforms**:
@@ -76,6 +81,7 @@ POST /api/cron/revenue
 - **Statuses**: pending → submitted → approved → rejected
 
 ### 6. Cron Runner
+
 - **Location**: `src/routes/api/cron/revenue.ts`
 - **Endpoint**: `POST /api/cron/revenue`
 - **Authentication**: Requires `CRON_REVENUE_SECRET` in request body
@@ -91,38 +97,46 @@ POST /api/cron/revenue
 ## Database Schema
 
 ### outreach_campaigns
+
 - `id`, `name`, `channel`, `status`, `cadence_days`, `max_steps`, `active`, `metadata`, `created_at`, `updated_at`
 
 ### outreach_sends
+
 - `id`, `campaign_id`, `lead_id`, `prospect_name`, `prospect_email`, `company`, `template_key`, `subject`, `body`, `status`, `provider`, `provider_message_id`, `scheduled_at`, `sent_at`, `next_send_at`, `error`, `metadata`, `created_at`, `updated_at`
 
 ### outreach_events
+
 - `id`, `send_id`, `type`, `payload`, `created_at`
 - Types: `sent`, `open`, `click`, `reply`, `bounce`
 
 ### lead_scores
+
 - `id`, `lead_id`, `score`, `tier`, `signals`, `suggested_offer`, `suggested_next_action`, `created_at`, `updated_at`
 
 ### auto_proposals
+
 - `id`, `lead_id`, `offer_type`, `price_cents`, `currency`, `timeline_days`, `summary`, `milestones`, `cal_link`, `status`, `sent_at`, `created_at`, `updated_at`
 
 ### content_schedule
+
 - `id`, `title`, `body`, `platform`, `status`, `scheduled_at`, `published_at`, `post_url`, `metadata`, `created_at`, `updated_at`
 
 ### directory_listings
+
 - `id`, `platform`, `url`, `status`, `priority`, `submitted_at`, `approved_at`, `review_url`, `notes`, `metadata`, `created_at`, `updated_at`
 
 ### revenue_events
+
 - `id`, `source`, `source_id`, `amount_cents`, `currency`, `status`, `customer_email`, `customer_name`, `metadata`, `created_at`, `updated_at`
 
 ## Environment Variables
 
-| Variable | Purpose | Example |
-|----------|---------|---------|
-| `CRON_REVENUE_SECRET` | Authenticates cron endpoint | `5ab4b9bb...` |
-| `SUPABASE_URL` | Supabase project URL | `https://nqeuarvpkxupxeeuzuow.supabase.co` |
-| `SUPABASE_SECRET_KEY` | Supabase service role key | `sb_secret_...` |
-| `RESEND_API_KEY` | Resend email API key (in Supabase secrets) | `re_...` |
+| Variable              | Purpose                                    | Example                                    |
+| --------------------- | ------------------------------------------ | ------------------------------------------ |
+| `CRON_REVENUE_SECRET` | Authenticates cron endpoint                | `5ab4b9bb...`                              |
+| `SUPABASE_URL`        | Supabase project URL                       | `https://nqeuarvpkxupxeeuzuow.supabase.co` |
+| `SUPABASE_SECRET_KEY` | Supabase service role key                  | `sb_secret_...`                            |
+| `RESEND_API_KEY`      | Resend email API key (in Supabase secrets) | `re_...`                                   |
 
 ## Setup Checklist
 
@@ -143,12 +157,14 @@ POST /api/cron/revenue
 Set up a cron job to call the endpoint every 15 minutes:
 
 **Service Options**:
+
 - [cron-job.org](https://cron-job.org) (free, recommended)
 - [EasyCron](https://www.easycron.com)
 - [GitHub Actions](https://github.com/features/actions)
 - [Cloudflare Workers Cron Trigger](https://developers.cloudflare.com/workers/platform/cron-triggers/)
 
 **Configuration**:
+
 - **URL**: `https://signhify.dpdns.org/api/cron/revenue`
 - **Method**: POST
 - **Headers**: `Content-Type: application/json`
@@ -170,6 +186,7 @@ The seed script loaded 24 emails from `scripts/generated-outreach/`. Review them
 4. Adjust `scheduled_at` to stagger sends (e.g., 2-3 per day)
 
 **Quick way to update emails**:
+
 ```sql
 UPDATE outreach_sends
 SET prospect_email = 'real@email.com',
@@ -187,6 +204,7 @@ The 19 directories are loaded in `directory_listings` table. Start submitting:
 4. **Week 4**: Behance, Dribbble, Trustpilot, others
 
 For each:
+
 1. Visit the directory URL from `directory_listings`
 2. Submit your profile
 3. Update status in DB: `UPDATE directory_listings SET status = 'submitted' WHERE platform = 'Clutch';`
@@ -215,8 +233,8 @@ Track all revenue activity in the `revenue_events` table:
 SELECT * FROM revenue_events ORDER BY created_at DESC LIMIT 50;
 
 -- See events by source
-SELECT source, COUNT(*), SUM(amount_cents) 
-FROM revenue_events 
+SELECT source, COUNT(*), SUM(amount_cents)
+FROM revenue_events
 GROUP BY source;
 
 -- See pending events
@@ -226,53 +244,61 @@ SELECT * FROM revenue_events WHERE status = 'pending';
 ## Monitoring & Maintenance
 
 ### Daily Checks
+
 1. **Cron logs**: Check if external cron is calling successfully
 2. **Outreach sends**: `SELECT COUNT(*) FROM outreach_sends WHERE status = 'queued';`
 3. **Failed sends**: `SELECT * FROM outreach_sends WHERE status = 'failed';`
 4. **New leads**: `SELECT COUNT(*) FROM leads WHERE created_at > NOW() - INTERVAL '1 day';`
 
 ### Weekly Checks
+
 1. **Lead scores**: `SELECT tier, COUNT(*) FROM lead_scores GROUP BY tier;`
 2. **Proposals sent**: `SELECT COUNT(*) FROM auto_proposals WHERE status = 'sent';`
 3. **Directory progress**: `SELECT status, COUNT(*) FROM directory_listings GROUP BY status;`
 
 ### Monthly Checks
+
 1. **Revenue events**: `SELECT SUM(amount_cents) FROM revenue_events WHERE status = 'completed';`
 2. **Outreach metrics**: Track open/reply rates from `outreach_events`
 
 ## Troubleshooting
 
 ### Cron endpoint returns 401
+
 - Check `CRON_REVENUE_SECRET` matches in both request and environment
 - Verify secret is set in Lovable dashboard
 
 ### Emails not sending
+
 - Check `outreach_sends` table for `status = 'failed'` and `error` column
 - Verify Resend API key is set in Supabase secrets
 - Check Resend dashboard for delivery issues
 
 ### Lead scoring not working
+
 - Verify `leads` table has data
 - Check `lead_scores` table for errors
 - Ensure lead fields (budget, timeline, goals, scope) are populated
 
 ### Proposals not generating
+
 - Check lead score tier (only hot/warm get proposals)
 - Verify `auto_proposals` table for errors
 - Check email delivery for proposal emails
 
 ## Revenue Targets
 
-| Month | Target | Primary Sources |
-|-------|--------|-----------------|
-| Month 1 | $5,000 | Credit packs, 1-2 Sprint deals |
-| Month 3 | $25,000 | Sprint/Studio deals, marketplace sales |
-| Month 6 | $100,000 | Studio retainers, enterprise platform, marketplace commission |
-| Month 12 | $1,000,000 | All channels scaled |
+| Month    | Target     | Primary Sources                                               |
+| -------- | ---------- | ------------------------------------------------------------- |
+| Month 1  | $5,000     | Credit packs, 1-2 Sprint deals                                |
+| Month 3  | $25,000    | Sprint/Studio deals, marketplace sales                        |
+| Month 6  | $100,000   | Studio retainers, enterprise platform, marketplace commission |
+| Month 12 | $1,000,000 | All channels scaled                                           |
 
 ## Support
 
 For issues or questions:
+
 1. Check `session_context.md` for latest context
 2. Review Supabase logs in dashboard
 3. Check Lovable deployment logs

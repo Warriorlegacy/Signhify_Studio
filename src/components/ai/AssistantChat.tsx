@@ -33,18 +33,58 @@ export interface ChatMessage {
 }
 
 const SUGGESTIONS = [
-  { id: "code", label: "Code", icon: Code2, prompt: "Write a high-performance React hook for debounce with TypeScript." },
-  { id: "write", label: "Write", icon: PenTool, prompt: "Draft a high-converting landing page copy for an AI SaaS." },
-  { id: "analyze", label: "Analyze", icon: BarChart3, prompt: "Analyze this system architecture for potential concurrency bottlenecks." },
-  { id: "brainstorm", label: "Brainstorm", icon: Lightbulb, prompt: "Brainstorm 5 innovative micro-SaaS ideas in Developer Tooling." },
-  { id: "weather", label: "Weather", icon: CloudSun, prompt: "Give me an executive weather and flight intelligence summary." },
+  {
+    id: "code",
+    label: "Code",
+    icon: Code2,
+    prompt: "Write a high-performance React hook for debounce with TypeScript.",
+  },
+  {
+    id: "write",
+    label: "Write",
+    icon: PenTool,
+    prompt: "Draft a high-converting landing page copy for an AI SaaS.",
+  },
+  {
+    id: "analyze",
+    label: "Analyze",
+    icon: BarChart3,
+    prompt: "Analyze this system architecture for potential concurrency bottlenecks.",
+  },
+  {
+    id: "brainstorm",
+    label: "Brainstorm",
+    icon: Lightbulb,
+    prompt: "Brainstorm 5 innovative micro-SaaS ideas in Developer Tooling.",
+  },
+  {
+    id: "weather",
+    label: "Weather",
+    icon: CloudSun,
+    prompt: "Give me an executive weather and flight intelligence summary.",
+  },
 ];
 
 const THEMES: { id: ChatTheme; name: string; gradient: string; glow: string }[] = [
-  { id: "default", name: "Default", gradient: "from-zinc-200 to-zinc-400", glow: "rgba(255,255,255,0.2)" },
+  {
+    id: "default",
+    name: "Default",
+    gradient: "from-zinc-200 to-zinc-400",
+    glow: "rgba(255,255,255,0.2)",
+  },
   { id: "blue", name: "Blue", gradient: "from-cyan-400 to-blue-500", glow: "rgba(56,189,248,0.3)" },
-  { id: "violet", name: "Violet", gradient: "from-fuchsia-400 to-violet-500", glow: "rgba(168,85,247,0.3)" },
-  { id: "emerald", name: "Emerald", gradient: "from-teal-300 to-emerald-500", glow: "rgba(52,211,153,0.3)" },
+  {
+    id: "violet",
+    name: "Violet",
+    gradient: "from-fuchsia-400 to-violet-500",
+    glow: "rgba(168,85,247,0.3)",
+  },
+  {
+    id: "emerald",
+    name: "Emerald",
+    gradient: "from-teal-300 to-emerald-500",
+    glow: "rgba(52,211,153,0.3)",
+  },
 ];
 
 export function AssistantChat({ className = "" }: { className?: string }) {
@@ -135,7 +175,9 @@ export function AssistantChat({ className = "" }: { className?: string }) {
   };
 
   return (
-    <div className={`w-full max-w-4xl mx-auto flex flex-col h-[700px] rounded-3xl bg-zinc-950/90 backdrop-blur-2xl border ${getThemeGlow()} overflow-hidden transition-all duration-500 ${className}`}>
+    <div
+      className={`w-full max-w-4xl mx-auto flex flex-col h-[700px] rounded-3xl bg-zinc-950/90 backdrop-blur-2xl border ${getThemeGlow()} overflow-hidden transition-all duration-500 ${className}`}
+    >
       {/* Top Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-zinc-900/40">
         <div className="flex items-center gap-3">
@@ -143,7 +185,9 @@ export function AssistantChat({ className = "" }: { className?: string }) {
             <Sparkles className="w-4 h-4 text-black" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-white tracking-tight">Signhify Assistant UI</h3>
+            <h3 className="text-sm font-semibold text-white tracking-tight">
+              Signhify Assistant UI
+            </h3>
             <p className="text-[11px] text-zinc-400">Production AI Agent Interface</p>
           </div>
         </div>
@@ -156,7 +200,9 @@ export function AssistantChat({ className = "" }: { className?: string }) {
               key={theme.id}
               onClick={() => setCurrentTheme(theme.id)}
               className={`w-4 h-4 rounded-full transition-all duration-200 bg-gradient-to-tr ${theme.gradient} ${
-                currentTheme === theme.id ? "scale-125 ring-2 ring-white/50 ring-offset-2 ring-offset-zinc-950" : "opacity-60 hover:opacity-100"
+                currentTheme === theme.id
+                  ? "scale-125 ring-2 ring-white/50 ring-offset-2 ring-offset-zinc-950"
+                  : "opacity-60 hover:opacity-100"
               }`}
               title={theme.name}
             />
@@ -189,7 +235,8 @@ export function AssistantChat({ className = "" }: { className?: string }) {
               How can I help you today?
             </h2>
             <p className="text-sm text-zinc-400 max-w-md mb-8">
-              Describe your software architecture, request frontend code, or generate full-stack blueprints.
+              Describe your software architecture, request frontend code, or generate full-stack
+              blueprints.
             </p>
 
             {/* Quick action chips */}
@@ -223,22 +270,32 @@ export function AssistantChat({ className = "" }: { className?: string }) {
                 </div>
               )}
 
-              <div className={`relative max-w-2xl rounded-2xl p-4.5 ${
-                m.role === "user"
-                  ? "bg-zinc-800/90 text-white rounded-br-none border border-white/10"
-                  : "bg-zinc-900/80 text-zinc-200 rounded-bl-none border border-white/5"
-              }`}>
-                <div className="whitespace-pre-wrap text-sm leading-relaxed font-sans">{m.content}</div>
+              <div
+                className={`relative max-w-2xl rounded-2xl p-4.5 ${
+                  m.role === "user"
+                    ? "bg-zinc-800/90 text-white rounded-br-none border border-white/10"
+                    : "bg-zinc-900/80 text-zinc-200 rounded-bl-none border border-white/5"
+                }`}
+              >
+                <div className="whitespace-pre-wrap text-sm leading-relaxed font-sans">
+                  {m.content}
+                </div>
 
                 <div className="mt-2.5 flex items-center justify-between pt-2 border-t border-white/5 text-[10px] text-zinc-400">
-                  <span>{m.timestamp} {m.modelUsed && `• ${m.modelUsed}`}</span>
+                  <span>
+                    {m.timestamp} {m.modelUsed && `• ${m.modelUsed}`}
+                  </span>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleCopy(m.id, m.content)}
                       className="hover:text-white transition-colors p-1"
                       title="Copy content"
                     >
-                      {copiedId === m.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      {copiedId === m.id ? (
+                        <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      ) : (
+                        <Copy className="w-3.5 h-3.5" />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -305,7 +362,9 @@ export function AssistantChat({ className = "" }: { className?: string }) {
                   if (!isListening) toast.info("Voice input listening...");
                 }}
                 className={`p-2 rounded-lg transition-colors ${
-                  isListening ? "text-red-400 bg-red-500/10 animate-pulse" : "text-zinc-400 hover:text-white hover:bg-white/5"
+                  isListening
+                    ? "text-red-400 bg-red-500/10 animate-pulse"
+                    : "text-zinc-400 hover:text-white hover:bg-white/5"
                 }`}
                 title="Voice input"
               >

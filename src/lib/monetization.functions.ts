@@ -22,29 +22,47 @@ export const getUserCredits = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
 
+    // Fetch user profile for subscription status and free trial status
+    const { data: profile } = await (supabase as any)
+      .from("profiles")
+      .select("subscription_plan, subscription_status, free_trial_used")
+      .eq("id", userId)
+      .maybeSingle();
+
+    const plan = String(profile?.subscription_plan ?? "free").toLowerCase();
+    const isPaid =
+      (plan === "studio" || plan === "scale" || plan === "pro") &&
+      (profile?.subscription_status === "active" ||
+        profile?.subscription_status === "trialing" ||
+        profile?.subscription_status === "");
+
+    const freeTrialUsed = Boolean(profile?.free_trial_used);
+    const freeTrialAvailable = !isPaid && !freeTrialUsed;
+
     // user_credits table is optional; return defaults when missing
-    const { data: creditsData, error } = await (supabase as any)
+    const { data: creditsData } = await (supabase as any)
       .from("user_credits")
       .select("tier, credits_remaining, max_credits, projects_count, videos_generated")
       .eq("user_id", userId)
       .maybeSingle();
 
-    if (error || !creditsData) {
-      return {
-        tier: "free" as const,
-        creditsRemaining: 2,
-        maxCredits: 2,
-        projectsCount: 0,
-        videosGenerated: 0,
-      };
-    }
+    const creditsRemaining = isPaid
+      ? 999999
+      : freeTrialAvailable
+        ? 1
+        : (creditsData?.credits_remaining ?? 0);
+
+    const maxCredits = isPaid ? 999999 : 1;
 
     return {
-      tier: creditsData.tier as string,
-      creditsRemaining: creditsData.credits_remaining as number,
-      maxCredits: creditsData.max_credits as number,
-      projectsCount: creditsData.projects_count as number,
-      videosGenerated: creditsData.videos_generated as number,
+      tier: isPaid ? plan : ("free" as const),
+      isPaid,
+      freeTrialAvailable,
+      freeTrialUsed,
+      creditsRemaining,
+      maxCredits,
+      projectsCount: (creditsData?.projects_count as number) ?? 0,
+      videosGenerated: (creditsData?.videos_generated as number) ?? 0,
     };
   });
 

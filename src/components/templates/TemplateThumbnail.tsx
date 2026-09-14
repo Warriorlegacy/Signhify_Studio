@@ -41,8 +41,7 @@ export function TemplateThumbnail({
   const [imageError, setImageError] = useState(false);
 
   // Derived thumbnail path if not explicitly passed
-  const resolvedThumbnail =
-    thumbnail || (id ? `/images/templates/${id}.png` : undefined);
+  const resolvedThumbnail = thumbnail || (id ? `/images/templates/${id}.png` : undefined);
 
   const aspectClass =
     aspectRatio === "16/10"
@@ -62,8 +61,7 @@ export function TemplateThumbnail({
       <div
         className="absolute inset-0 opacity-25 pointer-events-none"
         style={{
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 0)",
+          backgroundImage: "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 0)",
           backgroundSize: "16px 16px",
         }}
       />

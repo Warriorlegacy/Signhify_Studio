@@ -15,7 +15,12 @@ import { useUser } from "@/hooks/useUser";
 import { toast } from "sonner";
 import { useState } from "react";
 import { TemplateThumbnail } from "@/components/templates/TemplateThumbnail";
-import { TEMPLATES, TEMPLATE_CATEGORIES, type TemplateCategory, type TemplateItem } from "@/lib/templates-data";
+import {
+  TEMPLATES,
+  TEMPLATE_CATEGORIES,
+  type TemplateCategory,
+  type TemplateItem,
+} from "@/lib/templates-data";
 
 export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: string) => void }) {
   const { user } = useUser();
@@ -26,9 +31,7 @@ export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: str
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const filteredTemplates =
-    activeCategory === "All"
-      ? TEMPLATES
-      : TEMPLATES.filter((t) => t.category === activeCategory);
+    activeCategory === "All" ? TEMPLATES : TEMPLATES.filter((t) => t.category === activeCategory);
 
   const handleSelectTemplate = async (template: TemplateItem) => {
     if (!user) {
@@ -142,7 +145,8 @@ export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: str
             {isCreating === "blank" && (
               <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center rounded-2xl z-20">
                 <div className="flex items-center text-sm font-medium text-[#4ade80]">
-                  <Sparkles className="w-4 h-4 mr-2 animate-spin text-[#22c55e]" /> Creating canvas...
+                  <Sparkles className="w-4 h-4 mr-2 animate-spin text-[#22c55e]" /> Creating
+                  canvas...
                 </div>
               </div>
             )}
@@ -170,7 +174,9 @@ export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: str
               <div className="relative z-10 p-5 flex-1 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-[10px] font-mono text-white/40 uppercase">{template.category}</span>
+                    <span className="text-[10px] font-mono text-white/40 uppercase">
+                      {template.category}
+                    </span>
                   </div>
                   <h3 className="text-base font-bold text-white mb-1.5 group-hover:text-[#4ade80] transition-colors line-clamp-1">
                     {template.name}
@@ -228,7 +234,8 @@ export function TemplateGallery({ onSelectProject }: { onSelectProject: (id: str
               {isCreating === template.id && (
                 <div className="absolute inset-0 z-20 bg-black/85 backdrop-blur-sm flex items-center justify-center rounded-2xl">
                   <div className="flex items-center text-sm font-bold text-[#4ade80]">
-                    <Sparkles className="w-4 h-4 mr-2 animate-spin text-[#22c55e]" /> Initializing {template.name}...
+                    <Sparkles className="w-4 h-4 mr-2 animate-spin text-[#22c55e]" /> Initializing{" "}
+                    {template.name}...
                   </div>
                 </div>
               )}

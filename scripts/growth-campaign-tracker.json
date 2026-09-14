@@ -14,7 +14,13 @@
         "twitter_posts_per_week": 5
       },
       "prospects": [
-        { "name": "Founder Name", "company": "Company", "platform": "LinkedIn", "email": "founder@company.com", "status": "pending" }
+        {
+          "name": "Founder Name",
+          "company": "Company",
+          "platform": "LinkedIn",
+          "email": "founder@company.com",
+          "status": "pending"
+        }
       ]
     },
     {
@@ -59,8 +65,14 @@
   ],
   "revenue_targets": {
     "month_1": { "target_usd": 5000, "sources": ["credit_packs", "sprint_engagements"] },
-    "month_3": { "target_usd": 25000, "sources": ["sprint_engagements", "studio_engagements", "marketplace"] },
-    "month_6": { "target_usd": 100000, "sources": ["studio_retainers", "enterprise_platform", "marketplace_commission"] },
+    "month_3": {
+      "target_usd": 25000,
+      "sources": ["sprint_engagements", "studio_engagements", "marketplace"]
+    },
+    "month_6": {
+      "target_usd": 100000,
+      "sources": ["studio_retainers", "enterprise_platform", "marketplace_commission"]
+    },
     "month_12": { "target_usd": 1000000, "sources": ["all_channels"] }
   },
   "kpis": {
