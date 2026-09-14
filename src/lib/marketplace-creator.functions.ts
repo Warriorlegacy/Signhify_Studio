@@ -4,7 +4,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 // Public/creator-facing columns only. asset_path and stripe_connect_account_id are
 // excluded here; they are fetched through service_role in verified purchase/download flows.
 const LISTING_COLS =
-  "id, slug, title, description, category, price_cents, preview_url, creator_id, created_at, is_active";
+  "id, slug, title, description, category, price_cents, preview_url, creator_id, created_at, is_active, status, review_note";
 
 export const getCreatorListings = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])

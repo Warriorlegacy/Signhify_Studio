@@ -9,6 +9,7 @@ import { useUser } from "@/hooks/useUser";
 import {
   createScrollStudioProject,
   getScrollStudioProject,
+  getScrollStudioProjects,
 } from "@/lib/scroll-studio-projects.functions";
 
 // We keep a global non-reactive reference to avoid React state lag with massive base64 arrays.
@@ -25,6 +26,7 @@ export function ScrollStudioBuilder() {
   const search = useSearch({ from: "/scroll-studio/" });
   const createFn = useServerFn(createScrollStudioProject);
   const getFn = useServerFn(getScrollStudioProject);
+  const listFn = useServerFn(getScrollStudioProjects);
   const [projectId, setProjectId] = useState<string | null>(null);
   const [previewData, setPreviewData] = useState<{ html: string; css: string; js: string } | null>(
     null,
@@ -51,8 +53,23 @@ export function ScrollStudioBuilder() {
   useEffect(() => {
     if (!user || projectId || search.prompt) return;
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) setProjectId(saved);
-  }, [user, projectId, search.prompt]);
+    if (saved) {
+      setProjectId(saved);
+      return;
+    }
+    // No local memory (new device / cleared storage): fall back to the newest project.
+    let cancelled = false;
+    listFn()
+      .then((list) => {
+        if (cancelled || !list?.length) return;
+        setProjectId(list[0].id);
+        localStorage.setItem(STORAGE_KEY, list[0].id);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [user, projectId, search.prompt, listFn]);
 
 
   // Auto-create a project from the landing-page prompt (?prompt=)
