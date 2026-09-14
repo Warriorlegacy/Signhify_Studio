@@ -342,24 +342,16 @@ function PricingPage() {
     void refreshBalance();
   }, [authLoading, user, refreshBalance]);
 
-  const handleBuyCredits = async (packId: string, packName: string, usd: number) => {
-    if (packBusy) return;
+  // Payments run on UPI + WhatsApp confirmation (card checkout is unavailable in our region).
+  const handleBuyCredits = (packId: string, packName: string, usd: number) => {
     if (!user) {
       toast.info("Sign in to buy extra credits.");
       navigate({ to: "/login", search: { redirect: "/pricing" } });
       return;
     }
-    setPackBusy(packId);
-    try {
-      const { url } = await startPackCheckout({ data: { packId } });
-      window.location.href = url;
-    } catch {
-      // Card checkout unavailable — fall back to the UPI / WhatsApp flow.
-      setUpiPlan({ id: packId, name: `${packName} credit pack`, usd });
-      setUpiRef("");
-      setUpiReported(false);
-      setPackBusy(null);
-    }
+    setUpiPlan({ id: packId, name: `${packName} credit pack`, usd });
+    setUpiRef("");
+    setUpiReported(false);
   };
 
   // UPI / manual payment state
