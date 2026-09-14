@@ -400,6 +400,17 @@ function PricingPage() {
       <div className="bg-dots" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {unlocked && (
+          <div className="mb-8 rounded-2xl border border-[#22c55e]/40 bg-[#22c55e]/10 px-5 py-4 text-sm text-[#bbf7d0] flex items-center gap-3">
+            <CheckCircle2 size={18} className="shrink-0 text-[#4ade80]" />
+            <span>
+              Payment confirmed — your plan is active and your credits have been added.{" "}
+              <Link to="/app" className="underline font-semibold">
+                Open your studio
+              </Link>
+            </span>
+          </div>
+        )}
         <Breadcrumbs items={[{ label: "Pricing & AI Credits", to: "/pricing" }]} />
 
         {/* Header Section */}
