@@ -27,6 +27,6 @@
 - [x] Credit balance shown on /pricing via getMyEntitlements
 - [x] Creator dashboard at /creator — list, edit, publish/unpublish, delete own listings (RLS delete policy added)
 - [x] Template master prompts gated: teaser for free users, full prompt for paid plans
-- [ ] BLOCKED: card checkout needs STRIPE_SECRET_KEY (built-in payments unavailable for seller country IN; user declined to paste the key)
+- [x] Stripe dropped per user (not available in India) — UPI is the primary payment rail for plans AND credit packs
 - [ ] BLOCKED: Resend sending domain signhify.dpdns.org not yet verified — alerts only reach the Resend account owner
 - [ ] BLOCKED: signed-in walkthrough (hero -> Scroll Studio save -> publish) — no way to mint a session on the user-managed Supabase
