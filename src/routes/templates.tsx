@@ -122,11 +122,18 @@ function TemplatesPage() {
 
   const handleCopyPrompt = (template: TemplateItem, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
+    if (!isPaid) {
+      toast.info("Full master prompts unlock with any paid plan.");
+      navigate({ to: "/pricing" });
+      return;
+    }
     navigator.clipboard.writeText(template.godLevelPrompt);
     setCopiedId(template.id);
     toast.success(`God-Level Prompt for "${template.name}" copied to clipboard!`);
     setTimeout(() => setCopiedId(null), 3000);
   };
+
+  const promptPreview = (text: string) => (isPaid ? text : `${text.slice(0, 220)}…`);
 
   const openPreview = (template: TemplateItem) => {
     setActivePreview(template);
