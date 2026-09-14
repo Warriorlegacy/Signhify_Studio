@@ -941,6 +941,115 @@ function PricingPage() {
             </div>
           )}
         </AnimatePresence>
+
+        {/* ── UPI / WhatsApp payment flow ─────────────────────────────── */}
+        <AnimatePresence>
+          {upiPlan && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: 12 }}
+                className="w-full max-w-md rounded-3xl border border-white/[0.1] bg-[#080c16] p-7 shadow-[0_25px_80px_rgba(0,0,0,0.8)]"
+              >
+                {!upiReported ? (
+                  <>
+                    <div className="flex items-start justify-between gap-4 mb-5">
+                      <div>
+                        <h3 className="font-display text-lg font-bold text-white">
+                          Pay by UPI — {upiPlan.name}
+                        </h3>
+                        <p className="text-white/55 text-xs mt-1">
+                          ${upiPlan.usd} {annual ? "per year" : "per month"} · pay the equivalent in
+                          INR
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setUpiPlan(null)}
+                        aria-label="Close"
+                        className="text-white/40 hover:text-white transition-colors"
+                      >
+                        <XCircle size={20} />
+                      </button>
+                    </div>
+
+                    <div className="rounded-2xl border border-[#22c55e]/25 bg-[#22c55e]/[0.07] p-4 mb-4">
+                      <div className="text-[11px] uppercase tracking-wide text-white/45 mb-1">
+                        UPI ID
+                      </div>
+                      <div className="font-mono text-base font-bold text-[#4ade80] select-all">
+                        6202442690@jio
+                      </div>
+                    </div>
+
+                    <ol className="space-y-2 text-xs text-white/70 mb-5 list-decimal list-inside">
+                      <li>Send the payment to the UPI ID above.</li>
+                      <li>
+                        Share the screenshot on WhatsApp{" "}
+                        <a
+                          href="https://wa.me/916202442690"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[#4ade80] underline underline-offset-2"
+                        >
+                          6202442690
+                        </a>
+                        .
+                      </li>
+                      <li>Paste the UPI reference / UTR number below so we can match it.</li>
+                    </ol>
+
+                    <form onSubmit={handleReportUpi} className="space-y-3">
+                      <input
+                        value={upiRef}
+                        onChange={(e) => setUpiRef(e.target.value)}
+                        placeholder="UPI reference / UTR number"
+                        required
+                        className="w-full px-4 py-3 rounded-xl bg-white/[0.05] border border-white/[0.12] text-white text-xs placeholder:text-white/35 focus:outline-none focus:border-[#22c55e]/50"
+                      />
+                      <button
+                        type="submit"
+                        disabled={upiSending}
+                        className="w-full py-3 rounded-xl bg-[#22c55e] text-black text-xs font-bold flex items-center justify-center gap-2 disabled:opacity-60"
+                      >
+                        {upiSending ? (
+                          <>
+                            <Loader2 size={13} className="animate-spin" /> Sending…
+                          </>
+                        ) : (
+                          <>
+                            I've paid — notify Signhify <ArrowRight size={13} />
+                          </>
+                        )}
+                      </button>
+                    </form>
+                    <p className="text-[11px] text-white/40 mt-3 text-center">
+                      Your subscription is activated manually after the payment is verified.
+                    </p>
+                  </>
+                ) : (
+                  <div className="text-center py-6">
+                    <CheckCircle2 size={42} className="text-[#22c55e] mx-auto mb-3" />
+                    <h3 className="font-display text-xl font-bold text-white mb-2">
+                      Payment reported
+                    </h3>
+                    <p className="text-white/60 text-xs mb-6">
+                      We've logged your {upiPlan.name} payment. Once it's verified on WhatsApp, your
+                      plan is switched on.
+                    </p>
+                    <button
+                      onClick={() => setUpiPlan(null)}
+                      className="px-6 py-2.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-xs font-bold text-white"
+                    >
+                      Done
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
       </div>
     </div>
   );
