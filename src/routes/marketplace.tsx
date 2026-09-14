@@ -173,11 +173,11 @@ function MarketplacePage() {
   );
 }
 
-function MarketCard({ item }: { item: MarketItem }) {
+function MarketCard({ item, rating }: { item: MarketItem; rating?: RatingSummary }) {
   const isFree = (item.price_cents ?? item.price * 100) === 0;
   const download = useServerFn(downloadAsset);
-  const checkout = useServerFn(createCheckoutSession);
   const navigate = useNavigate();
+
   const handleCta = async () => {
     if (!item.id) {
       if (item.preview_url) {
