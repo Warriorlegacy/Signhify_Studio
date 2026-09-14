@@ -455,7 +455,16 @@ class RobustAIService {
 
     // If free trial or free coding cluster requested, prioritize free coding engines
     if (options.preferredCluster === "free_coding" || options.tier === "free_trial") {
-      const freeProviders = new Set(["KiloEngine", "Groq", "OpenRouter", "Cerebras", "NVIDIA", "Gemini"]);
+      const freeProviders = new Set([
+        "KiloEngine",
+        "Groq",
+        "OpenRouter",
+        "Cerebras",
+        "NVIDIA",
+        "HuggingFace",
+        "Gemini",
+      ]);
+
       availableProviders = [
         ...availableProviders.filter((p) => freeProviders.has(p.name)),
         ...availableProviders.filter((p) => !freeProviders.has(p.name)),
