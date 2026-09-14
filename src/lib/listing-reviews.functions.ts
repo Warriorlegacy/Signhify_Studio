@@ -7,16 +7,21 @@ export type { PublicReview, RatingSummary };
 /** Public: all reviews for one blueprint. */
 export const listListingReviews = createServerFn({ method: "GET" })
   .inputValidator((input: unknown) => {
-    const listingId = String((input as any)?.listingId ?? "").trim();
-    if (!listingId) throw new Error("Listing id required");
-    return { listingId };
+    const slug = String((input as any)?.slug ?? "").trim();
+    if (!slug) throw new Error("Blueprint slug required");
+    return { slug };
   })
   .handler(async ({ data }): Promise<{ reviews: PublicReview[] }> => {
-    const { fetchReviewsForListing } = await import("@/lib/reviews.server");
-    return { reviews: await fetchReviewsForListing(data.listingId) };
+    try {
+      const { fetchReviewsForListing } = await import("@/lib/reviews.server");
+      return { reviews: await fetchReviewsForListing(data.slug) };
+    } catch (err) {
+      console.error("[reviews] list failed", err);
+      return { reviews: [] };
+    }
   });
 
-/** Public: average rating + review count per listing, for the marketplace grid. */
+/** Public: average rating + review count per blueprint, for the marketplace grid. */
 export const listRatingSummaries = createServerFn({ method: "GET" }).handler(
   async (): Promise<{ summaries: Record<string, RatingSummary> }> => {
     try {
@@ -34,13 +39,13 @@ export const upsertListingReview = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
     const raw = input as Record<string, unknown>;
-    const listingId = String(raw?.listingId ?? "").trim();
+    const slug = String(raw?.slug ?? "").trim();
     const rating = Number(raw?.rating);
     const body = typeof raw?.body === "string" ? raw.body.trim().slice(0, 1500) : "";
-    if (!listingId) throw new Error("Listing id required");
+    if (!slug) throw new Error("Blueprint slug required");
     if (!Number.isInteger(rating) || rating < 1 || rating > 5)
       throw new Error("Rating must be between 1 and 5");
-    return { listingId, rating, body };
+    return { slug, rating, body };
   })
   .handler(async ({ context, data }) => {
     const { supabase, userId, claims } = context;
@@ -50,15 +55,15 @@ export const upsertListingReview = createServerFn({ method: "POST" })
     const { data: row, error } = await (supabase.from as any)("listing_reviews")
       .upsert(
         {
-          listing_id: data.listingId,
+          listing_slug: data.slug,
           user_id: userId,
           rating: data.rating,
           body: data.body || null,
           author_name: authorName,
         },
-        { onConflict: "listing_id,user_id" },
+        { onConflict: "listing_slug,user_id" },
       )
-      .select("id, listing_id, rating, body, author_name, created_at")
+      .select("id, listing_slug, rating, body, author_name, created_at")
       .single();
 
     if (error) {
@@ -72,15 +77,15 @@ export const upsertListingReview = createServerFn({ method: "POST" })
 export const deleteMyListingReview = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
-    const listingId = String((input as any)?.listingId ?? "").trim();
-    if (!listingId) throw new Error("Listing id required");
-    return { listingId };
+    const slug = String((input as any)?.slug ?? "").trim();
+    if (!slug) throw new Error("Blueprint slug required");
+    return { slug };
   })
   .handler(async ({ context, data }) => {
     const { supabase, userId } = context;
     const { error } = await (supabase.from as any)("listing_reviews")
       .delete()
-      .eq("listing_id", data.listingId)
+      .eq("listing_slug", data.slug)
       .eq("user_id", userId);
     if (error) throw new Error("Could not remove your review.");
     return { success: true as const };
