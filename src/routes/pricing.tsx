@@ -23,7 +23,13 @@ import {
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { submitLead } from "@/lib/leads.functions";
-import { createPlanCheckout, confirmPlanCheckout } from "@/lib/stripe-plan-checkout.functions";
+import {
+  createPlanCheckout,
+  confirmPlanCheckout,
+  PLAN_CATALOG,
+} from "@/lib/stripe-plan-checkout.functions";
+import { createManualPayment } from "@/lib/manual-payments.functions";
+
 import { useUser } from "@/hooks/useUser";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
