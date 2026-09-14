@@ -20,12 +20,10 @@ export const Route = createFileRoute("/marketplace_/$slug")({
   loader: async ({ params }) => {
     const { listing } = await fetchListingDetail({ data: { slug: params.slug } });
     let reviews: PublicReview[] = [];
-    if (listing?.id) {
-      try {
-        reviews = (await listListingReviews({ data: { listingId: listing.id } })).reviews;
-      } catch {
-        reviews = [];
-      }
+    try {
+      reviews = (await listListingReviews({ data: { slug: params.slug } })).reviews;
+    } catch {
+      reviews = [];
     }
     return { listing, reviews };
   },
@@ -81,9 +79,9 @@ function ListingDetail() {
     ? Math.round((reviews.reduce((s, r) => s + r.rating, 0) / reviewCount) * 10) / 10
     : 0;
 
-  const reloadReviews = async (listingId: string) => {
+  const reloadReviews = async (slug: string) => {
     try {
-      const res = await listListingReviews({ data: { listingId } });
+      const res = await listListingReviews({ data: { slug } });
       setReviews(res.reviews);
     } catch {
       /* keep current list */
@@ -92,7 +90,7 @@ function ListingDetail() {
 
   const submitReview = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!listing?.id) return;
+    if (!listing) return;
     if (!user) {
       toast.info("Sign in to leave a review.");
       navigate({ to: "/login", search: { redirect: `/marketplace/${listing.slug}` } as any });
@@ -105,11 +103,11 @@ function ListingDetail() {
     setSavingReview(true);
     try {
       await saveReview({
-        data: { listingId: listing.id, rating: myRating, body: myBody.trim() },
+        data: { slug: listing.slug, rating: myRating, body: myBody.trim() },
       });
       setMyBody("");
       setMyRating(0);
-      await reloadReviews(listing.id);
+      await reloadReviews(listing.slug);
       toast.success("Thanks — your review is live.");
     } catch (err: any) {
       toast.error(err?.message ?? "Could not save your review.");
@@ -119,10 +117,10 @@ function ListingDetail() {
   };
 
   const deleteReview = async () => {
-    if (!listing?.id) return;
+    if (!listing) return;
     try {
-      await removeReview({ data: { listingId: listing.id } });
-      await reloadReviews(listing.id);
+      await removeReview({ data: { slug: listing.slug } });
+      await reloadReviews(listing.slug);
       toast.success("Your review was removed.");
     } catch (err: any) {
       toast.error(err?.message ?? "Could not remove your review.");
@@ -256,7 +254,7 @@ function ListingDetail() {
               </a>
             )}
 
-            {listing.id && (
+            {(
               <div className="mt-12 border-t border-border pt-8">
                 <h2 className="font-display text-xl font-bold">Ratings &amp; reviews</h2>
                 {reviewCount > 0 ? (

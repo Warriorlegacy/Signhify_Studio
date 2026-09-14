@@ -141,7 +141,7 @@ function MarketplacePage() {
             <MarketCard
               key={item.slug}
               item={item}
-              rating={item.id ? summaries[item.id] : undefined}
+              rating={summaries[item.slug]}
             />
           ))}
           {items.length === 0 && (
