@@ -297,11 +297,67 @@ function PricingPage() {
 
   const submitLeadFn = useServerFn(submitLead);
 
+  // Checkout state
+  const { user, loading: authLoading } = useUser();
+  const navigate = useNavigate();
+  const { checkout, session_id } = Route.useSearch();
+  const startCheckout = useServerFn(createPlanCheckout);
+  const confirmCheckout = useServerFn(confirmPlanCheckout);
+  const [checkoutPlan, setCheckoutPlan] = useState<string | null>(null);
+  const [unlocked, setUnlocked] = useState<string | null>(null);
+
   const handleOpenModal = (tierName: string) => {
     setSelectedTier(tierName);
     setModalOpen(true);
     setSubmitted(false);
   };
+
+  const handleBuyPlan = async (planId: string, tierName: string) => {
+    if (authLoading || checkoutPlan) return;
+    if (!user) {
+      toast.info("Sign in to activate your plan.");
+      navigate({ to: "/login", search: { redirect: "/pricing" } });
+      return;
+    }
+    setCheckoutPlan(planId);
+    try {
+      const { url } = await startCheckout({ data: { planId, annual } });
+      window.location.href = url;
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : `Could not start checkout for ${tierName}.`,
+      );
+      setCheckoutPlan(null);
+    }
+  };
+
+  // Confirm and unlock after returning from Stripe.
+  useEffect(() => {
+    if (checkout === "cancelled") {
+      toast.info("Checkout cancelled — nothing was charged.");
+      navigate({ to: "/pricing", search: {}, replace: true });
+      return;
+    }
+    if (checkout !== "success" || !session_id || authLoading || !user) return;
+    let active = true;
+    confirmCheckout({ data: { sessionId: session_id } })
+      .then((res) => {
+        if (!active) return;
+        if (res.paid) {
+          setUnlocked(res.plan ?? "your plan");
+          toast.success("Payment confirmed — your plan is unlocked.");
+        } else {
+          toast.info("Payment is still processing. We'll unlock your plan shortly.");
+        }
+        navigate({ to: "/pricing", search: {}, replace: true });
+      })
+      .catch((err) => {
+        if (active) toast.error(err instanceof Error ? err.message : "Could not confirm payment.");
+      });
+    return () => {
+      active = false;
+    };
+  }, [checkout, session_id, authLoading, user]);
 
   const handleSubmitLead = async (e: React.FormEvent) => {
     e.preventDefault();
