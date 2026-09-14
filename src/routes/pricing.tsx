@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Check,
@@ -23,10 +23,20 @@ import {
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { submitLead } from "@/lib/leads.functions";
+import { createPlanCheckout, confirmPlanCheckout } from "@/lib/stripe-plan-checkout.functions";
+import { useUser } from "@/hooks/useUser";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/pricing")({
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { checkout?: string; session_id?: string } => {
+    const out: { checkout?: string; session_id?: string } = {};
+    if (typeof search.checkout === "string") out.checkout = search.checkout;
+    if (typeof search.session_id === "string") out.session_id = search.session_id;
+    return out;
+  },
   head: () => ({
     meta: [
       { title: "Transparent Pricing & AI Credit Plans ($5 to $200/mo) — Signhify" },
@@ -291,11 +301,67 @@ function PricingPage() {
 
   const submitLeadFn = useServerFn(submitLead);
 
+  // Checkout state
+  const { user, loading: authLoading } = useUser();
+  const navigate = useNavigate();
+  const { checkout, session_id } = Route.useSearch();
+  const startCheckout = useServerFn(createPlanCheckout);
+  const confirmCheckout = useServerFn(confirmPlanCheckout);
+  const [checkoutPlan, setCheckoutPlan] = useState<string | null>(null);
+  const [unlocked, setUnlocked] = useState<string | null>(null);
+
   const handleOpenModal = (tierName: string) => {
     setSelectedTier(tierName);
     setModalOpen(true);
     setSubmitted(false);
   };
+
+  const handleBuyPlan = async (planId: string, tierName: string) => {
+    if (authLoading || checkoutPlan) return;
+    if (!user) {
+      toast.info("Sign in to activate your plan.");
+      navigate({ to: "/login", search: { redirect: "/pricing" } });
+      return;
+    }
+    setCheckoutPlan(planId);
+    try {
+      const { url } = await startCheckout({ data: { planId, annual } });
+      window.location.href = url;
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : `Could not start checkout for ${tierName}.`,
+      );
+      setCheckoutPlan(null);
+    }
+  };
+
+  // Confirm and unlock after returning from Stripe.
+  useEffect(() => {
+    if (checkout === "cancelled") {
+      toast.info("Checkout cancelled — nothing was charged.");
+      navigate({ to: "/pricing", search: {}, replace: true });
+      return;
+    }
+    if (checkout !== "success" || !session_id || authLoading || !user) return;
+    let active = true;
+    confirmCheckout({ data: { sessionId: session_id } })
+      .then((res) => {
+        if (!active) return;
+        if (res.paid) {
+          setUnlocked(res.plan ?? "your plan");
+          toast.success("Payment confirmed — your plan is unlocked.");
+        } else {
+          toast.info("Payment is still processing. We'll unlock your plan shortly.");
+        }
+        navigate({ to: "/pricing", search: {}, replace: true });
+      })
+      .catch((err) => {
+        if (active) toast.error(err instanceof Error ? err.message : "Could not confirm payment.");
+      });
+    return () => {
+      active = false;
+    };
+  }, [checkout, session_id, authLoading, user]);
 
   const handleSubmitLead = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -338,6 +404,17 @@ function PricingPage() {
       <div className="bg-dots" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {unlocked && (
+          <div className="mb-8 rounded-2xl border border-[#22c55e]/40 bg-[#22c55e]/10 px-5 py-4 text-sm text-[#bbf7d0] flex items-center gap-3">
+            <CheckCircle2 size={18} className="shrink-0 text-[#4ade80]" />
+            <span>
+              Payment confirmed — your plan is active and your credits have been added.{" "}
+              <Link to="/app" className="underline font-semibold">
+                Open your studio
+              </Link>
+            </span>
+          </div>
+        )}
         <Breadcrumbs items={[{ label: "Pricing & AI Credits", to: "/pricing" }]} />
 
         {/* Header Section */}
@@ -451,16 +528,38 @@ function PricingPage() {
 
                 <div>
                   <button
-                    onClick={() => handleOpenModal(tier.name)}
-                    className={`w-full py-3.5 px-5 rounded-2xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
+                    disabled={checkoutPlan === tier.id}
+                    onClick={() =>
+                      tier.id === "enterprise"
+                        ? handleOpenModal(tier.name)
+                        : handleBuyPlan(tier.id, tier.name)
+                    }
+                    className={`w-full py-3.5 px-5 rounded-2xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-60 ${
                       tier.featured
                         ? "btn-moonlit agent-glass-shine text-black hover:scale-[1.02] shadow-[0_0_20px_rgba(34,197,94,0.35)]"
                         : "bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.12] text-white hover:border-[#22c55e]/40"
                     }`}
                   >
-                    <span>{tier.cta}</span>
-                    <ArrowRight size={13} />
+                    {checkoutPlan === tier.id ? (
+                      <>
+                        <Loader2 size={13} className="animate-spin" />
+                        <span>Opening secure checkout…</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>{tier.cta}</span>
+                        <ArrowRight size={13} />
+                      </>
+                    )}
                   </button>
+                  {tier.id !== "enterprise" && (
+                    <button
+                      onClick={() => handleOpenModal(tier.name)}
+                      className="mt-2 w-full text-[11px] text-white/45 hover:text-white/75 transition-colors"
+                    >
+                      Prefer to talk first? Notify me
+                    </button>
+                  )}
                 </div>
               </div>
             );
