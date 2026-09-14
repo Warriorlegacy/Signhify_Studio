@@ -193,9 +193,11 @@ export function ScrollStudioBuilder() {
       <Sidebar
         projectId={projectId}
         onProjectSelect={selectProject}
+        onProjectCreated={adoptProject}
         onUpdatePreview={setPreviewData}
         onFramesExtracted={handleFramesExtracted}
       />
+
       <main className="flex-1 relative border-l border-border/50 bg-muted/20">
         {!projectId ? (
           <TemplateGallery onSelectProject={selectProject} />
