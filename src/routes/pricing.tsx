@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Check,
@@ -23,10 +23,16 @@ import {
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { submitLead } from "@/lib/leads.functions";
+import { createPlanCheckout, confirmPlanCheckout } from "@/lib/stripe-plan-checkout.functions";
+import { useUser } from "@/hooks/useUser";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/pricing")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    checkout: typeof search.checkout === "string" ? search.checkout : undefined,
+    session_id: typeof search.session_id === "string" ? search.session_id : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Transparent Pricing & AI Credit Plans ($5 to $200/mo) — Signhify" },
