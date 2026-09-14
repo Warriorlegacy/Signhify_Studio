@@ -212,14 +212,12 @@ function MarketCard({ item, rating }: { item: MarketItem; rating?: RatingSummary
         const { signedUrl } = await download({ data: { listingId: item.id } });
         window.location.href = signedUrl;
       } else {
-        const { url } = await checkout({ data: { listingId: item.id } });
-        window.location.href = url;
+        // Paid blueprints are bought with UPI on the listing page.
+        navigate({ to: "/marketplace/$slug", params: { slug: item.slug } });
       }
     } catch (e) {
-      console.error("[marketplace] checkout failed:", e);
-      toast.error(
-        isFree ? "Download failed. Please try again." : "Checkout failed. Please try again.",
-      );
+      console.error("[marketplace] card action failed:", e);
+      toast.error(isFree ? "Download failed. Please try again." : "Please try again.");
     }
   };
 
