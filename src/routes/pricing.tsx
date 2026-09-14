@@ -29,10 +29,14 @@ import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/pricing")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    checkout: typeof search.checkout === "string" ? search.checkout : undefined,
-    session_id: typeof search.session_id === "string" ? search.session_id : undefined,
-  }),
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { checkout?: string; session_id?: string } => {
+    const out: { checkout?: string; session_id?: string } = {};
+    if (typeof search.checkout === "string") out.checkout = search.checkout;
+    if (typeof search.session_id === "string") out.session_id = search.session_id;
+    return out;
+  },
   head: () => ({
     meta: [
       { title: "Transparent Pricing & AI Credit Plans ($5 to $200/mo) — Signhify" },
