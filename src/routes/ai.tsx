@@ -162,6 +162,7 @@ function AiPage() {
   const creditsLow = creditsData && !isUnlimited && creditsData.creditsRemaining <= 1;
 
   const generate = useServerFn(generatePlan);
+  const generatePublicPlanFn = useServerFn(generatePublicPlan);
   const getStreamConfig = useServerFn(getGeneratePlanStreamConfig);
   const save = useServerFn(savePlan);
   const build = useServerFn(buildProduct);
