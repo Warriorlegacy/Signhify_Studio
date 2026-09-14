@@ -57,7 +57,14 @@ export const publishProjectToMarketplace = createServerFn({ method: "POST" })
         throw new Error("Project not found or access denied");
       }
 
-      const slug = `template-${project.id.slice(0, 8)}`;
+      const baseSlug = `template-${project.id.slice(0, 8)}`;
+
+      // A project can be published more than once; slug is unique, so make it so.
+      const { data: existing } = await supabase
+        .from("marketplace_listings")
+        .select("slug")
+        .like("slug", `${baseSlug}%`);
+      const slug = existing?.length ? `${baseSlug}-${existing.length + 1}` : baseSlug;
 
       const { data: inserted, error: insertErr } = await supabase
         .from("marketplace_listings")
@@ -79,7 +86,11 @@ export const publishProjectToMarketplace = createServerFn({ method: "POST" })
 
       if (insertErr) {
         console.error("Insert error:", insertErr);
-        throw new Error("Failed to insert marketplace listing");
+        throw new Error(
+          insertErr.code === "23505"
+            ? "This project is already listed on the marketplace."
+            : `Could not publish listing: ${insertErr.message}`,
+        );
       }
 
       return { success: true as const, listing: inserted };
