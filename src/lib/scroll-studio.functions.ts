@@ -5,6 +5,51 @@ import { BYOKRequiredError } from "./ai-access.server";
 import { rateLimitMiddleware } from "./rate-limit.server";
 import { withByokKeys } from "./byok-middleware";
 
+// Models sometimes wrap JSON in markdown fences or add prose around it.
+// Recover the JSON object instead of failing the whole build request.
+function parseStudioJson(raw: string) {
+  const text = raw.trim();
+  const candidates: string[] = [text];
+
+  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fenced?.[1]) candidates.push(fenced[1].trim());
+
+  const first = text.indexOf("{");
+  const last = text.lastIndexOf("}");
+  if (first !== -1 && last > first) candidates.push(text.slice(first, last + 1));
+
+  let lastError: unknown = null;
+  for (const candidate of candidates) {
+    try {
+      const parsed = JSON.parse(candidate);
+      if (parsed && typeof parsed === "object") return parsed;
+    } catch (e) {
+      lastError = e;
+    }
+  }
+
+  // Some models emit JS-object syntax with backtick template literals for the
+  // code fields. Pull each field out by hand rather than losing the whole build.
+  const fields: Record<string, string> = {};
+  const fieldRe =
+    /"(message|html|css|js)"\s*:\s*(?:`([\s\S]*?)`|"((?:\\.|[^"\\])*)")\s*(?=,\s*"|\s*\}|$)/g;
+  for (const m of text.matchAll(fieldRe)) {
+    const key = m[1]!;
+    if (m[2] !== undefined) fields[key] = m[2];
+    else if (m[3] !== undefined) {
+      try {
+        fields[key] = JSON.parse(`"${m[3]}"`);
+      } catch {
+        fields[key] = m[3];
+      }
+    }
+  }
+  if (fields["html"] || fields["message"]) return fields;
+
+  throw lastError ?? new Error("Unparseable AI response");
+}
+
+
 // This is the AI endpoint for Scroll Studio Chat
 export const scrollStudioChat = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth, withByokKeys])
@@ -34,7 +79,7 @@ CRITICAL INSTRUCTIONS:
   "css": "The CSS code",
   "js": "The JavaScript code"
 }
-2. Never use markdown fences for the outer response. Return pure JSON.
+2. Never use markdown fences for the outer response. Return pure JSON. Never use backticks or template literals for any value: every value must be a standard JSON double-quoted string with \n escapes for newlines.
 3. INJECT THE SCROLL ENGINE: The generated code MUST include GSAP and ScrollTrigger.
 4. Your HTML should include a <canvas id="hero-lightpass" /> fixed to the background.
 5. Your CSS should style the canvas to cover the screen (object-fit: cover, position: fixed, z-index: -1).
@@ -60,14 +105,15 @@ Always output high-quality, production-ready, beautiful designs.`;
       );
 
       try {
-        return JSON.parse(content);
+        return parseStudioJson(content);
       } catch (parseError) {
-        console.error("[scrollStudioChat] JSON Parse Error:", parseError, content);
+        console.error("[scrollStudioChat] JSON Parse Error:", parseError, content.slice(0, 500));
         return {
           message:
             "I generated a response, but it was not in the expected format. Please try again.",
         };
       }
+
     } catch (e) {
       if (e instanceof BYOKRequiredError || (e as { code?: string })?.code === "BYOK_REQUIRED") {
         return {

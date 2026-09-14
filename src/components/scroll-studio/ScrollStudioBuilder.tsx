@@ -47,23 +47,38 @@ export function ScrollStudioBuilder() {
     if (saved) setProjectId(saved);
   }, [user, projectId, search.prompt]);
 
+
   // Auto-create a project from the landing-page prompt (?prompt=)
   useEffect(() => {
     if (!user || !search.prompt || projectId || creating) return;
+    // Guard against re-creating the same project when the component remounts
+    // after the post-create navigation (otherwise this loops forever).
+    const guardKey = `sh_studio_prompt:${search.prompt}`;
+    const already = sessionStorage.getItem(guardKey);
+    if (already) {
+      selectProject(already);
+      navigate({ to: "/scroll-studio", search: { prompt: undefined }, replace: true });
+      return;
+    }
+    sessionStorage.setItem(guardKey, "pending");
     let cancelled = false;
     setCreating(true);
     createFn({ data: { title: "New Scroll Site", initialPrompt: search.prompt } })
       .then((project) => {
+        sessionStorage.setItem(guardKey, project.id);
         if (cancelled) return;
         selectProject(project.id);
         navigate({ to: "/scroll-studio", search: { prompt: undefined }, replace: true });
       })
-      .catch(() => {})
+      .catch(() => {
+        sessionStorage.removeItem(guardKey);
+      })
       .finally(() => setCreating(false));
     return () => {
       cancelled = true;
     };
   }, [user, search.prompt, projectId, creating, createFn, navigate, selectProject]);
+
 
   // Load saved preview content when a project is selected
   useEffect(() => {
