@@ -466,8 +466,14 @@ class RobustAIService {
     // Filter to only enabled providers
     let availableProviders = this.providers.filter((p) => p.enabled);
 
-    // If free trial or free coding cluster requested, prioritize free coding engines
-    if (options.preferredCluster === "free_coding" || options.tier === "free_trial") {
+    // Paid-only frontier models (billed directly to Signhify's own accounts).
+    const premiumProviders = new Set(["OpenAI", "Anthropic"]);
+    const isPaid = options.tier === "paid" || options.preferredCluster === "frontier";
+
+    if (!isPaid) {
+      // Free trial / free coding: never touch the paid frontier accounts.
+      availableProviders = availableProviders.filter((p) => !premiumProviders.has(p.name));
+
       const freeProviders = new Set([
         "KiloEngine",
         "Groq",
@@ -481,6 +487,12 @@ class RobustAIService {
       availableProviders = [
         ...availableProviders.filter((p) => freeProviders.has(p.name)),
         ...availableProviders.filter((p) => !freeProviders.has(p.name)),
+      ];
+    } else {
+      // Paid customers: frontier models first, everything else as fallback.
+      availableProviders = [
+        ...availableProviders.filter((p) => premiumProviders.has(p.name)),
+        ...availableProviders.filter((p) => !premiumProviders.has(p.name)),
       ];
     }
 
