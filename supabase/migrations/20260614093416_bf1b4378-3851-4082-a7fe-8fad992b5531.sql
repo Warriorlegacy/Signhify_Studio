@@ -7,6 +7,11 @@ DROP POLICY IF EXISTS builder_projects_insert ON public.builder_projects;
 DROP POLICY IF EXISTS builder_projects_select ON public.builder_projects;
 DROP POLICY IF EXISTS builder_projects_update ON public.builder_projects;
 
+DROP POLICY IF EXISTS builder_projects_select_own ON public.builder_projects;
+DROP POLICY IF EXISTS builder_projects_insert_own ON public.builder_projects;
+DROP POLICY IF EXISTS builder_projects_update_own ON public.builder_projects;
+DROP POLICY IF EXISTS builder_projects_delete_own ON public.builder_projects;
+
 CREATE POLICY builder_projects_select_own ON public.builder_projects
   FOR SELECT TO authenticated USING (user_id = auth.uid());
 CREATE POLICY builder_projects_insert_own ON public.builder_projects
@@ -17,14 +22,17 @@ CREATE POLICY builder_projects_delete_own ON public.builder_projects
   FOR DELETE TO authenticated USING (user_id = auth.uid());
 
 -- 2) leads: explicit RESTRICTIVE deny on SELECT for anon/authenticated
+DROP POLICY IF EXISTS leads_deny_select ON public.leads;
 CREATE POLICY leads_deny_select ON public.leads
   AS RESTRICTIVE FOR SELECT TO anon, authenticated USING (false);
 
 -- 3) waitlist: explicit RESTRICTIVE deny on SELECT
+DROP POLICY IF EXISTS waitlist_deny_select ON public.waitlist;
 CREATE POLICY waitlist_deny_select ON public.waitlist
   AS RESTRICTIVE FOR SELECT TO anon, authenticated USING (false);
 
 -- 4) rate_limits: explicit RESTRICTIVE deny for anon/authenticated
+DROP POLICY IF EXISTS rate_limits_deny_all ON public.rate_limits;
 CREATE POLICY rate_limits_deny_all ON public.rate_limits
   AS RESTRICTIVE FOR ALL TO anon, authenticated USING (false) WITH CHECK (false);
 

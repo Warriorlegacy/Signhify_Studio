@@ -9,7 +9,7 @@ BEGIN
 END;
 $$;
 
-CREATE TABLE public.user_ai_keys (
+CREATE TABLE IF NOT EXISTS public.user_ai_keys (
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   provider TEXT NOT NULL,
   api_key TEXT NOT NULL,
@@ -23,6 +23,7 @@ GRANT ALL ON public.user_ai_keys TO service_role;
 
 ALTER TABLE public.user_ai_keys ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users manage own ai keys" ON public.user_ai_keys;
 CREATE POLICY "Users manage own ai keys"
   ON public.user_ai_keys
   FOR ALL
@@ -30,6 +31,7 @@ CREATE POLICY "Users manage own ai keys"
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
+DROP TRIGGER IF EXISTS update_user_ai_keys_updated_at ON public.user_ai_keys;
 CREATE TRIGGER update_user_ai_keys_updated_at
   BEFORE UPDATE ON public.user_ai_keys
   FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();

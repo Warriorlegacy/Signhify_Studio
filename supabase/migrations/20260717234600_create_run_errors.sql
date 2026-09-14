@@ -1,4 +1,4 @@
-CREATE TABLE public.run_errors (
+CREATE TABLE IF NOT EXISTS public.run_errors (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   project_id uuid NOT NULL REFERENCES public.user_projects(id) ON DELETE CASCADE,
   exception_message text NOT NULL,
@@ -13,6 +13,7 @@ GRANT ALL ON public.run_errors TO service_role;
 
 ALTER TABLE public.run_errors ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "users_own_run_errors" ON public.run_errors;
 CREATE POLICY "users_own_run_errors" ON public.run_errors
   USING (
     EXISTS (

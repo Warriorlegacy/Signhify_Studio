@@ -1,4 +1,8 @@
 DROP POLICY IF EXISTS users_own_projects ON public.user_projects;
+DROP POLICY IF EXISTS "Users can view their own projects" ON public.user_projects;
+DROP POLICY IF EXISTS "Users can insert their own projects" ON public.user_projects;
+DROP POLICY IF EXISTS "Users can update their own projects" ON public.user_projects;
+DROP POLICY IF EXISTS "Users can delete their own projects" ON public.user_projects;
 
 CREATE POLICY "Users can view their own projects"
   ON public.user_projects FOR SELECT
