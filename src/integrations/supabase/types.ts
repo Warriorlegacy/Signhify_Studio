@@ -330,6 +330,54 @@ export type Database = {
         }
         Relationships: []
       }
+      client_messages: {
+        Row: {
+          body: string
+          client_id: string
+          created_at: string
+          id: string
+          listing_id: string | null
+          project_id: string | null
+          read_at: string | null
+          sender_role: string
+        }
+        Insert: {
+          body: string
+          client_id: string
+          created_at?: string
+          id?: string
+          listing_id?: string | null
+          project_id?: string | null
+          read_at?: string | null
+          sender_role?: string
+        }
+        Update: {
+          body?: string
+          client_id?: string
+          created_at?: string
+          id?: string
+          listing_id?: string | null
+          project_id?: string | null
+          read_at?: string | null
+          sender_role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_messages_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_messages_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "user_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       content_schedule: {
         Row: {
           body: string
@@ -711,8 +759,11 @@ export type Database = {
           is_active: boolean | null
           preview_url: string | null
           price_cents: number | null
+          review_note: string | null
+          reviewed_at: string | null
           search_vector: unknown
           slug: string
+          status: string
           stripe_connect_account_id: string | null
           title: string
         }
@@ -726,8 +777,11 @@ export type Database = {
           is_active?: boolean | null
           preview_url?: string | null
           price_cents?: number | null
+          review_note?: string | null
+          reviewed_at?: string | null
           search_vector?: unknown
           slug: string
+          status?: string
           stripe_connect_account_id?: string | null
           title: string
         }
@@ -741,8 +795,11 @@ export type Database = {
           is_active?: boolean | null
           preview_url?: string | null
           price_cents?: number | null
+          review_note?: string | null
+          reviewed_at?: string | null
           search_vector?: unknown
           slug?: string
+          status?: string
           stripe_connect_account_id?: string | null
           title?: string
         }
@@ -1766,6 +1823,7 @@ export type Database = {
         Args: { p_ip?: string; p_user_id: string }
         Returns: Json
       }
+      is_signhify_admin: { Args: { _uid: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
