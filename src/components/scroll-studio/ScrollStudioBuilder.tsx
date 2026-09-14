@@ -40,6 +40,13 @@ export function ScrollStudioBuilder() {
     setPreviewData(null);
   }, []);
 
+  // Adopt a project created from the chat box (keeps any preview just produced)
+  const adoptProject = useCallback((id: string) => {
+    setProjectId(id);
+    localStorage.setItem(STORAGE_KEY, id);
+  }, []);
+
+
   // Restore the last opened project on revisit
   useEffect(() => {
     if (!user || projectId || search.prompt) return;
