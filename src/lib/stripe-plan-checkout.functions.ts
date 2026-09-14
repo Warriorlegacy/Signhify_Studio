@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { CREDIT_PACKS, type CreditPackId } from "./credit-packs";
 import logger from "./logger";
 
 /**
