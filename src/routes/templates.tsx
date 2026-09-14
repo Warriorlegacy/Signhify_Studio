@@ -30,6 +30,9 @@ import { SignhifyLogo } from "@/components/SignhifyLogo";
 import { TemplateThumbnail } from "@/components/templates/TemplateThumbnail";
 import { TEMPLATES, TEMPLATE_CATEGORIES, type TemplateItem, type TemplateCategory } from "@/lib/templates-data";
 import { TemplateParticleCanvas } from "@/components/three/TemplateParticleCanvas";
+import { useServerFn } from "@tanstack/react-start";
+import { useUser } from "@/hooks/useUser";
+import { getMyEntitlements } from "@/lib/entitlements.functions";
 import { toast } from "sonner";
 
 interface TemplatesSearch {
