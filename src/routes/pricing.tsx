@@ -352,6 +352,7 @@ function PricingPage() {
   const reportPayment = useServerFn(createManualPayment);
   const [upiPlan, setUpiPlan] = useState<{ id: string; name: string; usd: number } | null>(null);
   const [upiRef, setUpiRef] = useState("");
+  const isPackPayment = Boolean(upiPlan && upiPlan.id in CREDIT_PACKS);
   const [upiSending, setUpiSending] = useState(false);
   const [upiReported, setUpiReported] = useState(false);
 
@@ -388,7 +389,9 @@ function PricingPage() {
         data: {
           amount: upiPlan.usd,
           method: "upi",
-          description: `${upiPlan.name} — ${annual ? "annual" : "monthly"}`,
+          description: isPackPayment
+            ? `${upiPlan.name} — one-time credit top-up`
+            : `${upiPlan.name} — ${annual ? "annual" : "monthly"}`,
           transactionRef: upiRef.trim(),
         },
       });
@@ -1042,8 +1045,9 @@ function PricingPage() {
                           Pay by UPI — {upiPlan.name}
                         </h3>
                         <p className="text-white/55 text-xs mt-1">
-                          ${upiPlan.usd} {annual ? "per year" : "per month"} · pay the equivalent in
-                          INR
+                          ${upiPlan.usd}{" "}
+                          {isPackPayment ? "one time" : annual ? "per year" : "per month"} · pay the
+                          equivalent in INR
                         </p>
                       </div>
                       <button
@@ -1116,8 +1120,8 @@ function PricingPage() {
                       Payment reported
                     </h3>
                     <p className="text-white/60 text-xs mb-6">
-                      We've logged your {upiPlan.name} payment. Once it's verified on WhatsApp, your
-                      plan is switched on.
+                      We've logged your {upiPlan.name} payment. Once it's verified on WhatsApp,
+                      {isPackPayment ? " your credits are added." : " your plan is switched on."}
                     </p>
                     <button
                       onClick={() => setUpiPlan(null)}
