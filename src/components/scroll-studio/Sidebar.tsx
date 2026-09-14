@@ -121,7 +121,12 @@ export function Sidebar({
         </div>
 
         <TabsContent value="chat" className="flex-1 overflow-hidden m-0 p-0">
-          <ChatInterface projectId={projectId} onUpdatePreview={onUpdatePreview} />
+          <ChatInterface
+            projectId={projectId}
+            onProjectCreated={onProjectCreated}
+            onUpdatePreview={onUpdatePreview}
+          />
+
         </TabsContent>
 
         <TabsContent value="settings" className="flex-1 overflow-y-auto m-0 p-0">
