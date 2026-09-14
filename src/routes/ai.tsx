@@ -919,7 +919,30 @@ function AiPage() {
           </div>
         )}
 
-        {stage === "error" && (
+        {stage === "error" && signInRequired && (
+          <div className="mt-8 rounded-2xl border border-primary/40 bg-primary/5 p-6 text-sm">
+            <div className="font-semibold mb-1">That was your free blueprint</div>
+            <div className="text-muted-foreground">
+              Create a free account to keep generating plans, save them, and build the product.
+            </div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link
+                to="/signup"
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground"
+              >
+                Create free account <ArrowRight size={12} />
+              </Link>
+              <Link
+                to="/login"
+                className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-xs font-semibold"
+              >
+                Sign in
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {stage === "error" && !signInRequired && (
           <div className="mt-8 rounded-2xl border border-red-500/40 bg-red-500/5 p-6 text-sm text-red-200">
             <div className="font-semibold mb-1">Signhify AI hit a snag</div>
             <div className="text-red-200/80">{error}</div>
