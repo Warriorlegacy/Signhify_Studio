@@ -78,6 +78,8 @@ export const publishProjectToMarketplace = createServerFn({ method: "POST" })
             price_cents: 0,
             preview_url: `/projects/${project.id}`,
             asset_path: null,
+            status: "pending",
+            is_active: false,
             creator_id: project.user_id || userId,
           },
         ])
@@ -93,9 +95,50 @@ export const publishProjectToMarketplace = createServerFn({ method: "POST" })
         );
       }
 
-      return { success: true as const, listing: inserted };
+      return {
+        success: true as const,
+        listing: inserted,
+        status: "pending" as const,
+        message: "Submitted for review — it goes live once approved.",
+      };
     } catch (e: any) {
       console.error("[publishProjectToMarketplace]", e);
       throw new Error(e.message || "Failed to publish to marketplace");
+    }
+  });
+
+/** Public detail read for one approved marketplace listing. */
+export const fetchListingDetail = createServerFn({ method: "GET" })
+  .inputValidator((input: unknown) => {
+    const slug = String((input as any)?.slug ?? "").trim();
+    if (!slug) throw new Error("Slug required");
+    return { slug };
+  })
+  .handler(async ({ data }) => {
+    try {
+      const { fetchListingBySlug } = await import("@/lib/marketplace.server");
+      const row = await fetchListingBySlug(data.slug);
+      if (!row) {
+        const fallback = MARKET.find((m) => m.slug === data.slug) ?? null;
+        return { listing: fallback };
+      }
+      const item: MarketItem = {
+        id: row.id,
+        slug: row.slug,
+        name: row.title,
+        blurb: row.description ?? "Marketplace listing",
+        category: (row.category as MarketItem["category"]) ?? "Template",
+        price: Math.round((row.price_cents ?? 0) / 100),
+        price_cents: row.price_cents ?? 0,
+        preview_url: row.preview_url,
+        asset_path: null,
+        tags: row.category ? [row.category] : [],
+        accent: "linear-gradient(135deg, oklch(0.72 0.21 45), oklch(0.22 0.06 260))",
+        badge: (row.price_cents ?? 0) === 0 ? "Free" : undefined,
+      };
+      return { listing: item };
+    } catch (err) {
+      console.error("[marketplace] detail serverFn failed", err);
+      return { listing: MARKET.find((m) => m.slug === data.slug) ?? null };
     }
   });

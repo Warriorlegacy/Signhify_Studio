@@ -43,6 +43,15 @@ type Listing = {
   preview_url: string | null;
   is_active: boolean | null;
   created_at: string | null;
+  status?: string | null;
+  review_note?: string | null;
+};
+
+const reviewChip = (status?: string | null) => {
+  const s = (status ?? "pending").toLowerCase();
+  if (s === "live") return { label: "Live", cls: "text-emerald-300 border-emerald-500/40 bg-emerald-500/10" };
+  if (s === "rejected") return { label: "Rejected", cls: "text-red-300 border-red-500/40 bg-red-500/10" };
+  return { label: "Pending review", cls: "text-amber-300 border-amber-500/40 bg-amber-500/10" };
 };
 
 const money = (cents: number | null) =>
@@ -213,7 +222,15 @@ function CreatorDashboard() {
                   >
                     {listing.is_active ? "Live" : "Draft"}
                   </span>
+                  <span
+                    className={`rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${reviewChip(listing.status).cls}`}
+                  >
+                    {reviewChip(listing.status).label}
+                  </span>
                 </div>
+                {listing.review_note && (
+                  <p className="mt-1 text-xs text-amber-300/80">Note: {listing.review_note}</p>
+                )}
                 <p className="mt-1 line-clamp-2 text-sm text-white/55">
                   {listing.description || "No description yet."}
                 </p>

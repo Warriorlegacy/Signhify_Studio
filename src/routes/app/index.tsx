@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { FolderOpen } from "lucide-react";
+import { FolderOpen, Inbox } from "lucide-react";
 import { requireAppAuth } from "@/lib/auth-guard.server";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -52,12 +52,26 @@ function AppDashboard() {
             </div>
             <h1 className="font-display text-4xl font-black">Dashboard</h1>
           </div>
-          <Link
-            to="/app/projects/new"
-            className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-          >
-            Create your first project
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              to="/app/inbox"
+              className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm"
+            >
+              <Inbox className="w-4 h-4" /> Client inbox
+            </Link>
+            <Link
+              to="/portal"
+              className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm"
+            >
+              Client portal
+            </Link>
+            <Link
+              to="/app/projects/new"
+              className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+            >
+              Create your first project
+            </Link>
+          </div>
         </div>
         {q.isLoading ? (
           <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">

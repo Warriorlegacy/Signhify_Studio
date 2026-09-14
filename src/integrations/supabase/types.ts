@@ -1823,7 +1823,6 @@ export type Database = {
         Args: { p_ip?: string; p_user_id: string }
         Returns: Json
       }
-      is_signhify_admin: { Args: { _uid: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never

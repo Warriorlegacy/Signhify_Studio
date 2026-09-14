@@ -46,10 +46,29 @@ export async function fetchListings(
     q = q.textSearch("search_vector", query.trim(), { type: "plain", config: "english" });
   if (category && category !== "All") q = q.eq("category", category);
   if (typeof free === "boolean") q = free ? q.eq("price_cents", 0) : q.gt("price_cents", 0);
+  // Only approved listings are public.
+  q = q.eq("status", "live");
   const { data, error } = await q.order("created_at", { ascending: false });
   if (error) {
     console.error("[marketplace] fetch failed", error);
     return [];
   }
   return data ?? [];
+}
+
+/** Public detail read for a single approved listing. */
+export async function fetchListingBySlug(slug: string): Promise<DbListing | null> {
+  const supabase = getPublicClient();
+  const { data, error } = await (supabase.from as any)("marketplace_listings")
+    .select(
+      "id, slug, title, description, category, price_cents, preview_url, creator_id, created_at",
+    )
+    .eq("slug", slug)
+    .eq("status", "live")
+    .maybeSingle();
+  if (error) {
+    console.error("[marketplace] detail fetch failed", error);
+    return null;
+  }
+  return (data as DbListing) ?? null;
 }

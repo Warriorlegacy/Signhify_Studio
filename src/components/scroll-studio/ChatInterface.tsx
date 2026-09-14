@@ -39,6 +39,7 @@ export function ChatInterface({
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const messagesRef = useRef<Message[]>(messages);
+  const autoRunRef = useRef<string | null>(null);
   const chatFn = useServerFn(scrollStudioChat);
   const getFn = useServerFn(getScrollStudioProject);
   const updateFn = useServerFn(updateScrollStudioProject);
@@ -73,6 +74,18 @@ export function ChatInterface({
             }))
           : [];
         setMessages(history.length > 0 ? history : [WELCOME]);
+        // A project created straight from a hero prompt has the prompt stored but
+        // no answer yet — kick off generation so the builder actually runs.
+        const last = history[history.length - 1];
+        if (
+          last &&
+          last.role === "user" &&
+          autoRunRef.current !== projectId &&
+          !isLoading
+        ) {
+          autoRunRef.current = projectId;
+          void runPrompt(last.content, history);
+        }
       })
       .catch(() => {});
     return () => {
@@ -86,13 +99,12 @@ export function ChatInterface({
     }
   }, [messages]);
 
-  const handleSubmit = async () => {
-    if (!input.trim() || isLoading) return;
+  const runPrompt = async (text: string, baseMessages?: Message[]) => {
+    if (!text.trim() || isLoading) return;
 
-    const userMsg: Message = { id: Date.now().toString(), role: "user", content: input };
-    const nextMessages = [...messagesRef.current, userMsg];
+    const userMsg: Message = { id: Date.now().toString(), role: "user", content: text };
+    const nextMessages = baseMessages ?? [...messagesRef.current, userMsg];
     setMessages(nextMessages);
-    setInput("");
     setIsLoading(true);
 
     try {
@@ -156,6 +168,13 @@ export function ChatInterface({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSubmit = async () => {
+    if (!input.trim() || isLoading) return;
+    const text = input;
+    setInput("");
+    await runPrompt(text);
   };
 
   return (

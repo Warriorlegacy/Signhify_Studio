@@ -271,10 +271,17 @@ function MarketCard({ item }: { item: MarketItem }) {
             </span>
           ))}
         </div>
+        <Link
+          to="/marketplace/$slug"
+          params={{ slug: item.slug }}
+          className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-md border border-border px-4 py-2 text-xs text-muted-foreground hover:text-foreground hover:border-primary/50 transition"
+        >
+          View full layout <ArrowUpRight size={12} />
+        </Link>
         <button
           type="button"
           onClick={handleCta}
-          className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-md border border-border bg-surface/80 px-4 py-2.5 text-sm font-semibold hover:border-primary/60 hover:bg-primary/10 transition"
+          className="mt-2 w-full inline-flex items-center justify-center gap-2 rounded-md border border-border bg-surface/80 px-4 py-2.5 text-sm font-semibold hover:border-primary/60 hover:bg-primary/10 transition"
         >
           {isFree ? (
             <>

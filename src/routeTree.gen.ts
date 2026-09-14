@@ -29,6 +29,7 @@ import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as OsRouteImport } from './routes/os'
+import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProjectsRouteImport } from './routes/projects'
@@ -45,10 +46,12 @@ import { Route as UsAiEngineeringStudioRouteImport } from './routes/us-ai-engine
 import { Route as VenturesRouteImport } from './routes/ventures'
 import { Route as VisionRouteImport } from './routes/vision'
 import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as AppInboxRouteImport } from './routes/app/inbox'
 import { Route as AppSettingsRouteImport } from './routes/app/settings'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as MarketplaceSellRouteImport } from './routes/marketplace.sell'
 import { Route as MarketplaceSuccessRouteImport } from './routes/marketplace.success'
+import { Route as MarketplaceSlugRouteImport } from './routes/marketplace_.$slug'
 import { Route as OsIndexRouteImport } from './routes/os/index'
 import { Route as OsLogsRouteImport } from './routes/os/logs'
 import { Route as OsMarketplaceRouteImport } from './routes/os/marketplace'
@@ -176,6 +179,11 @@ const OsRoute = OsRouteImport.update({
   path: '/os',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
@@ -256,6 +264,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/app/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppInboxRoute = AppInboxRouteImport.update({
+  id: '/app/inbox',
+  path: '/app/inbox',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/app/settings',
   path: '/app/settings',
@@ -275,6 +288,11 @@ const MarketplaceSuccessRoute = MarketplaceSuccessRouteImport.update({
   id: '/success',
   path: '/success',
   getParentRoute: () => MarketplaceRoute,
+} as any)
+const MarketplaceSlugRoute = MarketplaceSlugRouteImport.update({
+  id: '/marketplace_/$slug',
+  path: '/marketplace/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const OsIndexRoute = OsIndexRouteImport.update({
   id: '/',
@@ -423,6 +441,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
   '/os': typeof OsRouteWithChildren
+  '/portal': typeof PortalRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -438,10 +457,12 @@ export interface FileRoutesByFullPath {
   '/us-ai-engineering-studio': typeof UsAiEngineeringStudioRoute
   '/ventures': typeof VenturesRoute
   '/vision': typeof VisionRoute
+  '/app/inbox': typeof AppInboxRoute
   '/app/settings': typeof AppSettingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
+  '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/os/logs': typeof OsLogsRoute
   '/os/marketplace': typeof OsMarketplaceRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -489,6 +510,7 @@ export interface FileRoutesByTo {
   '/insights': typeof InsightsRouteWithChildren
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
+  '/portal': typeof PortalRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -504,10 +526,12 @@ export interface FileRoutesByTo {
   '/us-ai-engineering-studio': typeof UsAiEngineeringStudioRoute
   '/ventures': typeof VenturesRoute
   '/vision': typeof VisionRoute
+  '/app/inbox': typeof AppInboxRoute
   '/app/settings': typeof AppSettingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
+  '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/os/logs': typeof OsLogsRoute
   '/os/marketplace': typeof OsMarketplaceRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -557,6 +581,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
   '/os': typeof OsRouteWithChildren
+  '/portal': typeof PortalRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -572,10 +597,12 @@ export interface FileRoutesById {
   '/us-ai-engineering-studio': typeof UsAiEngineeringStudioRoute
   '/ventures': typeof VenturesRoute
   '/vision': typeof VisionRoute
+  '/app/inbox': typeof AppInboxRoute
   '/app/settings': typeof AppSettingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
+  '/marketplace_/$slug': typeof MarketplaceSlugRoute
   '/os/logs': typeof OsLogsRoute
   '/os/marketplace': typeof OsMarketplaceRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -626,6 +653,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/marketplace'
     | '/os'
+    | '/portal'
     | '/pricing'
     | '/privacy'
     | '/projects'
@@ -641,10 +669,12 @@ export interface FileRouteTypes {
     | '/us-ai-engineering-studio'
     | '/ventures'
     | '/vision'
+    | '/app/inbox'
     | '/app/settings'
     | '/insights/$slug'
     | '/marketplace/sell'
     | '/marketplace/success'
+    | '/marketplace/$slug'
     | '/os/logs'
     | '/os/marketplace'
     | '/projects/$slug'
@@ -692,6 +722,7 @@ export interface FileRouteTypes {
     | '/insights'
     | '/login'
     | '/marketplace'
+    | '/portal'
     | '/pricing'
     | '/privacy'
     | '/projects'
@@ -707,10 +738,12 @@ export interface FileRouteTypes {
     | '/us-ai-engineering-studio'
     | '/ventures'
     | '/vision'
+    | '/app/inbox'
     | '/app/settings'
     | '/insights/$slug'
     | '/marketplace/sell'
     | '/marketplace/success'
+    | '/marketplace/$slug'
     | '/os/logs'
     | '/os/marketplace'
     | '/projects/$slug'
@@ -759,6 +792,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/marketplace'
     | '/os'
+    | '/portal'
     | '/pricing'
     | '/privacy'
     | '/projects'
@@ -774,10 +808,12 @@ export interface FileRouteTypes {
     | '/us-ai-engineering-studio'
     | '/ventures'
     | '/vision'
+    | '/app/inbox'
     | '/app/settings'
     | '/insights/$slug'
     | '/marketplace/sell'
     | '/marketplace/success'
+    | '/marketplace_/$slug'
     | '/os/logs'
     | '/os/marketplace'
     | '/projects/$slug'
@@ -827,6 +863,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   MarketplaceRoute: typeof MarketplaceRouteWithChildren
   OsRoute: typeof OsRouteWithChildren
+  PortalRoute: typeof PortalRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
@@ -842,7 +879,9 @@ export interface RootRouteChildren {
   UsAiEngineeringStudioRoute: typeof UsAiEngineeringStudioRoute
   VenturesRoute: typeof VenturesRoute
   VisionRoute: typeof VisionRoute
+  AppInboxRoute: typeof AppInboxRoute
   AppSettingsRoute: typeof AppSettingsRoute
+  MarketplaceSlugRoute: typeof MarketplaceSlugRoute
   StudioSpikeRoute: typeof StudioSpikeRoute
   AppIndexRoute: typeof AppIndexRoute
   ScrollStudioIndexRoute: typeof ScrollStudioIndexRoute
@@ -1002,6 +1041,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
@@ -1114,6 +1160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/inbox': {
+      id: '/app/inbox'
+      path: '/app/inbox'
+      fullPath: '/app/inbox'
+      preLoaderRoute: typeof AppInboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/settings': {
       id: '/app/settings'
       path: '/app/settings'
@@ -1141,6 +1194,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/marketplace/success'
       preLoaderRoute: typeof MarketplaceSuccessRouteImport
       parentRoute: typeof MarketplaceRoute
+    }
+    '/marketplace_/$slug': {
+      id: '/marketplace_/$slug'
+      path: '/marketplace/$slug'
+      fullPath: '/marketplace/$slug'
+      preLoaderRoute: typeof MarketplaceSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/os/': {
       id: '/os/'
@@ -1425,6 +1485,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   MarketplaceRoute: MarketplaceRouteWithChildren,
   OsRoute: OsRouteWithChildren,
+  PortalRoute: PortalRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
@@ -1440,7 +1501,9 @@ const rootRouteChildren: RootRouteChildren = {
   UsAiEngineeringStudioRoute: UsAiEngineeringStudioRoute,
   VenturesRoute: VenturesRoute,
   VisionRoute: VisionRoute,
+  AppInboxRoute: AppInboxRoute,
   AppSettingsRoute: AppSettingsRoute,
+  MarketplaceSlugRoute: MarketplaceSlugRoute,
   StudioSpikeRoute: StudioSpikeRoute,
   AppIndexRoute: AppIndexRoute,
   ScrollStudioIndexRoute: ScrollStudioIndexRoute,
