@@ -598,10 +598,18 @@ class RobustAIService {
       {
         name: "NVIDIA",
         url: "https://integrate.api.nvidia.com/v1/chat/completions",
-        model: "nvidia/llama-3.3-nemotron-super-49b-v1",
+        model: "nvidia/llama-3.1-nemotron-70b-instruct",
         isAnthropic: false,
         priority: 5,
       },
+      {
+        name: "HuggingFace",
+        url: "https://router.huggingface.co/v1/chat/completions",
+        model: "meta-llama/Llama-3.3-70B-Instruct",
+        isAnthropic: false,
+        priority: 5,
+      },
+
       {
         name: "OpenRouter",
         url: "https://openrouter.ai/api/v1/chat/completions",
