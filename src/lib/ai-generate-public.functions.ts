@@ -1,7 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { createClient } from "@supabase/supabase-js";
-import { generateAIResponse } from "./ai-gateway.server";
 import type { GeneratedPlan } from "./ai-generate.functions";
 
 /**
@@ -131,6 +130,4 @@ export const generatePublicPlan = createServerFn({ method: "POST" })
     return parsed;
   });
 
-// Keep a reference so tree-shaking never drops the managed helper import.
 export type { GeneratedPlan };
-void generateAIResponse;
