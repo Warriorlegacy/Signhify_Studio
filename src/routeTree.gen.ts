@@ -22,6 +22,7 @@ import { Route as BrandRouteImport } from './routes/brand'
 import { Route as BuilderRouteImport } from './routes/builder'
 import { Route as ConfirmRouteImport } from './routes/confirm'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CreatorRouteImport } from './routes/creator'
 import { Route as FreeConsultationRouteImport } from './routes/free-consultation'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as InsightsRouteImport } from './routes/insights'
@@ -138,6 +139,11 @@ const ConfirmRoute = ConfirmRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreatorRoute = CreatorRouteImport.update({
+  id: '/creator',
+  path: '/creator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FreeConsultationRoute = FreeConsultationRouteImport.update({
@@ -410,6 +416,7 @@ export interface FileRoutesByFullPath {
   '/builder': typeof BuilderRoute
   '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
+  '/creator': typeof CreatorRoute
   '/free-consultation': typeof FreeConsultationRoute
   '/help': typeof HelpRoute
   '/insights': typeof InsightsRouteWithChildren
@@ -476,6 +483,7 @@ export interface FileRoutesByTo {
   '/builder': typeof BuilderRoute
   '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
+  '/creator': typeof CreatorRoute
   '/free-consultation': typeof FreeConsultationRoute
   '/help': typeof HelpRoute
   '/insights': typeof InsightsRouteWithChildren
@@ -542,6 +550,7 @@ export interface FileRoutesById {
   '/builder': typeof BuilderRoute
   '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
+  '/creator': typeof CreatorRoute
   '/free-consultation': typeof FreeConsultationRoute
   '/help': typeof HelpRoute
   '/insights': typeof InsightsRouteWithChildren
@@ -610,6 +619,7 @@ export interface FileRouteTypes {
     | '/builder'
     | '/confirm'
     | '/contact'
+    | '/creator'
     | '/free-consultation'
     | '/help'
     | '/insights'
@@ -676,6 +686,7 @@ export interface FileRouteTypes {
     | '/builder'
     | '/confirm'
     | '/contact'
+    | '/creator'
     | '/free-consultation'
     | '/help'
     | '/insights'
@@ -741,6 +752,7 @@ export interface FileRouteTypes {
     | '/builder'
     | '/confirm'
     | '/contact'
+    | '/creator'
     | '/free-consultation'
     | '/help'
     | '/insights'
@@ -808,6 +820,7 @@ export interface RootRouteChildren {
   BuilderRoute: typeof BuilderRoute
   ConfirmRoute: typeof ConfirmRoute
   ContactRoute: typeof ContactRoute
+  CreatorRoute: typeof CreatorRoute
   FreeConsultationRoute: typeof FreeConsultationRoute
   HelpRoute: typeof HelpRoute
   InsightsRoute: typeof InsightsRouteWithChildren
@@ -938,6 +951,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creator': {
+      id: '/creator'
+      path: '/creator'
+      fullPath: '/creator'
+      preLoaderRoute: typeof CreatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/free-consultation': {
@@ -1398,6 +1418,7 @@ const rootRouteChildren: RootRouteChildren = {
   BuilderRoute: BuilderRoute,
   ConfirmRoute: ConfirmRoute,
   ContactRoute: ContactRoute,
+  CreatorRoute: CreatorRoute,
   FreeConsultationRoute: FreeConsultationRoute,
   HelpRoute: HelpRoute,
   InsightsRoute: InsightsRouteWithChildren,
