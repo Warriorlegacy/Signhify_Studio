@@ -712,7 +712,8 @@ export type Database = {
           body: string | null
           created_at: string
           id: string
-          listing_id: string
+          listing_id: string | null
+          listing_slug: string
           rating: number
           updated_at: string
           user_id: string
@@ -722,7 +723,8 @@ export type Database = {
           body?: string | null
           created_at?: string
           id?: string
-          listing_id: string
+          listing_id?: string | null
+          listing_slug: string
           rating: number
           updated_at?: string
           user_id: string
@@ -732,7 +734,8 @@ export type Database = {
           body?: string | null
           created_at?: string
           id?: string
-          listing_id?: string
+          listing_id?: string | null
+          listing_slug?: string
           rating?: number
           updated_at?: string
           user_id?: string
