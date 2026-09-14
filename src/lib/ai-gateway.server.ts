@@ -43,7 +43,12 @@ export async function generateAIResponseFor(
     return robustGenerateAIResponse({
       ...options,
       tier: access.tier,
-      preferredCluster: access.tier === "free_trial" ? "free_coding" : (options.preferredCluster || "auto"),
+      preferredCluster:
+        access.tier === "free_trial"
+          ? "free_coding"
+          : options.preferredCluster && options.preferredCluster !== "auto"
+            ? options.preferredCluster
+            : "frontier",
     });
   }
   return robustAIService.generateAIResponseWithKeys(
