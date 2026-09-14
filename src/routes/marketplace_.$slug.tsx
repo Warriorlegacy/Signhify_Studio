@@ -255,6 +255,87 @@ function ListingDetail() {
                 View the live preview →
               </a>
             )}
+
+            {listing.id && (
+              <div className="mt-12 border-t border-border pt-8">
+                <h2 className="font-display text-xl font-bold">Ratings &amp; reviews</h2>
+                {reviewCount > 0 ? (
+                  <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+                    <StarRating value={average} size={16} />
+                    <span className="font-semibold text-foreground">{average.toFixed(1)}</span>
+                    <span>
+                      from {reviewCount} buyer{reviewCount === 1 ? "" : "s"}
+                    </span>
+                  </div>
+                ) : (
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    No reviews yet — be the first to rate this blueprint.
+                  </p>
+                )}
+
+                <form
+                  onSubmit={submitReview}
+                  className="mt-6 rounded-2xl border border-border bg-surface p-5"
+                >
+                  <div className="text-sm font-semibold">Leave your review</div>
+                  <div className="mt-3">
+                    <StarRating value={myRating} size={22} onChange={setMyRating} />
+                  </div>
+                  <textarea
+                    value={myBody}
+                    onChange={(e) => setMyBody(e.target.value)}
+                    rows={3}
+                    maxLength={1500}
+                    placeholder="What worked well? What would you change?"
+                    className="mt-3 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  />
+                  <div className="mt-3 flex items-center gap-2">
+                    <button
+                      type="submit"
+                      disabled={savingReview}
+                      className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
+                    >
+                      {savingReview && <Loader2 className="w-4 h-4 animate-spin" />} Post review
+                    </button>
+                    {user && (
+                      <button
+                        type="button"
+                        onClick={deleteReview}
+                        className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs text-muted-foreground hover:text-foreground"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" /> Remove mine
+                      </button>
+                    )}
+                  </div>
+                  {!user && (
+                    <p className="mt-2 text-[11px] text-muted-foreground">
+                      You'll be asked to sign in first.
+                    </p>
+                  )}
+                </form>
+
+                <ul className="mt-6 space-y-4">
+                  {reviews.map((r) => (
+                    <li key={r.id} className="rounded-xl border border-border p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2">
+                          <StarRating value={r.rating} />
+                          <span className="text-sm font-medium">{r.author_name ?? "Buyer"}</span>
+                        </div>
+                        <span className="text-[11px] text-muted-foreground">
+                          {new Date(r.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                      {r.body && (
+                        <p className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">
+                          {r.body}
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           <aside className="h-fit rounded-2xl border border-border bg-surface p-6 lg:sticky lg:top-28">
