@@ -46,6 +46,19 @@ class RobustAIService {
 
     // Define all available providers with their priorities
     const allProviders: ProviderConfig[] = [
+      // Premium frontier models — reserved for paid customers (see "frontier" cluster)
+      {
+        name: "OpenAI",
+        url: "https://api.openai.com/v1/chat/completions",
+        model: env("OPENAI_MODEL") || "gpt-4o",
+        apiKey: env("OPENAI_API_KEY"),
+        isAnthropic: false,
+        priority: 0.1,
+        enabled: !!env("OPENAI_API_KEY"),
+        failureCount: 0,
+        lastFailureTime: null,
+        cooldownPeriod: this.defaultCooldownPeriod,
+      },
       // 0. Kilo / OpenCode local headless daemon (if kilo serve or opencode serve is running)
       {
         name: "KiloEngine",
