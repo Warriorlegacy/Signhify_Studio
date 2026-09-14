@@ -94,6 +94,29 @@ function TemplatesPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
+  // Paid customers unlock the full master prompts; everyone else sees a teaser.
+  const { user, loading: authLoading } = useUser();
+  const loadEntitlements = useServerFn(getMyEntitlements);
+  const [isPaid, setIsPaid] = useState(false);
+
+  useEffect(() => {
+    if (authLoading || !user) {
+      setIsPaid(false);
+      return;
+    }
+    let active = true;
+    loadEntitlements({})
+      .then((ent) => {
+        if (active) setIsPaid(Boolean(ent.isPaid));
+      })
+      .catch(() => {
+        if (active) setIsPaid(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [authLoading, user, loadEntitlements]);
+
   // Auto-play scrub simulation
   useEffect(() => {
     if (!isPlaying) return;
