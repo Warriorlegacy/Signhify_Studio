@@ -400,7 +400,7 @@ function TemplatesPage() {
                     </button>
                     <Link
                       to="/scroll-studio"
-                      search={{ prompt: template.godLevelPrompt }}
+                      search={{ prompt: promptPreview(template.godLevelPrompt) }}
                       className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black flex items-center justify-center gap-1.5 transition-transform hover:scale-[1.02]"
                     >
                       <WandSparkles size={12} />
@@ -545,7 +545,7 @@ function TemplatesPage() {
                 </button>
                 <Link
                   to="/scroll-studio"
-                  search={{ prompt: activePreview.godLevelPrompt }}
+                  search={{ prompt: promptPreview(activePreview.godLevelPrompt) }}
                   className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black"
                 >
                   <WandSparkles size={12} />
@@ -742,7 +742,7 @@ function TemplatesPage() {
               <div className="flex items-center gap-3">
                 <Link
                   to="/scroll-studio"
-                  search={{ prompt: activePreview.godLevelPrompt }}
+                  search={{ prompt: promptPreview(activePreview.godLevelPrompt) }}
                   className="px-6 py-2.5 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black flex items-center gap-2 shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:scale-[1.02] transition-transform"
                 >
                   <WandSparkles size={13} />
@@ -800,7 +800,7 @@ function TemplatesPage() {
               </button>
               <Link
                 to="/scroll-studio"
-                search={{ prompt: promptModalTemplate.godLevelPrompt }}
+                search={{ prompt: promptPreview(promptModalTemplate.godLevelPrompt) }}
                 onClick={() => setPromptModalTemplate(null)}
                 className="px-6 py-2.5 rounded-xl text-xs font-bold btn-moonlit agent-glass-shine text-black flex items-center gap-2"
               >
