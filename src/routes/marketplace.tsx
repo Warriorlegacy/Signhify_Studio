@@ -61,7 +61,7 @@ export const Route = createFileRoute("/marketplace")({
 });
 
 function MarketplacePage() {
-  const { items: initialItems } = Route.useLoaderData();
+  const { items: initialItems, summaries } = Route.useLoaderData();
   const [cat, setCat] = useState<(typeof MARKET_CATEGORIES)[number]>("All");
   const [q, setQ] = useState("");
 
@@ -138,7 +138,11 @@ function MarketplacePage() {
         {/* Grid */}
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {items.map((item: MarketItem) => (
-            <MarketCard key={item.slug} item={item} />
+            <MarketCard
+              key={item.slug}
+              item={item}
+              rating={item.id ? summaries[item.id] : undefined}
+            />
           ))}
           {items.length === 0 && (
             <div className="col-span-full rounded-2xl border border-dashed border-border p-12 text-center text-muted-foreground">
@@ -265,6 +269,13 @@ function MarketCard({ item, rating }: { item: MarketItem; rating?: RatingSummary
             )}
           </div>
         </div>
+        {rating && rating.count > 0 && (
+          <div className="mt-2 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <StarRating value={rating.average} size={12} />
+            <span className="font-semibold text-foreground">{rating.average.toFixed(1)}</span>
+            <span>({rating.count})</span>
+          </div>
+        )}
         <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{item.blurb}</p>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {item.tags.map((t) => (
