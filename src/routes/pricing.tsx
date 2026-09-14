@@ -314,16 +314,12 @@ function PricingPage() {
   const { user, loading: authLoading } = useUser();
   const navigate = useNavigate();
   const { checkout, session_id } = Route.useSearch();
-  const startCheckout = useServerFn(createPlanCheckout);
   const confirmCheckout = useServerFn(confirmPlanCheckout);
-  const [checkoutPlan, setCheckoutPlan] = useState<string | null>(null);
   const [unlocked, setUnlocked] = useState<string | null>(null);
 
   // Credit balance + top-up packs
   const loadEntitlements = useServerFn(getMyEntitlements);
-  const startPackCheckout = useServerFn(createCreditPackCheckout);
   const [balance, setBalance] = useState<{ credits: number; plan: string } | null>(null);
-  const [packBusy, setPackBusy] = useState<string | null>(null);
 
   const refreshBalance = useMemo(
     () => async () => {
