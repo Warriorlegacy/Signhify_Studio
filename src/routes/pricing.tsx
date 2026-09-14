@@ -316,6 +316,21 @@ function PricingPage() {
   const [checkoutPlan, setCheckoutPlan] = useState<string | null>(null);
   const [unlocked, setUnlocked] = useState<string | null>(null);
 
+  // UPI / manual payment state
+  const reportPayment = useServerFn(createManualPayment);
+  const [upiPlan, setUpiPlan] = useState<{ id: string; name: string; usd: number } | null>(null);
+  const [upiRef, setUpiRef] = useState("");
+  const [upiSending, setUpiSending] = useState(false);
+  const [upiReported, setUpiReported] = useState(false);
+
+  const openUpi = (planId: string, tierName: string) => {
+    const plan = PLAN_CATALOG[planId as keyof typeof PLAN_CATALOG];
+    const cents = plan ? (annual ? plan.annual : plan.monthly) : 0;
+    setUpiPlan({ id: planId, name: tierName, usd: cents / 100 });
+    setUpiRef("");
+    setUpiReported(false);
+  };
+
   const handleOpenModal = (tierName: string) => {
     setSelectedTier(tierName);
     setModalOpen(true);
@@ -333,13 +348,35 @@ function PricingPage() {
     try {
       const { url } = await startCheckout({ data: { planId, annual } });
       window.location.href = url;
-    } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : `Could not start checkout for ${tierName}.`,
-      );
+    } catch {
+      // Card checkout unavailable — fall back to the UPI / WhatsApp flow.
+      openUpi(planId, tierName);
       setCheckoutPlan(null);
     }
   };
+
+  const handleReportUpi = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!upiPlan || !upiRef.trim() || upiSending) return;
+    setUpiSending(true);
+    try {
+      await reportPayment({
+        data: {
+          amount: upiPlan.usd,
+          method: "upi",
+          description: `${upiPlan.name} — ${annual ? "annual" : "monthly"}`,
+          transactionRef: upiRef.trim(),
+        },
+      });
+      setUpiReported(true);
+      toast.success("Payment reported — we'll confirm your subscription shortly.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not record your payment.");
+    } finally {
+      setUpiSending(false);
+    }
+  };
+
 
   // Confirm and unlock after returning from Stripe.
   useEffect(() => {
