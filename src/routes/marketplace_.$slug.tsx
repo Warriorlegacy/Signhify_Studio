@@ -1,10 +1,17 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { ArrowLeft, CheckCircle2, Loader2, MessageSquare, ShoppingBag } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Loader2, MessageSquare, ShoppingBag, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { fetchListingDetail } from "@/lib/marketplace-listings.functions";
 import { createManualPayment } from "@/lib/manual-payments.functions";
+import {
+  deleteMyListingReview,
+  listListingReviews,
+  upsertListingReview,
+  type PublicReview,
+} from "@/lib/listing-reviews.functions";
+import { StarRating } from "@/components/marketplace/StarRating";
 import { useUser } from "@/hooks/useUser";
 import { UPI_ID, USD_TO_INR, upiIntentLink, whatsappLink } from "@/lib/payment-contact";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -12,7 +19,15 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 export const Route = createFileRoute("/marketplace_/$slug")({
   loader: async ({ params }) => {
     const { listing } = await fetchListingDetail({ data: { slug: params.slug } });
-    return { listing };
+    let reviews: PublicReview[] = [];
+    if (listing?.id) {
+      try {
+        reviews = (await listListingReviews({ data: { listingId: listing.id } })).reviews;
+      } catch {
+        reviews = [];
+      }
+    }
+    return { listing, reviews };
   },
   head: ({ loaderData }) => {
     const l = loaderData?.listing;
@@ -44,15 +59,75 @@ export const Route = createFileRoute("/marketplace_/$slug")({
 });
 
 function ListingDetail() {
-  const { listing } = Route.useLoaderData();
+  const { listing, reviews: initialReviews } = Route.useLoaderData();
   const { user } = useUser();
   const navigate = useNavigate();
   const reportPayment = useServerFn(createManualPayment);
+  const saveReview = useServerFn(upsertListingReview);
+  const removeReview = useServerFn(deleteMyListingReview);
 
   const [buying, setBuying] = useState(false);
   const [ref, setRef] = useState("");
   const [sending, setSending] = useState(false);
   const [reported, setReported] = useState(false);
+
+  const [reviews, setReviews] = useState<PublicReview[]>(initialReviews ?? []);
+  const [myRating, setMyRating] = useState(0);
+  const [myBody, setMyBody] = useState("");
+  const [savingReview, setSavingReview] = useState(false);
+
+  const reviewCount = reviews.length;
+  const average = reviewCount
+    ? Math.round((reviews.reduce((s, r) => s + r.rating, 0) / reviewCount) * 10) / 10
+    : 0;
+
+  const reloadReviews = async (listingId: string) => {
+    try {
+      const res = await listListingReviews({ data: { listingId } });
+      setReviews(res.reviews);
+    } catch {
+      /* keep current list */
+    }
+  };
+
+  const submitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!listing?.id) return;
+    if (!user) {
+      toast.info("Sign in to leave a review.");
+      navigate({ to: "/login", search: { redirect: `/marketplace/${listing.slug}` } as any });
+      return;
+    }
+    if (!myRating) {
+      toast.info("Pick a star rating first.");
+      return;
+    }
+    setSavingReview(true);
+    try {
+      await saveReview({
+        data: { listingId: listing.id, rating: myRating, body: myBody.trim() },
+      });
+      setMyBody("");
+      setMyRating(0);
+      await reloadReviews(listing.id);
+      toast.success("Thanks — your review is live.");
+    } catch (err: any) {
+      toast.error(err?.message ?? "Could not save your review.");
+    } finally {
+      setSavingReview(false);
+    }
+  };
+
+  const deleteReview = async () => {
+    if (!listing?.id) return;
+    try {
+      await removeReview({ data: { listingId: listing.id } });
+      await reloadReviews(listing.id);
+      toast.success("Your review was removed.");
+    } catch (err: any) {
+      toast.error(err?.message ?? "Could not remove your review.");
+    }
+  };
 
   if (!listing) {
     return (
@@ -123,8 +198,19 @@ function ListingDetail() {
               style={{ background: listing.accent }}
             />
             <h1 className="mt-6 font-display text-4xl font-black">{listing.name}</h1>
-            <div className="mt-2 text-xs uppercase tracking-[0.2em] text-primary">
-              {listing.category}
+            <div className="mt-2 flex flex-wrap items-center gap-3">
+              <div className="text-xs uppercase tracking-[0.2em] text-primary">
+                {listing.category}
+              </div>
+              {reviewCount > 0 && (
+                <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <StarRating value={average} />
+                  <span className="font-semibold text-foreground">{average.toFixed(1)}</span>
+                  <span>
+                    ({reviewCount} review{reviewCount === 1 ? "" : "s"})
+                  </span>
+                </div>
+              )}
             </div>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground whitespace-pre-wrap">
               {listing.blurb}
@@ -168,6 +254,87 @@ function ListingDetail() {
               >
                 View the live preview →
               </a>
+            )}
+
+            {listing.id && (
+              <div className="mt-12 border-t border-border pt-8">
+                <h2 className="font-display text-xl font-bold">Ratings &amp; reviews</h2>
+                {reviewCount > 0 ? (
+                  <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+                    <StarRating value={average} size={16} />
+                    <span className="font-semibold text-foreground">{average.toFixed(1)}</span>
+                    <span>
+                      from {reviewCount} buyer{reviewCount === 1 ? "" : "s"}
+                    </span>
+                  </div>
+                ) : (
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    No reviews yet — be the first to rate this blueprint.
+                  </p>
+                )}
+
+                <form
+                  onSubmit={submitReview}
+                  className="mt-6 rounded-2xl border border-border bg-surface p-5"
+                >
+                  <div className="text-sm font-semibold">Leave your review</div>
+                  <div className="mt-3">
+                    <StarRating value={myRating} size={22} onChange={setMyRating} />
+                  </div>
+                  <textarea
+                    value={myBody}
+                    onChange={(e) => setMyBody(e.target.value)}
+                    rows={3}
+                    maxLength={1500}
+                    placeholder="What worked well? What would you change?"
+                    className="mt-3 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  />
+                  <div className="mt-3 flex items-center gap-2">
+                    <button
+                      type="submit"
+                      disabled={savingReview}
+                      className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
+                    >
+                      {savingReview && <Loader2 className="w-4 h-4 animate-spin" />} Post review
+                    </button>
+                    {user && (
+                      <button
+                        type="button"
+                        onClick={deleteReview}
+                        className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs text-muted-foreground hover:text-foreground"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" /> Remove mine
+                      </button>
+                    )}
+                  </div>
+                  {!user && (
+                    <p className="mt-2 text-[11px] text-muted-foreground">
+                      You'll be asked to sign in first.
+                    </p>
+                  )}
+                </form>
+
+                <ul className="mt-6 space-y-4">
+                  {reviews.map((r) => (
+                    <li key={r.id} className="rounded-xl border border-border p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2">
+                          <StarRating value={r.rating} />
+                          <span className="text-sm font-medium">{r.author_name ?? "Buyer"}</span>
+                        </div>
+                        <span className="text-[11px] text-muted-foreground">
+                          {new Date(r.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                      {r.body && (
+                        <p className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">
+                          {r.body}
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
 

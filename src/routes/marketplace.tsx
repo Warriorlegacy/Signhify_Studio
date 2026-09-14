@@ -4,19 +4,26 @@ import { useServerFn } from "@tanstack/react-start";
 import { ArrowUpRight, Download, Search, Sparkles, Store, User } from "lucide-react";
 import { MARKET, MARKET_CATEGORIES, type MarketItem } from "@/lib/marketplace";
 import { downloadAsset } from "@/lib/marketplace-download.functions";
-import { createCheckoutSession } from "@/lib/stripe-checkout.functions";
 import { fetchMarketplaceListings } from "@/lib/marketplace-listings.functions";
+import { listRatingSummaries, type RatingSummary } from "@/lib/listing-reviews.functions";
+import { StarRating } from "@/components/marketplace/StarRating";
 import { ThreeDCard } from "@/components/ui/ThreeDCard";
 import { toast } from "sonner";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/marketplace")({
   loader: async () => {
+    let summaries: Record<string, RatingSummary> = {};
+    try {
+      summaries = (await listRatingSummaries()).summaries;
+    } catch {
+      summaries = {};
+    }
     try {
       const { items } = await fetchMarketplaceListings();
-      return { items: items.length ? items : MARKET };
+      return { items: items.length ? items : MARKET, summaries };
     } catch {
-      return { items: MARKET };
+      return { items: MARKET, summaries };
     }
   },
   head: () => ({
@@ -54,7 +61,7 @@ export const Route = createFileRoute("/marketplace")({
 });
 
 function MarketplacePage() {
-  const { items: initialItems } = Route.useLoaderData();
+  const { items: initialItems, summaries } = Route.useLoaderData();
   const [cat, setCat] = useState<(typeof MARKET_CATEGORIES)[number]>("All");
   const [q, setQ] = useState("");
 
@@ -131,7 +138,11 @@ function MarketplacePage() {
         {/* Grid */}
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {items.map((item: MarketItem) => (
-            <MarketCard key={item.slug} item={item} />
+            <MarketCard
+              key={item.slug}
+              item={item}
+              rating={item.id ? summaries[item.id] : undefined}
+            />
           ))}
           {items.length === 0 && (
             <div className="col-span-full rounded-2xl border border-dashed border-border p-12 text-center text-muted-foreground">
@@ -166,11 +177,11 @@ function MarketplacePage() {
   );
 }
 
-function MarketCard({ item }: { item: MarketItem }) {
+function MarketCard({ item, rating }: { item: MarketItem; rating?: RatingSummary }) {
   const isFree = (item.price_cents ?? item.price * 100) === 0;
   const download = useServerFn(downloadAsset);
-  const checkout = useServerFn(createCheckoutSession);
   const navigate = useNavigate();
+
   const handleCta = async () => {
     if (!item.id) {
       if (item.preview_url) {
@@ -205,14 +216,12 @@ function MarketCard({ item }: { item: MarketItem }) {
         const { signedUrl } = await download({ data: { listingId: item.id } });
         window.location.href = signedUrl;
       } else {
-        const { url } = await checkout({ data: { listingId: item.id } });
-        window.location.href = url;
+        // Paid blueprints are bought with UPI on the listing page.
+        navigate({ to: "/marketplace/$slug", params: { slug: item.slug } });
       }
     } catch (e) {
-      console.error("[marketplace] checkout failed:", e);
-      toast.error(
-        isFree ? "Download failed. Please try again." : "Checkout failed. Please try again.",
-      );
+      console.error("[marketplace] card action failed:", e);
+      toast.error(isFree ? "Download failed. Please try again." : "Please try again.");
     }
   };
 
@@ -260,6 +269,13 @@ function MarketCard({ item }: { item: MarketItem }) {
             )}
           </div>
         </div>
+        {rating && rating.count > 0 && (
+          <div className="mt-2 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <StarRating value={rating.average} size={12} />
+            <span className="font-semibold text-foreground">{rating.average.toFixed(1)}</span>
+            <span>({rating.count})</span>
+          </div>
+        )}
         <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{item.blurb}</p>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {item.tags.map((t) => (
