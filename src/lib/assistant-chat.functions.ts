@@ -42,20 +42,21 @@ export const assistantChat = createServerFn({ method: "POST" })
     const byokClientKeys = (context as { byokClientKeys?: Record<string, string> }).byokClientKeys;
 
     const access = await resolveAssistantAIAccess({ supabase, userId, email, byokClientKeys });
-    const options = {
-      messages: [{ role: "system", content: SYSTEM }, ...data.messages],
-      temperature: 0.7,
-    };
+    const messages = [
+      { role: "system" as const, content: SYSTEM },
+      ...data.messages,
+    ];
 
     const { content, providerUsed } =
       access.mode === "managed"
         ? await robustAIService.generateAIResponse({
-            ...options,
+            messages,
+            temperature: 0.7,
             tier: access.tier,
             preferredCluster: access.tier === "free_trial" ? "free_coding" : "auto",
           })
         : await robustAIService.generateAIResponseWithKeys(
-            options,
+            { messages, temperature: 0.7 },
             access.userKeys,
             access.customEndpoints,
           );
