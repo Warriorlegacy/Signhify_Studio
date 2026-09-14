@@ -41,5 +41,25 @@ export const submitLead = createServerFn({ method: "POST" })
       console.error("[leads] insert failed", res.status, await res.text());
       throw new Error("Could not save your lead. Please email Piyushrajsingh092@gmail.com.");
     }
+
+    // Notify the studio inbox. Never blocks or fails the submission.
+    try {
+      const { notifyNewLead } = await import("./notifications.server");
+      await notifyNewLead({
+        name: data.name,
+        email: data.email,
+        company: data.company || null,
+        type: data.type,
+        scope: data.scope,
+        budget: data.budget,
+        timeline: data.timeline,
+        goals: data.goals,
+        message: data.message || null,
+        source: "studio-wizard",
+      });
+    } catch (err) {
+      console.error("[leads] notification failed", err);
+    }
+
     return { ok: true as const };
   });
