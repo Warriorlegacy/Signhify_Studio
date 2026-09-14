@@ -46,6 +46,19 @@ class RobustAIService {
 
     // Define all available providers with their priorities
     const allProviders: ProviderConfig[] = [
+      // Premium frontier models — reserved for paid customers (see "frontier" cluster)
+      {
+        name: "OpenAI",
+        url: "https://api.openai.com/v1/chat/completions",
+        model: env("OPENAI_MODEL") || "gpt-4o",
+        apiKey: env("OPENAI_API_KEY"),
+        isAnthropic: false,
+        priority: 0.1,
+        enabled: !!env("OPENAI_API_KEY"),
+        failureCount: 0,
+        lastFailureTime: null,
+        cooldownPeriod: this.defaultCooldownPeriod,
+      },
       // 0. Kilo / OpenCode local headless daemon (if kilo serve or opencode serve is running)
       {
         name: "KiloEngine",
@@ -211,14 +224,14 @@ class RobustAIService {
         lastFailureTime: null,
         cooldownPeriod: this.defaultCooldownPeriod,
       },
-      // 10. Anthropic Claude (if available)
+      // Premium frontier model — reserved for paid customers (see "frontier" cluster)
       {
         name: "Anthropic",
         url: "https://api.anthropic.com/v1/messages",
-        model: "claude-3-5-sonnet-20241022",
+        model: env("ANTHROPIC_MODEL") || "claude-sonnet-4-20250514",
         apiKey: env("ANTHROPIC_API_KEY"),
         isAnthropic: true,
-        priority: 11,
+        priority: 0.2,
         enabled: !!env("ANTHROPIC_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
@@ -453,8 +466,14 @@ class RobustAIService {
     // Filter to only enabled providers
     let availableProviders = this.providers.filter((p) => p.enabled);
 
-    // If free trial or free coding cluster requested, prioritize free coding engines
-    if (options.preferredCluster === "free_coding" || options.tier === "free_trial") {
+    // Paid-only frontier models (billed directly to Signhify's own accounts).
+    const premiumProviders = new Set(["OpenAI", "Anthropic"]);
+    const isPaid = options.tier === "paid" || options.preferredCluster === "frontier";
+
+    if (!isPaid) {
+      // Free trial / free coding: never touch the paid frontier accounts.
+      availableProviders = availableProviders.filter((p) => !premiumProviders.has(p.name));
+
       const freeProviders = new Set([
         "KiloEngine",
         "Groq",
@@ -468,6 +487,12 @@ class RobustAIService {
       availableProviders = [
         ...availableProviders.filter((p) => freeProviders.has(p.name)),
         ...availableProviders.filter((p) => !freeProviders.has(p.name)),
+      ];
+    } else {
+      // Paid customers: frontier models first, everything else as fallback.
+      availableProviders = [
+        ...availableProviders.filter((p) => premiumProviders.has(p.name)),
+        ...availableProviders.filter((p) => !premiumProviders.has(p.name)),
       ];
     }
 

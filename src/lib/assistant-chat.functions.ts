@@ -53,7 +53,7 @@ export const assistantChat = createServerFn({ method: "POST" })
             messages,
             temperature: 0.7,
             tier: access.tier,
-            preferredCluster: access.tier === "free_trial" ? "free_coding" : "auto",
+            preferredCluster: access.tier === "free_trial" ? "free_coding" : "frontier",
           })
         : await robustAIService.generateAIResponseWithKeys(
             { messages, temperature: 0.7 },
