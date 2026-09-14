@@ -26,6 +26,7 @@ import { AssistantChat } from "@/components/ai/AssistantChat";
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { generatePlan, savePlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
+import { generatePublicPlan } from "@/lib/ai-generate-public.functions";
 import { getGeneratePlanStreamConfig } from "@/lib/ai-generate-stream.functions";
 import { readByokSessionKeys } from "@/lib/byok-client";
 import { buildProduct, buildMultiProduct } from "@/lib/build-product.functions";
@@ -119,6 +120,8 @@ function AiPage() {
   });
   const [completedStages, setCompletedStages] = useState<PipelineStage[]>([]);
   const { user } = useUser();
+  const [freePlanUsed, setFreePlanUsed] = useState(false);
+  const [signInRequired, setSignInRequired] = useState(false);
   const [sharing, setSharing] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -159,6 +162,7 @@ function AiPage() {
   const creditsLow = creditsData && !isUnlimited && creditsData.creditsRemaining <= 1;
 
   const generate = useServerFn(generatePlan);
+  const generatePublicPlanFn = useServerFn(generatePublicPlan);
   const getStreamConfig = useServerFn(getGeneratePlanStreamConfig);
   const save = useServerFn(savePlan);
   const build = useServerFn(buildProduct);
@@ -928,12 +932,14 @@ function AiPage() {
             <div className="mt-4 flex flex-wrap gap-3">
               <Link
                 to="/signup"
+                search={{ redirect: "/ai" }}
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground"
               >
                 Create free account <ArrowRight size={12} />
               </Link>
               <Link
                 to="/login"
+                search={{ redirect: "/ai" }}
                 className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-xs font-semibold"
               >
                 Sign in

@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { generateAIResponseFor } from "./ai-gateway.server";
+import { resolveAssistantAIAccess } from "./ai-access.server";
+import { robustAIService } from "./robust-ai-service";
 import { withByokKeys } from "./byok-middleware";
 
 export type AssistantChatMessage = { role: "user" | "assistant"; content: string };
@@ -40,12 +41,25 @@ export const assistantChat = createServerFn({ method: "POST" })
     const email = (claims as { email?: string | null } | undefined)?.email ?? null;
     const byokClientKeys = (context as { byokClientKeys?: Record<string, string> }).byokClientKeys;
 
-    const { content, providerUsed } = await generateAIResponseFor(
-      {
-        messages: [{ role: "system", content: SYSTEM }, ...data.messages],
-        temperature: 0.7,
-      },
-      { supabase, userId, email, byokClientKeys },
-    );
+    const access = await resolveAssistantAIAccess({ supabase, userId, email, byokClientKeys });
+    const messages = [
+      { role: "system" as const, content: SYSTEM },
+      ...data.messages,
+    ];
+
+    const { content, providerUsed } =
+      access.mode === "managed"
+        ? await robustAIService.generateAIResponse({
+            messages,
+            temperature: 0.7,
+            tier: access.tier,
+            preferredCluster: access.tier === "free_trial" ? "free_coding" : "auto",
+          })
+        : await robustAIService.generateAIResponseWithKeys(
+            { messages, temperature: 0.7 },
+            access.userKeys,
+            access.customEndpoints,
+          );
+
     return { content, providerUsed };
   });

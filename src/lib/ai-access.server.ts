@@ -55,28 +55,11 @@ export type AICtx = {
   byokClientKeys?: Record<string, string>;
 };
 
-export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
-  // Admins always use managed keys.
-  if (isAdminEmail(ctx.email)) return { mode: "managed", tier: "paid" };
-
-  const { data: prof } = await (ctx.supabase as any)
-    .from("profiles")
-    .select("subscription_plan, subscription_status, free_trial_used")
-    .eq("id", ctx.userId)
-    .maybeSingle();
-
-  const plan = String(prof?.subscription_plan ?? "free").toLowerCase();
-  const status = String(prof?.subscription_status ?? "").toLowerCase();
-  const paid =
-    PAID_PLANS.has(plan) && (status === "" || status === "active" || status === "trialing");
-  if (paid) return { mode: "managed", tier: "paid" };
-
-  // 1 Free Trial for Free Tier users if not yet used
-  if (!prof?.free_trial_used) {
-    return { mode: "managed", tier: "free_trial" };
-  }
-
-  // Free plan → require BYOK. Read keys through the user-scoped client (RLS).
+async function loadByokKeys(ctx: AICtx): Promise<{
+  userKeys: Record<string, string>;
+  customEndpoints: Record<string, string>;
+  decryptFailures: number;
+}> {
   const { data: keys } = await (ctx.supabase as any)
     .from("user_ai_keys")
     .select("provider, api_key_encrypted, api_endpoint");
@@ -132,6 +115,32 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
       provider: k.provider,
     });
   }
+  return { userKeys, customEndpoints, decryptFailures };
+}
+
+export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
+  // Admins always use managed keys.
+  if (isAdminEmail(ctx.email)) return { mode: "managed", tier: "paid" };
+
+  const { data: prof } = await (ctx.supabase as any)
+    .from("profiles")
+    .select("subscription_plan, subscription_status, free_trial_used")
+    .eq("id", ctx.userId)
+    .maybeSingle();
+
+  const plan = String(prof?.subscription_plan ?? "free").toLowerCase();
+  const status = String(prof?.subscription_status ?? "").toLowerCase();
+  const paid =
+    PAID_PLANS.has(plan) && (status === "" || status === "active" || status === "trialing");
+  if (paid) return { mode: "managed", tier: "paid" };
+
+  // 1 Free Trial for Free Tier users if not yet used
+  if (!prof?.free_trial_used) {
+    return { mode: "managed", tier: "free_trial" };
+  }
+
+  // Free plan → require BYOK. Read keys through the user-scoped client (RLS).
+  const { userKeys, customEndpoints, decryptFailures } = await loadByokKeys(ctx);
   if (Object.keys(userKeys).length === 0) {
     if (decryptFailures > 0) {
       const error = new Error(
@@ -143,4 +152,43 @@ export async function resolveAIAccess(ctx: AICtx): Promise<AIAccess> {
     throw new FreeTrialExpiredError();
   }
   return { mode: "byok", tier: "byok", userKeys, customEndpoints };
+}
+
+/**
+ * Assistant chat access: signed-in users always get real answers.
+ * - Paid / admin → managed premium keys.
+ * - Free with BYOK keys → their own keys.
+ * - Free without BYOK → managed free provider cluster (workspace free API keys).
+ */
+export async function resolveAssistantAIAccess(ctx: AICtx): Promise<AIAccess> {
+  // Admins always use managed keys.
+  if (isAdminEmail(ctx.email)) return { mode: "managed", tier: "paid" };
+
+  const { data: prof } = await (ctx.supabase as any)
+    .from("profiles")
+    .select("subscription_plan, subscription_status")
+    .eq("id", ctx.userId)
+    .maybeSingle();
+
+  const plan = String(prof?.subscription_plan ?? "free").toLowerCase();
+  const status = String(prof?.subscription_status ?? "").toLowerCase();
+  const paid =
+    PAID_PLANS.has(plan) && (status === "" || status === "active" || status === "trialing");
+  if (paid) return { mode: "managed", tier: "paid" };
+
+  // Prefer BYOK if the user has configured keys.
+  const { userKeys, customEndpoints, decryptFailures } = await loadByokKeys(ctx);
+  if (Object.keys(userKeys).length > 0) {
+    return { mode: "byok", tier: "byok", userKeys, customEndpoints };
+  }
+  if (decryptFailures > 0) {
+    const error = new Error(
+      "Your saved AI keys could not be decrypted. Please re-enter them in Settings → AI Keys.",
+    );
+    (error as { code?: string }).code = "BYOK_DECRYPT_FAILED";
+    throw error;
+  }
+
+  // Otherwise fall back to the workspace free provider cluster.
+  return { mode: "managed", tier: "free_trial" };
 }
