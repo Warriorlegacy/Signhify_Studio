@@ -420,6 +420,28 @@ function AiPage() {
       deploy_plan: "",
     };
 
+    // Signed-out visitors get one real, free blueprint before sign-in is required.
+    if (!user) {
+      try {
+        const result = await generatePublicPlanFn({ data: { prompt: value } });
+        setActiveAgent(AGENT_META.length - 1);
+        setCompletedStages(AGENT_META.map((a) => a.stage));
+        setPlan(result);
+        setFreePlanUsed(true);
+        setStage("done");
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : "Something went wrong. Try again.";
+        if (/SIGN_IN_REQUIRED|free blueprint/i.test(msg)) {
+          setSignInRequired(true);
+          setError("You have used your free blueprint. Sign in to keep generating plans.");
+        } else {
+          setError(msg);
+        }
+        setStage("error");
+      }
+      return;
+    }
+
     try {
       const { url, bearer, token } = await getStreamConfig({ data: undefined });
       const clientKeys = readByokSessionKeys();
