@@ -113,14 +113,12 @@ export const confirmPlanCheckout = createServerFn({ method: "POST" })
 
     const paid = session?.payment_status === "paid";
     const planId = session?.metadata?.plan_id as PlanId | undefined;
+    const packId = session?.metadata?.pack_id as CreditPackId | undefined;
     const ownerId = session?.metadata?.user_id ?? session?.client_reference_id;
 
     if (!paid) return { paid: false, plan: null as string | null };
     if (ownerId && ownerId !== context.userId) {
       throw new Error("This checkout belongs to a different account.");
-    }
-    if (!planId || !(planId in PLAN_CATALOG)) {
-      return { paid: true, plan: null as string | null };
     }
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -130,9 +128,41 @@ export const confirmPlanCheckout = createServerFn({ method: "POST" })
       event_id: `checkout_session:${data.sessionId}`,
       type: "checkout.session.completed",
     });
-    if (dupeError && String(dupeError.code) === "23505") {
+    const alreadyApplied = Boolean(dupeError && String(dupeError.code) === "23505");
+
+    // ---- One-off credit pack ----
+    if (packId && packId in CREDIT_PACKS) {
+      const pack = CREDIT_PACKS[packId];
+      if (alreadyApplied) {
+        return { paid: true, plan: null, pack: packId, credits: pack.credits, alreadyApplied: true };
+      }
+      const { error: packCreditError } = await supabaseAdmin.rpc("add_credits" as any, {
+        p_user_id: context.userId,
+        p_amount: pack.credits,
+      } as any);
+      if (packCreditError) {
+        logger.error(`[stripe-plan] pack add_credits failed: ${packCreditError.message}`);
+        throw new Error("Payment received, but the credits could not be added. We're on it.");
+      }
+      await (supabaseAdmin.from as any)("credit_purchases").insert({
+        user_id: context.userId,
+        pack_id: packId,
+        credits: pack.credits,
+        amount_cents: pack.cents,
+        currency: "usd",
+        stripe_session_id: data.sessionId,
+      });
+      logger.info(`[stripe-plan] credit pack ${packId} for user ${context.userId}`);
+      return { paid: true, plan: null, pack: packId, credits: pack.credits };
+    }
+
+    if (!planId || !(planId in PLAN_CATALOG)) {
+      return { paid: true, plan: null as string | null };
+    }
+    if (alreadyApplied) {
       return { paid: true, plan: planId, alreadyApplied: true };
     }
+
 
     await (supabaseAdmin.from as any)("profiles")
       .update({
