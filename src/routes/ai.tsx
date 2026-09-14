@@ -26,6 +26,7 @@ import { AssistantChat } from "@/components/ai/AssistantChat";
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { generatePlan, savePlan, type GeneratedPlan } from "@/lib/ai-generate.functions";
+import { generatePublicPlan } from "@/lib/ai-generate-public.functions";
 import { getGeneratePlanStreamConfig } from "@/lib/ai-generate-stream.functions";
 import { readByokSessionKeys } from "@/lib/byok-client";
 import { buildProduct, buildMultiProduct } from "@/lib/build-product.functions";
