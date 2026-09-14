@@ -102,19 +102,33 @@ class RobustAIService {
         lastFailureTime: null,
         cooldownPeriod: this.defaultCooldownPeriod,
       },
-      // 3. NVIDIA NIM — free hosted Nemotron 49B
+      // 3. NVIDIA NIM — free hosted Nemotron 70B
       {
         name: "NVIDIA",
         url: "https://integrate.api.nvidia.com/v1/chat/completions",
-        model: "nvidia/llama-3.3-nemotron-super-49b-v1",
-        apiKey: env("NVIDIA_API_KEY"),
+        model: "meta/llama-3.2-11b-vision-instruct",
+        apiKey: env("NVIDIA_API_KEY") || env("NVIDIA_NIM_API_KEY"),
         isAnthropic: false,
         priority: 4,
-        enabled: !!env("NVIDIA_API_KEY"),
+        enabled: !!(env("NVIDIA_API_KEY") || env("NVIDIA_NIM_API_KEY")),
         failureCount: 0,
         lastFailureTime: null,
         cooldownPeriod: this.defaultCooldownPeriod,
       },
+      // 3b. Hugging Face Router — free hosted Llama 3.3 70B Instruct
+      {
+        name: "HuggingFace",
+        url: "https://router.huggingface.co/v1/chat/completions",
+        model: "meta-llama/Llama-3.3-70B-Instruct",
+        apiKey: env("HUGGINGFACE_API_KEY") || env("HF_TOKEN"),
+        isAnthropic: false,
+        priority: 4,
+        enabled: !!(env("HUGGINGFACE_API_KEY") || env("HF_TOKEN")),
+        failureCount: 0,
+        lastFailureTime: null,
+        cooldownPeriod: this.defaultCooldownPeriod,
+      },
+
       // 4. OpenRouter — best free model (DeepSeek V3.1)
       {
         name: "OpenRouter",
@@ -374,7 +388,7 @@ class RobustAIService {
       model = "llama-3.3-70b";
     } else if (providerName === "NVIDIA") {
       url = "https://integrate.api.nvidia.com/v1/chat/completions";
-      model = "nvidia/llama-3.3-nemotron-super-49b-v1";
+      model = "meta/llama-3.2-11b-vision-instruct";
     } else if (providerName === "OpenRouter") {
       url = "https://openrouter.ai/api/v1/chat/completions";
       model = "deepseek/deepseek-chat-v3.1:free";
@@ -441,7 +455,16 @@ class RobustAIService {
 
     // If free trial or free coding cluster requested, prioritize free coding engines
     if (options.preferredCluster === "free_coding" || options.tier === "free_trial") {
-      const freeProviders = new Set(["KiloEngine", "Groq", "OpenRouter", "Cerebras", "NVIDIA", "Gemini"]);
+      const freeProviders = new Set([
+        "KiloEngine",
+        "Groq",
+        "OpenRouter",
+        "Cerebras",
+        "NVIDIA",
+        "HuggingFace",
+        "Gemini",
+      ]);
+
       availableProviders = [
         ...availableProviders.filter((p) => freeProviders.has(p.name)),
         ...availableProviders.filter((p) => !freeProviders.has(p.name)),
@@ -575,10 +598,18 @@ class RobustAIService {
       {
         name: "NVIDIA",
         url: "https://integrate.api.nvidia.com/v1/chat/completions",
-        model: "nvidia/llama-3.3-nemotron-super-49b-v1",
+        model: "meta/llama-3.2-11b-vision-instruct",
         isAnthropic: false,
         priority: 5,
       },
+      {
+        name: "HuggingFace",
+        url: "https://router.huggingface.co/v1/chat/completions",
+        model: "meta-llama/Llama-3.3-70B-Instruct",
+        isAnthropic: false,
+        priority: 5,
+      },
+
       {
         name: "OpenRouter",
         url: "https://openrouter.ai/api/v1/chat/completions",

@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
+
 export const createManualPayment = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => {
@@ -28,8 +29,24 @@ export const createManualPayment = createServerFn({ method: "POST" })
       transaction_ref: data.transactionRef,
     });
     if (error) throw new Error(error.message);
+
+    try {
+      const { notifyManualPayment } = await import("./notifications.server");
+      await notifyManualPayment({
+        email: (context.claims as any)?.email ?? userId,
+        amount: data.amount,
+        currency: "INR",
+        method: data.method,
+        description: data.description,
+        transactionRef: data.transactionRef,
+      });
+    } catch {
+      // Notification failures must never block the payment report.
+    }
+
     return { ok: true };
   });
+
 
 export const listMyManualPayments = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
