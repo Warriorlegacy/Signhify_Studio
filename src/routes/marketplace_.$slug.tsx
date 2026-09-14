@@ -198,8 +198,19 @@ function ListingDetail() {
               style={{ background: listing.accent }}
             />
             <h1 className="mt-6 font-display text-4xl font-black">{listing.name}</h1>
-            <div className="mt-2 text-xs uppercase tracking-[0.2em] text-primary">
-              {listing.category}
+            <div className="mt-2 flex flex-wrap items-center gap-3">
+              <div className="text-xs uppercase tracking-[0.2em] text-primary">
+                {listing.category}
+              </div>
+              {reviewCount > 0 && (
+                <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <StarRating value={average} />
+                  <span className="font-semibold text-foreground">{average.toFixed(1)}</span>
+                  <span>
+                    ({reviewCount} review{reviewCount === 1 ? "" : "s"})
+                  </span>
+                </div>
+              )}
             </div>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground whitespace-pre-wrap">
               {listing.blurb}
