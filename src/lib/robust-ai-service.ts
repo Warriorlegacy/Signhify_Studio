@@ -224,14 +224,14 @@ class RobustAIService {
         lastFailureTime: null,
         cooldownPeriod: this.defaultCooldownPeriod,
       },
-      // 10. Anthropic Claude (if available)
+      // Premium frontier model — reserved for paid customers (see "frontier" cluster)
       {
         name: "Anthropic",
         url: "https://api.anthropic.com/v1/messages",
-        model: "claude-3-5-sonnet-20241022",
+        model: env("ANTHROPIC_MODEL") || "claude-sonnet-4-20250514",
         apiKey: env("ANTHROPIC_API_KEY"),
         isAnthropic: true,
-        priority: 11,
+        priority: 0.2,
         enabled: !!env("ANTHROPIC_API_KEY"),
         failureCount: 0,
         lastFailureTime: null,
