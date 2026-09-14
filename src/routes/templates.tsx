@@ -682,7 +682,15 @@ function TemplatesPage() {
                   </button>
                 </div>
                 <div className="p-3.5 rounded-xl bg-black/70 border border-white/[0.06] font-mono text-xs text-white/80 leading-relaxed max-h-40 overflow-y-auto whitespace-pre-wrap select-all">
-                  {activePreview.godLevelPrompt}
+                  {promptPreview(activePreview.godLevelPrompt)}
+                  {!isPaid && (
+                    <Link
+                      to="/pricing"
+                      className="mt-3 block text-[#4ade80] font-bold not-italic"
+                    >
+                      Unlock the full master prompt with any paid plan →
+                    </Link>
+                  )}
                 </div>
               </div>
 
@@ -770,7 +778,12 @@ function TemplatesPage() {
             </div>
 
             <div className="p-4 rounded-2xl bg-black/80 border border-white/[0.08] font-mono text-xs text-white/80 leading-relaxed max-h-96 overflow-y-auto whitespace-pre-wrap select-all mb-6">
-              {promptModalTemplate.godLevelPrompt}
+              {promptPreview(promptModalTemplate.godLevelPrompt)}
+              {!isPaid && (
+                <Link to="/pricing" className="mt-3 block text-[#4ade80] font-bold">
+                  Unlock the full master prompt with any paid plan →
+                </Link>
+              )}
             </div>
 
             <div className="flex items-center justify-between gap-3">
