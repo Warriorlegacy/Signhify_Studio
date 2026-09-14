@@ -30,3 +30,11 @@
 - [x] Stripe dropped per user (not available in India) — UPI is the primary payment rail for plans AND credit packs
 - [ ] BLOCKED: Resend sending domain signhify.dpdns.org not yet verified — alerts only reach the Resend account owner
 - [ ] BLOCKED: signed-in walkthrough (hero -> Scroll Studio save -> publish) — no way to mint a session on the user-managed Supabase
+
+## Client inbox / portal / listing review (done)
+- /portal: client payments, UPI refs, unlocked blueprints, credits, message-the-studio chat
+- /app/inbox: owner inbox + approve/reject pending listings
+- /marketplace/$slug: full listing page with UPI buy button; marketplace cards link to it
+- Listings publish as `pending` and only go live after owner approval; creator dashboard shows the review badge
+- Verified end to end with the test account: hero prompt -> studio build -> auto-save -> publish -> pending in creator dashboard
+- Blocked: Resend sending domain signhify.dpdns.org not verified yet
