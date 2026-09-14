@@ -59,15 +59,75 @@ export const Route = createFileRoute("/marketplace_/$slug")({
 });
 
 function ListingDetail() {
-  const { listing } = Route.useLoaderData();
+  const { listing, reviews: initialReviews } = Route.useLoaderData();
   const { user } = useUser();
   const navigate = useNavigate();
   const reportPayment = useServerFn(createManualPayment);
+  const saveReview = useServerFn(upsertListingReview);
+  const removeReview = useServerFn(deleteMyListingReview);
 
   const [buying, setBuying] = useState(false);
   const [ref, setRef] = useState("");
   const [sending, setSending] = useState(false);
   const [reported, setReported] = useState(false);
+
+  const [reviews, setReviews] = useState<PublicReview[]>(initialReviews ?? []);
+  const [myRating, setMyRating] = useState(0);
+  const [myBody, setMyBody] = useState("");
+  const [savingReview, setSavingReview] = useState(false);
+
+  const reviewCount = reviews.length;
+  const average = reviewCount
+    ? Math.round((reviews.reduce((s, r) => s + r.rating, 0) / reviewCount) * 10) / 10
+    : 0;
+
+  const reloadReviews = async (listingId: string) => {
+    try {
+      const res = await listListingReviews({ data: { listingId } });
+      setReviews(res.reviews);
+    } catch {
+      /* keep current list */
+    }
+  };
+
+  const submitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!listing?.id) return;
+    if (!user) {
+      toast.info("Sign in to leave a review.");
+      navigate({ to: "/login", search: { redirect: `/marketplace/${listing.slug}` } as any });
+      return;
+    }
+    if (!myRating) {
+      toast.info("Pick a star rating first.");
+      return;
+    }
+    setSavingReview(true);
+    try {
+      await saveReview({
+        data: { listingId: listing.id, rating: myRating, body: myBody.trim() },
+      });
+      setMyBody("");
+      setMyRating(0);
+      await reloadReviews(listing.id);
+      toast.success("Thanks — your review is live.");
+    } catch (err: any) {
+      toast.error(err?.message ?? "Could not save your review.");
+    } finally {
+      setSavingReview(false);
+    }
+  };
+
+  const deleteReview = async () => {
+    if (!listing?.id) return;
+    try {
+      await removeReview({ data: { listingId: listing.id } });
+      await reloadReviews(listing.id);
+      toast.success("Your review was removed.");
+    } catch (err: any) {
+      toast.error(err?.message ?? "Could not remove your review.");
+    }
+  };
 
   if (!listing) {
     return (
