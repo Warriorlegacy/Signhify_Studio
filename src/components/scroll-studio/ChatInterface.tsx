@@ -42,6 +42,8 @@ export function ChatInterface({
   const chatFn = useServerFn(scrollStudioChat);
   const getFn = useServerFn(getScrollStudioProject);
   const updateFn = useServerFn(updateScrollStudioProject);
+  const createFn = useServerFn(createScrollStudioProject);
+
 
   useEffect(() => {
     messagesRef.current = messages;
