@@ -24,12 +24,10 @@ import {
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { submitLead } from "@/lib/leads.functions";
 import {
-  createPlanCheckout,
   confirmPlanCheckout,
-  createCreditPackCheckout,
   PLAN_CATALOG,
 } from "@/lib/stripe-plan-checkout.functions";
-import { CREDIT_PACK_LIST } from "@/lib/credit-packs";
+import { CREDIT_PACK_LIST, CREDIT_PACKS } from "@/lib/credit-packs";
 import { getMyEntitlements } from "@/lib/entitlements.functions";
 import { createManualPayment } from "@/lib/manual-payments.functions";
 
@@ -314,16 +312,12 @@ function PricingPage() {
   const { user, loading: authLoading } = useUser();
   const navigate = useNavigate();
   const { checkout, session_id } = Route.useSearch();
-  const startCheckout = useServerFn(createPlanCheckout);
   const confirmCheckout = useServerFn(confirmPlanCheckout);
-  const [checkoutPlan, setCheckoutPlan] = useState<string | null>(null);
   const [unlocked, setUnlocked] = useState<string | null>(null);
 
   // Credit balance + top-up packs
   const loadEntitlements = useServerFn(getMyEntitlements);
-  const startPackCheckout = useServerFn(createCreditPackCheckout);
   const [balance, setBalance] = useState<{ credits: number; plan: string } | null>(null);
-  const [packBusy, setPackBusy] = useState<string | null>(null);
 
   const refreshBalance = useMemo(
     () => async () => {
@@ -342,30 +336,23 @@ function PricingPage() {
     void refreshBalance();
   }, [authLoading, user, refreshBalance]);
 
-  const handleBuyCredits = async (packId: string, packName: string, usd: number) => {
-    if (packBusy) return;
+  // Payments run on UPI + WhatsApp confirmation (card checkout is unavailable in our region).
+  const handleBuyCredits = (packId: string, packName: string, usd: number) => {
     if (!user) {
       toast.info("Sign in to buy extra credits.");
       navigate({ to: "/login", search: { redirect: "/pricing" } });
       return;
     }
-    setPackBusy(packId);
-    try {
-      const { url } = await startPackCheckout({ data: { packId } });
-      window.location.href = url;
-    } catch {
-      // Card checkout unavailable — fall back to the UPI / WhatsApp flow.
-      setUpiPlan({ id: packId, name: `${packName} credit pack`, usd });
-      setUpiRef("");
-      setUpiReported(false);
-      setPackBusy(null);
-    }
+    setUpiPlan({ id: packId, name: `${packName} credit pack`, usd });
+    setUpiRef("");
+    setUpiReported(false);
   };
 
   // UPI / manual payment state
   const reportPayment = useServerFn(createManualPayment);
   const [upiPlan, setUpiPlan] = useState<{ id: string; name: string; usd: number } | null>(null);
   const [upiRef, setUpiRef] = useState("");
+  const isPackPayment = Boolean(upiPlan && upiPlan.id in CREDIT_PACKS);
   const [upiSending, setUpiSending] = useState(false);
   const [upiReported, setUpiReported] = useState(false);
 
@@ -383,22 +370,14 @@ function PricingPage() {
     setSubmitted(false);
   };
 
-  const handleBuyPlan = async (planId: string, tierName: string) => {
-    if (authLoading || checkoutPlan) return;
+  const handleBuyPlan = (planId: string, tierName: string) => {
+    if (authLoading) return;
     if (!user) {
       toast.info("Sign in to activate your plan.");
       navigate({ to: "/login", search: { redirect: "/pricing" } });
       return;
     }
-    setCheckoutPlan(planId);
-    try {
-      const { url } = await startCheckout({ data: { planId, annual } });
-      window.location.href = url;
-    } catch {
-      // Card checkout unavailable — fall back to the UPI / WhatsApp flow.
-      openUpi(planId, tierName);
-      setCheckoutPlan(null);
-    }
+    openUpi(planId, tierName);
   };
 
   const handleReportUpi = async (e: React.FormEvent) => {
@@ -410,7 +389,9 @@ function PricingPage() {
         data: {
           amount: upiPlan.usd,
           method: "upi",
-          description: `${upiPlan.name} — ${annual ? "annual" : "monthly"}`,
+          description: isPackPayment
+            ? `${upiPlan.name} — one-time credit top-up`
+            : `${upiPlan.name} — ${annual ? "annual" : "monthly"}`,
           transactionRef: upiRef.trim(),
         },
       });
@@ -624,7 +605,6 @@ function PricingPage() {
 
                 <div>
                   <button
-                    disabled={checkoutPlan === tier.id}
                     onClick={() =>
                       tier.id === "enterprise"
                         ? handleOpenModal(tier.name)
@@ -636,12 +616,7 @@ function PricingPage() {
                         : "bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.12] text-white hover:border-[#22c55e]/40"
                     }`}
                   >
-                    {checkoutPlan === tier.id ? (
-                      <>
-                        <Loader2 size={13} className="animate-spin" />
-                        <span>Opening secure checkout…</span>
-                      </>
-                    ) : (
+                    {(
                       <>
                         <span>{tier.cta}</span>
                         <ArrowRight size={13} />
@@ -710,10 +685,9 @@ function PricingPage() {
                   onClick={() =>
                     handleBuyCredits(pack.id, pack.name, pack.cents / 100)
                   }
-                  disabled={packBusy === pack.id}
                   className="mt-6 w-full rounded-xl bg-[#22c55e] px-4 py-2.5 text-sm font-bold text-black hover:bg-[#4ade80] transition disabled:opacity-60"
                 >
-                  {packBusy === pack.id ? "Opening checkout…" : "Buy credits"}
+                  Buy credits
                 </button>
               </div>
             ))}
@@ -1071,8 +1045,9 @@ function PricingPage() {
                           Pay by UPI — {upiPlan.name}
                         </h3>
                         <p className="text-white/55 text-xs mt-1">
-                          ${upiPlan.usd} {annual ? "per year" : "per month"} · pay the equivalent in
-                          INR
+                          ${upiPlan.usd}{" "}
+                          {isPackPayment ? "one time" : annual ? "per year" : "per month"} · pay the
+                          equivalent in INR
                         </p>
                       </div>
                       <button
@@ -1145,8 +1120,8 @@ function PricingPage() {
                       Payment reported
                     </h3>
                     <p className="text-white/60 text-xs mb-6">
-                      We've logged your {upiPlan.name} payment. Once it's verified on WhatsApp, your
-                      plan is switched on.
+                      We've logged your {upiPlan.name} payment. Once it's verified on WhatsApp,
+                      {isPackPayment ? " your credits are added." : " your plan is switched on."}
                     </p>
                     <button
                       onClick={() => setUpiPlan(null)}

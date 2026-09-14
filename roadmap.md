@@ -21,3 +21,12 @@
   Resend account owner
 - Signed-in walkthrough of hero → Scroll Studio save → creator publish (needs the owner to sign in
   in the preview; no session can be minted for this user-managed Supabase project)
+
+## Payments, credits & creator tools (Sep 14 2026)
+- [x] Extra credit packs (Spark 25/$10, Surge 60/$20, Fleet 150/$45, Vault 400/$100) with Stripe one-off checkout + idempotent credit top-up
+- [x] Credit balance shown on /pricing via getMyEntitlements
+- [x] Creator dashboard at /creator — list, edit, publish/unpublish, delete own listings (RLS delete policy added)
+- [x] Template master prompts gated: teaser for free users, full prompt for paid plans
+- [x] Stripe dropped per user (not available in India) — UPI is the primary payment rail for plans AND credit packs
+- [ ] BLOCKED: Resend sending domain signhify.dpdns.org not yet verified — alerts only reach the Resend account owner
+- [ ] BLOCKED: signed-in walkthrough (hero -> Scroll Studio save -> publish) — no way to mint a session on the user-managed Supabase
