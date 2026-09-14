@@ -106,7 +106,7 @@ class RobustAIService {
       {
         name: "NVIDIA",
         url: "https://integrate.api.nvidia.com/v1/chat/completions",
-        model: "nvidia/llama-3.1-nemotron-70b-instruct",
+        model: "meta/llama-3.2-11b-vision-instruct",
         apiKey: env("NVIDIA_API_KEY") || env("NVIDIA_NIM_API_KEY"),
         isAnthropic: false,
         priority: 4,
@@ -388,7 +388,7 @@ class RobustAIService {
       model = "llama-3.3-70b";
     } else if (providerName === "NVIDIA") {
       url = "https://integrate.api.nvidia.com/v1/chat/completions";
-      model = "nvidia/llama-3.1-nemotron-70b-instruct";
+      model = "meta/llama-3.2-11b-vision-instruct";
     } else if (providerName === "OpenRouter") {
       url = "https://openrouter.ai/api/v1/chat/completions";
       model = "deepseek/deepseek-chat-v3.1:free";
@@ -598,7 +598,7 @@ class RobustAIService {
       {
         name: "NVIDIA",
         url: "https://integrate.api.nvidia.com/v1/chat/completions",
-        model: "nvidia/llama-3.1-nemotron-70b-instruct",
+        model: "meta/llama-3.2-11b-vision-instruct",
         isAnthropic: false,
         priority: 5,
       },
