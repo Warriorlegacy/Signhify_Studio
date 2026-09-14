@@ -92,17 +92,14 @@ export const generatePlan = createServerFn({ method: "POST" })
         throw e;
       }
       const latencyMs = Date.now() - started;
-      console.warn("[ai.generate.fallback]", {
+      console.error("[ai.generate.failed]", {
         latencyMs,
         error: (e as Error)?.message ?? String(e),
       });
-      // ponytail: mock keeps the demo alive but is labeled — never silent.
-      return {
-        ...generateLocalMockPlan(data.prompt),
-        providerUsed: "mock",
-        tokensUsed: 0,
-        latencyMs,
-      };
+      // No placeholder plans: a real failure must surface so the user can retry.
+      throw new Error(
+        "The blueprint generator could not reach an AI provider right now. Please try again in a moment.",
+      );
     }
   });
 
