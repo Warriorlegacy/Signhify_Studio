@@ -388,7 +388,7 @@ class RobustAIService {
       model = "llama-3.3-70b";
     } else if (providerName === "NVIDIA") {
       url = "https://integrate.api.nvidia.com/v1/chat/completions";
-      model = "nvidia/llama-3.3-nemotron-super-49b-v1";
+      model = "nvidia/llama-3.1-nemotron-70b-instruct";
     } else if (providerName === "OpenRouter") {
       url = "https://openrouter.ai/api/v1/chat/completions";
       model = "deepseek/deepseek-chat-v3.1:free";
