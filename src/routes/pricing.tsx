@@ -662,6 +662,64 @@ function PricingPage() {
           })}
         </div>
 
+        {/* ── Extra credit top-up packs ───────────────────────────────── */}
+        <div className="rounded-3xl border border-white/[0.08] bg-[#080c16]/90 backdrop-blur-xl p-8 sm:p-10 mb-20 shadow-[0_15px_50px_rgba(0,0,0,0.6)]">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 pb-7 border-b border-white/[0.06]">
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-[#4ade80] bg-[#22c55e]/10 px-3 py-1 rounded-full border border-[#22c55e]/25 mb-3 inline-block">
+                Need more mid-month?
+              </span>
+              <h2 className="font-stylish text-3xl sm:text-4xl font-extrabold tracking-tight">
+                Buy extra credits anytime
+              </h2>
+              <p className="mt-2 text-white/55 max-w-xl">
+                Top-ups stack on top of your monthly credits and never expire. The bigger the pack,
+                the cheaper each credit gets.
+              </p>
+            </div>
+            {balance && (
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-right">
+                <div className="text-[11px] uppercase tracking-wider text-white/45">
+                  Your balance
+                </div>
+                <div className="text-2xl font-bold text-[#4ade80]">{balance.credits} credits</div>
+                <div className="text-xs text-white/45 capitalize">{balance.plan} plan</div>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {CREDIT_PACK_LIST.map((pack) => (
+              <div
+                key={pack.id}
+                className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 flex flex-col hover:border-[#22c55e]/40 transition"
+              >
+                <div className="text-sm font-semibold uppercase tracking-wider text-white/60">
+                  {pack.name}
+                </div>
+                <div className="mt-3 text-4xl font-black text-white">{pack.credits}</div>
+                <div className="text-xs text-white/45">credits</div>
+                <div className="mt-4 text-2xl font-bold text-[#4ade80]">
+                  ${(pack.cents / 100).toFixed(0)}
+                </div>
+                <div className="text-xs text-white/40">
+                  ${pack.perCredit.toFixed(2)} per credit · {pack.blurb}
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleBuyCredits(pack.id, pack.name, pack.cents / 100)
+                  }
+                  disabled={packBusy === pack.id}
+                  className="mt-6 w-full rounded-xl bg-[#22c55e] px-4 py-2.5 text-sm font-bold text-black hover:bg-[#4ade80] transition disabled:opacity-60"
+                >
+                  {packBusy === pack.id ? "Opening checkout…" : "Buy credits"}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* ── Interactive Credit & Budget Calculator Slider ──────────── */}
         <div className="rounded-3xl border border-white/[0.08] bg-[#080c16]/90 backdrop-blur-xl p-8 sm:p-10 mb-20 shadow-[0_15px_50px_rgba(0,0,0,0.6)]">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-white/[0.06]">
