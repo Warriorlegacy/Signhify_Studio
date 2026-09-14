@@ -4,19 +4,26 @@ import { useServerFn } from "@tanstack/react-start";
 import { ArrowUpRight, Download, Search, Sparkles, Store, User } from "lucide-react";
 import { MARKET, MARKET_CATEGORIES, type MarketItem } from "@/lib/marketplace";
 import { downloadAsset } from "@/lib/marketplace-download.functions";
-import { createCheckoutSession } from "@/lib/stripe-checkout.functions";
 import { fetchMarketplaceListings } from "@/lib/marketplace-listings.functions";
+import { listRatingSummaries, type RatingSummary } from "@/lib/listing-reviews.functions";
+import { StarRating } from "@/components/marketplace/StarRating";
 import { ThreeDCard } from "@/components/ui/ThreeDCard";
 import { toast } from "sonner";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/marketplace")({
   loader: async () => {
+    let summaries: Record<string, RatingSummary> = {};
+    try {
+      summaries = (await listRatingSummaries()).summaries;
+    } catch {
+      summaries = {};
+    }
     try {
       const { items } = await fetchMarketplaceListings();
-      return { items: items.length ? items : MARKET };
+      return { items: items.length ? items : MARKET, summaries };
     } catch {
-      return { items: MARKET };
+      return { items: MARKET, summaries };
     }
   },
   head: () => ({
