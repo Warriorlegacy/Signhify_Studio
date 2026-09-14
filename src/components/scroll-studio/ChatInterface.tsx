@@ -26,11 +26,14 @@ const WELCOME: Message = {
 
 export function ChatInterface({
   projectId,
+  onProjectCreated,
   onUpdatePreview,
 }: {
   projectId: string | null;
+  onProjectCreated?: (id: string) => void;
   onUpdatePreview: (data: { html: string; css: string; js: string }) => void;
 }) {
+
   const [messages, setMessages] = useState<Message[]>([WELCOME]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
