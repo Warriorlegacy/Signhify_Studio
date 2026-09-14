@@ -24,9 +24,7 @@ import {
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { submitLead } from "@/lib/leads.functions";
 import {
-  createPlanCheckout,
   confirmPlanCheckout,
-  createCreditPackCheckout,
   PLAN_CATALOG,
 } from "@/lib/stripe-plan-checkout.functions";
 import { CREDIT_PACK_LIST } from "@/lib/credit-packs";
@@ -604,7 +602,6 @@ function PricingPage() {
 
                 <div>
                   <button
-                    disabled={checkoutPlan === tier.id}
                     onClick={() =>
                       tier.id === "enterprise"
                         ? handleOpenModal(tier.name)
@@ -616,12 +613,7 @@ function PricingPage() {
                         : "bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.12] text-white hover:border-[#22c55e]/40"
                     }`}
                   >
-                    {checkoutPlan === tier.id ? (
-                      <>
-                        <Loader2 size={13} className="animate-spin" />
-                        <span>Opening secure checkout…</span>
-                      </>
-                    ) : (
+                    {(
                       <>
                         <span>{tier.cta}</span>
                         <ArrowRight size={13} />
@@ -690,10 +682,9 @@ function PricingPage() {
                   onClick={() =>
                     handleBuyCredits(pack.id, pack.name, pack.cents / 100)
                   }
-                  disabled={packBusy === pack.id}
                   className="mt-6 w-full rounded-xl bg-[#22c55e] px-4 py-2.5 text-sm font-bold text-black hover:bg-[#4ade80] transition disabled:opacity-60"
                 >
-                  {packBusy === pack.id ? "Opening checkout…" : "Buy credits"}
+                  Buy credits
                 </button>
               </div>
             ))}
