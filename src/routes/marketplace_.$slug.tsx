@@ -173,8 +173,10 @@ function ListingDetail() {
     }
   };
 
+  const sections = blueprintSections(listing.category);
+
   return (
-    <section className="pt-32 pb-24 px-6 min-h-screen">
+    <section className="pt-24 sm:pt-32 pb-32 lg:pb-24 px-4 sm:px-6 min-h-screen">
       <div className="mx-auto max-w-5xl">
         <Breadcrumbs
           items={[
