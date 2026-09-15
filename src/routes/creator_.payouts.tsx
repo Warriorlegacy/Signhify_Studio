@@ -12,7 +12,7 @@ import {
 } from "@/lib/creator-payouts.functions";
 import { UPI_ID, whatsappLink } from "@/lib/payment-contact";
 
-export const Route = createFileRoute("/creator/payouts")({
+export const Route = createFileRoute("/creator_/payouts")({
   head: () => ({
     meta: [
       { title: "Creator Payouts — UPI Earnings & Withdrawals | Signhify" },

@@ -48,6 +48,7 @@ import { Route as VisionRouteImport } from './routes/vision'
 import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as AppInboxRouteImport } from './routes/app/inbox'
 import { Route as AppSettingsRouteImport } from './routes/app/settings'
+import { Route as CreatorPayoutsRouteImport } from './routes/creator.payouts'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as MarketplaceSellRouteImport } from './routes/marketplace.sell'
 import { Route as MarketplaceSuccessRouteImport } from './routes/marketplace.success'
@@ -275,6 +276,11 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/app/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreatorPayoutsRoute = CreatorPayoutsRouteImport.update({
+  id: '/payouts',
+  path: '/payouts',
+  getParentRoute: () => CreatorRoute,
+} as any)
 const InsightsSlugRoute = InsightsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -440,7 +446,7 @@ export interface FileRoutesByFullPath {
   '/builder': typeof BuilderRoute
   '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
-  '/creator': typeof CreatorRoute
+  '/creator': typeof CreatorRouteWithChildren
   '/free-consultation': typeof FreeConsultationRoute
   '/help': typeof HelpRoute
   '/insights': typeof InsightsRouteWithChildren
@@ -465,6 +471,7 @@ export interface FileRoutesByFullPath {
   '/vision': typeof VisionRoute
   '/app/inbox': typeof AppInboxRoute
   '/app/settings': typeof AppSettingsRoute
+  '/creator/payouts': typeof CreatorPayoutsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
@@ -511,7 +518,7 @@ export interface FileRoutesByTo {
   '/builder': typeof BuilderRoute
   '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
-  '/creator': typeof CreatorRoute
+  '/creator': typeof CreatorRouteWithChildren
   '/free-consultation': typeof FreeConsultationRoute
   '/help': typeof HelpRoute
   '/insights': typeof InsightsRouteWithChildren
@@ -535,6 +542,7 @@ export interface FileRoutesByTo {
   '/vision': typeof VisionRoute
   '/app/inbox': typeof AppInboxRoute
   '/app/settings': typeof AppSettingsRoute
+  '/creator/payouts': typeof CreatorPayoutsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
@@ -582,7 +590,7 @@ export interface FileRoutesById {
   '/builder': typeof BuilderRoute
   '/confirm': typeof ConfirmRoute
   '/contact': typeof ContactRoute
-  '/creator': typeof CreatorRoute
+  '/creator': typeof CreatorRouteWithChildren
   '/free-consultation': typeof FreeConsultationRoute
   '/help': typeof HelpRoute
   '/insights': typeof InsightsRouteWithChildren
@@ -607,6 +615,7 @@ export interface FileRoutesById {
   '/vision': typeof VisionRoute
   '/app/inbox': typeof AppInboxRoute
   '/app/settings': typeof AppSettingsRoute
+  '/creator/payouts': typeof CreatorPayoutsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
   '/marketplace/success': typeof MarketplaceSuccessRoute
@@ -680,6 +689,7 @@ export interface FileRouteTypes {
     | '/vision'
     | '/app/inbox'
     | '/app/settings'
+    | '/creator/payouts'
     | '/insights/$slug'
     | '/marketplace/sell'
     | '/marketplace/success'
@@ -750,6 +760,7 @@ export interface FileRouteTypes {
     | '/vision'
     | '/app/inbox'
     | '/app/settings'
+    | '/creator/payouts'
     | '/insights/$slug'
     | '/marketplace/sell'
     | '/marketplace/success'
@@ -821,6 +832,7 @@ export interface FileRouteTypes {
     | '/vision'
     | '/app/inbox'
     | '/app/settings'
+    | '/creator/payouts'
     | '/insights/$slug'
     | '/marketplace/sell'
     | '/marketplace/success'
@@ -868,7 +880,7 @@ export interface RootRouteChildren {
   BuilderRoute: typeof BuilderRoute
   ConfirmRoute: typeof ConfirmRoute
   ContactRoute: typeof ContactRoute
-  CreatorRoute: typeof CreatorRoute
+  CreatorRoute: typeof CreatorRouteWithChildren
   FreeConsultationRoute: typeof FreeConsultationRoute
   HelpRoute: typeof HelpRoute
   InsightsRoute: typeof InsightsRouteWithChildren
@@ -1187,6 +1199,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/creator/payouts': {
+      id: '/creator/payouts'
+      path: '/payouts'
+      fullPath: '/creator/payouts'
+      preLoaderRoute: typeof CreatorPayoutsRouteImport
+      parentRoute: typeof CreatorRoute
+    }
     '/insights/$slug': {
       id: '/insights/$slug'
       path: '/$slug'
@@ -1410,6 +1429,17 @@ const AiRouteChildren: AiRouteChildren = {
 
 const AiRouteWithChildren = AiRoute._addFileChildren(AiRouteChildren)
 
+interface CreatorRouteChildren {
+  CreatorPayoutsRoute: typeof CreatorPayoutsRoute
+}
+
+const CreatorRouteChildren: CreatorRouteChildren = {
+  CreatorPayoutsRoute: CreatorPayoutsRoute,
+}
+
+const CreatorRouteWithChildren =
+  CreatorRoute._addFileChildren(CreatorRouteChildren)
+
 interface InsightsRouteChildren {
   InsightsSlugRoute: typeof InsightsSlugRoute
 }
@@ -1498,7 +1528,7 @@ const rootRouteChildren: RootRouteChildren = {
   BuilderRoute: BuilderRoute,
   ConfirmRoute: ConfirmRoute,
   ContactRoute: ContactRoute,
-  CreatorRoute: CreatorRoute,
+  CreatorRoute: CreatorRouteWithChildren,
   FreeConsultationRoute: FreeConsultationRoute,
   HelpRoute: HelpRoute,
   InsightsRoute: InsightsRouteWithChildren,
