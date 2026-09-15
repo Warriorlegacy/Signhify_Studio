@@ -356,8 +356,8 @@ function ListingDetail() {
               <MessageSquare className="w-4 h-4" /> Ask on WhatsApp
             </a>
             <p className="mt-4 text-[11px] text-muted-foreground">
-              Payments go to UPI {UPI_ID}. Once we confirm your reference, the blueprint unlocks in
-              your client portal.
+              Payments go to UPI {UPI_ID}. Submit your reference and the blueprint unlocks in your
+              client portal straight away.
             </p>
           </aside>
         </div>
@@ -412,10 +412,10 @@ function ListingDetail() {
               </>
             ) : (
               <>
-                <h3 className="font-display text-lg font-bold">Reference received</h3>
+                <h3 className="font-display text-lg font-bold">Payment confirmed</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  We'll confirm it shortly. You can track the status in your client portal, and send
-                  the screenshot on WhatsApp to speed it up.
+                  "{listing.name}" is unlocked in your client portal, with reference {ref}. Send the
+                  screenshot on WhatsApp if you would like a receipt.
                 </p>
                 <div className="mt-4 flex gap-2">
                   <a
