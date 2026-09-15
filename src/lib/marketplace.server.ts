@@ -12,6 +12,7 @@ export type DbListing = {
   asset_path: string | null;
   creator_id: string | null;
   created_at: string | null;
+  promo_video_url?: string | null;
 };
 
 // Public marketplace reads use the publishable/anon key so the marketplace
@@ -40,7 +41,7 @@ export async function fetchListings(
   const supabase = getPublicClient();
   let q: any = (supabase.from as any)("marketplace_listings").select(
     // Exclude asset_path from public reads to avoid leaking internal storage paths.
-    "id, slug, title, description, category, price_cents, preview_url, creator_id, created_at",
+    "id, slug, title, description, category, price_cents, preview_url, creator_id, created_at, promo_video_url",
   );
   if (query?.trim())
     q = q.textSearch("search_vector", query.trim(), { type: "plain", config: "english" });
@@ -61,7 +62,7 @@ export async function fetchListingBySlug(slug: string): Promise<DbListing | null
   const supabase = getPublicClient();
   const { data, error } = await (supabase.from as any)("marketplace_listings")
     .select(
-      "id, slug, title, description, category, price_cents, preview_url, creator_id, created_at",
+      "id, slug, title, description, category, price_cents, preview_url, creator_id, created_at, promo_video_url",
     )
     .eq("slug", slug)
     .eq("status", "live")
