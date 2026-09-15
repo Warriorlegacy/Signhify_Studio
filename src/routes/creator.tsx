@@ -1,7 +1,19 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useState } from "react";
-import { Eye, EyeOff, Loader2, Pencil, Plus, Rocket, Store, Trash2, Wallet, X } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Loader2,
+  Pencil,
+  Plus,
+  Rocket,
+  Store,
+  Trash2,
+  Wallet,
+  Wand2,
+  X,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useUser } from "@/hooks/useUser";
 import {
