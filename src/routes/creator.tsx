@@ -270,6 +270,18 @@ function CreatorDashboard() {
               </div>
 
               <div className="flex items-center gap-2">
+                {(listing.status ?? "pending").toLowerCase() !== "live" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFeeRef("");
+                      setFeeFor(listing);
+                    }}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#f97316] px-3 py-2 text-sm font-semibold text-black hover:bg-[#fb923c]"
+                  >
+                    <Rocket size={15} /> Go live via UPI
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={() => toggleLive(listing)}
