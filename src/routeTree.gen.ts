@@ -49,6 +49,7 @@ import { Route as VisionRouteImport } from './routes/vision'
 import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as AppInboxRouteImport } from './routes/app/inbox'
 import { Route as AppSettingsRouteImport } from './routes/app/settings'
+import { Route as CreatorNewRouteImport } from './routes/creator_.new'
 import { Route as CreatorPayoutsRouteImport } from './routes/creator_.payouts'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as MarketplaceSellRouteImport } from './routes/marketplace.sell'
@@ -283,6 +284,11 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/app/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreatorNewRoute = CreatorNewRouteImport.update({
+  id: '/creator_/new',
+  path: '/creator/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CreatorPayoutsRoute = CreatorPayoutsRouteImport.update({
   id: '/creator_/payouts',
   path: '/creator/payouts',
@@ -484,6 +490,7 @@ export interface FileRoutesByFullPath {
   '/vision': typeof VisionRoute
   '/app/inbox': typeof AppInboxRoute
   '/app/settings': typeof AppSettingsRoute
+  '/creator/new': typeof CreatorNewRoute
   '/creator/payouts': typeof CreatorPayoutsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
@@ -557,6 +564,7 @@ export interface FileRoutesByTo {
   '/vision': typeof VisionRoute
   '/app/inbox': typeof AppInboxRoute
   '/app/settings': typeof AppSettingsRoute
+  '/creator/new': typeof CreatorNewRoute
   '/creator/payouts': typeof CreatorPayoutsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
@@ -632,6 +640,7 @@ export interface FileRoutesById {
   '/vision': typeof VisionRoute
   '/app/inbox': typeof AppInboxRoute
   '/app/settings': typeof AppSettingsRoute
+  '/creator_/new': typeof CreatorNewRoute
   '/creator_/payouts': typeof CreatorPayoutsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
@@ -708,6 +717,7 @@ export interface FileRouteTypes {
     | '/vision'
     | '/app/inbox'
     | '/app/settings'
+    | '/creator/new'
     | '/creator/payouts'
     | '/insights/$slug'
     | '/marketplace/sell'
@@ -781,6 +791,7 @@ export interface FileRouteTypes {
     | '/vision'
     | '/app/inbox'
     | '/app/settings'
+    | '/creator/new'
     | '/creator/payouts'
     | '/insights/$slug'
     | '/marketplace/sell'
@@ -855,6 +866,7 @@ export interface FileRouteTypes {
     | '/vision'
     | '/app/inbox'
     | '/app/settings'
+    | '/creator_/new'
     | '/creator_/payouts'
     | '/insights/$slug'
     | '/marketplace/sell'
@@ -930,6 +942,7 @@ export interface RootRouteChildren {
   VisionRoute: typeof VisionRoute
   AppInboxRoute: typeof AppInboxRoute
   AppSettingsRoute: typeof AppSettingsRoute
+  CreatorNewRoute: typeof CreatorNewRoute
   CreatorPayoutsRoute: typeof CreatorPayoutsRoute
   MarketplaceSlugRoute: typeof MarketplaceSlugRoute
   PortalSigninRoute: typeof PortalSigninRoute
@@ -1231,6 +1244,13 @@ declare module '@tanstack/react-router' {
       path: '/app/settings'
       fullPath: '/app/settings'
       preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creator_/new': {
+      id: '/creator_/new'
+      path: '/creator/new'
+      fullPath: '/creator/new'
+      preLoaderRoute: typeof CreatorNewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/creator_/payouts': {
@@ -1584,6 +1604,7 @@ const rootRouteChildren: RootRouteChildren = {
   VisionRoute: VisionRoute,
   AppInboxRoute: AppInboxRoute,
   AppSettingsRoute: AppSettingsRoute,
+  CreatorNewRoute: CreatorNewRoute,
   CreatorPayoutsRoute: CreatorPayoutsRoute,
   MarketplaceSlugRoute: MarketplaceSlugRoute,
   PortalSigninRoute: PortalSigninRoute,
