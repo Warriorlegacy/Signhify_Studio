@@ -482,6 +482,9 @@ class RobustAIService {
       // Free trial / free coding: never touch the paid frontier accounts.
       availableProviders = availableProviders.filter((p) => !premiumProviders.has(p.name));
 
+      // The managed Lovable AI Gateway is a real hosted model and by far the
+      // most reliable — try it first, then the free community providers.
+      const hostedFirst = new Set(["LovableAI"]);
       const freeProviders = new Set([
         "KiloEngine",
         "Groq",
@@ -493,8 +496,11 @@ class RobustAIService {
       ]);
 
       availableProviders = [
+        ...availableProviders.filter((p) => hostedFirst.has(p.name)),
         ...availableProviders.filter((p) => freeProviders.has(p.name)),
-        ...availableProviders.filter((p) => !freeProviders.has(p.name)),
+        ...availableProviders.filter(
+          (p) => !freeProviders.has(p.name) && !hostedFirst.has(p.name),
+        ),
       ];
     } else {
       // Paid customers: frontier models first, everything else as fallback.
