@@ -19,3 +19,6 @@ export function upiIntentLink(amountInr: number, note: string): string {
 
 /** Rough USD -> INR conversion used only to prefill the UPI amount. */
 export const USD_TO_INR = 88;
+
+/** One-time UPI fee a creator pays to take a pending listing live instantly. */
+export const LISTING_FEE_INR = 99;

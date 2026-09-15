@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useState } from "react";
-import { Eye, EyeOff, Loader2, Pencil, Plus, Store, Trash2, X } from "lucide-react";
+import { Eye, EyeOff, Loader2, Pencil, Plus, Rocket, Store, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { useUser } from "@/hooks/useUser";
 import {
@@ -9,6 +9,8 @@ import {
   updateListing,
   deleteListing,
 } from "@/lib/marketplace-creator.functions";
+import { confirmListingFeeUpi } from "@/lib/upi-confirm.functions";
+import { LISTING_FEE_INR, UPI_ID, upiIntentLink } from "@/lib/payment-contact";
 
 export const Route = createFileRoute("/creator")({
   head: () => ({
@@ -69,6 +71,33 @@ function CreatorDashboard() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [editing, setEditing] = useState<Listing | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<Listing | null>(null);
+  const [feeFor, setFeeFor] = useState<Listing | null>(null);
+  const [feeRef, setFeeRef] = useState("");
+  const [feeBusy, setFeeBusy] = useState(false);
+  const payFee = useServerFn(confirmListingFeeUpi);
+
+  const submitFee = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!feeFor || feeBusy || feeRef.trim().length < 4) return;
+    setFeeBusy(true);
+    try {
+      await payFee({
+        data: { id: feeFor.id, amount: LISTING_FEE_INR, transactionRef: feeRef.trim() },
+      });
+      setListings((prev) =>
+        (prev ?? []).map((l) =>
+          l.id === feeFor.id ? { ...l, status: "live", is_active: true, review_note: null } : l,
+        ),
+      );
+      toast.success("Payment confirmed — your listing is live on the marketplace.");
+      setFeeFor(null);
+      setFeeRef("");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not confirm that payment.");
+    } finally {
+      setFeeBusy(false);
+    }
+  };
 
   const load = useCallback(async () => {
     try {
@@ -241,6 +270,18 @@ function CreatorDashboard() {
               </div>
 
               <div className="flex items-center gap-2">
+                {(listing.status ?? "pending").toLowerCase() !== "live" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFeeRef("");
+                      setFeeFor(listing);
+                    }}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#f97316] px-3 py-2 text-sm font-semibold text-black hover:bg-[#fb923c]"
+                  >
+                    <Rocket size={15} /> Go live via UPI
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={() => toggleLive(listing)}
@@ -269,6 +310,61 @@ function CreatorDashboard() {
           ))}
         </div>
       </div>
+
+      {feeFor && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4">
+          <form
+            onSubmit={submitFee}
+            className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0b1120] p-6"
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold">Take "{feeFor.title}" live</h3>
+              <button type="button" onClick={() => setFeeFor(null)} aria-label="Close">
+                <X size={18} className="text-white/60 hover:text-white" />
+              </button>
+            </div>
+            <p className="mt-2 text-sm text-white/60">
+              Pay the one-time ₹{LISTING_FEE_INR} listing fee by UPI and paste the reference — your
+              listing is approved automatically, with no waiting on manual review.
+            </p>
+            <div className="mt-4 rounded-lg border border-white/15 p-3">
+              <div className="text-xs text-white/50">UPI ID</div>
+              <div className="font-mono text-sm">{UPI_ID}</div>
+            </div>
+            <a
+              href={upiIntentLink(LISTING_FEE_INR, `Signhify listing ${feeFor.slug}`)}
+              className="mt-3 inline-flex w-full items-center justify-center rounded-lg bg-[#f97316] px-4 py-2.5 text-sm font-semibold text-black"
+            >
+              Open my UPI app
+            </a>
+            <label className="mt-4 block text-sm">
+              <span className="text-white/70">UPI transaction reference</span>
+              <input
+                value={feeRef}
+                onChange={(e) => setFeeRef(e.target.value)}
+                placeholder="e.g. 431298765432"
+                className="mt-1 w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white outline-none focus:border-[#f97316]"
+              />
+            </label>
+            <div className="mt-4 flex gap-2">
+              <button
+                type="submit"
+                disabled={feeBusy || feeRef.trim().length < 4}
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-white/90 px-4 py-2 text-sm font-semibold text-black disabled:opacity-50"
+              >
+                {feeBusy && <Loader2 size={15} className="animate-spin" />} Confirm & go live
+              </button>
+              <button
+                type="button"
+                onClick={() => setFeeFor(null)}
+                className="rounded-lg border border-white/15 px-4 py-2 text-sm text-white/80"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {editing && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4">

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArrowLeft, CheckCircle2, Loader2, MessageSquare, ShoppingBag, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { fetchListingDetail } from "@/lib/marketplace-listings.functions";
-import { createManualPayment } from "@/lib/manual-payments.functions";
+import { confirmUpiPurchase } from "@/lib/upi-confirm.functions";
 import {
   deleteMyListingReview,
   listListingReviews,
@@ -60,7 +60,7 @@ function ListingDetail() {
   const { listing, reviews: initialReviews } = Route.useLoaderData();
   const { user } = useUser();
   const navigate = useNavigate();
-  const reportPayment = useServerFn(createManualPayment);
+  const reportPayment = useServerFn(confirmUpiPurchase);
   const saveReview = useServerFn(upsertListingReview);
   const removeReview = useServerFn(deleteMyListingReview);
 
@@ -143,8 +143,8 @@ function ListingDetail() {
 
   const openBuy = () => {
     if (!user) {
-      toast.info("Sign in to buy this blueprint.");
-      navigate({ to: "/login", search: { redirect: `/marketplace/${listing.slug}` } });
+      toast.info("Create a buyer account to buy this blueprint.");
+      navigate({ to: "/portal/signin", search: { redirect: `/marketplace/${listing.slug}` } });
       return;
     }
     setRef("");
@@ -159,15 +159,15 @@ function ListingDetail() {
     try {
       await reportPayment({
         data: {
-          amount: usd,
-          method: "upi",
-          description: `Marketplace blueprint — ${listing.name}`,
+          slug: listing.slug,
+          amount: inr,
           transactionRef: ref.trim(),
         },
       });
       setReported(true);
+      toast.success("Payment confirmed — the blueprint is unlocked in your portal.");
     } catch (e: any) {
-      toast.error(e?.message ?? "Could not record your payment reference.");
+      toast.error(e?.message ?? "Could not confirm your payment reference.");
     } finally {
       setSending(false);
     }
@@ -356,8 +356,8 @@ function ListingDetail() {
               <MessageSquare className="w-4 h-4" /> Ask on WhatsApp
             </a>
             <p className="mt-4 text-[11px] text-muted-foreground">
-              Payments go to UPI {UPI_ID}. Once we confirm your reference, the blueprint unlocks in
-              your client portal.
+              Payments go to UPI {UPI_ID}. Submit your reference and the blueprint unlocks in your
+              client portal straight away.
             </p>
           </aside>
         </div>
@@ -412,10 +412,10 @@ function ListingDetail() {
               </>
             ) : (
               <>
-                <h3 className="font-display text-lg font-bold">Reference received</h3>
+                <h3 className="font-display text-lg font-bold">Payment confirmed</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  We'll confirm it shortly. You can track the status in your client portal, and send
-                  the screenshot on WhatsApp to speed it up.
+                  "{listing.name}" is unlocked in your client portal, with reference {ref}. Send the
+                  screenshot on WhatsApp if you would like a receipt.
                 </p>
                 <div className="mt-4 flex gap-2">
                   <a

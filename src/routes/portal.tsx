@@ -80,7 +80,7 @@ function ClientPortal() {
   useEffect(() => {
     if (authLoading) return;
     if (!user) {
-      navigate({ to: "/login", search: { redirect: "/portal" } });
+      navigate({ to: "/portal/signin", search: { redirect: "/portal" } });
       return;
     }
     void refresh();
