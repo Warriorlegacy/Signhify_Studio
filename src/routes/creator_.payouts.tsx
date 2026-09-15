@@ -252,6 +252,7 @@ function CreatorPayouts() {
                   <label className="block text-sm">
                     <span className="text-white/60">Your UPI ID</span>
                     <input
+                      name="upi"
                       value={upi}
                       onChange={(ev) => setUpi(ev.target.value)}
                       placeholder="name@bank"
