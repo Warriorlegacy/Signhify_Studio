@@ -379,6 +379,7 @@ class RobustAIService {
     apiKey: string,
     customEndpoint?: string,
   ): Promise<{ ok: boolean; message: string }> {
+    this.ensureInitialized();
     const testOptions: AIGatewayOptions = {
       messages: [{ role: "user", content: "ping" }],
       max_tokens: 5,
@@ -469,6 +470,7 @@ class RobustAIService {
   async generateAIResponse(
     options: AIGatewayOptions,
   ): Promise<{ content: string; providerUsed: string }> {
+    this.ensureInitialized();
     // Filter to only enabled providers
     let availableProviders = this.providers.filter((p) => p.enabled);
 
