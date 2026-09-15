@@ -157,6 +157,27 @@ export function ChatInterface({
         });
       }
 
+      // If this run came from a saved library prompt, track which blueprint it made.
+      if (hasCode) {
+        let savedPromptId: string | null = null;
+        try {
+          savedPromptId = sessionStorage.getItem("scroll-studio:promptId");
+          if (savedPromptId) sessionStorage.removeItem("scroll-studio:promptId");
+        } catch {
+          savedPromptId = null;
+        }
+        if (savedPromptId) {
+          recordRunFn({
+            data: {
+              promptId: savedPromptId,
+              body: userMsg.content,
+              projectId: activeId,
+              projectTitle: data.message?.slice(0, 160) ?? null,
+            },
+          }).catch(() => {});
+        }
+      }
+
     } catch (error) {
       console.error(error);
       setMessages((prev) => [
