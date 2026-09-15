@@ -167,74 +167,86 @@ function PromptLibraryPage() {
           </Link>
         </header>
 
-        <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
-          <section className="space-y-4">
+        <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
+          <section className="space-y-6">
             {prompts.length === 0 && (
-              <div className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
+              <div className="rounded-xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
                 No saved prompts yet. Start from one of the templates on the right, or write your
                 own.
               </div>
             )}
 
             {prompts.map((p) => (
-              <article key={p.id} className="rounded-xl border border-border bg-card p-5">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <h2 className="text-base font-medium">{p.title}</h2>
-                    <p className="mt-0.5 text-xs uppercase tracking-wide text-muted-foreground">
+              <article key={p.id} className="rounded-2xl border border-border bg-card p-6">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <h2 className="text-lg font-semibold tracking-tight">{p.title}</h2>
+                    <p className="mt-1 text-xs uppercase tracking-[0.18em] text-muted-foreground">
                       {p.category} · updated {new Date(p.updated_at).toLocaleDateString()}
                     </p>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    <Button size="sm" onClick={() => useInStudio(p)}>
-                      <Wand2 className="mr-1.5 h-3.5 w-3.5" /> Use in Studio
-                    </Button>
-                    <Button size="sm" variant="outline" onClick={() => openHistory(p)}>
-                      <History className="mr-1.5 h-3.5 w-3.5" /> History
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        setEditing(p);
-                        setTitle(p.title);
-                        setBody(p.body);
-                        setCategory(p.category);
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    <Button size="sm" variant="ghost" onClick={() => remove(p)}>
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  </div>
+                  <Button
+                    size="lg"
+                    className="shrink-0 bg-[#f97316] font-semibold text-black shadow-lg shadow-[#f97316]/20 hover:bg-[#fb923c]"
+                    onClick={() => useInStudio(p)}
+                  >
+                    <Wand2 className="mr-2 h-4 w-4" /> Use in Studio
+                  </Button>
                 </div>
-                <p className="mt-3 whitespace-pre-wrap text-sm text-muted-foreground">{p.body}</p>
+
+                <p className="mt-4 line-clamp-4 whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground">
+                  {p.body}
+                </p>
+
+                <div className="mt-5 flex flex-wrap gap-2 border-t border-border/60 pt-4">
+                  <Button size="sm" variant="ghost" onClick={() => openHistory(p)}>
+                    <History className="mr-1.5 h-3.5 w-3.5" />
+                    {historyFor?.id === p.id ? "Hide history" : "History"}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      setEditing(p);
+                      setTitle(p.title);
+                      setBody(p.body);
+                      setCategory(p.category);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-muted-foreground hover:text-destructive"
+                    onClick={() => remove(p)}
+                  >
+                    <Trash2 className="mr-1.5 h-3.5 w-3.5" /> Delete
+                  </Button>
+                </div>
 
                 {historyFor?.id === p.id && (
-                  <div className="mt-4 rounded-lg border border-border/60 bg-muted/30 p-4">
+                  <div className="mt-5 rounded-xl border border-border/60 bg-muted/30 p-5">
                     <h3 className="text-sm font-medium">Version history</h3>
                     {versions.length === 0 && (
                       <p className="mt-2 text-xs text-muted-foreground">No versions recorded yet.</p>
                     )}
-                    <ol className="mt-3 space-y-3">
+                    <ol className="mt-4 space-y-3">
                       {versions.map((v) => (
-                        <li key={v.id} className="text-xs">
-                          <div className="flex flex-wrap items-center gap-2 text-muted-foreground">
-                            <span className="rounded bg-primary/10 px-1.5 py-0.5 font-medium text-primary">
-                              v{v.version}
+                        <li
+                          key={v.id}
+                          className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground"
+                        >
+                          <span className="rounded bg-primary/10 px-1.5 py-0.5 font-medium text-primary">
+                            v{v.version}
+                          </span>
+                          <span>{new Date(v.created_at).toLocaleString()}</span>
+                          {v.project_title && (
+                            <span className="text-foreground">
+                              → generated “{v.project_title}”
                             </span>
-                            <span>{new Date(v.created_at).toLocaleString()}</span>
-                            {v.project_title && (
-                              <span className="text-foreground">
-                                → generated “{v.project_title}”
-                              </span>
-                            )}
-                          </div>
-                          <p className="mt-1 line-clamp-3 whitespace-pre-wrap text-muted-foreground">
-                            {v.body}
-                          </p>
+                          )}
                         </li>
                       ))}
                     </ol>
