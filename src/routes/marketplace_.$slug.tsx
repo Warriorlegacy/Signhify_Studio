@@ -194,10 +194,20 @@ function ListingDetail() {
 
         <div className="mt-6 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <div
-              className="h-40 sm:h-56 w-full rounded-2xl border border-border"
-              style={{ background: listing.accent }}
-            />
+            {listing.promo_video ? (
+              <video
+                src={`/api/public/promo-video/${listing.slug}`}
+                controls
+                playsInline
+                preload="metadata"
+                className="aspect-video w-full rounded-2xl border border-border bg-black"
+              />
+            ) : (
+              <div
+                className="h-40 sm:h-56 w-full rounded-2xl border border-border"
+                style={{ background: listing.accent }}
+              />
+            )}
             <h1 className="mt-6 font-display text-3xl sm:text-4xl font-black break-words">
               {listing.name}
             </h1>
