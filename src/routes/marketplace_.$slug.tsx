@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArrowLeft, CheckCircle2, Loader2, MessageSquare, ShoppingBag, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { fetchListingDetail } from "@/lib/marketplace-listings.functions";
-import { createManualPayment } from "@/lib/manual-payments.functions";
+import { confirmUpiPurchase } from "@/lib/upi-confirm.functions";
 import {
   deleteMyListingReview,
   listListingReviews,
@@ -60,7 +60,7 @@ function ListingDetail() {
   const { listing, reviews: initialReviews } = Route.useLoaderData();
   const { user } = useUser();
   const navigate = useNavigate();
-  const reportPayment = useServerFn(createManualPayment);
+  const reportPayment = useServerFn(confirmUpiPurchase);
   const saveReview = useServerFn(upsertListingReview);
   const removeReview = useServerFn(deleteMyListingReview);
 
@@ -159,15 +159,15 @@ function ListingDetail() {
     try {
       await reportPayment({
         data: {
-          amount: usd,
-          method: "upi",
-          description: `Marketplace blueprint — ${listing.name}`,
+          slug: listing.slug,
+          amount: inr,
           transactionRef: ref.trim(),
         },
       });
       setReported(true);
+      toast.success("Payment confirmed — the blueprint is unlocked in your portal.");
     } catch (e: any) {
-      toast.error(e?.message ?? "Could not record your payment reference.");
+      toast.error(e?.message ?? "Could not confirm your payment reference.");
     } finally {
       setSending(false);
     }
