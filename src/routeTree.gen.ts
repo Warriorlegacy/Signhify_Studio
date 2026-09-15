@@ -55,6 +55,7 @@ import { Route as MarketplaceSlugRouteImport } from './routes/marketplace_.$slug
 import { Route as OsIndexRouteImport } from './routes/os/index'
 import { Route as OsLogsRouteImport } from './routes/os/logs'
 import { Route as OsMarketplaceRouteImport } from './routes/os/marketplace'
+import { Route as PortalSigninRouteImport } from './routes/portal_.signin'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
 import { Route as ScrollStudioIndexRouteImport } from './routes/scroll-studio/index'
 import { Route as StudioSpikeRouteImport } from './routes/studio.spike'
@@ -309,6 +310,11 @@ const OsMarketplaceRoute = OsMarketplaceRouteImport.update({
   path: '/marketplace',
   getParentRoute: () => OsRoute,
 } as any)
+const PortalSigninRoute = PortalSigninRouteImport.update({
+  id: '/portal_/signin',
+  path: '/portal/signin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -465,6 +471,7 @@ export interface FileRoutesByFullPath {
   '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/os/logs': typeof OsLogsRoute
   '/os/marketplace': typeof OsMarketplaceRoute
+  '/portal/signin': typeof PortalSigninRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/studio/spike': typeof StudioSpikeRoute
   '/app/': typeof AppIndexRoute
@@ -534,6 +541,7 @@ export interface FileRoutesByTo {
   '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/os/logs': typeof OsLogsRoute
   '/os/marketplace': typeof OsMarketplaceRoute
+  '/portal/signin': typeof PortalSigninRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/studio/spike': typeof StudioSpikeRoute
   '/app': typeof AppIndexRoute
@@ -605,6 +613,7 @@ export interface FileRoutesById {
   '/marketplace_/$slug': typeof MarketplaceSlugRoute
   '/os/logs': typeof OsLogsRoute
   '/os/marketplace': typeof OsMarketplaceRoute
+  '/portal_/signin': typeof PortalSigninRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/studio/spike': typeof StudioSpikeRoute
   '/app/': typeof AppIndexRoute
@@ -677,6 +686,7 @@ export interface FileRouteTypes {
     | '/marketplace/$slug'
     | '/os/logs'
     | '/os/marketplace'
+    | '/portal/signin'
     | '/projects/$slug'
     | '/studio/spike'
     | '/app/'
@@ -746,6 +756,7 @@ export interface FileRouteTypes {
     | '/marketplace/$slug'
     | '/os/logs'
     | '/os/marketplace'
+    | '/portal/signin'
     | '/projects/$slug'
     | '/studio/spike'
     | '/app'
@@ -816,6 +827,7 @@ export interface FileRouteTypes {
     | '/marketplace_/$slug'
     | '/os/logs'
     | '/os/marketplace'
+    | '/portal_/signin'
     | '/projects/$slug'
     | '/studio/spike'
     | '/app/'
@@ -882,6 +894,7 @@ export interface RootRouteChildren {
   AppInboxRoute: typeof AppInboxRoute
   AppSettingsRoute: typeof AppSettingsRoute
   MarketplaceSlugRoute: typeof MarketplaceSlugRoute
+  PortalSigninRoute: typeof PortalSigninRoute
   StudioSpikeRoute: typeof StudioSpikeRoute
   AppIndexRoute: typeof AppIndexRoute
   ScrollStudioIndexRoute: typeof ScrollStudioIndexRoute
@@ -1223,6 +1236,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OsMarketplaceRouteImport
       parentRoute: typeof OsRoute
     }
+    '/portal_/signin': {
+      id: '/portal_/signin'
+      path: '/portal/signin'
+      fullPath: '/portal/signin'
+      preLoaderRoute: typeof PortalSigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/$slug': {
       id: '/projects/$slug'
       path: '/$slug'
@@ -1504,6 +1524,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppInboxRoute: AppInboxRoute,
   AppSettingsRoute: AppSettingsRoute,
   MarketplaceSlugRoute: MarketplaceSlugRoute,
+  PortalSigninRoute: PortalSigninRoute,
   StudioSpikeRoute: StudioSpikeRoute,
   AppIndexRoute: AppIndexRoute,
   ScrollStudioIndexRoute: ScrollStudioIndexRoute,
