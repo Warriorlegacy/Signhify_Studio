@@ -150,32 +150,26 @@ export const requestPayout = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     // Recompute the available balance server-side; never trust the client figure.
-    const summary = await (getCreatorEarnings as any).__executeOnServer?.();
-    let available: number | null = null;
-    if (summary?.totals) available = summary.totals.availableInr;
-
-    if (available === null) {
-      const { data: listings } = await (supabaseAdmin.from as any)("marketplace_listings")
-        .select("id")
-        .eq("creator_id", userId);
-      const ids = ((listings ?? []) as any[]).map((l) => l.id);
-      let gross = 0;
-      if (ids.length) {
-        const { data: pay } = await (supabaseAdmin.from as any)("manual_payments")
-          .select("amount")
-          .eq("kind", "purchase")
-          .eq("status", "confirmed")
-          .in("listing_id", ids);
-        gross = ((pay ?? []) as any[]).reduce((s, p) => s + (Number(p.amount) || 0), 0);
-      }
-      const { data: reqs } = await (supabaseAdmin.from as any)("payout_requests")
-        .select("amount_inr, status")
-        .eq("creator_id", userId);
-      const claimed = ((reqs ?? []) as any[])
-        .filter((r) => r.status === "paid" || r.status === "requested")
-        .reduce((s, r) => s + (Number(r.amount_inr) || 0), 0);
-      available = Math.max(0, round2(gross * CREATOR_SHARE - claimed));
+    const { data: listings } = await (supabaseAdmin.from as any)("marketplace_listings")
+      .select("id")
+      .eq("creator_id", userId);
+    const ids = ((listings ?? []) as any[]).map((l) => l.id);
+    let gross = 0;
+    if (ids.length) {
+      const { data: pay } = await (supabaseAdmin.from as any)("manual_payments")
+        .select("amount")
+        .eq("kind", "purchase")
+        .eq("status", "confirmed")
+        .in("listing_id", ids);
+      gross = ((pay ?? []) as any[]).reduce((s, p) => s + (Number(p.amount) || 0), 0);
     }
+    const { data: reqs } = await (supabaseAdmin.from as any)("payout_requests")
+      .select("amount_inr, status")
+      .eq("creator_id", userId);
+    const claimed = ((reqs ?? []) as any[])
+      .filter((r) => r.status === "paid" || r.status === "requested")
+      .reduce((s, r) => s + (Number(r.amount_inr) || 0), 0);
+    const available = Math.max(0, round2(gross * CREATOR_SHARE - claimed));
 
     if (data.amountInr > available) {
       throw new Error(`You can withdraw up to ₹${available.toFixed(2)} right now.`);
