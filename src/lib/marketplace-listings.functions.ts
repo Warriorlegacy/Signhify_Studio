@@ -135,6 +135,7 @@ export const fetchListingDetail = createServerFn({ method: "GET" })
         tags: row.category ? [row.category] : [],
         accent: "linear-gradient(135deg, oklch(0.72 0.21 45), oklch(0.22 0.06 260))",
         badge: (row.price_cents ?? 0) === 0 ? "Free" : undefined,
+        promo_video: Boolean(row.promo_video_url),
       };
       return { listing: item };
     } catch (err) {

@@ -6,6 +6,7 @@ import { Slider } from "@/components/ui/slider";
 import { useServerFn } from "@tanstack/react-start";
 import { exportProjectZip } from "@/lib/export.functions";
 import { publishProjectToMarketplace } from "@/lib/marketplace-listings.functions";
+import { PromoVideoPanel } from "@/components/marketplace/PromoVideoPanel";
 import {
   Loader2,
   Download,
@@ -331,6 +332,7 @@ export function SettingsPanel({
           )}
           Export ZIP Bundle
         </Button>
+        <PromoVideoPanel projectId={projectId} />
         <Button
           variant="default"
           className="w-full justify-start text-sm h-9"

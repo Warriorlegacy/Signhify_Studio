@@ -230,7 +230,7 @@ function CreatorDashboard() {
               <Wand2 size={16} /> Prompt library
             </Link>
             <Link
-              to="/marketplace/sell"
+              to="/creator/new"
               className="inline-flex items-center gap-2 rounded-xl bg-[#f97316] px-4 py-2.5 text-sm font-semibold text-black hover:bg-[#fb923c] transition"
             >
               <Plus size={16} /> New listing

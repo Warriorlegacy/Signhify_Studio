@@ -49,6 +49,7 @@ import { Route as VisionRouteImport } from './routes/vision'
 import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as AppInboxRouteImport } from './routes/app/inbox'
 import { Route as AppSettingsRouteImport } from './routes/app/settings'
+import { Route as CreatorNewRouteImport } from './routes/creator_.new'
 import { Route as CreatorPayoutsRouteImport } from './routes/creator_.payouts'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as MarketplaceSellRouteImport } from './routes/marketplace.sell'
@@ -78,6 +79,7 @@ import { Route as OsAgentsIndexRouteImport } from './routes/os/agents/index'
 import { Route as OsAgentsNewRouteImport } from './routes/os/agents/new'
 import { Route as OsWorkflowsIndexRouteImport } from './routes/os/workflows/index'
 import { Route as OsWorkflowsNewRouteImport } from './routes/os/workflows/new'
+import { Route as ApiPublicPromoVideoSlugRouteImport } from './routes/api/public/promo-video.$slug'
 import { Route as AppProjectsIdAnalyticsRouteImport } from './routes/app/projects/$id.analytics'
 import { Route as AppProjectsIdRunsRunIdRouteImport } from './routes/app/projects/$id/runs/$runId'
 
@@ -282,6 +284,11 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/app/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreatorNewRoute = CreatorNewRouteImport.update({
+  id: '/creator_/new',
+  path: '/creator/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CreatorPayoutsRoute = CreatorPayoutsRouteImport.update({
   id: '/creator_/payouts',
   path: '/creator/payouts',
@@ -427,6 +434,11 @@ const OsWorkflowsNewRoute = OsWorkflowsNewRouteImport.update({
   path: '/workflows/new',
   getParentRoute: () => OsRoute,
 } as any)
+const ApiPublicPromoVideoSlugRoute = ApiPublicPromoVideoSlugRouteImport.update({
+  id: '/api/public/promo-video/$slug',
+  path: '/api/public/promo-video/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppProjectsIdAnalyticsRoute = AppProjectsIdAnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
@@ -478,6 +490,7 @@ export interface FileRoutesByFullPath {
   '/vision': typeof VisionRoute
   '/app/inbox': typeof AppInboxRoute
   '/app/settings': typeof AppSettingsRoute
+  '/creator/new': typeof CreatorNewRoute
   '/creator/payouts': typeof CreatorPayoutsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
@@ -508,6 +521,7 @@ export interface FileRoutesByFullPath {
   '/app/services/': typeof AppServicesIndexRoute
   '/os/agents/': typeof OsAgentsIndexRoute
   '/os/workflows/': typeof OsWorkflowsIndexRoute
+  '/api/public/promo-video/$slug': typeof ApiPublicPromoVideoSlugRoute
   '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
   '/app/projects/$id/runs/$runId': typeof AppProjectsIdRunsRunIdRoute
 }
@@ -550,6 +564,7 @@ export interface FileRoutesByTo {
   '/vision': typeof VisionRoute
   '/app/inbox': typeof AppInboxRoute
   '/app/settings': typeof AppSettingsRoute
+  '/creator/new': typeof CreatorNewRoute
   '/creator/payouts': typeof CreatorPayoutsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
@@ -580,6 +595,7 @@ export interface FileRoutesByTo {
   '/app/services': typeof AppServicesIndexRoute
   '/os/agents': typeof OsAgentsIndexRoute
   '/os/workflows': typeof OsWorkflowsIndexRoute
+  '/api/public/promo-video/$slug': typeof ApiPublicPromoVideoSlugRoute
   '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
   '/app/projects/$id/runs/$runId': typeof AppProjectsIdRunsRunIdRoute
 }
@@ -624,6 +640,7 @@ export interface FileRoutesById {
   '/vision': typeof VisionRoute
   '/app/inbox': typeof AppInboxRoute
   '/app/settings': typeof AppSettingsRoute
+  '/creator_/new': typeof CreatorNewRoute
   '/creator_/payouts': typeof CreatorPayoutsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/marketplace/sell': typeof MarketplaceSellRoute
@@ -654,6 +671,7 @@ export interface FileRoutesById {
   '/app/services/': typeof AppServicesIndexRoute
   '/os/agents/': typeof OsAgentsIndexRoute
   '/os/workflows/': typeof OsWorkflowsIndexRoute
+  '/api/public/promo-video/$slug': typeof ApiPublicPromoVideoSlugRoute
   '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
   '/app/projects/$id/runs/$runId': typeof AppProjectsIdRunsRunIdRoute
 }
@@ -699,6 +717,7 @@ export interface FileRouteTypes {
     | '/vision'
     | '/app/inbox'
     | '/app/settings'
+    | '/creator/new'
     | '/creator/payouts'
     | '/insights/$slug'
     | '/marketplace/sell'
@@ -729,6 +748,7 @@ export interface FileRouteTypes {
     | '/app/services/'
     | '/os/agents/'
     | '/os/workflows/'
+    | '/api/public/promo-video/$slug'
     | '/app/projects/$id/analytics'
     | '/app/projects/$id/runs/$runId'
   fileRoutesByTo: FileRoutesByTo
@@ -771,6 +791,7 @@ export interface FileRouteTypes {
     | '/vision'
     | '/app/inbox'
     | '/app/settings'
+    | '/creator/new'
     | '/creator/payouts'
     | '/insights/$slug'
     | '/marketplace/sell'
@@ -801,6 +822,7 @@ export interface FileRouteTypes {
     | '/app/services'
     | '/os/agents'
     | '/os/workflows'
+    | '/api/public/promo-video/$slug'
     | '/app/projects/$id/analytics'
     | '/app/projects/$id/runs/$runId'
   id:
@@ -844,6 +866,7 @@ export interface FileRouteTypes {
     | '/vision'
     | '/app/inbox'
     | '/app/settings'
+    | '/creator_/new'
     | '/creator_/payouts'
     | '/insights/$slug'
     | '/marketplace/sell'
@@ -874,6 +897,7 @@ export interface FileRouteTypes {
     | '/app/services/'
     | '/os/agents/'
     | '/os/workflows/'
+    | '/api/public/promo-video/$slug'
     | '/app/projects/$id/analytics'
     | '/app/projects/$id/runs/$runId'
   fileRoutesById: FileRoutesById
@@ -918,6 +942,7 @@ export interface RootRouteChildren {
   VisionRoute: typeof VisionRoute
   AppInboxRoute: typeof AppInboxRoute
   AppSettingsRoute: typeof AppSettingsRoute
+  CreatorNewRoute: typeof CreatorNewRoute
   CreatorPayoutsRoute: typeof CreatorPayoutsRoute
   MarketplaceSlugRoute: typeof MarketplaceSlugRoute
   PortalSigninRoute: typeof PortalSigninRoute
@@ -936,6 +961,7 @@ export interface RootRouteChildren {
   AppDeployIndexRoute: typeof AppDeployIndexRoute
   AppMarketplaceIndexRoute: typeof AppMarketplaceIndexRoute
   AppServicesIndexRoute: typeof AppServicesIndexRoute
+  ApiPublicPromoVideoSlugRoute: typeof ApiPublicPromoVideoSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1220,6 +1246,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/creator_/new': {
+      id: '/creator_/new'
+      path: '/creator/new'
+      fullPath: '/creator/new'
+      preLoaderRoute: typeof CreatorNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/creator_/payouts': {
       id: '/creator_/payouts'
       path: '/creator/payouts'
@@ -1423,6 +1456,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OsWorkflowsNewRouteImport
       parentRoute: typeof OsRoute
     }
+    '/api/public/promo-video/$slug': {
+      id: '/api/public/promo-video/$slug'
+      path: '/api/public/promo-video/$slug'
+      fullPath: '/api/public/promo-video/$slug'
+      preLoaderRoute: typeof ApiPublicPromoVideoSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/projects/$id/analytics': {
       id: '/app/projects/$id/analytics'
       path: '/analytics'
@@ -1564,6 +1604,7 @@ const rootRouteChildren: RootRouteChildren = {
   VisionRoute: VisionRoute,
   AppInboxRoute: AppInboxRoute,
   AppSettingsRoute: AppSettingsRoute,
+  CreatorNewRoute: CreatorNewRoute,
   CreatorPayoutsRoute: CreatorPayoutsRoute,
   MarketplaceSlugRoute: MarketplaceSlugRoute,
   PortalSigninRoute: PortalSigninRoute,
@@ -1582,6 +1623,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppDeployIndexRoute: AppDeployIndexRoute,
   AppMarketplaceIndexRoute: AppMarketplaceIndexRoute,
   AppServicesIndexRoute: AppServicesIndexRoute,
+  ApiPublicPromoVideoSlugRoute: ApiPublicPromoVideoSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -12,6 +12,7 @@ export type MarketItem = {
   accent: string; // gradient
   badge?: string;
   image?: string;
+  promo_video?: boolean;
 };
 
 export const MARKET: MarketItem[] = [
