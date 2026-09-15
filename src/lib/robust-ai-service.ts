@@ -36,7 +36,13 @@ class RobustAIService {
   private readonly healthCheckInterval = 30 * 60 * 1000; // 30 minutes
   private healthCheckTimer: NodeJS.Timeout | null = null;
 
-  constructor() {
+  // NOTE: constructors run at module/global scope in the Workers runtime, where
+  // timers and async I/O are disallowed. Initialization happens lazily on first use.
+  private initialized = false;
+
+  private ensureInitialized() {
+    if (this.initialized) return;
+    this.initialized = true;
     this.initializeProviders();
     this.startHealthCheckTimer();
   }
