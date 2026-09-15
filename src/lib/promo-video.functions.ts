@@ -196,3 +196,27 @@ export const listMyPromoVideos = createServerFn({ method: "GET" })
       .limit(50);
     return (data ?? []) as PromoVideo[];
   });
+
+/** Short-lived playback URL so the creator can watch their own clip. */
+export const getPromoVideoUrl = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => {
+    const id = String((input as any)?.id ?? "").trim();
+    if (!id) throw new Error("Video ID is required.");
+    return { id };
+  })
+  .handler(async ({ context, data }): Promise<{ url: string | null }> => {
+    const { data: row } = await context.supabase
+      .from("promo_videos")
+      .select("video_url")
+      .eq("id", data.id)
+      .eq("user_id", context.userId)
+      .maybeSingle();
+    const path = (row as { video_url?: string | null } | null)?.video_url;
+    if (!path) return { url: null };
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: signed } = await supabaseAdmin.storage
+      .from("promo-videos")
+      .createSignedUrl(path, 3600);
+    return { url: signed?.signedUrl ?? null };
+  });
