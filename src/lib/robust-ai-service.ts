@@ -36,7 +36,13 @@ class RobustAIService {
   private readonly healthCheckInterval = 30 * 60 * 1000; // 30 minutes
   private healthCheckTimer: NodeJS.Timeout | null = null;
 
-  constructor() {
+  // NOTE: constructors run at module/global scope in the Workers runtime, where
+  // timers and async I/O are disallowed. Initialization happens lazily on first use.
+  private initialized = false;
+
+  private ensureInitialized() {
+    if (this.initialized) return;
+    this.initialized = true;
     this.initializeProviders();
     this.startHealthCheckTimer();
   }
@@ -373,6 +379,7 @@ class RobustAIService {
     apiKey: string,
     customEndpoint?: string,
   ): Promise<{ ok: boolean; message: string }> {
+    this.ensureInitialized();
     const testOptions: AIGatewayOptions = {
       messages: [{ role: "user", content: "ping" }],
       max_tokens: 5,
@@ -463,6 +470,7 @@ class RobustAIService {
   async generateAIResponse(
     options: AIGatewayOptions,
   ): Promise<{ content: string; providerUsed: string }> {
+    this.ensureInitialized();
     // Filter to only enabled providers
     let availableProviders = this.providers.filter((p) => p.enabled);
 
