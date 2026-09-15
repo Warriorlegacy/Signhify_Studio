@@ -10,6 +10,7 @@ import {
   getScrollStudioProject,
   updateScrollStudioProject,
 } from "@/lib/scroll-studio-projects.functions";
+import { recordPromptRun } from "@/lib/prompt-library.functions";
 
 
 interface Message {
