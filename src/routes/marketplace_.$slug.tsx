@@ -259,6 +259,48 @@ function ListingDetail() {
               </a>
             )}
 
+            {/* Mobile-first price + buy, shown inline before the section walkthrough */}
+            <div className="mt-8 rounded-2xl border border-border bg-surface p-5 lg:hidden">
+              <div className="flex items-end justify-between gap-3">
+                <div>
+                  <div className="text-2xl font-black">
+                    {usd > 0 ? `$${usd.toFixed(0)}` : "Free"}
+                  </div>
+                  {usd > 0 && (
+                    <div className="text-xs text-muted-foreground">≈ ₹{inr} · one-time</div>
+                  )}
+                </div>
+                <button
+                  onClick={openBuy}
+                  className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
+                >
+                  <ShoppingBag className="w-4 h-4" /> {usd > 0 ? "Buy with UPI" : "Get it free"}
+                </button>
+              </div>
+            </div>
+
+            <h2 className="mt-10 font-display text-xl font-bold">The layout, section by section</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Scroll the stack below to see every section this blueprint builds, in order.
+            </p>
+            <ol className="mt-5 space-y-3">
+              {sections.map((s, i) => (
+                <li
+                  key={s.name}
+                  className="grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-2xl border border-border bg-surface p-4"
+                >
+                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary/15 text-xs font-bold text-primary">
+                    {i + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold">{s.name}</div>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{s.detail}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+
             {(
               <div className="mt-12 border-t border-border pt-8">
                 <h2 className="font-display text-xl font-bold">Ratings &amp; reviews</h2>
