@@ -172,7 +172,7 @@ export function ChatInterface({
               promptId: savedPromptId,
               body: userMsg.content,
               projectId: activeId,
-              projectTitle: data.message?.slice(0, 160) ?? null,
+              projectTitle: userMsg.content.slice(0, 120),
             },
           }).catch(() => {});
         }
