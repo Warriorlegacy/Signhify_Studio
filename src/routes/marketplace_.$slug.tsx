@@ -15,6 +15,7 @@ import { StarRating } from "@/components/marketplace/StarRating";
 import { useUser } from "@/hooks/useUser";
 import { UPI_ID, USD_TO_INR, upiIntentLink, whatsappLink } from "@/lib/payment-contact";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { blueprintSections } from "@/lib/blueprint-sections";
 
 export const Route = createFileRoute("/marketplace_/$slug")({
   loader: async ({ params }) => {
@@ -194,10 +195,12 @@ function ListingDetail() {
         <div className="mt-6 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
           <div>
             <div
-              className="h-56 w-full rounded-2xl border border-border"
+              className="h-40 sm:h-56 w-full rounded-2xl border border-border"
               style={{ background: listing.accent }}
             />
-            <h1 className="mt-6 font-display text-4xl font-black">{listing.name}</h1>
+            <h1 className="mt-6 font-display text-3xl sm:text-4xl font-black break-words">
+              {listing.name}
+            </h1>
             <div className="mt-2 flex flex-wrap items-center gap-3">
               <div className="text-xs uppercase tracking-[0.2em] text-primary">
                 {listing.category}
