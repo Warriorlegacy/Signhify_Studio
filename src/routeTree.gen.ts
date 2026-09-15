@@ -78,6 +78,7 @@ import { Route as OsAgentsIndexRouteImport } from './routes/os/agents/index'
 import { Route as OsAgentsNewRouteImport } from './routes/os/agents/new'
 import { Route as OsWorkflowsIndexRouteImport } from './routes/os/workflows/index'
 import { Route as OsWorkflowsNewRouteImport } from './routes/os/workflows/new'
+import { Route as ApiPublicPromoVideoSlugRouteImport } from './routes/api/public/promo-video.$slug'
 import { Route as AppProjectsIdAnalyticsRouteImport } from './routes/app/projects/$id.analytics'
 import { Route as AppProjectsIdRunsRunIdRouteImport } from './routes/app/projects/$id/runs/$runId'
 
@@ -427,6 +428,11 @@ const OsWorkflowsNewRoute = OsWorkflowsNewRouteImport.update({
   path: '/workflows/new',
   getParentRoute: () => OsRoute,
 } as any)
+const ApiPublicPromoVideoSlugRoute = ApiPublicPromoVideoSlugRouteImport.update({
+  id: '/api/public/promo-video/$slug',
+  path: '/api/public/promo-video/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppProjectsIdAnalyticsRoute = AppProjectsIdAnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
@@ -508,6 +514,7 @@ export interface FileRoutesByFullPath {
   '/app/services/': typeof AppServicesIndexRoute
   '/os/agents/': typeof OsAgentsIndexRoute
   '/os/workflows/': typeof OsWorkflowsIndexRoute
+  '/api/public/promo-video/$slug': typeof ApiPublicPromoVideoSlugRoute
   '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
   '/app/projects/$id/runs/$runId': typeof AppProjectsIdRunsRunIdRoute
 }
@@ -580,6 +587,7 @@ export interface FileRoutesByTo {
   '/app/services': typeof AppServicesIndexRoute
   '/os/agents': typeof OsAgentsIndexRoute
   '/os/workflows': typeof OsWorkflowsIndexRoute
+  '/api/public/promo-video/$slug': typeof ApiPublicPromoVideoSlugRoute
   '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
   '/app/projects/$id/runs/$runId': typeof AppProjectsIdRunsRunIdRoute
 }
@@ -654,6 +662,7 @@ export interface FileRoutesById {
   '/app/services/': typeof AppServicesIndexRoute
   '/os/agents/': typeof OsAgentsIndexRoute
   '/os/workflows/': typeof OsWorkflowsIndexRoute
+  '/api/public/promo-video/$slug': typeof ApiPublicPromoVideoSlugRoute
   '/app/projects/$id/analytics': typeof AppProjectsIdAnalyticsRoute
   '/app/projects/$id/runs/$runId': typeof AppProjectsIdRunsRunIdRoute
 }
@@ -729,6 +738,7 @@ export interface FileRouteTypes {
     | '/app/services/'
     | '/os/agents/'
     | '/os/workflows/'
+    | '/api/public/promo-video/$slug'
     | '/app/projects/$id/analytics'
     | '/app/projects/$id/runs/$runId'
   fileRoutesByTo: FileRoutesByTo
@@ -801,6 +811,7 @@ export interface FileRouteTypes {
     | '/app/services'
     | '/os/agents'
     | '/os/workflows'
+    | '/api/public/promo-video/$slug'
     | '/app/projects/$id/analytics'
     | '/app/projects/$id/runs/$runId'
   id:
@@ -874,6 +885,7 @@ export interface FileRouteTypes {
     | '/app/services/'
     | '/os/agents/'
     | '/os/workflows/'
+    | '/api/public/promo-video/$slug'
     | '/app/projects/$id/analytics'
     | '/app/projects/$id/runs/$runId'
   fileRoutesById: FileRoutesById
@@ -936,6 +948,7 @@ export interface RootRouteChildren {
   AppDeployIndexRoute: typeof AppDeployIndexRoute
   AppMarketplaceIndexRoute: typeof AppMarketplaceIndexRoute
   AppServicesIndexRoute: typeof AppServicesIndexRoute
+  ApiPublicPromoVideoSlugRoute: typeof ApiPublicPromoVideoSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1423,6 +1436,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OsWorkflowsNewRouteImport
       parentRoute: typeof OsRoute
     }
+    '/api/public/promo-video/$slug': {
+      id: '/api/public/promo-video/$slug'
+      path: '/api/public/promo-video/$slug'
+      fullPath: '/api/public/promo-video/$slug'
+      preLoaderRoute: typeof ApiPublicPromoVideoSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/projects/$id/analytics': {
       id: '/app/projects/$id/analytics'
       path: '/analytics'
@@ -1582,6 +1602,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppDeployIndexRoute: AppDeployIndexRoute,
   AppMarketplaceIndexRoute: AppMarketplaceIndexRoute,
   AppServicesIndexRoute: AppServicesIndexRoute,
+  ApiPublicPromoVideoSlugRoute: ApiPublicPromoVideoSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
