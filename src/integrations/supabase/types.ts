@@ -817,6 +817,7 @@ export type Database = {
           is_active: boolean | null
           preview_url: string | null
           price_cents: number | null
+          promo_video_url: string | null
           review_note: string | null
           reviewed_at: string | null
           search_vector: unknown
@@ -835,6 +836,7 @@ export type Database = {
           is_active?: boolean | null
           preview_url?: string | null
           price_cents?: number | null
+          promo_video_url?: string | null
           review_note?: string | null
           reviewed_at?: string | null
           search_vector?: unknown
@@ -853,6 +855,7 @@ export type Database = {
           is_active?: boolean | null
           preview_url?: string | null
           price_cents?: number | null
+          promo_video_url?: string | null
           review_note?: string | null
           reviewed_at?: string | null
           search_vector?: unknown
@@ -1201,6 +1204,56 @@ export type Database = {
           title?: string
         }
         Relationships: []
+      }
+      promo_videos: {
+        Row: {
+          created_at: string
+          error: string | null
+          id: string
+          job_id: string | null
+          listing_slug: string | null
+          project_id: string | null
+          prompt: string
+          status: string
+          updated_at: string
+          user_id: string
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          error?: string | null
+          id?: string
+          job_id?: string | null
+          listing_slug?: string | null
+          project_id?: string | null
+          prompt: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          error?: string | null
+          id?: string
+          job_id?: string | null
+          listing_slug?: string | null
+          project_id?: string | null
+          prompt?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promo_videos_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "user_projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       prompt_library: {
         Row: {
