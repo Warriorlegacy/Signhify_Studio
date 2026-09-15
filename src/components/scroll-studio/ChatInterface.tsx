@@ -45,6 +45,7 @@ export function ChatInterface({
   const getFn = useServerFn(getScrollStudioProject);
   const updateFn = useServerFn(updateScrollStudioProject);
   const createFn = useServerFn(createScrollStudioProject);
+  const recordRunFn = useServerFn(recordPromptRun);
 
 
   useEffect(() => {
