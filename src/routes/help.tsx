@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import articles from "../../public/help-articles.json";
+import articles from "@/data/help-articles.json";
 import {
   Accordion,
   AccordionContent,
