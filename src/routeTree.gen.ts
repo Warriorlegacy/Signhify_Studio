@@ -33,6 +33,7 @@ import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as PromptsRouteImport } from './routes/prompts'
 import { Route as PublishRouteImport } from './routes/publish'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as SaasMvpRouteImport } from './routes/saas-mvp'
@@ -199,6 +200,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromptsRoute = PromptsRouteImport.update({
+  id: '/prompts',
+  path: '/prompts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PublishRoute = PublishRouteImport.update({
@@ -457,6 +463,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/prompts': typeof PromptsRoute
   '/publish': typeof PublishRoute
   '/roadmap': typeof RoadmapRoute
   '/saas-mvp': typeof SaasMvpRoute
@@ -528,6 +535,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/prompts': typeof PromptsRoute
   '/publish': typeof PublishRoute
   '/roadmap': typeof RoadmapRoute
   '/saas-mvp': typeof SaasMvpRoute
@@ -601,6 +609,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/prompts': typeof PromptsRoute
   '/publish': typeof PublishRoute
   '/roadmap': typeof RoadmapRoute
   '/saas-mvp': typeof SaasMvpRoute
@@ -675,6 +684,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/projects'
+    | '/prompts'
     | '/publish'
     | '/roadmap'
     | '/saas-mvp'
@@ -746,6 +756,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/projects'
+    | '/prompts'
     | '/publish'
     | '/roadmap'
     | '/saas-mvp'
@@ -818,6 +829,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/projects'
+    | '/prompts'
     | '/publish'
     | '/roadmap'
     | '/saas-mvp'
@@ -891,6 +903,7 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
+  PromptsRoute: typeof PromptsRoute
   PublishRoute: typeof PublishRoute
   RoadmapRoute: typeof RoadmapRoute
   SaasMvpRoute: typeof SaasMvpRoute
@@ -1093,6 +1106,13 @@ declare module '@tanstack/react-router' {
       path: '/projects'
       fullPath: '/projects'
       preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prompts': {
+      id: '/prompts'
+      path: '/prompts'
+      fullPath: '/prompts'
+      preLoaderRoute: typeof PromptsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/publish': {
@@ -1529,6 +1549,7 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
+  PromptsRoute: PromptsRoute,
   PublishRoute: PublishRoute,
   RoadmapRoute: RoadmapRoute,
   SaasMvpRoute: SaasMvpRoute,

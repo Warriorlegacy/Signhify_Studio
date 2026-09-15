@@ -1,7 +1,19 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useState } from "react";
-import { Eye, EyeOff, Loader2, Pencil, Plus, Rocket, Store, Trash2, Wallet, X } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Loader2,
+  Pencil,
+  Plus,
+  Rocket,
+  Store,
+  Trash2,
+  Wallet,
+  Wand2,
+  X,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useUser } from "@/hooks/useUser";
 import {
@@ -210,6 +222,12 @@ function CreatorDashboard() {
               className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-4 py-2.5 text-sm font-semibold text-white/80 hover:bg-white/10 transition"
             >
               <Wallet size={16} /> Earnings & payouts
+            </Link>
+            <Link
+              to="/prompts"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-4 py-2.5 text-sm font-semibold text-white/80 hover:bg-white/10 transition"
+            >
+              <Wand2 size={16} /> Prompt library
             </Link>
             <Link
               to="/marketplace/sell"

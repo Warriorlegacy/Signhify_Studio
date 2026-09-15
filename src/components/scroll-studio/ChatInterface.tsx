@@ -10,6 +10,7 @@ import {
   getScrollStudioProject,
   updateScrollStudioProject,
 } from "@/lib/scroll-studio-projects.functions";
+import { recordPromptRun } from "@/lib/prompt-library.functions";
 
 
 interface Message {
@@ -44,6 +45,7 @@ export function ChatInterface({
   const getFn = useServerFn(getScrollStudioProject);
   const updateFn = useServerFn(updateScrollStudioProject);
   const createFn = useServerFn(createScrollStudioProject);
+  const recordRunFn = useServerFn(recordPromptRun);
 
 
   useEffect(() => {
@@ -153,6 +155,27 @@ export function ChatInterface({
         updateFn({ data: { id: activeId, updates } }).catch((error) => {
           console.error("Failed to persist project:", error);
         });
+      }
+
+      // If this run came from a saved library prompt, track which blueprint it made.
+      if (hasCode) {
+        let savedPromptId: string | null = null;
+        try {
+          savedPromptId = sessionStorage.getItem("scroll-studio:promptId");
+          if (savedPromptId) sessionStorage.removeItem("scroll-studio:promptId");
+        } catch {
+          savedPromptId = null;
+        }
+        if (savedPromptId) {
+          recordRunFn({
+            data: {
+              promptId: savedPromptId,
+              body: userMsg.content,
+              projectId: activeId,
+              projectTitle: userMsg.content.slice(0, 120),
+            },
+          }).catch(() => {});
+        }
       }
 
     } catch (error) {
