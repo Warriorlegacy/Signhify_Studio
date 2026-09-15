@@ -758,6 +758,8 @@ export type Database = {
           currency: string
           description: string | null
           id: string
+          kind: string
+          listing_id: string | null
           method: string
           status: string
           transaction_ref: string | null
@@ -771,6 +773,8 @@ export type Database = {
           currency?: string
           description?: string | null
           id?: string
+          kind?: string
+          listing_id?: string | null
           method: string
           status?: string
           transaction_ref?: string | null
@@ -784,13 +788,23 @@ export type Database = {
           currency?: string
           description?: string | null
           id?: string
+          kind?: string
+          listing_id?: string | null
           method?: string
           status?: string
           transaction_ref?: string | null
           user_id?: string
           whatsapp_sent?: boolean
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "manual_payments_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_listings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       marketplace_listings: {
         Row: {
