@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useState } from "react";
-import { Eye, EyeOff, Loader2, Pencil, Plus, Store, Trash2, X } from "lucide-react";
+import { Eye, EyeOff, Loader2, Pencil, Plus, Rocket, Store, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { useUser } from "@/hooks/useUser";
 import {
@@ -9,6 +9,8 @@ import {
   updateListing,
   deleteListing,
 } from "@/lib/marketplace-creator.functions";
+import { confirmListingFeeUpi } from "@/lib/upi-confirm.functions";
+import { LISTING_FEE_INR, UPI_ID, upiIntentLink } from "@/lib/payment-contact";
 
 export const Route = createFileRoute("/creator")({
   head: () => ({
@@ -69,6 +71,33 @@ function CreatorDashboard() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [editing, setEditing] = useState<Listing | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<Listing | null>(null);
+  const [feeFor, setFeeFor] = useState<Listing | null>(null);
+  const [feeRef, setFeeRef] = useState("");
+  const [feeBusy, setFeeBusy] = useState(false);
+  const payFee = useServerFn(confirmListingFeeUpi);
+
+  const submitFee = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!feeFor || feeBusy || feeRef.trim().length < 4) return;
+    setFeeBusy(true);
+    try {
+      await payFee({
+        data: { id: feeFor.id, amount: LISTING_FEE_INR, transactionRef: feeRef.trim() },
+      });
+      setListings((prev) =>
+        (prev ?? []).map((l) =>
+          l.id === feeFor.id ? { ...l, status: "live", is_active: true, review_note: null } : l,
+        ),
+      );
+      toast.success("Payment confirmed — your listing is live on the marketplace.");
+      setFeeFor(null);
+      setFeeRef("");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not confirm that payment.");
+    } finally {
+      setFeeBusy(false);
+    }
+  };
 
   const load = useCallback(async () => {
     try {
