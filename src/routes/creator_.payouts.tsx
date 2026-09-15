@@ -241,6 +241,7 @@ function CreatorPayouts() {
                     <span className="text-white/60">Amount (₹)</span>
                     <input
                       type="number"
+                      name="amount"
                       min="1"
                       step="0.01"
                       value={amount}
