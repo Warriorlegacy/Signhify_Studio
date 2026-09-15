@@ -143,8 +143,8 @@ function ListingDetail() {
 
   const openBuy = () => {
     if (!user) {
-      toast.info("Sign in to buy this blueprint.");
-      navigate({ to: "/login", search: { redirect: `/marketplace/${listing.slug}` } });
+      toast.info("Create a buyer account to buy this blueprint.");
+      navigate({ to: "/portal/signin", search: { redirect: `/marketplace/${listing.slug}` } });
       return;
     }
     setRef("");
