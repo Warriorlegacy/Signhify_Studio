@@ -15,6 +15,7 @@ import { StarRating } from "@/components/marketplace/StarRating";
 import { useUser } from "@/hooks/useUser";
 import { UPI_ID, USD_TO_INR, upiIntentLink, whatsappLink } from "@/lib/payment-contact";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { blueprintSections } from "@/lib/blueprint-sections";
 
 export const Route = createFileRoute("/marketplace_/$slug")({
   loader: async ({ params }) => {
@@ -173,8 +174,10 @@ function ListingDetail() {
     }
   };
 
+  const sections = blueprintSections(listing.category);
+
   return (
-    <section className="pt-32 pb-24 px-6 min-h-screen">
+    <section className="pt-24 sm:pt-32 pb-32 lg:pb-24 px-4 sm:px-6 min-h-screen">
       <div className="mx-auto max-w-5xl">
         <Breadcrumbs
           items={[
@@ -192,10 +195,12 @@ function ListingDetail() {
         <div className="mt-6 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
           <div>
             <div
-              className="h-56 w-full rounded-2xl border border-border"
+              className="h-40 sm:h-56 w-full rounded-2xl border border-border"
               style={{ background: listing.accent }}
             />
-            <h1 className="mt-6 font-display text-4xl font-black">{listing.name}</h1>
+            <h1 className="mt-6 font-display text-3xl sm:text-4xl font-black break-words">
+              {listing.name}
+            </h1>
             <div className="mt-2 flex flex-wrap items-center gap-3">
               <div className="text-xs uppercase tracking-[0.2em] text-primary">
                 {listing.category}
@@ -253,6 +258,48 @@ function ListingDetail() {
                 View the live preview →
               </a>
             )}
+
+            {/* Mobile-first price + buy, shown inline before the section walkthrough */}
+            <div className="mt-8 rounded-2xl border border-border bg-surface p-5 lg:hidden">
+              <div className="flex items-end justify-between gap-3">
+                <div>
+                  <div className="text-2xl font-black">
+                    {usd > 0 ? `$${usd.toFixed(0)}` : "Free"}
+                  </div>
+                  {usd > 0 && (
+                    <div className="text-xs text-muted-foreground">≈ ₹{inr} · one-time</div>
+                  )}
+                </div>
+                <button
+                  onClick={openBuy}
+                  className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
+                >
+                  <ShoppingBag className="w-4 h-4" /> {usd > 0 ? "Buy with UPI" : "Get it free"}
+                </button>
+              </div>
+            </div>
+
+            <h2 className="mt-10 font-display text-xl font-bold">The layout, section by section</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Scroll the stack below to see every section this blueprint builds, in order.
+            </p>
+            <ol className="mt-5 space-y-3">
+              {sections.map((s, i) => (
+                <li
+                  key={s.name}
+                  className="grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-2xl border border-border bg-surface p-4"
+                >
+                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary/15 text-xs font-bold text-primary">
+                    {i + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold">{s.name}</div>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{s.detail}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
 
             {(
               <div className="mt-12 border-t border-border pt-8">
