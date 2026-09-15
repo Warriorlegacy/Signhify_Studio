@@ -1047,6 +1047,39 @@ export type Database = {
           },
         ]
       }
+      payout_requests: {
+        Row: {
+          amount_inr: number
+          created_at: string
+          creator_id: string
+          id: string
+          note: string | null
+          paid_at: string | null
+          status: string
+          upi_id: string
+        }
+        Insert: {
+          amount_inr: number
+          created_at?: string
+          creator_id: string
+          id?: string
+          note?: string | null
+          paid_at?: string | null
+          status?: string
+          upi_id: string
+        }
+        Update: {
+          amount_inr?: number
+          created_at?: string
+          creator_id?: string
+          id?: string
+          note?: string | null
+          paid_at?: string | null
+          status?: string
+          upi_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
