@@ -14,7 +14,8 @@
     "test:unit": "bun test tests/unit/",
     "guide:pdf": "node scripts/build-guide-pdf.mjs",
     "guide:check": "node scripts/build-guide-pdf.mjs --check",
-    "prepublish:check": "node scripts/build-guide-pdf.mjs && node scripts/prepublish.mjs"
+    "prepublish:check": "node scripts/build-guide-pdf.mjs && node scripts/prepublish.mjs",
+    "sync:lovable": "git pull lovable main --ff-only && git push origin main"
   },
   "dependencies": {
     "@ffmpeg/ffmpeg": "^0.12.15",
